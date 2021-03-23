@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a Tutorial
   const danwei = {
-    id:req.body.id,
     name: req.body.name,
     type: req.body.type,
     remarks:req.body.remarks,

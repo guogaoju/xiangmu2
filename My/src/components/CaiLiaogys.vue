@@ -557,12 +557,22 @@
 
 <script>
 import CailiaogysService from "../services/CailiaogysService";
+import PingjiService from "../services/PingjiService";
   export default {
     created () {
           this.tableonload();
       },
     methods: {
       async tableonload(){
+        //  PingjiService.getAll()
+        // .then(response => {
+        //   this.result = response.data;
+        //   this.tableData.grade = response.data.total_points
+        //   console.log(response.data);
+        // })
+        // .catch(e => {
+        //   console.log(e);
+        // });
         CailiaogysService.getAll()
         .then(response => {
           this.tableData = response.data;
@@ -574,6 +584,14 @@ import CailiaogysService from "../services/CailiaogysService";
       },
        openFrom(){
            this.dialogFormVisible=true
+           PingjiService.getAll()
+        .then(response => {
+          this.result = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
        },
        addsubmit(){
          this.dialogFormVisible=false;
@@ -711,6 +729,7 @@ import CailiaogysService from "../services/CailiaogysService";
         dialogFormVisible1: false,
         dialogFormVisible2: false,
         tableData: [],
+        result:[]
       }
     }
   }

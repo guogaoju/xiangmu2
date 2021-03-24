@@ -13,6 +13,7 @@ import Financialdata from '@/components/Financialdata'
 import Wuliao from '@/components/Wuliao'
 import Jiliangdanwei from '@/components/Jiliangdanwei'
 import WuliaoType from '@/components/WuliaoType'
+import JianzhuXiangmu from '@/components/JianzhuXiangmu'
 Vue.use(Router)
 
 const originalPush = Router.prototype.push
@@ -82,6 +83,11 @@ export default new Router({
       path: '/WuliaoType',
       name: 'WuliaoType',
       component: WuliaoType
+    },
+    {
+      path: '/JianzhuXiangmu',
+      name: 'JianzhuXiangmu',
+      component: JianzhuXiangmu
     },
   ]
 })

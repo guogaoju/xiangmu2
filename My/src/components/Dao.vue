@@ -175,6 +175,10 @@
                         this.$router.push('/Pingji');
                         this.breadcrumbItems  = ['供应商评级管理']
                         break;
+                    case '2-1':
+                        this.$router.push('/JianzhuXiangmu');
+                        this.breadcrumbItems  = ['建筑项目管理']
+                        break;
                     case '6-1-2':
                         this.$router.push('/Wuliao');
                         this.breadcrumbItems  = ['物料资料']

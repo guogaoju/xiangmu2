@@ -93,12 +93,16 @@
         <el-row>
         <el-col :span="12">
           <el-form-item label="物料类型" prop="wuliaotype" :label-width="formLabelWidth">
-            <el-input v-model="addwuliao.wuliaotype"></el-input>
+            <el-select filterable v-model="addwuliao.wuliaotype" placeholder="请选择">
+              <el-option v-for="item in result1" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
          <el-col :span="12">
            <el-form-item label="计量单位" prop="danwei" :label-width="formLabelWidth">
-            <el-input v-model="addwuliao.danwei"></el-input>
+            <el-select filterable v-model="addwuliao.danwei" placeholder="请选择单位">
+              <el-option v-for="item in result" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -276,8 +280,9 @@
 </template>
 
 <script>
-import http from "../http-common";
+import DanweiService from "../services/DanweiService";
 import WuliaoService from "../services/WuliaoService";
+import WuliaoTypeService from "../services/WuliaoTypeService";
   export default {
     created () {
           this.tableonload();
@@ -295,6 +300,18 @@ import WuliaoService from "../services/WuliaoService";
       },
        openFrom(){
            this.dialogFormVisible=true
+           DanweiService.getAll()
+           .then(response =>{
+          this.result=response.data;
+           }).catch(e => {
+          console.log(e);
+        });
+          WuliaoTypeService.getAll()
+           .then(response =>{
+          this.result1=response.data;
+           }).catch(e => {
+          console.log(e);
+        });
        },
        addsubmit(){
          this.dialogFormVisible=false;
@@ -417,6 +434,8 @@ import WuliaoService from "../services/WuliaoService";
         formLabelWidth: "100px",
         rules:{},
         tableData:[],
+        result:[],
+        result1:[],
       addwuliao:{},
       updatewuliao:{},
       kanwuliao:{},

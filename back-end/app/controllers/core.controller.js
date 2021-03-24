@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a Tutorial
   const core_firm = {
-    id:req.body.id,
     register_name: req.body.register_name,
     credit_code:req.body.credit_code,
     trade: req.body.trade,

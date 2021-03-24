@@ -1,11 +1,11 @@
 const db = require("../models");
-const Cailiaogys = db.cailiaogys;
+const Jianzhu = db.jianzhu;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new pingji
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.supplier_name) {
+  if (!req.body.builder) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
@@ -13,38 +13,37 @@ exports.create = (req, res) => {
   }
 
   // Create a pingji
-  const cailiaogys = {
-    supplier_name:req.body.supplier_name,
-    trade:req.body.trade,
-    address:req.body.address,
-    contact_person:req.body.contact_person,
-    phone:req.body.phone,
-    fax:req.body.fax,
-    post_code:req.body.post_code,
-    juridical_person:req.body.juridical_person,
-    bank_name:req.body.bank_name,
-    bank_card:req.body.bank_card,
-    tax_card:req.body.tax_card,
-    vat:req.body.vat,
-    email:req.body.email,
-    supplier_type:req.body.supplier_type,
-    discount:req.body.discount,
-    registered_trademark:req.body.registered_trademark,
-    business_license:req.body.business_license,
-    remarks:req.body.remarks,
-    grade:req.body.grade,
-    current_process:req.body.current_process,
+  const jianzhu = {
+        builder:req.body.builder,
+        item_name:req.body.item_name,
+        time: req.body.time,
+        jindu : req.body.jindu ,
+        item_money:req.body.item_money,
+        total_quota:req.body.total_quota,
+        money:req.body.money,
+        money1:req.body.money1,
+        money2:req.body.money2,
+        interest:req.body.interest,
+        interest1:req.body.interest1,
+        Return:req.body.Return,
+        fax:req.body.fax,
+        A:req.body.A,
+        B:req.body.B,
+        C:req.body.C,
+        grade:req.body.grade,
+        cause:req.body.cause,
+        current_process:req.body.current_process
   };
 
   // Save pingji in the database
-  Cailiaogys.create(cailiaogys)
+  Jianzhu.create(jianzhu)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Cailiaogys."
+          err.message || "Some error occurred while creating the Jianzhu."
       });
     });
 };
@@ -54,14 +53,14 @@ exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   
-    Cailiaogys.findAll()
+    Jianzhu.findAll()
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving Cailiaogys."
+            err.message || "Some error occurred while retrieving Jianzhu."
         });
       });
 };
@@ -70,13 +69,13 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Cailiaogys.findByPk(id)
+    Jianzhu.findByPk(id)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Cailiaogys with id=" + id
+          message: "Error retrieving Jianzhu with id=" + id
         });
       });
 };
@@ -86,23 +85,23 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    Cailiaogys.update(req.body, {
+    Jianzhu.update(req.body, {
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Cailiaogys was updated successfully."
+            message: "Jianzhu was updated successfully."
           });
         } else {
           res.send({
-            message: `Cannot update Cailiaogys with id=${id}. Maybe Cailiaogys was not found or req.body is empty!`
+            message: `Cannot update Jianzhu with id=${id}. Maybe Jianzhu was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Cailiaogys with id=" + id
+          message: "Error updating Jianzhu with id=" + id
         });
       });
 };
@@ -111,23 +110,23 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Cailiaogys.destroy({
+    Jianzhu.destroy({
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Cailiaogys was deleted successfully!"
+            message: "Jianzhu was deleted successfully!"
           });
         } else {
           res.send({
-            message: `Cannot delete Cailiaogys with id=${id}. Maybe Cailiaogys was not found!`
+            message: `Cannot delete Jianzhu with id=${id}. Maybe Jianzhu was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Cailiaogys with id=" + id
+          message: "Could not delete Jianzhu with id=" + id
         });
       });
 };

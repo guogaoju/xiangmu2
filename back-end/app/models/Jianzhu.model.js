@@ -1,56 +1,63 @@
 module.exports = (sequelize, Sequelize) => {
-    const Core_firm = sequelize.define("core_firm", {
-      register_name: {
+    const Jianzhu = sequelize.define("jianzhu", {
+        
+        builder: {
             type: Sequelize.STRING
           },
-          credit_code: {
+          item_name: {
             type: Sequelize.STRING
           },
-          trade: {
+          time: {
             type: Sequelize.STRING
           },
-          address: {
+          jindu: {
             type: Sequelize.STRING
           },
-          juridical_person: {
+          item_money: {
             type: Sequelize.STRING
           },
-          register_money: {
+          total_quota: {
             type: Sequelize.STRING
           },
-          create_time: {
+          money: {
             type: Sequelize.STRING
           },
-          business_term: {
+          money1: {
             type: Sequelize.STRING
           },
-          business_scope: {
+          money2: {
             type: Sequelize.STRING
           },
-          post_code: {
+          interest: {
             type: Sequelize.STRING
           },
-          phone: {
+          interest1: {
             type: Sequelize.STRING
           },
-          email: {
+          Return: {
             type: Sequelize.STRING
           },
           fax: {
             type: Sequelize.STRING
           },
-          account_type: {
+          A: {
             type: Sequelize.STRING
           },
-          bank_name: {
+          B: {
             type: Sequelize.STRING
           },
-          bank_card: {
+          C: {
+            type: Sequelize.STRING
+          },
+          grade: {
+            type: Sequelize.STRING
+          },
+          cause: {
             type: Sequelize.STRING
           },
           current_process: {
             type: Sequelize.STRING
           },
         });
-    return Core_firm;
+    return Jianzhu;
   };

@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a Tutorial
   const wuliao = {
-    id:req.body.id,
     name: req.body.name,
     Specification:req.body.Specification,
     wuliaotype: req.body.wuliaotype,

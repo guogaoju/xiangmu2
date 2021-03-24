@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a pingji
   const pingji = {
-    id:req.body.id,
     supplier_name:req.body.supplier_name,
     year:req.body.year,
     // score1:req.body.score1,
@@ -44,10 +43,10 @@ exports.create = (req, res) => {
 
 // Retrieve all pingji from the database.
 exports.findAll = (req, res) => {
-    // const title = req.query.title;
-    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+    const total_points = req.query.total_points;
+    var condition = total_points ? { total_points: { [Op.like]: `%${total_points}%` } } : null;
   
-    Pingji.findAll()
+    Pingji.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })

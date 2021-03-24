@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a Tutorial
   const fangwen = {
-    id:req.body.id,
     qiye_name: req.body.qiye_name,
     visit_type:req.body.visit_type,
     visit_time: req.body.visit_time,

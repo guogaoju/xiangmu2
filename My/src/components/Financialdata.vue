@@ -177,7 +177,9 @@
       <el-row>
          <el-col :span="12">
           <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="addfinance.qiye_name"></el-input>
+            <el-select filterable v-model="addfinance.qiye_name" placeholder="请选择">
+              <el-option v-for="item in result" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -690,6 +692,7 @@
 
 <script>
 import FinancialdataService from "../services/FinancialdataService"
+import QiyeService from "../services/QiyeService"
   export default {
     created () {
           this.tableonload();
@@ -707,6 +710,14 @@ import FinancialdataService from "../services/FinancialdataService"
       },
        openFrom(){
            this.dialogFormVisible=true
+           QiyeService.getAll()
+        .then(response => {
+          this.result = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
        },
        addsubmit(){
          this.dialogFormVisible=false;
@@ -842,6 +853,7 @@ import FinancialdataService from "../services/FinancialdataService"
         TravelType:1,
         formLabelWidth: "100px",
         rules:{},
+        result:[],
         tableData:[],
         addfinance:{},
         updatefinance:{},

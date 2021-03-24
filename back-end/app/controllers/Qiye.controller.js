@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a Tutorial
   const qiye = {
-    id:req.body.id,
     register_name: req.body.register_name,
     introduction:req.body.introduction,
     trade: req.body.trade,
@@ -51,10 +50,10 @@ exports.create = (req, res) => {
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-    // const title = req.query.title;
-    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+    const register_name = req.query.title;
+    var condition = register_name ? { register_name: { [Op.like]: `%${register_name}%` } } : null;
   
-    Qiye.findAll()
+    Qiye.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })

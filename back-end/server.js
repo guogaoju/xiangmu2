@@ -50,6 +50,7 @@ require("./app/routes/Wuliao.routes")(app);
 require("./app/routes/Danwei.routes")(app);
 require("./app/routes/WuliaoType.routes")(app);
 require("./app/routes/web.js")(app);
+require("./app/routes/Jianzhu.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

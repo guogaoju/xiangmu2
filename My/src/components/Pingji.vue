@@ -81,7 +81,9 @@
       <el-row>
          <el-col :span="12">
           <el-form-item label="供应商名称" prop="supplier_name" :label-width="formLabelWidth">
-            <el-input v-model="addPingji.supplier_name"></el-input>
+            <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
+              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -396,6 +398,7 @@
 
 <script>
 import PingjiService from "../services/PingjiService"
+import CailiaogysService from "../services/CailiaogysService"
   export default {
     created () {
           this.tableonload();
@@ -417,6 +420,14 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
       },
        openFrom(){
            this.dialogFormVisible=true
+           CailiaogysService.getAll()
+        .then(response => {
+          this.result = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
        },
        addsubmit(){
          this.dialogFormVisible=false;
@@ -526,6 +537,7 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
         formLabelWidth: "100px",
         rules:{},
         tableData:[],
+        result:[],
       addPingji:{},
       updatePingji:{},
       kanPingji:{},

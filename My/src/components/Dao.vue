@@ -179,6 +179,14 @@
                         this.$router.push('/JianzhuXiangmu');
                         this.breadcrumbItems  = ['建筑项目管理']
                         break;
+                    case '2-2':
+                        this.$router.push('/ZhizaoXiangmu');
+                        this.breadcrumbItems  = ['制造业项目管理']
+                        break;
+                    case '3-1':
+                        this.$router.push('/CaiGou');
+                        this.breadcrumbItems  = ['采购管理']
+                        break;
                     case '6-1-2':
                         this.$router.push('/Wuliao');
                         this.breadcrumbItems  = ['物料资料']

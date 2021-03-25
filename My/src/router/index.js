@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import Test from '@/components/Test'
+import home from '@/components/home'
 import Hexin from '@/components/Hexin'
 import CaiLiaogys from '@/components/CaiLiaogys'
 import Pingji from '@/components/Pingji'
@@ -14,6 +14,8 @@ import Wuliao from '@/components/Wuliao'
 import Jiliangdanwei from '@/components/Jiliangdanwei'
 import WuliaoType from '@/components/WuliaoType'
 import JianzhuXiangmu from '@/components/JianzhuXiangmu'
+import ZhizaoXiangmu from '@/components/ZhizaoXiangmu'
+import CaiGou from '@/components/CaiGou'
 Vue.use(Router)
 
 const originalPush = Router.prototype.push
@@ -24,6 +26,11 @@ Router.prototype.push = function push(location) {
 
 export default new Router({
   routes: [
+    {
+      path: '/home',
+      name: 'home',
+      component: home
+    },
     {
       path: '/HelloWorld',
       name: 'HelloWorld',
@@ -88,6 +95,16 @@ export default new Router({
       path: '/JianzhuXiangmu',
       name: 'JianzhuXiangmu',
       component: JianzhuXiangmu
+    },
+    {
+      path: '/ZhizaoXiangmu',
+      name: 'ZhizaoXiangmu',
+      component: ZhizaoXiangmu
+    },
+    {
+      path: '/CaiGou',
+      name: 'CaiGou',
+      component: CaiGou
     },
   ]
 })

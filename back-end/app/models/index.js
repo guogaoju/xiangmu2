@@ -31,4 +31,7 @@ db.danwei = require("./Danwei.model.js")(sequelize, Sequelize);
 db.wuliaotype = require("./WuliaoType.model.js")(sequelize, Sequelize);
 db.images = require("./image.model.js")(sequelize, Sequelize);
 db.jianzhu = require("./Jianzhu.model.js")(sequelize, Sequelize);
+db.addwuliao = require("./Addwuliao.model.js")(sequelize, Sequelize);
+db.zhizao = require("./Zhizao.model.js")(sequelize, Sequelize);
+db.caigou = require("./Caigou.model.js")(sequelize, Sequelize);
 module.exports = db;

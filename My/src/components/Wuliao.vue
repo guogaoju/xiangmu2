@@ -64,7 +64,7 @@
       <template slot-scope="scope">
         <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
         <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button type="danger"  @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>

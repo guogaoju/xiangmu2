@@ -54,6 +54,12 @@ require("./app/routes/Jianzhu.routes")(app);
 require("./app/routes/Addwuliao.routes")(app);
 require("./app/routes/Zhizao.routes")(app);
 require("./app/routes/Caigou.routes")(app);
+require("./app/routes/CaiGouwuliao.routes")(app);
+require("./app/routes/HuanKuan.routes")(app);
+require("./app/routes/Jindu.routes")(app);
+require("./app/routes/Addjinduwuliao.routes")(app);
+require("./app/routes/Ruku.routes")(app);
+require("./app/routes/Chuku.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

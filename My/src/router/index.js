@@ -16,6 +16,11 @@ import WuliaoType from '@/components/WuliaoType'
 import JianzhuXiangmu from '@/components/JianzhuXiangmu'
 import ZhizaoXiangmu from '@/components/ZhizaoXiangmu'
 import CaiGou from '@/components/CaiGou'
+import HuanKuan from '@/components/HuanKuan'
+import JinduUpdate from '@/components/JinduUpdate'
+import Ruku from '@/components/Ruku'
+import Chuku from '@/components/Chuku'
+import Kucun from '@/components/Kucun'
 Vue.use(Router)
 
 const originalPush = Router.prototype.push
@@ -105,6 +110,31 @@ export default new Router({
       path: '/CaiGou',
       name: 'CaiGou',
       component: CaiGou
+    },
+    {
+      path: '/HuanKuan',
+      name: 'HuanKuan',
+      component: HuanKuan
+    },
+    {
+      path: '/JinduUpdate',
+      name: 'JinduUpdate',
+      component: JinduUpdate
+    },
+    {
+      path: '/Ruku',
+      name: 'Ruku',
+      component: Ruku
+    },
+    {
+      path: '/Chuku',
+      name: 'Chuku',
+      component: Chuku
+    },
+    {
+      path: '/Kucun',
+      name: 'Kucun',
+      component: Kucun
     },
   ]
 })

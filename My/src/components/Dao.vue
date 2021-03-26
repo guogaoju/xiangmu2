@@ -187,6 +187,26 @@
                         this.$router.push('/CaiGou');
                         this.breadcrumbItems  = ['采购管理']
                         break;
+                    case '3-2':
+                        this.$router.push('/HuanKuan');
+                        this.breadcrumbItems  = ['还款管理']
+                        break;
+                    case '3-3':
+                        this.$router.push('/JinduUpdate');
+                        this.breadcrumbItems  = ['建筑项目进度更新']
+                        break;
+                    case '4-1':
+                        this.$router.push('/Ruku');
+                        this.breadcrumbItems  = ['入库记录']
+                        break;
+                    case '4-2':
+                        this.$router.push('/Chuku');
+                        this.breadcrumbItems  = ['出库记录']
+                        break;
+                    case '4-3':
+                        this.$router.push('/Kucun');
+                        this.breadcrumbItems  = ['库存信息']
+                        break;
                     case '6-1-2':
                         this.$router.push('/Wuliao');
                         this.breadcrumbItems  = ['物料资料']

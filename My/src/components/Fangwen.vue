@@ -75,7 +75,9 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="addfangwen.qiye_name"></el-input>
+            <el-select filterable v-model="addfangwen.qiye_name" placeholder="请选择">
+              <el-option v-for="item in result" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
          <el-col :span="12">
@@ -239,6 +241,7 @@
 
 <script>
 import FangwenService from "../services/FangwenService";
+import QiyeService from "../services/QiyeService";
   export default {
     created () {
           this.tableonload();
@@ -256,6 +259,14 @@ import FangwenService from "../services/FangwenService";
       },
        openFrom(){
            this.dialogFormVisible=true
+           QiyeService.getAll()
+        .then(response => {
+          this.result = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
        },
        addsubmit(){
          this.dialogFormVisible=false;
@@ -359,6 +370,7 @@ import FangwenService from "../services/FangwenService";
         formLabelWidth: "100px",
         rules:{},
         tableData:[],
+        result:[],
       addfangwen:{},
       updatefangwen:{},
       kanfangwen:{},

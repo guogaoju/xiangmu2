@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a Tutorial
   const wuliao = {
-    id:req.body.id,
     name: req.body.name,
     Specification:req.body.Specification,
     wuliaotype: req.body.wuliaotype,
@@ -39,10 +38,10 @@ exports.create = (req, res) => {
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-    // const title = req.query.title;
-    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+    const name = req.query.name;
+    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   
-    Wuliao.findAll()
+    Wuliao.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })

@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a pingji
   const cailiaogys = {
-    id:req.body.id,
     supplier_name:req.body.supplier_name,
     trade:req.body.trade,
     address:req.body.address,

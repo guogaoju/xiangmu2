@@ -1,0 +1,63 @@
+module.exports = (sequelize, Sequelize) => {
+    const Jianzhu = sequelize.define("jianzhu", {
+        
+        builder: {
+            type: Sequelize.STRING
+          },
+          item_name: {
+            type: Sequelize.STRING
+          },
+          time: {
+            type: Sequelize.STRING
+          },
+          jindu: {
+            type: Sequelize.STRING
+          },
+          item_money: {
+            type: Sequelize.STRING
+          },
+          total_quota: {
+            type: Sequelize.STRING
+          },
+          money: {
+            type: Sequelize.STRING
+          },
+          money1: {
+            type: Sequelize.STRING
+          },
+          money2: {
+            type: Sequelize.STRING
+          },
+          interest: {
+            type: Sequelize.STRING
+          },
+          interest1: {
+            type: Sequelize.STRING
+          },
+          Return: {
+            type: Sequelize.STRING
+          },
+          fax: {
+            type: Sequelize.STRING
+          },
+          A: {
+            type: Sequelize.STRING
+          },
+          B: {
+            type: Sequelize.STRING
+          },
+          C: {
+            type: Sequelize.STRING
+          },
+          grade: {
+            type: Sequelize.STRING
+          },
+          cause: {
+            type: Sequelize.STRING
+          },
+          current_process: {
+            type: Sequelize.STRING
+          },
+        });
+    return Jianzhu;
+  };

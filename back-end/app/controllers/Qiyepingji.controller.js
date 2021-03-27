@@ -14,7 +14,6 @@ exports.create = (req, res) => {
 
   // Create a pingji
   const qiyepingji = {
-    id:req.body.id,
     qiye_name:req.body.qiye_name,
     trade:req.body.trade,
     year:req.body.year,

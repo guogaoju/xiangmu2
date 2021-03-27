@@ -7,7 +7,7 @@ exports.create = (req, res) => {
   // Validate request
   if (!req.body.name) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Content can not be empty!哈哈哈哈哈"
     });
     return;
   }
@@ -35,10 +35,10 @@ exports.create = (req, res) => {
 
 // Retrieve all Tutorials from the database.
 exports.findAll = (req, res) => {
-    // const title = req.query.title;
-    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+    const name = req.query.name;
+    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   
-    Danwei.findAll()
+    Danwei.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })

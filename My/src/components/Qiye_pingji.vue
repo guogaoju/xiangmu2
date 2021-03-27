@@ -141,7 +141,9 @@
       <el-row>
          <el-col :span="12">
           <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="addPingji.qiye_name"></el-input>
+            <el-select filterable v-model="addPingji.qiye_name" placeholder="请选择">
+              <el-option v-for="item in result" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -566,6 +568,7 @@
 </template>
 
 <script>
+import QiyeService from "../services/QiyeService"
 import QiyePingjiService from "../services/QiyePingjiService"
   export default {
     created () {
@@ -598,6 +601,12 @@ this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updateP
       },
        openFrom(){
            this.dialogFormVisible=true
+           QiyeService.getAll()
+           .then(response =>{
+ this.result=response.data;
+           }).catch(e => {
+          console.log(e);
+        });
        },
        addsubmit(){
          this.dialogFormVisible=false;
@@ -722,6 +731,7 @@ this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updateP
         formLabelWidth: "100px",
         rules:{},
         tableData:[],
+        result:[],
         addPingji:{},
         updatePingji:{},
         kanPingji:{},

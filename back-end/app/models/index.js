@@ -40,4 +40,5 @@ db.jindu = require("./Jindu.model.js")(sequelize, Sequelize);
 db.addjinduwuliao = require("./Addjinduwuliao.model.js")(sequelize, Sequelize);
 db.ruku = require("./Ruku.model.js")(sequelize, Sequelize);
 db.chuku = require("./Chuku.model.js")(sequelize, Sequelize);
+db.kucun = require("./Kucun.model.js")(sequelize, Sequelize);
 module.exports = db;

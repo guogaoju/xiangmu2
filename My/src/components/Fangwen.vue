@@ -1,9 +1,17 @@
 <template>
 <div>
-  <!-- 客户管理/企业信息管理/企业信息 -->
-      <el-col :span="14">
+   <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>客户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>企业信息管理</el-breadcrumb-item>
+      <el-breadcrumb-item>企业访问记录</el-breadcrumb-item>
+    </el-breadcrumb>
+  <!-- 客户管理/企业信息管理/企业访问记录 -->
+    <el-row>
+      <el-col :span="10">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
+    </el-row>
   <el-table
     :data="tableData"
     border
@@ -92,7 +100,7 @@
         <el-row>
         <el-col :span="12">
           <el-form-item label="拜访时间" prop="visit_time" :label-width="formLabelWidth">
-            <el-input v-model="addfangwen.visit_time"></el-input>
+           <el-date-picker v-model="addfangwen.visit_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
          <el-col :span="12">
@@ -118,7 +126,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('addfangwen')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -153,7 +160,7 @@
         <el-row>
         <el-col :span="12">
           <el-form-item label="拜访时间" prop="visit_time" :label-width="formLabelWidth">
-            <el-input v-model="updatefangwen.visit_time"></el-input>
+            <el-date-picker v-model="updatefangwen.visit_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
          <el-col :span="12">
@@ -212,7 +219,7 @@
         <el-row>
         <el-col :span="12">
           <el-form-item label="拜访时间" prop="visit_time" :label-width="formLabelWidth">
-            <el-input v-model="kanfangwen.visit_time"></el-input>
+            <el-date-picker v-model="kanfangwen.visit_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
          <el-col :span="12">
@@ -356,9 +363,6 @@ import QiyeService from "../services/QiyeService";
         //   });          
         // });
        },
-    resetForm(addfangwen) {
-      this.$refs[addfangwen].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       }

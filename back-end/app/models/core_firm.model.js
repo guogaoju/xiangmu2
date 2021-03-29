@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
           },
           create_time: {
-            type: Sequelize.STRING
+            type: Sequelize.DATEONLY
           },
           business_term: {
             type: Sequelize.STRING

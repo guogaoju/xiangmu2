@@ -26,20 +26,20 @@
         </div>
 
         <div style="margin-top:5px">
-            <el-row :gutter="10">
+            <el-row :gutter="12">
                 <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                    <div>
+                    <div style="height:100%">
                         <el-menu
                         default-active="1"
                         class="el-menu-vertical-demo"
-                        
+                        style="height:1000px"
                         background-color="#545c64"
                         text-color="#fff"
                         active-text-color="#ffd04b"
                         @select="handleSelect">
                         <el-submenu index="1">
                             <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-user-solid"></i>
                             <span>客户管理</span>
                             </template>
                             <el-submenu index="1-1">
@@ -81,7 +81,7 @@
                         </el-submenu>
                         <el-submenu index="4">
                             <template slot="title">
-                            <i class="el-icon-setting"></i>
+                            <i class="el-icon-s-order"></i>
                             <span>仓库管理</span>
                             </template>
                             <el-menu-item index="4-1">入库记录</el-menu-item>
@@ -90,14 +90,14 @@
                         </el-submenu>
                          <el-submenu index="5">
                             <template slot="title">
-                            <i class="el-icon-setting"></i>
+                            <i class="el-icon-warning"></i>
                             <span>风险预警管理</span>
                             </template>
                             <el-menu-item index="5-1">风险预警管理</el-menu-item>
                         </el-submenu>
                         <el-submenu index="6">
                             <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-s-data"></i>
                             <span>基本资料管理</span>
                             </template>
                             <el-submenu index="6-1">

@@ -1,9 +1,17 @@
 <template>
 <div>
-  <!-- 客户管理/材料供应商信息管理/供应商评级管理 -->
-      <el-col>
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>客户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>企业信息管理</el-breadcrumb-item>
+      <el-breadcrumb-item>企业财务数据</el-breadcrumb-item>
+    </el-breadcrumb>
+  <!-- 客户管理/企业信息管理/企业财务数据 -->
+    <el-row>
+      <el-col :span="10">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
+    </el-row>
   <el-table
     :data="tableData"
     border
@@ -336,7 +344,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('addfinance')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -840,9 +847,6 @@ import QiyeService from "../services/QiyeService"
         //   });          
         // });
        },
-    resetForm(addfinance) {
-      this.$refs[addfinance].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       }

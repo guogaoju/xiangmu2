@@ -52,7 +52,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
           },
           create_time: {
-            type: Sequelize.STRING
+            type: Sequelize.DATEONLY
           },
           current_process: {
             type: Sequelize.STRING

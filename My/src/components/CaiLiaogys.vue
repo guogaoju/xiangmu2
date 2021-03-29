@@ -1,9 +1,17 @@
 <template>
 <div>
   <!-- 客户管理/材料供应商信息管理/材料供应商资料页面 -->
-      <el-col>
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>客户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>材料供应商信息管理</el-breadcrumb-item>
+      <el-breadcrumb-item>材料供应商资料</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-row>
+      <el-col :span="10">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
+    </el-row>
   <el-table
     :data="tableData"
     border
@@ -273,7 +281,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('addZiliao')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -709,9 +716,6 @@ import PingjiService from "../services/PingjiService";
         //   });          
         // });
        },
-    resetForm(addZiliao) {
-      this.$refs[addZiliao].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       }

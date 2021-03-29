@@ -1,9 +1,16 @@
 <template>
 <div>
   <!-- 项目管理/建筑项目管理 -->
-      <el-col :span="14">
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>项目管理</el-breadcrumb-item>
+      <el-breadcrumb-item>建筑项目管理</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-row>
+      <el-col :span="10">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
+    </el-row>
   <el-table
     :data="tableData"
     border
@@ -165,7 +172,7 @@
         <el-row>
         <el-col :span="12">
            <el-form-item label="竣工时间" prop="time" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.time"></el-input>
+            <el-date-picker v-model="addxiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -271,7 +278,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('addxiangmu')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -302,7 +308,7 @@
         <el-row>
         <el-col :span="12">
            <el-form-item label="竣工时间" prop="time" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.time"></el-input>
+                  <el-date-picker v-model="updatexiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -437,7 +443,7 @@
         <el-row>
         <el-col :span="12">
            <el-form-item label="竣工时间" prop="time" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.time"></el-input>
+            <el-date-picker v-model="kanxiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -575,7 +581,6 @@
       </el-form-item>
       <el-form-item>
           <el-button type="primary" @click="addsubmit1()">立即添加</el-button>
-          <el-button @click="resetForm('form')">重置</el-button>
     </el-form-item>
     </el-form>
       
@@ -753,9 +758,6 @@ import WuliaoService from "../services/WuliaoService";
         //   });          
         // });
        },
-    resetForm(addxiangmu) {
-      this.$refs[addxiangmu].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       },

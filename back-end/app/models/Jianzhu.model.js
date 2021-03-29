@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
           },
           time: {
-            type: Sequelize.STRING
+            type: Sequelize.DATEONLY
           },
           jindu: {
             type: Sequelize.STRING

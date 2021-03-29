@@ -1,9 +1,17 @@
 <template>
 <div>
-  <!-- 基本资料/基本资料/无聊分类 -->
-      <el-col :span="14">
+  <!-- 基本资料管理/基本资料/物料分类 -->
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>基本资料管理</el-breadcrumb-item>
+      <el-breadcrumb-item>基本资料</el-breadcrumb-item>
+      <el-breadcrumb-item>物料分类</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-row>
+      <el-col :span="10">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
+    </el-row>
   <el-table
     :data="tableData"
     border
@@ -88,7 +96,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('addtype')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -283,9 +290,6 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
         //   });          
         // });
        },
-    resetForm(addtype) {
-      this.$refs[addtype].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       },

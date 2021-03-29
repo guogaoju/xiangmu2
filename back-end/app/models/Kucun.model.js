@@ -1,23 +1,24 @@
 module.exports = (sequelize, Sequelize) => {
-    const Fangwen = sequelize.define("fangwen", {
-      qiye_name: {
+    const Kucun = sequelize.define("kucun", {
+        
+        item_name: {
             type: Sequelize.STRING
           },
-          visit_type: {
+          goods_type: {
             type: Sequelize.STRING
           },
-          visit_time: {
-            type: Sequelize.DATEONLY
-          },
-          contract: {
+          goods_danwei: {
             type: Sequelize.STRING
           },
-          remarks: {
+          before_stock: {
+            type: Sequelize.STRING
+          },
+          after_stock: {
             type: Sequelize.STRING
           },
           current_process: {
             type: Sequelize.STRING
           },
         });
-    return Fangwen;
+    return Kucun;
   };

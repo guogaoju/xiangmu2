@@ -1,9 +1,16 @@
 <template>
 <div>
   <!-- 仓库管理/出库管理 -->
-      <el-col>
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>仓库管理</el-breadcrumb-item>
+      <el-breadcrumb-item>出库管理</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-row>
+      <el-col :span="10">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
+    </el-row>
   <el-table
     :data="tableData"
     border
@@ -129,7 +136,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('addchuku')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -382,9 +388,6 @@ import ChukuService from "../services/ChukuService"
         //   });          
         // });
        },
-    resetForm(addchuku) {
-      this.$refs[addchuku].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       },

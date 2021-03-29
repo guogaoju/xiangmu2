@@ -31,6 +31,11 @@ Router.prototype.push = function push(location) {
 
 export default new Router({
   routes: [
+    // {
+    //   path: '/Test',
+    //   name: 'Test',
+    //   component: Test
+    // },
     {
       path: '/home',
       name: 'home',

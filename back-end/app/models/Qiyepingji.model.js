@@ -16,37 +16,37 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
           },
           score2: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           score3: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           score4: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           score5: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           score6: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           score7: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           score8: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           score9: {
-            type: Sequelize.STRING
+            type:Sequelize.INTEGER
           },
           quantify_points: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           qualitative_points: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           total_points: {
-            type: Sequelize.STRING
+            type: Sequelize.INTEGER
           },
           current_process: {
             type: Sequelize.STRING

@@ -1,9 +1,17 @@
 <template>
 <div>
-  <!-- 客户管理/材料供应商信息管理/供应商评级管理 -->
-      <el-col>
-        <el-button type="primary" @click="openFrom()">添加</el-button>
-      </el-col>
+  <!-- 客户管理/企业信息管理/建筑企业评级 -->
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>客户管理</el-breadcrumb-item>
+        <el-breadcrumb-item>企业信息管理</el-breadcrumb-item>
+        <el-breadcrumb-item>建筑企业评级</el-breadcrumb-item>
+      </el-breadcrumb>
+  <el-row>
+    <el-col :span="6">
+          <el-button type="primary" @click="openFrom()">添加</el-button>
+        </el-col>
+  </el-row>
   <el-table
     :data="tableData"
     border
@@ -181,13 +189,13 @@
          <el-col :span="12">
            <span>偿债能力</span>
           <el-form-item label="满分30分" prop="score1" :label-width="formLabelWidth">
-            <el-input v-model.number="addPingji.score1"></el-input>
+            <el-input v-on:change="test" v-model.number="addPingji.score1"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>盈利能力</span>
           <el-form-item label="满分30分" prop="score2" :label-width="formLabelWidth">
-            <el-input v-model.number="addPingji.score2"></el-input>
+            <el-input v-on:change="test" v-model.number="addPingji.score2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -195,13 +203,13 @@
          <el-col :span="12">
            <span>现金流量</span>
           <el-form-item label="满分20分" prop="score3" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score3"></el-input>
+           <el-input v-on:change="test" v-model.number="addPingji.score3"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>运营能力</span>
           <el-form-item label="满分20分" prop="score4" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score4"></el-input>
+           <el-input v-on:change="test" v-model.number="addPingji.score4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -209,13 +217,13 @@
          <el-col :span="12">
            <span>股东背景</span>
           <el-form-item label="满分20分" prop="score5" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score5"></el-input>
+           <el-input v-on:change="test1" v-model.number="addPingji.score5"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <span>重大事件</span>
           <el-form-item label="满分25分" prop="score6" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score6"></el-input>
+           <el-input v-on:change="test1" v-model.number="addPingji.score6"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -223,13 +231,13 @@
          <el-col :span="12">
            <span>行业口碑</span>
           <el-form-item label="满分10分" prop="score7" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score7"></el-input>
+           <el-input v-on:change="test1" v-model.number="addPingji.score7"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <span>重大事故</span>
           <el-form-item label="满分20分" prop="score8" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score8"></el-input>
+           <el-input v-on:change="test1" v-model.number="addPingji.score8"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -237,20 +245,18 @@
          <el-col :span="12">
            <span>过往经验</span>
           <el-form-item label="满分25分" prop="score9" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score9"></el-input>
+           <el-input v-on:change="test1" v-model.number="addPingji.score9"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="定量总分" prop="quantify_points  " :label-width="formLabelWidth">
-              <el-button @click="addsum1('addPingji')">定量总分</el-button>
-           <el-input v-model.number="addPingji.quantify_points  "></el-input>
+          <el-form-item label="定量总分" prop="quantify_points " :label-width="formLabelWidth">
+           <el-input v-model.number="addPingji.quantify_points"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="定性总评分" prop="qualitative_points" :label-width="formLabelWidth">
-             <el-button @click="addsum2('addPingji')">定性总评分合计</el-button>
             <el-input v-model.number="addPingji.qualitative_points"></el-input>
           </el-form-item>
         </el-col>
@@ -272,7 +278,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('addPingji')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -330,13 +335,13 @@
          <el-col :span="12">
            <span>偿债能力</span>
           <el-form-item label="满分30分" prop="score1" :label-width="formLabelWidth">
-            <el-input v-model.number="updatePingji.score1"></el-input>
+            <el-input v-on:change="test2" v-model.number="updatePingji.score1"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>盈利能力</span>
           <el-form-item label="满分30分" prop="score2" :label-width="formLabelWidth">
-            <el-input v-model.number="updatePingji.score2"></el-input>
+            <el-input v-on:change="test2" v-model.number="updatePingji.score2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -344,13 +349,13 @@
          <el-col :span="12">
            <span>现金流量</span>
           <el-form-item label="满分20分" prop="score3" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score3"></el-input>
+           <el-input v-on:change="test2" v-model.number="updatePingji.score3"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>运营能力</span>
           <el-form-item label="满分20分" prop="score4" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score4"></el-input>
+           <el-input v-on:change="test2" v-model.number="updatePingji.score4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -358,13 +363,13 @@
          <el-col :span="12">
            <span>股东背景</span>
           <el-form-item label="满分20分" prop="score5" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score5"></el-input>
+           <el-input v-on:change="test3" v-model.number="updatePingji.score5"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <span>重大事件</span>
           <el-form-item label="满分25分" prop="score6" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score6"></el-input>
+           <el-input v-on:change="test3" v-model.number="updatePingji.score6"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -372,13 +377,13 @@
          <el-col :span="12">
            <span>行业口碑</span>
           <el-form-item label="满分10分" prop="score7" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score7"></el-input>
+           <el-input v-on:change="test3" v-model.number="updatePingji.score7"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <span>重大事故</span>
           <el-form-item label="满分20分" prop="score8" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score8"></el-input>
+           <el-input v-on:change="test3" v-model.number="updatePingji.score8"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -386,12 +391,11 @@
          <el-col :span="12">
            <span>过往经验</span>
           <el-form-item label="满分25分" prop="score9" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score9"></el-input>
+           <el-input v-on:change="test3" v-model.number="updatePingji.score9"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="定量总分" prop="quantify_points  " :label-width="formLabelWidth">
-              <el-button @click="updatesum1()">定量总分</el-button>
            <el-input v-model.number="updatePingji.quantify_points  "></el-input>
           </el-form-item>
         </el-col>
@@ -399,7 +403,6 @@
       <el-row>
         <el-col :span="12">
            <el-form-item label="定性总评分" prop="qualitative_points" :label-width="formLabelWidth">
-             <el-button @click="updatesum2()">定性总评分合计</el-button>
             <el-input v-model.number="updatePingji.qualitative_points"></el-input>
           </el-form-item>
         </el-col>
@@ -575,22 +578,23 @@ import QiyePingjiService from "../services/QiyePingjiService"
           this.tableonload();
       },
     methods: {
-      addsum1(){
-this.addPingji.quantify_points=this.addPingji.score1+this.addPingji.score2+this.addPingji.score3+this.addPingji.score4
-      },
-      addsum2(){
-this.addPingji.qualitative_points=this.addPingji.score5+this.addPingji.score6+this.addPingji.score7+this.addPingji.score8+this.addPingji.score9,
+      test: function () {
+            this.addPingji.quantify_points=this.addPingji.score1+this.addPingji.score2+this.addPingji.score3+this.addPingji.score4
+        },
+        test1: function () {
+            this.addPingji.qualitative_points=this.addPingji.score5+this.addPingji.score6+this.addPingji.score7+this.addPingji.score8+this.addPingji.score9,
 this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.quantify_points
-      },
-       updatesum1(){
-this.updatePingji.quantify_points=this.updatePingji.score1+this.updatePingji.score2+this.updatePingji.score3+this.updatePingji.score4
-      },
-      updatesum2(){
-this.updatePingji.qualitative_points=this.updatePingji.score5+this.updatePingji.score6+this.updatePingji.score7+this.updatePingji.score8+this.updatePingji.score9,
+        },
+        test2: function () {
+            this.updatePingji.quantify_points=this.updatePingji.score1+this.updatePingji.score2+this.updatePingji.score3+this.updatePingji.score4
+        },
+        test3: function () {
+            this.updatePingji.qualitative_points=this.updatePingji.score5+this.updatePingji.score6+this.updatePingji.score7+this.updatePingji.score8+this.updatePingji.score9,
 this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updatePingji.quantify_points
-      },
+        },
       async tableonload(){
          QiyePingjiService.getAll()
+         
         .then(response => {
           this.tableData = response.data;
           console.log(response.data);
@@ -601,6 +605,7 @@ this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updateP
       },
        openFrom(){
            this.dialogFormVisible=true
+
            QiyeService.getAll()
            .then(response =>{
  this.result=response.data;
@@ -717,9 +722,6 @@ this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updateP
         //   });          
         // });
        },
-    resetForm(addPingji) {
-      this.$refs[addPingji].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       }

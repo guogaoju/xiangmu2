@@ -1,9 +1,17 @@
 <template>
 <div>
   <!-- 客户管理/核心企业管理/核心企业页面 -->
-      <el-col :span="14">
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>客户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>核心企业管理</el-breadcrumb-item>
+      <el-breadcrumb-item>核心企业信息</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-row>
+      <el-col :span="10">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
+    </el-row>
   <el-table
     :data="tableData"
     border
@@ -173,8 +181,8 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="创建时间" prop="create_time" :label-width="formLabelWidth">
-            <el-input v-model="addQiye.create_time"></el-input>
-            <!-- <el-date-picker v-model="addQiye.create_time" type="date" placeholder="选择日期"></el-date-picker> -->
+            <!-- <el-input v-model="addQiye.create_time"></el-input> -->
+            <el-date-picker v-model="addQiye.create_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -254,7 +262,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('addQiye')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -652,9 +659,6 @@ import HexinService from "../services/HexinService";
         //   });          
         // });
        },
-    resetForm(addQiye) {
-      this.$refs[addQiye].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       }

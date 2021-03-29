@@ -1,9 +1,17 @@
 <template>
 <div>
-  <!-- 基本资料/基本资料/计量单位 -->
-      <el-col :span="14">
+  <!-- 基本资料管理/基本资料/计量单位 -->
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>基本资料管理</el-breadcrumb-item>
+      <el-breadcrumb-item>基本资料</el-breadcrumb-item>
+      <el-breadcrumb-item>计量单位</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-row>
+      <el-col :span="10">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
+    </el-row>
   <el-table
     :data="tableData"
     border
@@ -88,7 +96,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('adddanwei')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -283,9 +290,6 @@ import DanweiService from "../services/DanweiService";
         //   });          
         // });
        },
-    resetForm(adddanwei) {
-      this.$refs[adddanwei].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       },

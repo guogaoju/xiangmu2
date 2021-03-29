@@ -8,7 +8,7 @@
     </el-breadcrumb>
   <!-- 客户管理/企业信息管理/企业信息 -->
   <el-row>
-      <el-col :span="4">
+      <el-col :span="24">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
   </el-row>
@@ -268,9 +268,9 @@
           </el-form-item>
         </el-col>
          <el-col :span="12">
-          <el-form-item label="成立时间" prop="create_time" :label-width="formLabelWidth">
-            <el-input v-model="addQiye.create_time"></el-input>
-            <!-- <el-date-picker v-model="addQiye.create_time" type="date" placeholder="选择日期"></el-date-picker> -->
+          <el-form-item label="成立日期" prop="create_time" :label-width="formLabelWidth">
+            <!-- <el-input v-model="addQiye.create_time"></el-input> -->
+            <el-date-picker v-model="addQiye.create_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -286,7 +286,6 @@
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit()">立即添加</el-button>
-          <el-button @click="resetForm('addQiye')">重置</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -414,8 +413,8 @@
         </el-col>
          <el-col :span="12">
           <el-form-item label="成立时间" prop="create_time" :label-width="formLabelWidth">
-            <el-input v-model="updateQiye.create_time"></el-input>
-            <!-- <el-date-picker v-model="addQiye.create_time" type="date" placeholder="选择日期"></el-date-picker> -->
+            <!-- <el-input v-model="updateQiye.create_time"></el-input> -->
+            <el-date-picker v-model="updateQiye.create_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -430,7 +429,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('addQiye')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -557,8 +556,8 @@
         </el-col>
          <el-col :span="12">
           <el-form-item label="成立时间" prop="create_time" :label-width="formLabelWidth">
-            <el-input v-model="kanQiye.create_time"></el-input>
-            <!-- <el-date-picker v-model="addQiye.create_time" type="date" placeholder="选择日期"></el-date-picker> -->
+            <!-- <el-input v-model="kanQiye.create_time"></el-input> -->
+            <el-date-picker v-model="kanQiye.create_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -710,9 +709,6 @@ import QiyeService from "../services/QiyeService";
         //   });          
         // });
        },
-    resetForm(addQiye) {
-      this.$refs[addQiye].resetFields();
-    },
       handleClick(row) {
         console.log(row);
       }

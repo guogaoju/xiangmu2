@@ -10,7 +10,7 @@ const uploadFiles = async (req, res) => {
     if (req.file == undefined) {
       return res.send(`You must select a file.`);
     }
-
+1
     Image.create({
       type: req.file.mimetype,
       name: req.file.originalname,
@@ -20,7 +20,7 @@ const uploadFiles = async (req, res) => {
       ),
     }).then((image) => {
       fs.writeFileSync(
-        __basedir + "/resources/static/assets/tmp/" + image.name,
+        __basedir + "/resources/static/assets/uploads/" + image.name,
         image.data
       );
 

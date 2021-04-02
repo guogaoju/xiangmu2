@@ -7,7 +7,7 @@ const moment = require('moment');
 const fs=require('fs');
 const path=require('path');
 
-const initRoutes = require("./app/routes/web");
+const initRoutes = require("./app/routes/Wuliao.routes1");
 global.__basedir = __dirname;
 
 app.use(express.urlencoded({ extended: true }));
@@ -16,6 +16,24 @@ initRoutes(app);
 
 const db = require("./app/models");
 db.sequelize.sync();
+const Role = db.role;
+
+function initial() {
+  Role.create({
+    id: 1,
+    name: "user"
+  });
+ 
+  Role.create({
+    id: 2,
+    name: "moderator"
+  });
+ 
+  Role.create({
+    id: 3,
+    name: "admin"
+  });
+}
 
 
 
@@ -46,10 +64,10 @@ require("./app/routes/Qiye.routes")(app);
 require("./app/routes/Fangwen.routes")(app);
 require("./app/routes/Qiyepingji.routes")(app);
 require("./app/routes/Finance.routes")(app);
-require("./app/routes/Wuliao.routes")(app);
+require("./app/routes/Wuliao.routes1")(app);
 require("./app/routes/Danwei.routes")(app);
 require("./app/routes/WuliaoType.routes")(app);
-require("./app/routes/web.js")(app);
+// require("./app/routes/web.js")(app);
 require("./app/routes/Jianzhu.routes")(app);
 require("./app/routes/Addwuliao.routes")(app);
 require("./app/routes/Zhizao.routes")(app);
@@ -61,6 +79,8 @@ require("./app/routes/Addjinduwuliao.routes")(app);
 require("./app/routes/Ruku.routes")(app);
 require("./app/routes/Chuku.routes")(app);
 require("./app/routes/Kucun.routes")(app);
+require("./app/routes/user.routes")(app);
+require("./app/routes/auth.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

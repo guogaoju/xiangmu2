@@ -24,7 +24,6 @@
                 </el-dropdown>
             </span>
         </div>
-
         <div style="margin-top:5px">
             <el-row :gutter="12">
                 <el-col :xs="4" :sm="4" :md="4" :lg="4">
@@ -208,13 +207,13 @@
                         this.breadcrumbItems  = ['库存信息']
                         break;
                     case '6-1-2':
-                        this.$router.push('/Wuliao');
+                        this.$router.push('/Wuliao1');
                         this.breadcrumbItems  = ['物料资料']
                         break;
-                         case '5-1':
-                        this.$router.push('/HelloWorld');
-                        this.breadcrumbItems  = ['风险预警管理']
-                        break;
+                    // case '5-1':
+                    //     this.$router.push('/HelloWorld');
+                    //     this.breadcrumbItems  = ['风险预警管理']
+                    //     break;
                     case '6-2-1':
                         this.$router.push('/Jiliangdanwei');
                         this.breadcrumbItems  = ['计量单位']
@@ -232,3 +231,5 @@
         },
     }
 </script>
+
+

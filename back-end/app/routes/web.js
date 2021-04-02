@@ -3,14 +3,13 @@ module.exports = app => {
 // const router = express.Router();
 // const homeController = require("../controllers/home");
 var router = require("express").Router();
-const qiyepingji = require("../controllers/Qiyepingji.controller.js");
 const uploadController = require("../controllers/upload");
 const upload = require("../middleware/upload");
 
 
 //   router.get("/", homeController.getHome);
+1
+  // router.post("/upload", upload.single("file"), uploadController.uploadFiles);
 
-  router.post("/upload", upload.single("file"), uploadController.uploadFiles);
-
-  app.use("/api/upload", router);
+  // app.use("/api/upload", router);
 };

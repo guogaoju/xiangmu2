@@ -343,7 +343,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addfinance')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -519,7 +519,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updatefinance')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -531,7 +531,6 @@
   <el-dialog title="查看财务数据" width="50%" :visible.sync="dialogFormVisible2">
       <el-form
         :model="kanfinance"
-        status-icon :rules="rules"
         ref="kanfinance"
         label-width="100px"
         class="demo-ruleForm"
@@ -726,8 +725,8 @@ import QiyeService from "../services/QiyeService"
           console.log(e);
         });
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+              this.dialogFormVisible=false;
           var data = {
         qiye_name: this.addfinance.qiye_name,
         year: this.addfinance.year,
@@ -761,6 +760,15 @@ import QiyeService from "../services/QiyeService"
         .catch(e => {
           console.log(e);
         });
+       },
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
+        });
         },
        kanClick(index,row){
           this.dialogFormVisible2=true
@@ -784,8 +792,8 @@ import QiyeService from "../services/QiyeService"
                 console.log(e);
               });
        },
-       updatesubmit(){
-          this.dialogFormVisible1=false;
+       updateservice(){
+            this.dialogFormVisible1=false;
           var data = {
             id:this.updatefinance.id,
             qiye_name: this.updatefinance.qiye_name,
@@ -819,6 +827,15 @@ import QiyeService from "../services/QiyeService"
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+           this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
         delClick(index,row){
@@ -856,7 +873,11 @@ import QiyeService from "../services/QiyeService"
       return {
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          qiye_name: [
+            { required: true, message: '请输入企业名称', trigger: 'blur' },
+          ],
+        },
         result:[],
         tableData:[],
         addfinance:{},

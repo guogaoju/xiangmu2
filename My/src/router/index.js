@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import home from '@/components/home'
+import Dao from '@/components/Dao'
 import Hexin from '@/components/Hexin'
 import CaiLiaogys from '@/components/CaiLiaogys'
 import Pingji from '@/components/Pingji'
@@ -10,7 +11,7 @@ import Qiye from '@/components/Qiye'
 import Fangwen from '@/components/Fangwen'
 import Qiye_pingji from '@/components/Qiye_pingji'
 import Financialdata from '@/components/Financialdata'
-import Wuliao from '@/components/Wuliao'
+import Wuliao1 from '@/components/Wuliao1'
 import Jiliangdanwei from '@/components/Jiliangdanwei'
 import WuliaoType from '@/components/WuliaoType'
 import JianzhuXiangmu from '@/components/JianzhuXiangmu'
@@ -21,6 +22,8 @@ import JinduUpdate from '@/components/JinduUpdate'
 import Ruku from '@/components/Ruku'
 import Chuku from '@/components/Chuku'
 import Kucun from '@/components/Kucun'
+import Login from '@/components/Login'
+import Register from '@/components/Register'
 Vue.use(Router)
 
 const originalPush = Router.prototype.push
@@ -31,115 +34,106 @@ Router.prototype.push = function push(location) {
 
 export default new Router({
   routes: [
+    {
+      path: '/Dao',
+      name: 'Dao',
+      component: () => import('@/components/Dao.vue'),
+      children:[{
+          path: '/HelloWorld',
+          component: () => import('@/components/HelloWorld.vue')
+        },
+        {
+          path: '/Erro',
+          component: () => import('@/components/Erro.vue')
+        },
+        {
+          path: '/Hexin',
+          component: () => import('@/components/Hexin.vue')
+        },
+        {
+          path: '/CaiLiaogys',
+          component: () => import('@/components/CaiLiaogys.vue')
+        },
+        {
+          path: '/Pingji',
+          component: () => import('@/components/Pingji.vue')
+        },
+        {
+          path: '/Qiye',
+          component: () => import('@/components/Qiye.vue')
+        },
+        {
+          path: '/Fangwen',
+          component: () => import('@/components/Fangwen.vue')
+        },
+        {
+          path: '/Qiye_pingji',
+          component: () => import('@/components/Qiye_pingji.vue')
+        },
+        {
+          path: '/Financialdata',
+          component: () => import('@/components/Financialdata.vue')
+        },
+        {
+          path: '/Wuliao1',
+          component: () => import('@/components/Wuliao1.vue')
+        },
+        {
+          path: '/Jiliangdanwei',
+          component: () => import('@/components/Jiliangdanwei.vue')
+        },
+        {
+          path: '/WuliaoType',
+          component: () => import('@/components/WuliaoType.vue')
+        },
+        {
+          path: '/JianzhuXiangmu',
+          component: () => import('@/components/JianzhuXiangmu.vue')
+        },
+        {
+          path: '/ZhizaoXiangmu',
+          component: () => import('@/components/ZhizaoXiangmu.vue')
+        },
+        {
+          path: '/CaiGou',
+          component: () => import('@/components/CaiGou.vue')
+        },
+        {
+          path: '/HuanKuan',
+          component: () => import('@/components/HuanKuan.vue')
+        },
+        {
+          path: '/JinduUpdate',
+          component: () => import('@/components/JinduUpdate.vue')
+        },
+        {
+          path: '/Ruku',
+          component: () => import('@/components/Ruku.vue')
+        },
+        {
+          path: '/Chuku',
+          component: () => import('@/components/Chuku.vue')
+        },
+        {
+          path: '/Kucun',
+          component: () => import('@/components/Kucun.vue')
+        },
+      ]
+    },
+    {
+      path: '/',
+      component: () => import('@/components/Login.vue')
+    },
+    {
+      path: '/register',
+      component: () => import('@/components/Register.vue')
+    },
     // {
-    //   path: '/Test',
-    //   name: 'Test',
-    //   component: Test
+    //   path: '/profile',
+    //   name: 'profile',
+    //   // lazy-loaded
+    //   component: () => import('@/components/Profile')
     // },
-    {
-      path: '/home',
-      name: 'home',
-      component: home
-    },
-    {
-      path: '/HelloWorld',
-      name: 'HelloWorld',
-      component: HelloWorld
-    },
-    {
-      path: '/Erro',
-      name: 'Erro',
-      component: Erro
-    },
-    {
-      path: '/Hexin',
-      name: 'Hexin',
-      component: Hexin
-    },
-    {
-      path: '/CaiLiaogys',
-      name: 'CaiLiaogys',
-      component: CaiLiaogys
-    },
-    {
-      path: '/Pingji',
-      name: 'Pingji',
-      component: Pingji
-    },
-    {
-      path: '/Qiye',
-      name: 'Qiye',
-      component: Qiye
-    },
-    {
-      path: '/Fangwen',
-      name: 'Fangwen',
-      component: Fangwen
-    },
-    {
-      path: '/Qiye_pingji',
-      name: 'Qiye_pingji',
-      component: Qiye_pingji
-    },
-    {
-      path: '/Financialdata',
-      name: 'Financialdata',
-      component: Financialdata
-    },
-    {
-      path: '/Wuliao',
-      name: 'Wuliao',
-      component: Wuliao
-    },
-    {
-      path: '/Jiliangdanwei',
-      name: 'Jiliangdanwei',
-      component: Jiliangdanwei
-    },
-    {
-      path: '/WuliaoType',
-      name: 'WuliaoType',
-      component: WuliaoType
-    },
-    {
-      path: '/JianzhuXiangmu',
-      name: 'JianzhuXiangmu',
-      component: JianzhuXiangmu
-    },
-    {
-      path: '/ZhizaoXiangmu',
-      name: 'ZhizaoXiangmu',
-      component: ZhizaoXiangmu
-    },
-    {
-      path: '/CaiGou',
-      name: 'CaiGou',
-      component: CaiGou
-    },
-    {
-      path: '/HuanKuan',
-      name: 'HuanKuan',
-      component: HuanKuan
-    },
-    {
-      path: '/JinduUpdate',
-      name: 'JinduUpdate',
-      component: JinduUpdate
-    },
-    {
-      path: '/Ruku',
-      name: 'Ruku',
-      component: Ruku
-    },
-    {
-      path: '/Chuku',
-      name: 'Chuku',
-      component: Chuku
-    },
-    {
-      path: '/Kucun',
-      name: 'Kucun',
-      component: Kucun
-    },
+    
   ]
 })

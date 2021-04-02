@@ -121,7 +121,7 @@
         </el-col>   
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addjindu')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -184,7 +184,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即添加</el-button>
+          <el-button type="primary" @click="updatesubmit('updatejindu')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -281,7 +281,7 @@
 
 <script>
 import addjinduwuliao from "../services/addjinduwuliao";
-import WuliaoService from "../services/WuliaoService";
+import WuliaoService1 from "../services/WuliaoService1";
 import JinduService from "../services/JinduService"
   export default {
     created () {
@@ -311,7 +311,7 @@ import JinduService from "../services/JinduService"
        },
        addform(){
             this.dialog=true;
-            WuliaoService.getAll()
+            WuliaoService1.getAll()
         .then(response => {
           this.result = response.data;
         })
@@ -338,14 +338,14 @@ import JinduService from "../services/JinduService"
           console.log(e);
         });  
         },
-       addsubmit(){
-         this.dialogFormVisible=false;
+        async addservice(){
+              this.dialogFormVisible=false;
           var data = {
-        item_name: this.addjindu.item_name,
-        before_jindu: this.addjindu.before_jindu,
-        after_jindu: this.addjindu.after_jindu,
-        photo:this.addjindu.photo,
-        current_process:this.addjindu.current_process
+          item_name: this.addjindu.item_name,
+          before_jindu: this.addjindu.before_jindu,
+          after_jindu: this.addjindu.after_jindu,
+          photo:this.addjindu.photo,
+          current_process:this.addjindu.current_process
         }
         JinduService.create(data)
         .then(response => {
@@ -354,6 +354,15 @@ import JinduService from "../services/JinduService"
         })
         .catch(e => {
           console.log(e);
+        });
+        },
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
         });
         },
        kanClick(index,row){
@@ -378,9 +387,9 @@ import JinduService from "../services/JinduService"
                 console.log(e);
               });
        },
-       updatesubmit(){
-          this.dialogFormVisible1=false;
-          var data = {
+       updateservice(){
+              this.dialogFormVisible1=false;
+            var data = {
             id:this.updatejindu.id,
             item_name: this.updatejindu.item_name,
             before_jindu: this.updatejindu.before_jindu,
@@ -395,6 +404,15 @@ import JinduService from "../services/JinduService"
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+          this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
         delClick(index,row){
@@ -467,7 +485,14 @@ form: {
         imageUrl: '',
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          item_name: [
+            { required: true, message: '请输入项目名称', trigger: 'blur' },
+          ],
+          before_jindu: [
+            { required: true, message: '请输入当前进度', trigger: 'change' }
+          ],
+        },
         tableData:[],
         result:[],
         addjindu:{},

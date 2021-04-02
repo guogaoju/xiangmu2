@@ -13,7 +13,6 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     idle: dbConfig.pool.idle
   }
 });
-
 const db = {};
 
 db.Sequelize = Sequelize;
@@ -26,7 +25,7 @@ db.qiye = require("./Qiye.model.js")(sequelize, Sequelize);
 db.fangwen = require("./Fangwen.model.js")(sequelize, Sequelize);
 db.qiyepingji = require("./Qiyepingji.model.js")(sequelize, Sequelize);
 db.finance = require("./Finance.model.js")(sequelize, Sequelize);
-db.wuliao = require("./Wuliao.model.js")(sequelize, Sequelize);
+db.wuliao1 = require("./Wuliao.model1.js")(sequelize, Sequelize);
 db.danwei = require("./Danwei.model.js")(sequelize, Sequelize);
 db.wuliaotype = require("./WuliaoType.model.js")(sequelize, Sequelize);
 db.images = require("./image.model.js")(sequelize, Sequelize);
@@ -41,4 +40,18 @@ db.addjinduwuliao = require("./Addjinduwuliao.model.js")(sequelize, Sequelize);
 db.ruku = require("./Ruku.model.js")(sequelize, Sequelize);
 db.chuku = require("./Chuku.model.js")(sequelize, Sequelize);
 db.kucun = require("./Kucun.model.js")(sequelize, Sequelize);
+db.user = require("./user.model.js")(sequelize, Sequelize);
+db.role = require("./role.model.js")(sequelize, Sequelize);
+db.role.belongsToMany(db.user, {
+  through: "user_roles",
+  foreignKey: "roleId",
+  otherKey: "userId"
+});
+db.user.belongsToMany(db.role, {
+  through: "user_roles",
+  foreignKey: "userId",
+  otherKey: "roleId"
+});
+
+db.ROLES = ["user", "admin", "moderator"];
 module.exports = db;

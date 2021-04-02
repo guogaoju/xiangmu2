@@ -2,7 +2,7 @@ const db = require("../models");
 const Pingji = db.pingji;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new pingji
+// 新建controller层
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.supplier_name) {
@@ -11,8 +11,6 @@ exports.create = (req, res) => {
     });
     return;
   }
-
-  // Create a pingji
   const pingji = {
     supplier_name:req.body.supplier_name,
     year:req.body.year,
@@ -28,7 +26,7 @@ exports.create = (req, res) => {
     current_process:req.body.current_process,
   };
 
-  // Save pingji in the database
+// 新增
   Pingji.create(pingji)
     .then(data => {
       res.send(data);
@@ -41,11 +39,10 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all pingji from the database.
+//从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
     const total_points = req.query.total_points;
     var condition = total_points ? { total_points: { [Op.like]: `%${total_points}%` } } : null;
-  
     Pingji.findAll({ where: condition })
       .then(data => {
         res.send(data);
@@ -58,10 +55,9 @@ exports.findAll = (req, res) => {
       });
 };
 
-// Find a single pingji with an id
+//根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-
     Pingji.findByPk(id)
       .then(data => {
         res.send(data);
@@ -73,11 +69,9 @@ exports.findOne = (req, res) => {
       });
 };
 
-
-// Update a pingji by the id in the request
+//修改
 exports.update = (req, res) => {
     const id = req.params.id;
-
     Pingji.update(req.body, {
       where: { id: id }
     })
@@ -99,10 +93,9 @@ exports.update = (req, res) => {
       });
 };
 
-// Delete a pingji with the specified id in the request
+//删除
 exports.delete = (req, res) => {
     const id = req.params.id;
-
     Pingji.destroy({
       where: { id: id }
     })
@@ -123,35 +116,3 @@ exports.delete = (req, res) => {
         });
       });
 };
-
-// Delete all Tutorials from the database.
-// exports.deleteAll = (req, res) => {
-//   Core_firm.destroy({
-//         where: {},
-//         truncate: false
-//       })
-//         .then(nums => {
-//           res.send({ message: `${nums} core_firm were deleted successfully!` });
-//         })
-//         .catch(err => {
-//           res.status(500).send({
-//             message:
-//               err.message || "Some error occurred while removing all core_firm."
-//           });
-//         });
-// };
-
-// Find all published Tutorials
-// exports.findAllPublished = (req, res) => {
-//   Core_firm.findAll({ where: { published: true } })
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving tutorials."
-//       });
-//     });
-// };
-

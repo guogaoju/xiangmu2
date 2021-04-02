@@ -13,6 +13,5 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.BLOB("long"),
       },
     });
-  
     return Image;
   };

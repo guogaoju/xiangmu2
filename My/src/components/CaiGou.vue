@@ -107,7 +107,7 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog title="添加采购" :visible.sync="dialogFormVisible">
+  <el-dialog title="添加采购" width="55%" :visible.sync="dialogFormVisible">
       <el-form
         :model="addcaigou"
         status-icon :rules="rules"
@@ -129,7 +129,7 @@
       </el-row>
         <el-row>
         <el-col :span="12">
-           <el-form-item label="已使用授信额度" prop="money" :label-width="formLabelWidth">
+           <el-form-item label="已使用额度" prop="money" :label-width="formLabelWidth">
             <el-input v-model="addcaigou.money"></el-input>
           </el-form-item>
         </el-col>
@@ -140,7 +140,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
+        <el-col :span="8">
             <el-form-item label="结算单" prop="statement" :label-width="formLabelWidth">
                 <el-upload
                     class="avatar-uploader"
@@ -153,8 +153,21 @@
                 </el-upload>
             </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="8">
             <el-form-item label="送货单" prop="delivery_note" :label-width="formLabelWidth">
+                <el-upload
+                    class="avatar-uploader"
+                    action=""
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+            </el-form-item>
+        </el-col>
+        <el-col :span="8">
+            <el-form-item label="发票" prop="bill" :label-width="formLabelWidth">
                 <el-upload
                     class="avatar-uploader"
                     action=""
@@ -168,19 +181,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
-            <el-form-item label="发票" prop="bill" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
-                    action=""
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-        </el-col>
+        
       </el-row>
       <el-row>
         <el-col :span="12">
@@ -218,7 +219,7 @@
             <el-button type="primary" @click="addform()">添加物料</el-button></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addcaigou')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -336,7 +337,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即添加</el-button>
+          <el-button type="primary" @click="updatesubmit('updatecaigou')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -458,6 +459,7 @@
   direction="ltr"
   custom-class="demo-drawer"
   ref="drawer"
+  status-icon :rules="rules1"
   >
     <el-form :model="form">
       <el-form-item label="项目名称" :label-width="formLabelWidth">
@@ -515,7 +517,7 @@
 import addWuliaoService from "../services/addWuliaoService";
 import CaiGouwuliaoService from "../services/CaiGouwuliaoService";
 import CaiGouService from "../services/CaiGouService";
-import WuliaoService from "../services/WuliaoService";
+import WuliaoService1 from "../services/WuliaoService1";
   export default {
     created () {
           this.tableonload();
@@ -534,25 +536,24 @@ import WuliaoService from "../services/WuliaoService";
        openFrom(){
            this.dialogFormVisible=true
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
-          var data = {
-        qiye_name: this.addcaigou.qiye_name,
-        item_name:this.addcaigou.item_name,
-        money: this.addcaigou.money,
-        totalmoney : this.addcaigou.totalmoney ,
-        statement:this.addcaigou.statement,
-        total_quota:this.addcaigou.total_quota,
-        delivery_note:this.addcaigou.delivery_note,
-        bill:this.addcaigou.bill,
-        money1:this.addcaigou.money1,
-        money2:this.addcaigou.money2,
-        money3:this.addcaigou.money3,
-        money4:this.addcaigou.money4,
-        current_process:this.addcaigou.current_process
-        }
-
-        CaiGouService.create(data)
+        async addservice(){
+          this.dialogFormVisible=false;
+            var data = {
+              qiye_name: this.addcaigou.qiye_name,
+              item_name:this.addcaigou.item_name,
+              money: this.addcaigou.money,
+              totalmoney : this.addcaigou.totalmoney ,
+              statement:this.addcaigou.statement,
+              total_quota:this.addcaigou.total_quota,
+              delivery_note:this.addcaigou.delivery_note,
+              bill:this.addcaigou.bill,
+              money1:this.addcaigou.money1,
+              money2:this.addcaigou.money2,
+              money3:this.addcaigou.money3,
+              money4:this.addcaigou.money4,
+              current_process:this.addcaigou.current_process
+          }
+         CaiGouService.create(data)
         .then(response => {
           this.tableonload();
           console.log(response.data);
@@ -561,9 +562,18 @@ import WuliaoService from "../services/WuliaoService";
           console.log(e);
         });
         },
+       addsubmit(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
+        });
+        },
         addform(){
             this.dialog=true;
-            WuliaoService.getAll()
+            WuliaoService1.getAll()
         .then(response => {
           this.result = response.data;
         })
@@ -620,14 +630,14 @@ import WuliaoService from "../services/WuliaoService";
                 console.log(e);
               });
        },
-       updatesubmit(){
-        this.dialogFormVisible1=false;
+       updateservice(){
+          this.dialogFormVisible1=false;
           var data = {
             id:this.updatecaigou.id,
         qiye_name: this.updatecaigou.qiye_name,
         item_name:this.updatecaigou.item_name,
         money: this.updatecaigou.money,
-        totalmoney : this.updatecaigou.jindu ,
+        totalmoney : this.updatecaigou.totalmoney ,
         statement:this.updatecaigou.statement,
         total_quota:this.updatecaigou.total_quota,
         delivery_note:this.updatecaigou.delivery_note,
@@ -645,6 +655,15 @@ import WuliaoService from "../services/WuliaoService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
        delClick(index,row){
@@ -719,8 +738,33 @@ form: {
         desc: ''
       },
         TravelType:1,
-        formLabelWidth: "100px",
-        rules:{},
+        formLabelWidth: "160px",
+        rules1:{
+          name: [
+            { required: true, message: '请输入项目名称', trigger: 'blur' },
+          ],
+          wname: [
+            { required: true, message: '请选择物料名称', trigger: 'change' }
+          ],
+          shu: [
+            { required: true, message: '请输入数量', trigger: 'change' }
+          ],
+        },
+        rules:{
+          qiye_name: [
+            { required: true, message: '请输入企业信息', trigger: 'blur' },
+            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+          ],
+          item_name: [
+            { required: true, message: '请选择项目', trigger: 'change' }
+          ],
+          money: [
+            { required: true, message: '请输入已使用额度', trigger: 'change' }
+          ],
+          totalmoney: [
+            { required: true, message: '请输入总授信额度', trigger: 'change' }
+          ],
+        },
         tableData:[],
         result:[],
       addcaigou:{},

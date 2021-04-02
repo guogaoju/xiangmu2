@@ -280,7 +280,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addZiliao')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -422,7 +422,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updateZiliao')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -571,15 +571,6 @@ import PingjiService from "../services/PingjiService";
       },
     methods: {
       async tableonload(){
-        //  PingjiService.getAll()
-        // .then(response => {
-        //   this.result = response.data;
-        //   this.tableData.grade = response.data.total_points
-        //   console.log(response.data);
-        // })
-        // .catch(e => {
-        //   console.log(e);
-        // });
         CailiaogysService.getAll()
         .then(response => {
           this.tableData = response.data;
@@ -600,8 +591,8 @@ import PingjiService from "../services/PingjiService";
           console.log(e);
         });
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+              this.dialogFormVisible=false;
           var data = {
         supplier_name: this.addZiliao.supplier_name,
         trade: this.addZiliao.trade,
@@ -633,6 +624,15 @@ import PingjiService from "../services/PingjiService";
         .catch(e => {
           console.log(e);
         });
+       },
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
+        });
         },
        kanClick(index,row){
           this.dialogFormVisible2=true
@@ -656,8 +656,8 @@ import PingjiService from "../services/PingjiService";
                 console.log(e);
               });
        },
-       updatesubmit(){
-         this.dialogFormVisible1=false;
+       updateservice(){
+            this.dialogFormVisible1=false;
         var data = {
           id:this.updateZiliao.id,
         supplier_name: this.updateZiliao.supplier_name,
@@ -690,6 +690,15 @@ import PingjiService from "../services/PingjiService";
           console.log(e);
         });
        },
+       updatesubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
+        });
+       },
        delClick(index,row){
          let pa=this.tableData[index].id;
               CailiaogysService.delete(pa)
@@ -700,21 +709,6 @@ import PingjiService from "../services/PingjiService";
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
        },
       handleClick(row) {
         console.log(row);
@@ -725,7 +719,32 @@ import PingjiService from "../services/PingjiService";
       return {
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          supplier_name: [
+            { required: true, message: '请输入供应商名称', trigger: 'blur' },
+          ],
+          trade: [
+            { required: true, message: '请选择行业', trigger: 'change' }
+          ],
+          address: [
+            { required: true, message: '请输入地址', trigger: 'change' }
+          ],
+          contact_person: [
+            { required: true, message: '请输入联系人', trigger: 'change' }
+          ],
+          phone: [
+            { required: true, message: '请输入电话', trigger: 'change' }
+          ],
+          juridical_person: [
+            { required: true, message: '请输入法人', trigger: 'change' }
+          ],
+          registered_trademark: [
+            { required: true, message: '请输入注册商标', trigger: 'change' }
+          ],
+          business_license: [
+            { required: true, message: '请输入营业执照', trigger: 'change' }
+          ],
+        },
         addZiliao:{},
         updateZiliao:{},
         kanZiliao:{},

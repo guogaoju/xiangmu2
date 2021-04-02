@@ -1,7 +1,29 @@
 const db = require("../models");
-const Wuliao = db.wuliao;
+const Wuliao1 = db.wuliao1;
 const Op = db.Sequelize.Op;
+const fs = require("fs");
 
+
+// exports.uploadFiles = async (req, res) => {
+//   try {
+//     console.log(req.file);
+//     if (req.file == undefined) {
+//       return res.send(`You must select a file.`);
+//     }
+// Wuliao.create({
+//       avatar:req.file.avatar,
+//     }).then((image) => {
+//       fs.writeFileSync(
+//         __basedir + "/resources/static/assets/uploads/"
+//       );
+
+//       return res.send(`File has been uploaded.`);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return res.send(`Error when trying upload images: ${error}`);
+//   }
+// };
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
   // Validate request
@@ -13,7 +35,7 @@ exports.create = (req, res) => {
   }
 
   // Create a Tutorial
-  const wuliao = {
+  const wuliao1 = {
     name: req.body.name,
     Specification:req.body.Specification,
     wuliaotype: req.body.wuliaotype,
@@ -24,7 +46,7 @@ exports.create = (req, res) => {
   };
 
   // Save Tutorial in the database
-  Wuliao.create(wuliao)
+  Wuliao1.create(wuliao1)
     .then(data => {
       res.send(data);
     })
@@ -41,7 +63,7 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   
-    Wuliao.findAll({ where: condition })
+    Wuliao1.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })
@@ -57,7 +79,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Wuliao.findByPk(id)
+    Wuliao1.findByPk(id)
       .then(data => {
         res.send(data);
       })
@@ -73,7 +95,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    Wuliao.update(req.body, {
+    Wuliao1.update(req.body, {
       where: { id: id }
     })
       .then(num => {
@@ -98,7 +120,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Wuliao.destroy({
+    Wuliao1.destroy({
       where: { id: id }
     })
       .then(num => {
@@ -121,7 +143,7 @@ exports.delete = (req, res) => {
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-    Wuliao.destroy({
+    Wuliao1.destroy({
         where: {},
         truncate: false
       })

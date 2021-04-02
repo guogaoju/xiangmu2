@@ -2,7 +2,7 @@ const db = require("../models");
 const Caigou = db.caigou;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new pingji
+// 新建采购controller层
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.qiye_name) {
@@ -12,7 +12,7 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a pingji
+// 新增
   const caigou = {
         qiye_name:req.body.qiye_name,
         item_name:req.body.item_name,
@@ -27,8 +27,6 @@ exports.create = (req, res) => {
         money4:req.body.money4,
         current_process:req.body.current_process
   };
-
-  // Save pingji in the database
   Caigou.create(caigou)
     .then(data => {
       res.send(data);
@@ -41,11 +39,11 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all pingji from the database.
+
+//从数据库查找所有,模糊查讯
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  
     Caigou.findAll()
       .then(data => {
         res.send(data);
@@ -58,10 +56,9 @@ exports.findAll = (req, res) => {
       });
 };
 
-// Find a single pingji with an id
+//根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-
     Caigou.findByPk(id)
       .then(data => {
         res.send(data);
@@ -73,11 +70,9 @@ exports.findOne = (req, res) => {
       });
 };
 
-
-// Update a pingji by the id in the request
+//修改
 exports.update = (req, res) => {
     const id = req.params.id;
-
     Caigou.update(req.body, {
       where: { id: id }
     })
@@ -99,7 +94,7 @@ exports.update = (req, res) => {
       });
 };
 
-// Delete a pingji with the specified id in the request
+//删除
 exports.delete = (req, res) => {
     const id = req.params.id;
 

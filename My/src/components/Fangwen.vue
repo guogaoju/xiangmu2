@@ -125,7 +125,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addfangwen')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -185,7 +185,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updatefangwen')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -196,7 +196,6 @@
   <el-dialog title="查看企业访问记录" :visible.sync="dialogFormVisible2">
       <el-form
         :model="kanfangwen"
-        status-icon :rules="rules"
         ref="kanfangwen"
         label-width="100px"
         class="demo-ruleForm"
@@ -275,8 +274,8 @@ import QiyeService from "../services/QiyeService";
           console.log(e);
         });
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+              this.dialogFormVisible=false;
           var data = {
         qiye_name:this.addfangwen.qiye_name,
         visit_type:this.addfangwen.visit_type,
@@ -293,6 +292,15 @@ import QiyeService from "../services/QiyeService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
         });
         },
        kanClick(index,row){
@@ -317,16 +325,16 @@ import QiyeService from "../services/QiyeService";
                 console.log(e);
               });
        },
-       updatesubmit(){
-        this.dialogFormVisible1=false;
+       updateservice(){
+              this.dialogFormVisible1=false;
           var data = {
             id:this.updatefangwen.id,
-         qiye_name:this.updatefangwen.qiye_name,
-        visit_type:this.updatefangwen.visit_type,
-        visit_time:this.updatefangwen.visit_time,
-        contract:this.updatefangwen.contract,
-        remarks:this.updatefangwen.remarks,
-        current_process:this.updatefangwen.current_process
+            qiye_name:this.updatefangwen.qiye_name,
+            visit_type:this.updatefangwen.visit_type,
+            visit_time:this.updatefangwen.visit_time,
+            contract:this.updatefangwen.contract,
+            remarks:this.updatefangwen.remarks,
+            current_process:this.updatefangwen.current_process
         }
           FangwenService.update(data.id,data)
         .then(response => {
@@ -335,6 +343,15 @@ import QiyeService from "../services/QiyeService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
        delClick(index,row){
@@ -372,7 +389,17 @@ import QiyeService from "../services/QiyeService";
       return {
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          qiye_name: [
+            { required: true, message: '请输入企业名称', trigger: 'blur' },
+          ],
+          visit_type: [
+            { required: true, message: '请选择', trigger: 'change' }
+          ],
+          visit_time: [
+            { required: true, message: '请选择时间', trigger: 'change' }
+          ],
+        },
         tableData:[],
         result:[],
       addfangwen:{},

@@ -155,7 +155,7 @@
         :model="addQiye"
         status-icon :rules="rules"
         ref="addQiye"
-        label-width="100px"
+        label-width="120px"
         class="demo-ruleForm"
       >
       <el-row>
@@ -285,7 +285,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addQiye')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -429,7 +429,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit('addQiye')">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updateQiye')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -440,7 +440,6 @@
   <el-dialog title="查看企业" :visible.sync="dialogFormVisible2">
       <el-form
         :model="kanQiye"
-        status-icon :rules="rules"
         ref="kanQiye"
         label-width="100px"
         class="demo-ruleForm"
@@ -594,30 +593,29 @@ import QiyeService from "../services/QiyeService";
        openFrom(){
            this.dialogFormVisible=true
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+          this.dialogFormVisible=false;
           var data = {
-        register_name: this.addQiye.register_name,
-        introduction:this.addQiye.introduction,
-        credit_code:this.addQiye.credit_code,
-        trade: this.addQiye.trade,
-        address: this.addQiye.address,
-        hexinqiye:this.addQiye.hexinqiye,
-        juridical_person:this.addQiye.juridical_person,
-        register_money:this.addQiye.register_money,
-        create_time:this.addQiye.create_time,
-        business_term:this.addQiye.business_term,
-        business_scope:this.addQiye.business_scope,
-        post_code:this.addQiye.post_code,
-        phone:this.addQiye.phone,
-        email:this.addQiye.email,
-        fax:this.addQiye.fax,
-        account_type:this.addQiye.account_type,
-        bank_name:this.addQiye.bank_name,
-        bank_card:this.addQiye.bank_card,
-        current_process:this.addQiye.current_process
-        }
-
+            register_name: this.addQiye.register_name,
+            introduction:this.addQiye.introduction,
+            credit_code:this.addQiye.credit_code,
+            trade: this.addQiye.trade,
+            address: this.addQiye.address,
+            hexinqiye:this.addQiye.hexinqiye,
+            juridical_person:this.addQiye.juridical_person,
+            register_money:this.addQiye.register_money,
+            create_time:this.addQiye.create_time,
+            business_term:this.addQiye.business_term,
+            business_scope:this.addQiye.business_scope,
+            post_code:this.addQiye.post_code,
+            phone:this.addQiye.phone,
+            email:this.addQiye.email,
+            fax:this.addQiye.fax,
+            account_type:this.addQiye.account_type,
+            bank_name:this.addQiye.bank_name,
+            bank_card:this.addQiye.bank_card,
+            current_process:this.addQiye.current_process
+          }
         QiyeService.create(data)
         .then(response => {
           this.tableonload();
@@ -625,6 +623,15 @@ import QiyeService from "../services/QiyeService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       addsubmit(formName){
+          this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
         });
         },
        kanClick(index,row){
@@ -650,8 +657,8 @@ import QiyeService from "../services/QiyeService";
                 console.log(e);
               });
        },
-       updatesubmit(){
-        this.dialogFormVisible1=false;
+       async updateservice(){
+            this.dialogFormVisible1=false;
           var data = {
             id:this.updateQiye.id,
         register_name: this.updateQiye.register_name,
@@ -681,6 +688,15 @@ import QiyeService from "../services/QiyeService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            
+          }
         });
        },
        delClick(index,row){
@@ -717,8 +733,33 @@ import QiyeService from "../services/QiyeService";
     data() {
       return {
         TravelType:1,
-        formLabelWidth: "100px",
-        rules:{},
+        formLabelWidth: "120px",
+         rules:{
+          register_name: [
+            { required: true, message: '请输入注册名称', trigger: 'blur' },
+          ],
+          credit_code: [
+            { required: true, message: '请输入社会信用代码', trigger: 'change' }
+          ],
+          trade: [
+            { required: true, message: '请选择行业', trigger: 'change' }
+          ],
+          address: [
+            { required: true, message: '请输入地址', trigger: 'change' }
+          ],
+          hexinqiye: [
+            { required: true, message: '请选择核心企业', trigger: 'change' }
+          ],
+          juridical_person: [
+            { required: true, message: '请输入法定代表人', trigger: 'change' }
+          ],
+          register_money: [
+            { required: true, message: '请输入注册资本', trigger: 'blur' }
+          ],
+          create_time: [
+            { required: true, message: '请输入选择时间', trigger: 'change' }
+          ],
+        },
         tableData:[],
       addQiye:{},
       updateQiye:{},

@@ -95,7 +95,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('adddanwei')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -140,7 +140,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updatedanwei')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -206,8 +206,8 @@ import DanweiService from "../services/DanweiService";
        openFrom(){
            this.dialogFormVisible=true
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+              this.dialogFormVisible=false;
           var data = {
         name:this.adddanwei.name,
         type:this.adddanwei.type,
@@ -222,6 +222,15 @@ import DanweiService from "../services/DanweiService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
         });
         },
        kanClick(index,row){
@@ -246,8 +255,8 @@ import DanweiService from "../services/DanweiService";
                 console.log(e);
               });
        },
-       updatesubmit(){
-        this.dialogFormVisible1=false;
+       updateservice(){
+          this.dialogFormVisible1=false;
           var data = {
             id:this.updatedanwei.id,
             name:this.updatedanwei.name,
@@ -262,6 +271,15 @@ import DanweiService from "../services/DanweiService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
        delClick(index,row){
@@ -299,7 +317,14 @@ import DanweiService from "../services/DanweiService";
       return {
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          name: [
+            { required: true, message: '请输入名称', trigger: 'blur' },
+          ],
+          type: [
+            { required: true, message: '请输入类型', trigger: 'change' }
+          ],
+        },
         tableData:[],
         adddanwei:{},
         updatedanwei:{},

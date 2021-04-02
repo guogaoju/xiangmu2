@@ -2,7 +2,7 @@ const db = require("../models");
 const Kucun = db.kucun;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new pingji
+// 新建controller层
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.item_name) {
@@ -11,8 +11,6 @@ exports.create = (req, res) => {
     });
     return;
   }
-
-  // Create a pingji
   const kucun = {
         item_name:req.body.item_name,
         goods_type: req.body.goods_type,
@@ -22,7 +20,7 @@ exports.create = (req, res) => {
         current_process:req.body.current_process
   };
 
-  // Save pingji in the database
+// 新增
   Kucun.create(kucun)
     .then(data => {
       res.send(data);
@@ -35,11 +33,10 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all pingji from the database.
+//从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  
     Kucun.findAll()
       .then(data => {
         res.send(data);
@@ -52,10 +49,9 @@ exports.findAll = (req, res) => {
       });
 };
 
-// Find a single pingji with an id
+//根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-
     Kucun.findByPk(id)
       .then(data => {
         res.send(data);
@@ -67,11 +63,9 @@ exports.findOne = (req, res) => {
       });
 };
 
-
-// Update a pingji by the id in the request
+//修改
 exports.update = (req, res) => {
     const id = req.params.id;
-
     Kucun.update(req.body, {
       where: { id: id }
     })
@@ -93,10 +87,9 @@ exports.update = (req, res) => {
       });
 };
 
-// Delete a pingji with the specified id in the request
+//删除
 exports.delete = (req, res) => {
     const id = req.params.id;
-
     Kucun.destroy({
       where: { id: id }
     })

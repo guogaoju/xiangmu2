@@ -192,7 +192,7 @@
             <el-button type="primary" @click="addform()">添加物料</el-button></el-col> 
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addxiangmu')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -284,7 +284,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updatexiangmu')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -411,7 +411,7 @@
 
 <script>
 import addWuliaoService from "../services/addWuliaoService";
-import WuliaoService from "../services/WuliaoService";
+import WuliaoService1 from "../services/WuliaoService1";
 import ZhizaoService from "../services/ZhizaoService";
   export default {
     created () {
@@ -433,7 +433,7 @@ import ZhizaoService from "../services/ZhizaoService";
        },
        addform(){
             this.dialog=true;
-            WuliaoService.getAll()
+            WuliaoService1.getAll()
         .then(response => {
           this.result = response.data;
         })
@@ -450,7 +450,6 @@ import ZhizaoService from "../services/ZhizaoService";
         shu1:this.form.shu1,
         shu2:this.form.shu2,
         }
-
         addWuliaoService.create(data)
         .then(response => {
           this.tableonload();
@@ -460,23 +459,22 @@ import ZhizaoService from "../services/ZhizaoService";
           console.log(e);
         });  
         },
-       addsubmit(){
-         this.dialogFormVisible=false;
+         async addservice(){
+                this.dialogFormVisible=false;
           var data = {
-        qiye_name: this.addxiangmu.qiye_name,
-        item_name:this.addxiangmu.item_name,
-        time: this.addxiangmu.time,
-        jindu : this.addxiangmu.jindu ,
-        item_money:this.addxiangmu.item_money,
-        total_quota:this.addxiangmu.total_quota,
-        money:this.addxiangmu.money,
-        interest:this.addxiangmu.interest,
-        Return:this.addxiangmu.Return,
-        huan_money:this.addxiangmu.huan_money,
-        fax:this.addxiangmu.fax,
-        current_process:this.addxiangmu.current_process
+          qiye_name: this.addxiangmu.qiye_name,
+          item_name:this.addxiangmu.item_name,
+          time: this.addxiangmu.time,
+          jindu : this.addxiangmu.jindu ,
+          item_money:this.addxiangmu.item_money,
+          total_quota:this.addxiangmu.total_quota,
+          money:this.addxiangmu.money,
+          interest:this.addxiangmu.interest,
+          Return:this.addxiangmu.Return,
+          huan_money:this.addxiangmu.huan_money,
+          fax:this.addxiangmu.fax,
+          current_process:this.addxiangmu.current_process
         }
-
         ZhizaoService.create(data)
         .then(response => {
           this.tableonload();
@@ -484,6 +482,15 @@ import ZhizaoService from "../services/ZhizaoService";
         })
         .catch(e => {
           console.log(e);
+        });
+        },
+       addsubmit(formName){
+          this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
         });
         },
        kanClick(index,row){
@@ -508,8 +515,8 @@ import ZhizaoService from "../services/ZhizaoService";
                 console.log(e);
               });
        },
-       updatesubmit(){
-        this.dialogFormVisible1=false;
+       updateservice(){
+            this.dialogFormVisible1=false;
           var data = {
             id:this.updatexiangmu.id,
             qiye_name: this.updatexiangmu.qiye_name,
@@ -532,6 +539,15 @@ import ZhizaoService from "../services/ZhizaoService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
        delClick(index,row){
@@ -588,7 +604,14 @@ form: {
       result:[],
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          qiye_name: [
+            { required: true, message: '请输入企业信息', trigger: 'blur' },
+          ],
+          item_name: [
+            { required: true, message: '请输入项目名称', trigger: 'change' }
+          ],
+        },
         tableData:[],
       addxiangmu:{},
       updatexiangmu:{},

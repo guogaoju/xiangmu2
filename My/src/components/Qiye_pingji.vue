@@ -277,7 +277,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addPingji')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -423,7 +423,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updatePingji')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -434,7 +434,6 @@
   <el-dialog title="查看企业评级" width="45%" :visible.sync="dialogFormVisible2">
       <el-form
         :model="kanPingji"
-        status-icon :rules="rules"
         ref="kanPingji"
         label-width="100px"
         class="demo-ruleForm"
@@ -613,8 +612,8 @@ this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updateP
           console.log(e);
         });
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+            this.dialogFormVisible=false;
           var data = {
         qiye_name: this.addPingji.qiye_name,
         trade:this.addPingji.trade,
@@ -642,6 +641,15 @@ this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updateP
         .catch(e => {
           console.log(e);
         });
+       },
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
+        });
         },
        kanClick(index,row){
           this.dialogFormVisible2=true
@@ -665,8 +673,8 @@ this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updateP
                 console.log(e);
               });
        },
-       updatesubmit(){
-          this.dialogFormVisible1=false;
+       async updateservice(){
+              this.dialogFormVisible1=false;
           var data = {
             id:this.updatePingji.id,
             qiye_name: this.updatePingji.qiye_name,
@@ -694,6 +702,15 @@ this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updateP
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+          this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
         delClick(index,row){
@@ -731,7 +748,23 @@ this.updatePingji.total_points=this.updatePingji.qualitative_points+this.updateP
       return {
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          qiye_name: [
+            { required: true, message: '请输入企业名称', trigger: 'blur' },
+          ],
+          trade: [
+            { required: true, message: '请选择行业', trigger: 'change' }
+          ],
+          year: [
+            { required: true, message: '请选择年份', trigger: 'change' }
+          ],
+          quarter: [
+            { required: true, message: '请选择季度', trigger: 'change' }
+          ],
+          current_process: [
+            { required: true, message: '请输入', trigger: 'change' }
+          ],
+        },
         tableData:[],
         result:[],
         addPingji:{},

@@ -135,7 +135,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addchuku')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -202,7 +202,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updatechuku')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -299,8 +299,8 @@ import ChukuService from "../services/ChukuService"
         //   console.log(e);
         // });
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+              this.dialogFormVisible=false;
           var data = {
         item_name: this.addchuku.item_name,
         goods_name: this.addchuku.goods_name,
@@ -317,6 +317,15 @@ import ChukuService from "../services/ChukuService"
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       addsubmit(formName){
+          this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
         });
         },
        kanClick(index,row){
@@ -341,8 +350,8 @@ import ChukuService from "../services/ChukuService"
                 console.log(e);
               });
        },
-       updatesubmit(){
-          this.dialogFormVisible1=false;
+       updateservice(){
+              this.dialogFormVisible1=false;
           var data = {
             id:this.updatechuku.id,
             item_name: this.updatechuku.item_name,
@@ -360,6 +369,15 @@ import ChukuService from "../services/ChukuService"
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
         delClick(index,row){
@@ -397,7 +415,17 @@ import ChukuService from "../services/ChukuService"
       return {
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          item_name: [
+            { required: true, message: '请输入项目名称', trigger: 'blur' },
+          ],
+          goods_name: [
+            { required: true, message: '请输入商品名', trigger: 'change' }
+          ],
+          chuku_number: [
+            { required: true, message: '请输入出库数量', trigger: 'change' }
+          ],
+        },
         tableData:[],
         result:[],
         addchuku:{},

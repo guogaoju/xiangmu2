@@ -144,7 +144,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addhuankuan')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -220,7 +220,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updatehuankuan')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -325,17 +325,17 @@ import HuanKuanService from "../services/HuanKuanService"
         //   console.log(e);
         // });
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+              this.dialogFormVisible=false;
           var data = {
-        item_name: this.addhuankuan.item_name,
-        total_quota: this.addhuankuan.total_quota,
-        money: this.addhuankuan.money,
-        huan_money:this.addhuankuan.huan_money,
-        huan_money1:this.addhuankuan.huan_money1,
-        huan_stream:this.addhuankuan.huan_stream,
-        current_process:this.addhuankuan.current_process
-        }
+            item_name: this.addhuankuan.item_name,
+            total_quota: this.addhuankuan.total_quota,
+            money: this.addhuankuan.money,
+            huan_money:this.addhuankuan.huan_money,
+            huan_money1:this.addhuankuan.huan_money1,
+            huan_stream:this.addhuankuan.huan_stream,
+            current_process:this.addhuankuan.current_process
+          }
         HuanKuanService.create(data)
         .then(response => {
           this.tableonload();
@@ -343,6 +343,15 @@ import HuanKuanService from "../services/HuanKuanService"
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
         });
         },
        kanClick(index,row){
@@ -367,9 +376,9 @@ import HuanKuanService from "../services/HuanKuanService"
                 console.log(e);
               });
        },
-       updatesubmit(){
-          this.dialogFormVisible1=false;
-          var data = {
+       updateservice(){
+            this.dialogFormVisible1=false;
+            var data = {
             id:this.updatehuankuan.id,
             item_name: this.updatehuankuan.item_name,
             total_quota: this.updatehuankuan.total_quota,
@@ -386,6 +395,15 @@ import HuanKuanService from "../services/HuanKuanService"
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+          this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
         delClick(index,row){
@@ -440,8 +458,15 @@ import HuanKuanService from "../services/HuanKuanService"
       return {
         imageUrl: '',
         TravelType:1,
-        formLabelWidth: "100px",
-        rules:{},
+        formLabelWidth: "130px",
+        rules:{
+          item_name: [
+            { required: true, message: '请输入还款项目名称', trigger: 'blur' },
+          ],
+          huan_money: [
+            { required: true, message: '请输入还款金额', trigger: 'change' }
+          ],
+        },
         tableData:[],
         result:[],
         addhuankuan:{},

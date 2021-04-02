@@ -277,7 +277,7 @@
             <el-button type="primary" @click="addform()">添加物料</el-button></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addxiangmu')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -412,7 +412,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updatexiangmu')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -592,7 +592,7 @@
 <script>
 import addWuliaoService from "../services/addWuliaoService";
 import JianzhuService from "../services/JianzhuService";
-import WuliaoService from "../services/WuliaoService";
+import WuliaoService1 from "../services/WuliaoService1";
   export default {
     created () {
           this.tableonload();
@@ -611,8 +611,8 @@ import WuliaoService from "../services/WuliaoService";
        openFrom(){
            this.dialogFormVisible=true
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+              this.dialogFormVisible=false;
           var data = {
         builder: this.addxiangmu.builder,
         item_name:this.addxiangmu.item_name,
@@ -643,10 +643,19 @@ import WuliaoService from "../services/WuliaoService";
         .catch(e => {
           console.log(e);
         });
+       },
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
+        });
         },
         addform(){
             this.dialog=true;
-            WuliaoService.getAll()
+            WuliaoService1.getAll()
         .then(response => {
           this.result = response.data;
         })
@@ -698,8 +707,8 @@ import WuliaoService from "../services/WuliaoService";
                 console.log(e);
               });
        },
-       updatesubmit(){
-        this.dialogFormVisible1=false;
+       updateservice(){
+            this.dialogFormVisible1=false;
           var data = {
             id:this.updatexiangmu.id,
         builder: this.updatexiangmu.builder,
@@ -729,6 +738,15 @@ import WuliaoService from "../services/WuliaoService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
        delClick(index,row){
@@ -788,7 +806,14 @@ form: {
       },
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          builder: [
+            { required: true, message: '请输入建筑商', trigger: 'blur' },
+          ],
+          item_name: [
+            { required: true, message: '请输入项目名称', trigger: 'change' }
+          ],
+        },
         tableData:[],
         result:[],
       addxiangmu:{},

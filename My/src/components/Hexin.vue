@@ -261,7 +261,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit()">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addQiye')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -278,9 +278,9 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-      <el-form-item label="id" prop="id" :label-width="formLabelWidth">
+      <!-- <el-form-item label="id" prop="id" :label-width="formLabelWidth">
             <el-input v-bind:readonly="TravelType==1" v-model="updateQiye.id"></el-input>
-          </el-form-item>
+          </el-form-item> -->
       <el-row>
         <el-col :span="12">
           <el-form-item label="注册名称" prop="register_name" :label-width="formLabelWidth">
@@ -395,7 +395,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="updatesubmit()">立即修改</el-button>
+          <el-button type="primary" @click="updatesubmit('updateQiye')">立即修改</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -547,28 +547,27 @@ import HexinService from "../services/HexinService";
        openFrom(){
            this.dialogFormVisible=true
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       async addservice(){
+              this.dialogFormVisible=false;
           var data = {
-        register_name: this.addQiye.register_name,
-        credit_code:this.addQiye.credit_code,
-        trade: this.addQiye.trade,
-        address: this.addQiye.address,
-        juridical_person:this.addQiye.juridical_person,
-        register_money:this.addQiye.register_money,
-        create_time:this.addQiye.create_time,
-        business_term:this.addQiye.business_term,
-        business_scope:this.addQiye.business_scope,
-        post_code:this.addQiye.post_code,
-        phone:this.addQiye.phone,
-        email:this.addQiye.email,
-        fax:this.addQiye.fax,
-        account_type:this.addQiye.account_type,
-        bank_name:this.addQiye.bank_name,
-        bank_card:this.addQiye.bank_card,
-        current_process:this.addQiye.current_process
+          register_name: this.addQiye.register_name,
+          credit_code:this.addQiye.credit_code,
+          trade: this.addQiye.trade,
+          address: this.addQiye.address,
+          juridical_person:this.addQiye.juridical_person,
+          register_money:this.addQiye.register_money,
+          create_time:this.addQiye.create_time,
+          business_term:this.addQiye.business_term,
+          business_scope:this.addQiye.business_scope,
+          post_code:this.addQiye.post_code,
+          phone:this.addQiye.phone,
+          email:this.addQiye.email,
+          fax:this.addQiye.fax,
+          account_type:this.addQiye.account_type,
+          bank_name:this.addQiye.bank_name,
+          bank_card:this.addQiye.bank_card,
+          current_process:this.addQiye.current_process
         }
-
         HexinService.create(data)
         .then(response => {
           this.tableonload();
@@ -576,6 +575,15 @@ import HexinService from "../services/HexinService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.addservice();
+          } else {
+            return false;
+          }
         });
         },
        kanClick(index,row){
@@ -601,27 +609,27 @@ import HexinService from "../services/HexinService";
                 console.log(e);
               });
        },
-       updatesubmit(){
-        this.dialogFormVisible1=false;
-          var data = {
+       updateservice(){
+          this.dialogFormVisible1=false;
+            var data = {
             id:this.updateQiye.id,
-        register_name: this.updateQiye.register_name,
-         credit_code:this.updateQiye.credit_code,
-        trade: this.updateQiye.trade,
-        address: this.updateQiye.address,
-        juridical_person:this.updateQiye.juridical_person,
-        register_money:this.updateQiye.register_money,
-        create_time:this.updateQiye.create_time,
-        business_term:this.updateQiye.business_term,
-        business_scope:this.updateQiye.business_scope,
-        post_code:this.updateQiye.post_code,
-        phone:this.updateQiye.phone,
-        email:this.updateQiye.email,
-        fax:this.updateQiye.fax,
-        account_type:this.updateQiye.account_type,
-        bank_name:this.updateQiye.bank_name,
-        bank_card:this.updateQiye.bank_card,
-        current_process:this.updateQiye.current_process
+            register_name: this.updateQiye.register_name,
+            credit_code:this.updateQiye.credit_code,
+            trade: this.updateQiye.trade,
+            address: this.updateQiye.address,
+            juridical_person:this.updateQiye.juridical_person,
+            register_money:this.updateQiye.register_money,
+            create_time:this.updateQiye.create_time,
+            business_term:this.updateQiye.business_term,
+            business_scope:this.updateQiye.business_scope,
+            post_code:this.updateQiye.post_code,
+            phone:this.updateQiye.phone,
+            email:this.updateQiye.email,
+            fax:this.updateQiye.fax,
+            account_type:this.updateQiye.account_type,
+            bank_name:this.updateQiye.bank_name,
+            bank_card:this.updateQiye.bank_card,
+            current_process:this.updateQiye.current_process
         }
           HexinService.update(data.id,data)
         .then(response => {
@@ -630,6 +638,15 @@ import HexinService from "../services/HexinService";
         })
         .catch(e => {
           console.log(e);
+        });
+       },
+       updatesubmit(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.updateservice();
+          } else {
+            return false;
+          }
         });
        },
        delClick(index,row){
@@ -668,7 +685,29 @@ import HexinService from "../services/HexinService";
       return {
         TravelType:1,
         formLabelWidth: "100px",
-        rules:{},
+        rules:{
+          register_name: [
+            { required: true, message: '请输入注册名称', trigger: 'blur' },
+          ],
+          credit_code: [
+            { required: true, message: '请输入社会信用代码', trigger: 'change' }
+          ],
+          trade: [
+            { required: true, message: '请选择行业', trigger: 'change' }
+          ],
+          address: [
+            { required: true, message: '请输入地址', trigger: 'change' }
+          ],
+          juridical_person: [
+            { required: true, message: '请输入法定代表人', trigger: 'change' }
+          ],
+          register_money: [
+            { required: true, message: '请输入注册资本', trigger: 'blur' }
+          ],
+          create_time: [
+            { required: true, message: '请输入选择时间', trigger: 'change' }
+          ],
+        },
         tableData:[],
       addQiye:{},
       updateQiye:{},

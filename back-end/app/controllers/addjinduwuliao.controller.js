@@ -2,7 +2,7 @@ const db = require("../models");
 const Addjinduwuliao = db.addjinduwuliao;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new pingji
+// 新建评级controller层
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.name) {
@@ -11,8 +11,7 @@ exports.create = (req, res) => {
     });
     return;
   }
-
-  // Create a pingji
+  // 新增
   const addjinduwuliao = {
         name: req.body.name,
         wname:req.body.wname,
@@ -20,8 +19,6 @@ exports.create = (req, res) => {
         consume:req.body.consume,
         after_stock:req.body.after_stock,
   };
-
-  // Save pingji in the database
   Addjinduwuliao.create(addjinduwuliao)
     .then(data => {
       res.send(data);
@@ -34,11 +31,10 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all pingji from the database.
+//从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-  
     Addjinduwuliao.findAll()
       .then(data => {
         res.send(data);
@@ -51,10 +47,9 @@ exports.findAll = (req, res) => {
       });
 };
 
-// Find a single pingji with an id
+//根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-
     Addjinduwuliao.findByPk(id)
       .then(data => {
         res.send(data);

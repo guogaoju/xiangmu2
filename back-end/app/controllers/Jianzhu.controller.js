@@ -121,34 +121,3 @@ exports.delete = (req, res) => {
       });
 };
 
-// Delete all Tutorials from the database.
-// exports.deleteAll = (req, res) => {
-//   Core_firm.destroy({
-//         where: {},
-//         truncate: false
-//       })
-//         .then(nums => {
-//           res.send({ message: `${nums} core_firm were deleted successfully!` });
-//         })
-//         .catch(err => {
-//           res.status(500).send({
-//             message:
-//               err.message || "Some error occurred while removing all core_firm."
-//           });
-//         });
-// };
-
-// Find all published Tutorials
-// exports.findAllPublished = (req, res) => {
-//   Core_firm.findAll({ where: { published: true } })
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving tutorials."
-//       });
-//     });
-// };
-

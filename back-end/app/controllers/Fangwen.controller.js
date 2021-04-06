@@ -19,7 +19,6 @@ exports.create = (req, res) => {
     current_process:req.body.current_process,
   };
 
-
 // 新增
   Fangwen.create(fangwen)
     .then(data => {

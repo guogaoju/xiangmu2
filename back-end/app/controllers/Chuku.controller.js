@@ -91,7 +91,6 @@ exports.update = (req, res) => {
 //删除
 exports.delete = (req, res) => {
     const id = req.params.id;
-
     Chuku.destroy({
       where: { id: id }
     })

@@ -24,7 +24,7 @@ const fs = require("fs");
 //     return res.send(`Error when trying upload images: ${error}`);
 //   }
 // };
-// Create and Save a new Tutorial
+//新建
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.name) {
@@ -34,7 +34,7 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Tutorial
+  //新增
   const wuliao1 = {
     name: req.body.name,
     Specification:req.body.Specification,
@@ -44,8 +44,6 @@ exports.create = (req, res) => {
     remarks:req.body.remarks,
     current_process:req.body.current_process,
   };
-
-  // Save Tutorial in the database
   Wuliao1.create(wuliao1)
     .then(data => {
       res.send(data);
@@ -58,7 +56,7 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all Tutorials from the database.
+//从数据库查询所有，迷糊查询
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
@@ -75,7 +73,7 @@ exports.findAll = (req, res) => {
       });
 };
 
-// Find a single Tutorial with an id
+//根据id查询
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
@@ -91,7 +89,7 @@ exports.findOne = (req, res) => {
 };
 
 
-// Update a Tutorial by the id in the request
+//修改
 exports.update = (req, res) => {
     const id = req.params.id;
 
@@ -116,7 +114,7 @@ exports.update = (req, res) => {
       });
 };
 
-// Delete a Tutorial with the specified id in the request
+//删除
 exports.delete = (req, res) => {
     const id = req.params.id;
 
@@ -140,35 +138,3 @@ exports.delete = (req, res) => {
         });
       });
 };
-
-// Delete all Tutorials from the database.
-exports.deleteAll = (req, res) => {
-    Wuliao1.destroy({
-        where: {},
-        truncate: false
-      })
-        .then(nums => {
-          res.send({ message: `${nums} Wuliao were deleted successfully!` });
-        })
-        .catch(err => {
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while removing all Wuliao."
-          });
-        });
-};
-
-// Find all published Tutorials
-// exports.findAllPublished = (req, res) => {
-//   Core_firm.findAll({ where: { published: true } })
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving tutorials."
-//       });
-//     });
-// };
-

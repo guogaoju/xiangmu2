@@ -50,8 +50,6 @@ exports.create = (req, res) => {
     });
 };
 
-
-
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
     // const title = req.query.title;

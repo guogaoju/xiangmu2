@@ -4,28 +4,21 @@ module.exports = app => {
     const upload = require("../middleware/upload");
     var router = require("express").Router();
     
-
-
-    // Create a new Tutorial
+    //新增
     router.post("/", wuliao1.create);
     // router.post("/upload", upload.single("file"), wuliao.uploadFiles);
-    // Retrieve all Tutorials
+
+    //查找所有
     router.get("/", wuliao1.findAll);
   
-    // Retrieve all published Tutorials
-    // router.get("/published", tutorials.findAllPublished);
-  
-    // Retrieve a single Tutorial with id
+    //根据id查询
     router.get("/:id", wuliao1.findOne);
   
-    // Update a Tutorial with id
+    //修改
     router.put("/:id", wuliao1.update);
   
-    // Delete a Tutorial with id
+    //删除
     router.delete("/:id", wuliao1.delete);
-  
-    // Delete all Tutorials
-    router.delete("/", wuliao1.deleteAll);
   
     app.use('/api/Wuliao1', router);
   };

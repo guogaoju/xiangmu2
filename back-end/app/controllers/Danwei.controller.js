@@ -63,7 +63,6 @@ exports.findOne = (req, res) => {
 };
 
 //修改
-//删除
 exports.update = (req, res) => {
     const id = req.params.id;
     Danwei.update(req.body, {

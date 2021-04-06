@@ -3,26 +3,21 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    //新增
     router.post("/", chuku.create);
   
-    // Retrieve all Tutorials
+    //查找所有
     router.get("/", chuku.findAll);
-  
-    // Retrieve all published Tutorials
-    // router.get("/published", tutorials.findAllPublished);
-  
-    // Retrieve a single Tutorial with id
+
+    //根据id查询
     router.get("/:id", chuku.findOne);
   
-    // Update a Tutorial with id
+    //修改
     router.put("/:id", chuku.update);
-  
-    // Delete a Tutorial with id
+
+    //删除
     router.delete("/:id", chuku.delete);
   
-    // Delete all Tutorials
-    // router.delete("/", hexin.deleteAll);
   
     app.use('/api/Chuku', router);
   };

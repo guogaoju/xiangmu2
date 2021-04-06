@@ -3,26 +3,23 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    //新增
     router.post("/", hexin.create);
   
-    // Retrieve all Tutorials
+    //查找所有
     router.get("/", hexin.findAll);
   
-    // Retrieve all published Tutorials
-    // router.get("/published", tutorials.findAllPublished);
-  
-    // Retrieve a single Tutorial with id
+    //根据id查询
     router.get("/:id", hexin.findOne);
   
-    // Update a Tutorial with id
+    //修改
     router.put("/:id", hexin.update);
   
-    // Delete a Tutorial with id
+    //删除
     router.delete("/:id", hexin.delete);
   
-    // Delete all Tutorials
-    router.delete("/", hexin.deleteAll);
+    // //删除所有
+    // router.delete("/", hexin.deleteAll);
   
     app.use('/api/Hexin', router);
   };

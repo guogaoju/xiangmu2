@@ -2,7 +2,7 @@ const db = require("../models");
 const WuliaoType = db.wuliaotype;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Tutorial
+//新增controller
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.name) {
@@ -11,16 +11,13 @@ exports.create = (req, res) => {
     });
     return;
   }
-
-  // Create a Tutorial
+  //添加
   const wuliaotype = {
     name: req.body.name,
     type: req.body.type,
     remarks:req.body.remarks,
     current_process:req.body.current_process,
   };
-
-  // Save Tutorial in the database
   WuliaoType.create(wuliaotype)
     .then(data => {
       res.send(data);
@@ -33,11 +30,10 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all Tutorials from the database.
+//从数据库查找所有，模糊查询
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-  
     WuliaoType.findAll({ where: condition })
       .then(data => {
         res.send(data);
@@ -50,10 +46,9 @@ exports.findAll = (req, res) => {
       });
 };
 
-// Find a single Tutorial with an id
+//根据id查询
 exports.findOne = (req, res) => {
     const id = req.params.id;
-
     WuliaoType.findByPk(id)
       .then(data => {
         res.send(data);
@@ -66,10 +61,9 @@ exports.findOne = (req, res) => {
 };
 
 
-// Update a Tutorial by the id in the request
+//修改
 exports.update = (req, res) => {
     const id = req.params.id;
-
     WuliaoType.update(req.body, {
       where: { id: id }
     })
@@ -91,10 +85,9 @@ exports.update = (req, res) => {
       });
 };
 
-// Delete a Tutorial with the specified id in the request
+//删除
 exports.delete = (req, res) => {
     const id = req.params.id;
-
     WuliaoType.destroy({
       where: { id: id }
     })
@@ -115,35 +108,3 @@ exports.delete = (req, res) => {
         });
       });
 };
-
-// Delete all Tutorials from the database.
-exports.deleteAll = (req, res) => {
-    WuliaoType.destroy({
-        where: {},
-        truncate: false
-      })
-        .then(nums => {
-          res.send({ message: `${nums} WuliaoType were deleted successfully!` });
-        })
-        .catch(err => {
-          res.status(500).send({
-            message:
-              err.message || "Some error occurred while removing all WuliaoType."
-          });
-        });
-};
-
-// Find all published Tutorials
-// exports.findAllPublished = (req, res) => {
-//   Core_firm.findAll({ where: { published: true } })
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving tutorials."
-//       });
-//     });
-// };
-

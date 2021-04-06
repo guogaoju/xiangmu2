@@ -3,26 +3,20 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    //新增
     router.post("/", qiye.create);
   
-    // Retrieve all Tutorials
+    //查找所有
     router.get("/", qiye.findAll);
   
-    // Retrieve all published Tutorials
-    // router.get("/published", tutorials.findAllPublished);
-  
-    // Retrieve a single Tutorial with id
+    //根据id查询
     router.get("/:id", qiye.findOne);
   
-    // Update a Tutorial with id
+    //修改
     router.put("/:id", qiye.update);
-  
-    // Delete a Tutorial with id
+
+    //删除
     router.delete("/:id", qiye.delete);
-  
-    // Delete all Tutorials
-    router.delete("/", qiye.deleteAll);
   
     app.use('/api/Qiye', router);
   };

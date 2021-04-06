@@ -25,13 +25,13 @@ exports.signup = (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User was registered successfully!" });
+            res.send({ message: "用户注册成功！" });
           });
         });
       } else {
         // user role = 1
         user.setRoles([1]).then(() => {
-          res.send({ message: "User was registered successfully!" });
+          res.send({ message: "用户注册成功！" });
         });
       }
     })
@@ -48,7 +48,7 @@ exports.signin = (req, res) => {
   })
     .then(user => {
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: "用户名找不到" });
       }
 
       var passwordIsValid = bcrypt.compareSync(
@@ -58,8 +58,8 @@ exports.signin = (req, res) => {
 
       if (!passwordIsValid) {
         return res.status(401).send({
-          accessToken: null,
-          message: "Invalid Password!"
+          // accessToken: null,
+          message: "密码错误"
         });
       }
 

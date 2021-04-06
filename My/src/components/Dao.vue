@@ -12,17 +12,24 @@
                     :on-icon-click="handleIconClick">
                 </el-input>
             </span> -->
-            <span class="demonstration" style="float:right;padding-top:10px;margin-right:1%">
-                <el-dropdown trigger="click">
-                  <span class="el-dropdown-link" style="color:white">
-                    admin<i class="el-icon-caret-bottom el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>个人信息</el-dropdown-item>
-                    <el-dropdown-item>退出登录</el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-            </span>
+            <!-- <div v-if="currentUser" class="navbar-nav ml-auto"> -->
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%">
+                    <li class="nav-item">
+                        <a style="color:white" class="nav-link" href @click.prevent="logOut">
+                            <font-awesome-icon icon="sign-out-alt" />退出登录
+                        </a>
+                    </li>
+                </span>
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%">
+                    <li  class="nav-item">
+                        <router-link style="color:white" to="/profile" class="nav-link">
+                            <font-awesome-icon icon="user" />
+                            {{ currentUser.username }}
+                        </router-link>
+                    </li>
+                </span>
+                
+            <!-- </div> -->
         </div>
         <div style="margin-top:5px">
             <el-row :gutter="12">
@@ -138,8 +145,30 @@
                 // breadcrumbItems: ['导航一'],
             }
         },
+computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    },
+    showAdminBoard() {
+      if (this.currentUser && this.currentUser.roles) {
+        return this.currentUser.roles.includes('ROLE_ADMIN');
+      }
 
+      return false;
+    },
+    showModeratorBoard() {
+      if (this.currentUser && this.currentUser.roles) {
+        return this.currentUser.roles.includes('ROLE_MODERATOR');
+      }
+
+      return false;
+    }
+  },
         methods:{
+            logOut() {
+            this.$store.dispatch('auth/logout');
+            this.$router.push('/');
+            },
             handleIconClick(ev) {
                 console.log(ev);
             },

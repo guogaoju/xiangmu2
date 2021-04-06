@@ -3,26 +3,20 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    //新增
     router.post("/", wuliaotype.create);
   
-    // Retrieve all Tutorials
+    //查找所有
     router.get("/", wuliaotype.findAll);
   
-    // Retrieve all published Tutorials
-    // router.get("/published", tutorials.findAllPublished);
-  
-    // Retrieve a single Tutorial with id
+    //根据id查询
     router.get("/:id", wuliaotype.findOne);
   
-    // Update a Tutorial with id
+    //修改
     router.put("/:id", wuliaotype.update);
   
-    // Delete a Tutorial with id
+    //删除
     router.delete("/:id", wuliaotype.delete);
-  
-    // Delete all Tutorials
-    router.delete("/", wuliaotype.deleteAll);
   
     app.use('/api/WuliaoType', router);
   };

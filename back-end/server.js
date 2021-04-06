@@ -15,7 +15,9 @@ initRoutes(app);
 
 
 const db = require("./app/models");
-db.sequelize.sync();
+db.sequelize.sync().then(() =>{
+  initial();
+});
 const Role = db.role;
 
 function initial() {
@@ -34,8 +36,6 @@ function initial() {
     name: "admin"
   });
 }
-
-
 
 //清空数据库 db.sequelize.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");

@@ -11,7 +11,6 @@ exports.create = (req, res) => {
     });
     return;
   }
-
 // 新增
   const caigou = {
         qiye_name:req.body.qiye_name,
@@ -38,8 +37,6 @@ exports.create = (req, res) => {
       });
     });
 };
-
-
 //从数据库查找所有,模糊查讯
 exports.findAll = (req, res) => {
     // const title = req.query.title;
@@ -69,7 +66,6 @@ exports.findOne = (req, res) => {
         });
       });
 };
-
 //修改
 exports.update = (req, res) => {
     const id = req.params.id;
@@ -93,11 +89,9 @@ exports.update = (req, res) => {
         });
       });
 };
-
 //删除
 exports.delete = (req, res) => {
     const id = req.params.id;
-
     Caigou.destroy({
       where: { id: id }
     })

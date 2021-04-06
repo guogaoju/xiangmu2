@@ -3,26 +3,21 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    //新增
     router.post("/", fangwen.create);
   
-    // Retrieve all Tutorials
+    //查找所有
     router.get("/", fangwen.findAll);
   
-    // Retrieve all published Tutorials
-    // router.get("/published", tutorials.findAllPublished);
-  
-    // Retrieve a single Tutorial with id
+    //根据id查询
     router.get("/:id", fangwen.findOne);
   
-    // Update a Tutorial with id
+    //修改
     router.put("/:id", fangwen.update);
   
-    // Delete a Tutorial with id
+    //删除
     router.delete("/:id", fangwen.delete);
   
-    // Delete all Tutorials
-    router.delete("/", fangwen.deleteAll);
   
     app.use('/api/Fangwen', router);
   };

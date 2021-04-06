@@ -3,20 +3,14 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Tutorial
+    //新增
     router.post("/", caigouwuliao.create);
   
-    // Retrieve all Tutorials
+    //查找所有
     router.get("/", caigouwuliao.findAll);
   
-    // Retrieve all published Tutorials
-    // router.get("/published", tutorials.findAllPublished);
-  
-    // Retrieve a single Tutorial with id
+    //根据id查询
     router.get("/:id", caigouwuliao.findOne);
-  
-    // Delete all Tutorials
-    // router.delete("/", hexin.deleteAll);
   
     app.use('/api/CaiGouwuliao', router);
   };

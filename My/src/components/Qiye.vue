@@ -1,16 +1,29 @@
 <template>
 <div>
   <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>客户管理</el-breadcrumb-item>
       <el-breadcrumb-item>企业信息管理</el-breadcrumb-item>
       <el-breadcrumb-item>企业信息</el-breadcrumb-item>
     </el-breadcrumb>
   <!-- 客户管理/企业信息管理/企业信息 -->
-  <el-row>
-      <el-col :span="24">
-        <el-button type="primary" @click="openFrom()">添加</el-button>
-      </el-col>
+    <el-row>
+      <!-- <el-col :span="14">
+          <el-form :inline="true" :model="searchVo" class="demo-form-inline"> 
+            <el-form-item>
+                <el-input v-model="searchVo.register_name" placeholder="请输入注册名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-input v-model="searchVo.introduction" placeholder="请输入企业简介"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="tableonload('searchVo')">查询</el-button>
+            </el-form-item>
+          </el-form>
+      </el-col> -->
+    <el-col :span="8">
+      <el-button type="primary" @click="openFrom()">添加</el-button>
+    </el-col>
   </el-row>
   <el-table
     :data="tableData"
@@ -568,7 +581,7 @@
         </el-col>
       </el-row>
     </el-form>
-  </el-dialog>
+  </el-dialog>                 
 </div>
 
 </template>
@@ -580,6 +593,16 @@ import QiyeService from "../services/QiyeService";
           this.tableonload();
       },
     methods: {
+//       table(){
+// QiyeService.getAll()
+//         .then(response => {
+//           this.tableData1 = response.data;
+//           console.log(response.data);
+//         })
+//         .catch(e => {
+//           console.log(e);
+//         });
+//       },
       async tableonload(){
         QiyeService.getAll()
         .then(response => {
@@ -732,6 +755,7 @@ import QiyeService from "../services/QiyeService";
 
     data() {
       return {
+        searchVo:{},
         TravelType:1,
         formLabelWidth: "120px",
          rules:{

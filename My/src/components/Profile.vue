@@ -1,9 +1,13 @@
 <template>
   <div class="container">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item></el-breadcrumb-item>
+    </el-breadcrumb>
     <header class="jumbotron">
-      <h3>
+      <h4>
         个人资料
-      </h3>
+      </h4>
     </header>
     <!-- <p>
       <strong>Token:</strong>

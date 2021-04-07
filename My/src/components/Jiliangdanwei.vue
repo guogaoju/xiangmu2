@@ -2,7 +2,7 @@
 <div>
   <!-- 基本资料管理/基本资料/计量单位 -->
   <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>基本资料管理</el-breadcrumb-item>
       <el-breadcrumb-item>基本资料</el-breadcrumb-item>
       <el-breadcrumb-item>计量单位</el-breadcrumb-item>

@@ -1,6 +1,6 @@
 <template>
 <div>
-待开发
+<h3>待开发</h3>
 </div>
 </template>
 <script type="text/ecmascript-6">

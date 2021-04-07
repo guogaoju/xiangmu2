@@ -1,8 +1,8 @@
 import http from "../http-common";
 
 class QiyeService {
-  getAll() {
-    return http.get("/Qiye");
+  getAll(data) {
+    return http.get("/Qiye",data);
   }
 
   get(id) {

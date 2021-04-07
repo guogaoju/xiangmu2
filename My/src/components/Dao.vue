@@ -1,7 +1,7 @@
 <template>
-    <div >
-        <div style="width:100%;background-color: #636363; height:50px ; overflow: hidden">
-            <span class="demonstration" style="float:left;padding-top:10px;color:white;margin-left:5%">
+    <div>
+        <div class="big1" style="width:100%;background-color: #636363; height:60px ; overflow: hidden">
+            <span class="demonstration" style="float:left;padding-top:15px;color:white;margin-left:5%">
                 供应链金融管理系统
             </span>
             <!-- <span class="demonstration" style="float:left;padding:5px;color:white;margin-left:2%;width:15%">
@@ -13,14 +13,14 @@
                 </el-input>
             </span> -->
             <!-- <div v-if="currentUser" class="navbar-nav ml-auto"> -->
-                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%">
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
                     <li class="nav-item">
                         <a style="color:white" class="nav-link" href @click.prevent="logOut">
                             <font-awesome-icon icon="sign-out-alt" />退出登录
                         </a>
                     </li>
                 </span>
-                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%">
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
                     <li  class="nav-item">
                         <router-link style="color:white" to="/profile" class="nav-link">
                             <font-awesome-icon icon="user" />
@@ -31,14 +31,14 @@
                 
             <!-- </div> -->
         </div>
-        <div style="margin-top:5px">
+        <div style="margin-top:5px height:100%">
             <el-row :gutter="12">
                 <el-col :xs="4" :sm="4" :md="4" :lg="4">
-                    <div style="height:100%">
+                    <div>
                         <el-menu
+                        style="height:1000px"
                         default-active="1"
                         class="el-menu-vertical-demo"
-                        style="height:1000px"
                         background-color="#545c64"
                         text-color="#fff"
                         active-text-color="#ffd04b"

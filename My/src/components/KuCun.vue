@@ -2,7 +2,7 @@
 <div>
   <!-- 仓库管理/库存信息 -->
   <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>仓库管理</el-breadcrumb-item>
       <el-breadcrumb-item>库存信息</el-breadcrumb-item>
     </el-breadcrumb>

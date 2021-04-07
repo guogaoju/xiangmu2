@@ -2,7 +2,7 @@
 <div>
   <!-- 业务管理/采购管理 -->
   <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>业务管理</el-breadcrumb-item>
       <el-breadcrumb-item>采购管理</el-breadcrumb-item>
     </el-breadcrumb>

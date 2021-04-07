@@ -2,7 +2,7 @@
 <div>
   <!-- 客户管理/材料供应商信息管理/供应商评级管理 -->
   <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>客户管理</el-breadcrumb-item>
       <el-breadcrumb-item>材料供应商信息管理</el-breadcrumb-item>
       <el-breadcrumb-item>供应商评级管理</el-breadcrumb-item>

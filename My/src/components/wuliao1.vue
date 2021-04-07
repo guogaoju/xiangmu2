@@ -2,7 +2,7 @@
 <div>
   <!-- 基本资料管理/物料参数/物料资料 -->
   <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>基本资料管理</el-breadcrumb-item>
       <el-breadcrumb-item>物料参数</el-breadcrumb-item>
       <el-breadcrumb-item>物料资料</el-breadcrumb-item>

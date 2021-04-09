@@ -98,7 +98,7 @@ export default {
             data => {
               this.message = data.message;
               this.successful = true;
-              this.$router.push('/Login');
+              this.$router.push('/');
             },
             error => {
               this.message =

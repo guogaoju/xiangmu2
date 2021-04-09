@@ -85,15 +85,13 @@
             </el-col>
         </el-row>
         <el-row :gutter="20">
-            <el-col :span="12">
-              
-                <el-card shadow="hover">
-                   <div class="schart-box">
-                <div class="content-title"></div>
-                <schart class="schart" canvasId="pie" :options="options3"></schart>
-            </div>
-                    
-                </el-card>
+            <el-col :span="10">
+              <el-card shadow="hover">
+                <div class="schart-box">
+                  <div class="content-title"></div>
+                    <schart class="schart" canvasId="pie" :options="options3"></schart>
+                </div>
+              </el-card>
             </el-col>
             <el-col :span="12">
                 <el-card shadow="hover">

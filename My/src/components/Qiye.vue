@@ -8,7 +8,7 @@
     </el-breadcrumb>
   <!-- 客户管理/企业信息管理/企业信息 -->
     <el-row>
-      <!-- <el-col :span="14">
+      <el-col :span="22">
           <el-form :inline="true" :model="searchVo" class="demo-form-inline"> 
             <el-form-item>
                 <el-input v-model="searchVo.register_name" placeholder="请输入注册名称"></el-input>
@@ -17,15 +17,16 @@
                 <el-input v-model="searchVo.introduction" placeholder="请输入企业简介"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="tableonload('searchVo')">查询</el-button>
+                <el-button type="primary" @click="onload('searchVo')">查询</el-button>
             </el-form-item>
           </el-form>
-      </el-col> -->
-    <el-col :span="8">
-      <el-button type="primary" @click="openFrom()">添加</el-button>
+      </el-col>
+    <el-col :span="2">
+      <el-button type="primary" @click="openFrom()">新增</el-button>
     </el-col>
   </el-row>
   <el-table
+    ref="filterTable"
     :data="tableData"
     border
     style="width: 100%">
@@ -33,13 +34,17 @@
       prop="id"
       label="编号"
       width="80"
-      align="center">
+      align="center"
+      >
     </el-table-column>
     <el-table-column
       prop="register_name"
       label="注册名称"
       width="120"
-      align="center">
+      align="center"
+      :filters="[{ text: '中舜建筑公司', value: '中舜建筑公司' }, { text: '江西中舜建筑公司', value: '江西中舜建筑公司' }]"
+      :filter-method="filterTag"
+      filter-placement="bottom-end">
     </el-table-column>
     <el-table-column
       prop="introduction"
@@ -92,7 +97,7 @@
     <el-table-column
       prop="address"
       label="营业地址"
-      width="120"
+      width="220"
       align="center">
     </el-table-column>
     <el-table-column
@@ -593,16 +598,31 @@ import QiyeService from "../services/QiyeService";
           this.tableonload();
       },
     methods: {
-//       table(){
-// QiyeService.getAll()
-//         .then(response => {
-//           this.tableData1 = response.data;
-//           console.log(response.data);
-//         })
-//         .catch(e => {
-//           console.log(e);
-//         });
+
+// formatter(row, column) {
+//         return row.address;
 //       },
+      filterTag(value, row) {
+        return row.register_name === value;
+      },
+      // filterHandler(value, row, column) {
+      //   const property = column['property'];
+      //   return row[property] === value;
+      // },
+    
+
+
+
+      onload(){
+        QiyeService.findByname(this.searchVo)
+        .then(response => {
+          this.tableData = response.data;
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
       async tableonload(){
         QiyeService.getAll()
         .then(response => {
@@ -755,6 +775,7 @@ import QiyeService from "../services/QiyeService";
 
     data() {
       return {
+        arr:[],
         searchVo:{},
         TravelType:1,
         formLabelWidth: "120px",

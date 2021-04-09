@@ -25,9 +25,9 @@ class QiyeService {
 //     return http.delete(`/tutorials`);
 //   }
 
-//   findByTitle(title) {
-//     return http.get(`/tutorials?title=${title}`);
-//   }
+  findByname(name,introduction) {
+    return http.get(`/Qiye?register_name=${name}`+`&introduction=${introduction}`);
+  }
 }
 
 export default new QiyeService();

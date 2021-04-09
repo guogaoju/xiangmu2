@@ -48,8 +48,12 @@ exports.create = (req, res) => {
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
     const register_name = req.query.register_name;
-    var condition = register_name  ? { register_name: { [Op.like]: `%${register_name}%` } } : null;
-    Qiye.findAll({ where: condition })
+    const introduction = req.query.introduction;
+    var condition = register_name  ? { register_name: { [Op.like]: `%${register_name}%` } } : null||
+    introduction  ? { introduction: { [Op.like]: `%${introduction}%` } } : null
+    ;
+    // var condition1 = introduction  ? { introduction: { [Op.like]: `%${introduction}%` } } : null;
+    Qiye.findAll({ where: condition})
       .then(data => {
         res.send(data);
       })

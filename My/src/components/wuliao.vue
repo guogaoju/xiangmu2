@@ -52,7 +52,7 @@
       width="200"
       align="center">
     </el-table-column> -->
-    <!-- <el-table-column min-width="55"  prop="avatar" label="物料图片">
+    <el-table-column min-width="55"  prop="avatar" label="物料图片">
       <template slot-scope="scope">
         <el-image 
           style="width: 100px; height: 100px"
@@ -60,7 +60,7 @@
           :preview-src-list="[scope.row.avatar]">
         </el-image>
   </template>
-</el-table-column> -->
+</el-table-column>
     <el-table-column
       prop="remarks"
       label="备注"
@@ -124,25 +124,20 @@
         </el-col>
       </el-row>
       <el-row>
-          <el-form-item label="物料图片" prop="avatar" :label-width="formLabelWidth">
-           <!-- <el-upload
+          <el-form-item label="物料图片" ref="uploadElement" prop="avatar" :label-width="formLabelWidth">
+            <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
+           <el-upload
+           ref="upload"
             class="avatar-uploader"
             action="http://localhost:8080/api/Wuliao/upload"
             :show-file-list="false"
+            :auto-upload="false"
+            :data="addwuliao"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <img v-if="addwuliao.avatar" :src="addwuliao.avatar" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-        </el-upload> -->
-            <!-- <el-upload
-              class="avatar-uploader"
-              action=""
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar">
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload> -->
+            </el-upload>
           </el-form-item>
       </el-row>
       <el-row>
@@ -306,7 +301,7 @@
 
 <script>
 import DanweiService from "../services/DanweiService";
-import WuliaoService1 from "../services/WuliaoService1";
+import WuliaoService from "../services/WuliaoService";
 import WuliaoTypeService from "../services/WuliaoTypeService";
   export default {
     created () {
@@ -314,7 +309,7 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
       },
     methods: {
       async tableonload(){
-        WuliaoService1.getAll()
+        WuliaoService.getAll()
         .then(response => {
           this.tableData = response.data;
           console.log(response.data);
@@ -338,8 +333,12 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
           console.log(e);
         });
        },
-       addsubmit(){
-         this.dialogFormVisible=false;
+       addsubmit(formName){
+         let vm = this;
+         this.$refs[formName].validate((valid) =>{
+           if(valid){
+                vm.$refs.upload.submit();
+                this.dialogFormVisible=false;
           var data = {
         name:this.addwuliao.name,
         Specification:this.addwuliao.Specification,
@@ -349,20 +348,25 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
         remarks:this.addwuliao.remarks,
         current_process:this.addwuliao.current_process
         }
-
-        WuliaoService1.create(data)
+        WuliaoService.create(data)
         .then(response => {
           this.tableonload();
+          //s刷新页面
+          this.$router.go(0)
           console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
+           }else{
+             return false;
+           }
+         })
         },
        kanClick(index,row){
           this.dialogFormVisible2=true
           let pa=this.tableData[index].id;
-           WuliaoService1.get(pa)
+           WuliaoService.get(pa)
          .then(response => {
                 this.kanwuliao=response.data;
               })
@@ -373,7 +377,7 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
         updateClick(index,row){
            this.dialogFormVisible1=true;
            let pa=this.tableData[index].id;
-           WuliaoService1.get(pa)
+           WuliaoService.get(pa)
          .then(response => {
                 this.updatewuliao=response.data;
               })
@@ -393,7 +397,7 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
             remarks:this.updatewuliao.remarks,
             current_process:this.updatewuliao.current_process
         }
-          WuliaoService1.update(data.id,data)
+          WuliaoService.update(data.id,data)
         .then(response => {
           this.tableonload();
           console.log(response.data);
@@ -404,7 +408,7 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
        },
        delClick(index,row){
               let pa=this.tableData[index].id;
-              WuliaoService1.delete(pa)
+              WuliaoService.delete(pa)
               .then(response => {
                 this.tableonload();
                 console.log(response.pa);
@@ -451,21 +455,16 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
 
     data() {
       return {
-        // URL:"http://localhost:8080/api/Wuliao/",
-        //  srcList: [
-        //   // 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3848402655,92542552&fm=26&gp=0.jpg',
-        //   'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fpic5.nipic.com%2F20100225%2F1399111_094253001130_2.jpg&refer=http%3A%2F%2Fpic5.nipic.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619609361&t=e7183c83567ad687665ad37c138a3ba6'
-        // ],
-          imageUrl: '',
+        imageUrl: '',
         TravelType:1,
         formLabelWidth: "100px",
         rules:{},
         tableData:[],
         result:[],
         result1:[],
-      addwuliao:{},
-      updatewuliao:{},
-      kanwuliao:{},
+        addwuliao:{},
+        updatewuliao:{},
+        kanwuliao:{},
         dialogFormVisible: false,
         dialogFormVisible1: false,
         dialogFormVisible2: false,

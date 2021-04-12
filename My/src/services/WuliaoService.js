@@ -1,6 +1,6 @@
 import http from "../http-common";
 
-class WuliaoService1 {
+class WuliaoService {
   
 
   // img1(data) {
@@ -8,23 +8,23 @@ class WuliaoService1 {
   // }
 
   getAll() {
-    return http.get("/Wuliao1");
+    return http.get("/Wuliao");
   }
 
   get(id) {
-    return http.get(`/Wuliao1/${id}`);
+    return http.get(`/Wuliao/${id}`);
   }
 
   create(data) {
-    return http.post("/Wuliao1", data);
+    return http.post("/Wuliao", data);
   }
 
   update(id, data) {
-    return http.put(`/Wuliao1/${id}`, data);
+    return http.put(`/Wuliao/${id}`, data);
   }
 
   delete(id) {
-    return http.delete(`/Wuliao1/${id}`);
+    return http.delete(`/Wuliao/${id}`);
   }
 
 //   deleteAll() {
@@ -36,4 +36,4 @@ class WuliaoService1 {
 //   }
 }
 
-export default new WuliaoService1();
+export default new WuliaoService();

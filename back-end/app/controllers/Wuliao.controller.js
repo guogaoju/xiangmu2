@@ -1,59 +1,43 @@
 const db = require("../models");
-const Wuliao1 = db.wuliao1;
+const Wuliao = db.wuliao;
 const Op = db.Sequelize.Op;
 const fs = require("fs");
 
-
-// exports.uploadFiles = async (req, res) => {
-//   try {
-//     console.log(req.file);
-//     if (req.file == undefined) {
-//       return res.send(`You must select a file.`);
-//     }
-// Wuliao.create({
-//       avatar:req.file.avatar,
-//     }).then((image) => {
-//       fs.writeFileSync(
-//         __basedir + "/resources/static/assets/uploads/"
-//       );
-
-//       return res.send(`File has been uploaded.`);
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.send(`Error when trying upload images: ${error}`);
-//   }
-// };
 //新建
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.name) {
-    res.status(400).send({
-      message: "Content can not be empty!"
-    });
-    return;
-  }
-
-  //新增
-  const wuliao1 = {
-    name: req.body.name,
-    Specification:req.body.Specification,
-    wuliaotype: req.body.wuliaotype,
-    danwei:req.body.danwei,
-    avatar:req.body.avatar,
-    remarks:req.body.remarks,
-    current_process:req.body.current_process,
-  };
-  Wuliao1.create(wuliao1)
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Wuliao."
+  try{
+    if (!req.body.name) {
+      res.status(400).send({
+        message: "Content can not be empty!"
       });
-    });
+      // return;
+    }
+    //新增
+    const wuliao = {
+      name: req.body.name,
+      Specification:req.body.Specification,
+      wuliaotype: req.body.wuliaotype,
+      danwei:req.body.danwei,
+      avatar:"http://localhost:8080/" +req.file.filename,
+      remarks:req.body.remarks,
+      current_process:req.body.current_process,
+    };
+    Wuliao.create(wuliao)
+      .then(data => {
+        res.send(data);
+      })
+      .catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred while creating the Wuliao."
+        });
+      });
+  }catch (error) {
+    console.log(error);
+    return res.send(`Error when trying upload images: ${error}`);
+  }
+  
 };
 
 //从数据库查询所有，迷糊查询
@@ -61,7 +45,7 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   
-    Wuliao1.findAll({ where: condition })
+    Wuliao.findAll({ where: condition })
       .then(data => {
         res.send(data);
       })
@@ -77,7 +61,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Wuliao1.findByPk(id)
+    Wuliao.findByPk(id)
       .then(data => {
         res.send(data);
       })
@@ -118,7 +102,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
 
-    Wuliao1.destroy({
+    Wuliao.destroy({
       where: { id: id }
     })
       .then(num => {

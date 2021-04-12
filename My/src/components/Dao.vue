@@ -236,7 +236,7 @@ computed: {
                         this.breadcrumbItems  = ['库存信息']
                         break;
                     case '6-1-2':
-                        this.$router.push('/Wuliao1');
+                        this.$router.push('/Wuliao');
                         this.breadcrumbItems  = ['物料资料']
                         break;
                     // case '5-1':

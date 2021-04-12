@@ -281,7 +281,7 @@
 
 <script>
 import addjinduwuliao from "../services/addjinduwuliao";
-import WuliaoService1 from "../services/WuliaoService1";
+import WuliaoService from "../services/WuliaoService";
 import JinduService from "../services/JinduService"
   export default {
     created () {
@@ -311,7 +311,7 @@ import JinduService from "../services/JinduService"
        },
        addform(){
             this.dialog=true;
-            WuliaoService1.getAll()
+            WuliaoService.getAll()
         .then(response => {
           this.result = response.data;
         })

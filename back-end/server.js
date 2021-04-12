@@ -7,16 +7,16 @@ const moment = require('moment');
 const fs=require('fs');
 const path=require('path');
 
-const initRoutes = require("./app/routes/Wuliao.routes1");
 global.__basedir = __dirname;
 
 app.use(express.urlencoded({ extended: true }));
-initRoutes(app);
 
+app.use(express.static('./resources/static/assets/uploads'));
 
 const db = require("./app/models");
 db.sequelize.sync().then(() =>{
-  initial();
+  // 第一次运行打开
+  // initial();
 });
 const Role = db.role;
 
@@ -44,7 +44,7 @@ function initial() {
 var corsOptions = {
   origin: "http://localhost:8081"
 };
-// app.use('/uploads', express(__dirname + '/uploads'))
+app.use('/uploads', express(__dirname + '/uploads'))
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
@@ -64,7 +64,7 @@ require("./app/routes/Qiye.routes")(app);
 require("./app/routes/Fangwen.routes")(app);
 require("./app/routes/Qiyepingji.routes")(app);
 require("./app/routes/Finance.routes")(app);
-require("./app/routes/Wuliao.routes1")(app);
+require("./app/routes/Wuliao.routes")(app);
 require("./app/routes/Danwei.routes")(app);
 require("./app/routes/WuliaoType.routes")(app);
 // require("./app/routes/web.js")(app);

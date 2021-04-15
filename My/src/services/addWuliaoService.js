@@ -4,23 +4,18 @@ class addWuliaoService {
   getAll() {
     return http.get("/addWuliao");
   }
-
   get(id) {
     return http.get(`/addWuliao/${id}`);
   }
-
   create(data) {
     return http.post("/addWuliao", data);
   }
-
   update(id, data) {
     return http.put(`/addWuliao/${id}`, data);
   }
-
   delete(id) {
     return http.delete(`/addWuliao/${id}`);
   }
-
 //   deleteAll() {
 //     return http.delete(`/tutorials`);
 //   }
@@ -29,5 +24,4 @@ class addWuliaoService {
 //     return http.get(`/tutorials?title=${title}`);
 //   }
 }
-
 export default new addWuliaoService();

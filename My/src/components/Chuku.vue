@@ -77,7 +77,7 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog title="出库库" width="45%" :visible.sync="dialogFormVisible">
+  <el-dialog title="出库" width="45%" :visible.sync="dialogFormVisible">
       <el-form
         :model="addchuku"
         status-icon :rules="rules"

@@ -297,9 +297,9 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-      <el-form-item label="id" prop="id" :label-width="formLabelWidth">
+      <!-- <el-form-item label="id" prop="id" :label-width="formLabelWidth">
             <el-input v-bind:readonly="TravelType==1" v-model="updateZiliao.id"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-row>
         <el-col :span="12">
           <el-form-item label="供应商名称" prop="supplier_name" :label-width="formLabelWidth">

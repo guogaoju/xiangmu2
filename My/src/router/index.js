@@ -75,8 +75,8 @@ export default new Router({
           component: () => import('@/components/Financialdata.vue')
         },
         {
-          path: '/Wuliao1',
-          component: () => import('@/components/Wuliao1.vue')
+          path: '/Wuliao',
+          component: () => import('@/components/Wuliao.vue')
         },
         {
           path: '/Jiliangdanwei',

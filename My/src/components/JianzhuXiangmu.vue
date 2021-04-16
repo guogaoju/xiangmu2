@@ -592,7 +592,7 @@
 <script>
 import addWuliaoService from "../services/addWuliaoService";
 import JianzhuService from "../services/JianzhuService";
-import WuliaoService1 from "../services/WuliaoService1";
+import WuliaoService from "../services/WuliaoService";
   export default {
     created () {
           this.tableonload();
@@ -655,7 +655,7 @@ import WuliaoService1 from "../services/WuliaoService1";
         },
         addform(){
             this.dialog=true;
-            WuliaoService1.getAll()
+            WuliaoService.getAll()
         .then(response => {
           this.result = response.data;
         })

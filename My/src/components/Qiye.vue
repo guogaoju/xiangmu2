@@ -8,7 +8,7 @@
     </el-breadcrumb>
   <!-- 客户管理/企业信息管理/企业信息 -->
     <el-row>
-      <el-col :span="22">
+      <!-- <el-col :span="22">
           <el-form :inline="true" :model="searchVo" class="demo-form-inline"> 
             <el-form-item>
                 <el-input v-model="searchVo.register_name" placeholder="请输入注册名称"></el-input>
@@ -20,7 +20,7 @@
                 <el-button type="primary" @click="onload('searchVo')">查询</el-button>
             </el-form-item>
           </el-form>
-      </el-col>
+      </el-col> -->
     <el-col :span="2">
       <el-button type="primary" @click="openFrom()">新增</el-button>
     </el-col>

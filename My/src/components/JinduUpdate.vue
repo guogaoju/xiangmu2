@@ -42,13 +42,13 @@
     <el-table-column
       prop="photo"
       label="现场照片"
-      width="150"
+      width="250"
       align="center">
     </el-table-column>
     <el-table-column
       prop="current_process"
       label="当前流程"
-      width="150"
+      width="200"
       align="center">
     </el-table-column>
     <el-table-column
@@ -116,9 +116,9 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
             <el-button type="primary" @click="addform()">添加物料</el-button>
-        </el-col>   
+        </el-col>    -->
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" @click="addsubmit('addjindu')">立即添加</el-button>
@@ -281,7 +281,7 @@
 
 <script>
 import addjinduwuliao from "../services/addjinduwuliao";
-import WuliaoService1 from "../services/WuliaoService1";
+import WuliaoService from "../services/WuliaoService";
 import JinduService from "../services/JinduService"
   export default {
     created () {
@@ -311,7 +311,7 @@ import JinduService from "../services/JinduService"
        },
        addform(){
             this.dialog=true;
-            WuliaoService1.getAll()
+            WuliaoService.getAll()
         .then(response => {
           this.result = response.data;
         })

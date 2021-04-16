@@ -411,7 +411,7 @@
 
 <script>
 import addWuliaoService from "../services/addWuliaoService";
-import WuliaoService1 from "../services/WuliaoService1";
+import WuliaoService from "../services/WuliaoService";
 import ZhizaoService from "../services/ZhizaoService";
   export default {
     created () {
@@ -433,7 +433,7 @@ import ZhizaoService from "../services/ZhizaoService";
        },
        addform(){
             this.dialog=true;
-            WuliaoService1.getAll()
+            WuliaoService.getAll()
         .then(response => {
           this.result = response.data;
         })

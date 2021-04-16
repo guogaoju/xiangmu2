@@ -4,15 +4,6 @@
             <span class="demonstration" style="float:left;padding-top:15px;color:white;margin-left:5%">
                 供应链金融管理系统
             </span>
-            <!-- <span class="demonstration" style="float:left;padding:5px;color:white;margin-left:2%;width:15%">
-                <el-input
-                    placeholder="请输入"
-                    icon="search"
-                    v-model="searchCriteria"
-                    :on-icon-click="handleIconClick">
-                </el-input>
-            </span> -->
-            <!-- <div v-if="currentUser" class="navbar-nav ml-auto"> -->
                 <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
                     <li class="nav-item">
                         <a style="color:white" class="nav-link" href @click.prevent="logOut">
@@ -236,7 +227,7 @@ computed: {
                         this.breadcrumbItems  = ['库存信息']
                         break;
                     case '6-1-2':
-                        this.$router.push('/Wuliao1');
+                        this.$router.push('/Wuliao');
                         this.breadcrumbItems  = ['物料资料']
                         break;
                     // case '5-1':

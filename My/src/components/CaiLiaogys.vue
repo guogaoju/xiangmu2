@@ -13,128 +13,267 @@
       </el-col>
     </el-row>
   <el-table
-    :data="tableData"
-    border
-    style="width: 100%">
-    <el-table-column
-      prop="id"
-      label="编号"
-      width="60"
-      align="center">
+    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+      &(!filterSupplier_name || data.supplier_name.toLowerCase().includes(filterSupplier_name.toString().toLowerCase()))
+      &(!filterAddress || data.address.toLowerCase().includes(filterAddress.toString().toLowerCase()))
+      &(!filterContact_person || data.contact_person.toLowerCase().includes(filterContact_person.toString().toLowerCase()))
+      &(!filterPhone || data.phone.toLowerCase().includes(filterPhone.toString().toLowerCase()))
+      &(!filterFax || data.fax.toLowerCase().includes(filterFax.toString().toLowerCase()))
+      &(!filterPost_code || data.post_code.toLowerCase().includes(filterPost_code.toString().toLowerCase()))
+      &(!filterJuridical_person || data.juridical_person.toLowerCase().includes(filterJuridical_person.toString().toLowerCase()))
+      &(!filterBank_name || data.bank_name.toLowerCase().includes(filterBank_name.toString().toLowerCase()))
+      &(!filterBank_card || data.bank_card.toLowerCase().includes(filterBank_card.toString().toLowerCase()))
+      &(!filterTax_card || data.tax_card.toLowerCase().includes(filterTax_card.toString().toLowerCase()))
+      &(!filterVat || data.vat.toLowerCase().includes(filterVat.toString().toLowerCase()))
+      &(!filterDiscount || data.discount.toLowerCase().includes(filterDiscount.toString().toLowerCase()))
+      &(!filterRegistered_trademark || data.registered_trademark.toLowerCase().includes(filterRegistered_trademark.toString().toLowerCase()))
+      &(!filterBusiness_license || data.business_license.toLowerCase().includes(filterBusiness_license.toString().toLowerCase()))
+      &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
+      &(!filterGrade || data.grade.toLowerCase().includes(filterGrade.toString().toLowerCase()))
+      )" border style="width: 100%">
+    <el-table-column min-width='70' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterId"> </el-input>
+                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.id}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="supplier_name"
-      label="供应商名称"
-      width="150"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterSupplier_name"> </el-input>
+                    <div slot="reference"> <label> 供应商名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.supplier_name}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="trade"
-      label="行业"
-      width="100"
-      align="center">
+    <el-table-column prop="trade" label="行业" width="100" align="center" :filters="[{text:'制造业', value:'制造业'},{text:'建筑业', value:'建筑业'}]" :filter-method="filtertrade">
     </el-table-column>
-    <el-table-column
-      prop="address"
-      label="地址"
-      width="200"
-      align="center">
+    <el-table-column min-width='250' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterAddress"> </el-input>
+                    <div slot="reference"> <label> 地址 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.address}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="contact_person"
-      label="联系人"
-      width="80"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterContact_person"> </el-input>
+                    <div slot="reference"> <label> 联系人 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.contact_person}}
+                </div>
+            </template>
     </el-table-column>
-     <el-table-column
-      prop="phone"
-      label="电话"
-      width="120"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterPhone"> </el-input>
+                    <div slot="reference"> <label> 电话 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.phone}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="fax"
-      label="传真"
-      width="120"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterFax"> </el-input>
+                    <div slot="reference"> <label> 传真 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.fax}}
+                </div>
+            </template>
     </el-table-column>
-     <el-table-column
-      prop="post_code"
-      label="邮编"
-      width="80"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterPost_code"> </el-input>
+                    <div slot="reference"> <label> 邮编 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.post_code}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="juridical_person"
-      label="法人"
-      width="80"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterJuridical_person"> </el-input>
+                    <div slot="reference"> <label> 法人 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.juridical_person}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="bank_name"
-      label="开户银行"
-      width="200"
-      align="center">
+    <el-table-column min-width='200' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterBank_name"> </el-input>
+                    <div slot="reference"> <label> 开户银行 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.bank_name}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="bank_card"
-      label="银行账号"
-      width="150"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterBank_card"> </el-input>
+                    <div slot="reference"> <label> 银行账号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.bank_card}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="tax_card"
-      label="税务登记号"
-      width="150"
-      align="center">
+    <el-table-column min-width='180' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterTax_card"> </el-input>
+                    <div slot="reference"> <label> 税务登记号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.tax_card}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="vat"
-      label="增值税率"
-      width="80"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterVat"> </el-input>
+                    <div slot="reference"> <label> 增值税率 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.vat}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="supplier_type"
-      label="供应商类型"
-      width="80"
-      align="center">
+    <el-table-column prop="supplier_type" label="供应商类型" width="120" align="center" :filters="[{text:'往来单位', value:'往来单位'},{text:'其他客户', value:'其他客户'}]" :filter-method="filtersupplier_type">
     </el-table-column>
-    <el-table-column
-      prop="discount"
-      label="折扣"
-      width="80"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterDiscount"> </el-input>
+                    <div slot="reference"> <label> 折扣 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.discount}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="registered_trademark"
-      label="注册商标"
-      width="100"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterRegistered_trademark"> </el-input>
+                    <div slot="reference"> <label> 注册商标 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.registered_trademark}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="business_license"
-      label="营业执照"
-      width="150"
-      align="center">
+    <el-table-column min-width='180' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterBusiness_license"> </el-input>
+                    <div slot="reference"> <label> 营业执照 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.business_license}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="remarks"
-      label="备注"
-      width="100"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterRemarks"> </el-input>
+                    <div slot="reference"> <label> 备注 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.remarks}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="grade"
-      label="最新评级"
-      width="80"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterGrade"> </el-input>
+                    <div slot="reference"> <label> 最新评级 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.grade}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="current_process"
-      label="当前流程"
-      width="100"
-      align="center">
+    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -712,7 +851,16 @@ import PingjiService from "../services/PingjiService";
        },
       handleClick(row) {
         console.log(row);
-      }
+      },
+      filtertrade(value, row){
+            return row.trade === value;
+        },
+      filterCurrent(value, row){
+            return row.current_process === value;
+        },
+      filtersupplier_type(value, row){
+            return row.supplier_type === value;
+        }
     },
 
     data() {
@@ -748,6 +896,23 @@ import PingjiService from "../services/PingjiService";
         addZiliao:{},
         updateZiliao:{},
         kanZiliao:{},
+        filterId:'',
+        filterSupplier_name:'',
+        filterAddress:'',
+        filterContact_person:'',
+        filterPhone:'',
+        filterFax:'',
+        filterPost_code:'',
+        filterJuridical_person:'',
+        filterBank_name:'',
+        filterBank_card:'',
+        filterTax_card:'',
+        filterVat:'',
+        filterDiscount:'',
+        filterRegistered_trademark:'',
+        filterBusiness_license:'',
+        filterRemarks:'',
+        filterGrade:'',
         dialogFormVisible: false,
         dialogFormVisible1: false,
         dialogFormVisible2: false,

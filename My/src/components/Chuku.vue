@@ -12,56 +12,113 @@
       </el-col>
     </el-row>
   <el-table
-    :data="tableData"
-    border
-    style="width: 100%">
-    <el-table-column
-      prop="id"
-      label="编号"
-      width="100"
-      align="center">
+    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+      &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+      &(!filterGoods_name || data.goods_name.toLowerCase().includes(filterGoods_name.toString().toLowerCase()))
+      &(!filterGoods_danwei || data.goods_danwei.toLowerCase().includes(filterGoods_danwei.toString().toLowerCase()))
+      &(!filterChuku_number || data.chuku_number.toLowerCase().includes(filterChuku_number.toString().toLowerCase()))
+      &(!filterBefore_stock || data.before_stock.toLowerCase().includes(filterBefore_stock.toString().toLowerCase()))
+      &(!filterAfter_stock || data.after_stock.toLowerCase().includes(filterAfter_stock.toString().toLowerCase()))
+      )" border style="width: 100%">
+    <el-table-column min-width='30' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterId"> </el-input>
+                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.id}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="item_name"
-      label="项目名称"
-      width="250"
-      align="center">
+    <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterItem_name"> </el-input>
+                    <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.item_name}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="goods_name"
-      label="商品名"
-      width="150"
-      align="center">
+    <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterGoods_name"> </el-input>
+                    <div slot="reference"> <label> 商品名 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.goods_name}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="goods_danwei"
-      label="商品单位"
-      width="150"
-      align="center">
+    <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterGoods_danwei"> </el-input>
+                    <div slot="reference"> <label> 计量单位 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.goods_danwei}}
+                </div>
+            </template>
     </el-table-column>
-     <el-table-column
-      prop="chuku_number"
-      label="出库数量"
-      width="150"
-      align="center">
+    <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterChuku_number"> </el-input>
+                    <div slot="reference"> <label> 出库数量 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.chuku_number}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="before_stock"
-      label="当前库存"
-      width="150"
-      align="center">
+    <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterBefore_stock"> </el-input>
+                    <div slot="reference"> <label> 当前库存 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.before_stock}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="after_stock"
-      label="更新后库存"
-      width="150"
-      align="center">
+    <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterAfter_stock"> </el-input>
+                    <div slot="reference"> <label> 更新后库存 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.after_stock}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="current_process"
-      label="当前流程"
-      width="150"
-      align="center">
+    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -409,6 +466,9 @@ import ChukuService from "../services/ChukuService"
       handleClick(row) {
         console.log(row);
       },
+      filterCurrent(value, row){
+            return row.current_process === value;
+        }
     },
 
     data() {
@@ -431,6 +491,13 @@ import ChukuService from "../services/ChukuService"
         addchuku:{},
         updatechuku:{},
         kanchuku:{},
+        filterId:'',
+        filterItem_name:'',
+        filterGoods_name:'',
+        filterGoods_danwei:'',
+        filterChuku_number:'',
+        filterBefore_stock:'',
+        filterAfter_stock:'',
         dialogFormVisible: false,
         dialogFormVisible1: false,
         dialogFormVisible2: false,

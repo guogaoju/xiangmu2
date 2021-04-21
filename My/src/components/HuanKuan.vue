@@ -12,44 +12,97 @@
       </el-col>
     </el-row>
   <el-table
-    :data="tableData"
-    border
-    style="width: 100%">
-    <el-table-column
-      prop="id"
-      label="编号"
-      width="100"
-      align="center">
+     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+      &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+      &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
+      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+      &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
+      &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
+      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+      )" border style="width: 100%">
+    <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterId"> </el-input>
+                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.id}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="item_name"
-      label="还款项目名称"
-      width="250"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterItem_name"> </el-input>
+                    <div slot="reference"> <label> 还款项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.item_name}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="total_quota"
-      label="授信总额度"
-      width="150"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterTotal_quota"> </el-input>
+                    <div slot="reference"> <label> 授信总额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.total_quota}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="money"
-      label="已用授信额度"
-      width="150"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterMoney"> </el-input>
+                    <div slot="reference"> <label> 已用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.money}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="huan_money"
-      label="还款金额"
-      width="150"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterHuan_money"> </el-input>
+                    <div slot="reference"> <label> 还款金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.huan_money}}
+                </div>
+            </template>
     </el-table-column>
-     <el-table-column
-      prop="huan_money1"
-      label="还款后使用授信额度"
-      width="150"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterHuan_money1"> </el-input>
+                    <div slot="reference"> <label> 还款后使用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.huan_money1}}
+                </div>
+            </template>
     </el-table-column>
     <el-table-column
       prop="huan_stream"
@@ -57,11 +110,7 @@
       width="150"
       align="center">
     </el-table-column>
-    <el-table-column
-      prop="current_process"
-      label="当前流程"
-      width="150"
-      align="center">
+    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -435,6 +484,9 @@ import HuanKuanService from "../services/HuanKuanService"
       handleClick(row) {
         console.log(row);
       },
+      filterCurrent(value, row){
+            return row.current_process === value;
+        },
 
       handleAvatarSuccess(res, file) {
          
@@ -472,6 +524,12 @@ import HuanKuanService from "../services/HuanKuanService"
         addhuankuan:{},
         updatehuankuan:{},
         kanhuankuan:{},
+        filterId:'',
+        filterItem_name:'',
+        filterTotal_quota:'',
+        filterMoney:'',
+        filterHuan_money:'',
+        filterHuan_money1:'',
         dialogFormVisible: false,
         dialogFormVisible1: false,
         dialogFormVisible2: false,

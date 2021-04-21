@@ -12,17 +12,34 @@
             <el-button type="primary" @click="openFrom()">添加</el-button>
         </el-col>
     </el-row>
-    <el-table :data="tableData.filter(data => !filteredName || data.name.toLowerCase().includes(filteredName.toString().toLowerCase()))" border style="width: 100%">
+    <el-table :data="tableData.filter(data => (!filteredName || data.name.toLowerCase().includes(filteredName.toString().toLowerCase()))
+        &(!filterDanwei || data.danwei.toLowerCase().includes(filterDanwei.toString().toLowerCase()))
+        &(!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+        &(!filterSpecification || data.Specification.toLowerCase().includes(filterSpecification.toString().toLowerCase()))
+        &(!filterWuliaotype || data.wuliaotype.toLowerCase().includes(filterWuliaotype.toString().toLowerCase()))
+        &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
+        )" border style="width: 100%">
 
-        <el-table-column prop="id" column-key="id" label="编号" width="100" align="center" :filters="[{text:'1', value:1},{text:'2', value:2}]" :filter-method="filterId">
+         <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterId"> </el-input>
+                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.id}}
+                </div>
+            </template>
         </el-table-column>
-        <el-table-column prop="name" label="名称" width="200" align="center">
-        </el-table-column>
-        <el-table-column min-width='150'>
+        <el-table-column min-width='50' align="center">
+            <!-- eslint-disable-next-line -->
             <template slot="header" slot-scope="scope">
                 <el-popover placement="bottom" trigger="click">
                     <el-input v-model="filteredName"> </el-input>
-                    <div slot="reference"> <label> 名称筛选例子 </label> <i class='el-icon-arrow-down'> </i> </div>
+                    <div slot="reference"> <label> 名称 </label> <i class='el-icon-arrow-down'> </i> </div>
                 </el-popover>
             </template>
             <template slot-scope="scope">
@@ -31,29 +48,70 @@
                 </div>
             </template>
         </el-table-column>
-        <el-table-column prop="Specification" label="规格型号" width="200" align="center">
+        <el-table-column min-width='50' align="center">
+            <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterSpecification"> </el-input>
+                    <div slot="reference"> <label> 规格型号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.Specification}}
+                </div>
+            </template>
         </el-table-column>
-        <el-table-column prop="wuliaotype" label="物料类型" width="200" align="center">
+        <el-table-column min-width='50' align="center">
+            <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterWuliaotype"> </el-input>
+                    <div slot="reference"> <label> 物料类型 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.wuliaotype}}
+                </div>
+            </template>
         </el-table-column>
-        <el-table-column prop="danwei" label="计量单位" width="120" align="center">
+        <el-table-column min-width='50' align="center">
+            <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterDanwei"> </el-input>
+                    <div slot="reference"> <label> 计量单位 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.danwei}}
+                </div>
+            </template>
         </el-table-column>
-        <!-- <el-table-column
-      prop="avatar"
-      label="图片"
-      width="200"
-      align="center">
-    </el-table-column> -->
-        <el-table-column min-width="55" prop="avatar" label="物料图片">
+        <el-table-column min-width="55"  prop="avatar" label="物料图片" align="center">
             <template slot-scope="scope">
                 <el-image style="width: 100px; height: 100px" :src="scope.row.avatar" :preview-src-list="[scope.row.avatar]">
                 </el-image>
             </template>
         </el-table-column>
-        <el-table-column prop="remarks" label="备注" width="150" align="center">
+        <el-table-column min-width='50' align="center">
+            <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterRemarks"> </el-input>
+                    <div slot="reference"> <label> 备注 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.remarks}}
+                </div>
+            </template>
         </el-table-column>
-        <el-table-column prop="current_process" label="当前流程" width="150" align="center">
+        <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
         </el-table-column>
-
         <el-table-column fixed="right" label="操作" width="300" align="center">
             <template slot-scope="scope">
                 <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
@@ -396,8 +454,8 @@ export default {
             }
             return isJPG && isLt2M;
         },
-        filterId(value, row) {
-            return row.id === value;
+        filterCurrent(value, row){
+            return row.current_process === value;
         }
     },
 
@@ -413,7 +471,13 @@ export default {
             addwuliao: {},
             updatewuliao: {},
             kanwuliao: {},
+            // current_process:'',
             filteredName: '',
+            filterDanwei: '',
+            filterId:'',
+            filterWuliaotype:'',
+            filterRemarks:'',
+            filterSpecification:'',
             dialogFormVisible: false,
             dialogFormVisible1: false,
             dialogFormVisible2: false,

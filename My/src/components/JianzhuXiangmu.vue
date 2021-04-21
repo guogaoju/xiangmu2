@@ -12,128 +12,294 @@
       </el-col>
     </el-row>
   <el-table
-    :data="tableData"
-    border
-    style="width: 100%">
-    <el-table-column
-      prop="id"
-      label="编号"
-      width="80"
-      align="center">
+    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+      &(!filterBuilder || data.builder.toLowerCase().includes(filterBuilder.toString().toLowerCase()))
+      &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+      &(!filterTime || data.time.toLowerCase().includes(filterTime.toString().toLowerCase()))
+      &(!filterJindu || data.jindu.toLowerCase().includes(filterJindu.toString().toLowerCase()))
+      &(!filterItem_money || data.item_money.toLowerCase().includes(filterItem_money.toString().toLowerCase()))
+      &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
+      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+      &(!filterMoney1 || data.money1.toLowerCase().includes(filterMoney1.toString().toLowerCase()))
+      &(!filterMoney2 || data.money2.toLowerCase().includes(filterMoney2.toString().toLowerCase()))
+      &(!filterInterest || data.interest.toLowerCase().includes(filterInterest.toString().toLowerCase()))
+      &(!filterInterest1 || data.interest1.toLowerCase().includes(filterInterest1.toString().toLowerCase()))
+      &(!filterReturn || data.Return.toLowerCase().includes(filterReturn.toString().toLowerCase()))
+      &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
+      &(!filterfax || data.fax.toLowerCase().includes(filterfax.toString().toLowerCase()))
+      &(!filterA || data.A.toLowerCase().includes(filterA.toString().toLowerCase()))
+      &(!filterB || data.B.toLowerCase().includes(filterB.toString().toLowerCase()))
+      &(!filterC || data.C.toLowerCase().includes(filterC.toString().toLowerCase()))
+      &(!filterGrade || data.grade.toLowerCase().includes(filterGrade.toString().toLowerCase()))
+      &(!filterCause || data.cause.toLowerCase().includes(filterCause.toString().toLowerCase()))
+      )" border style="width: 100%">
+    <el-table-column min-width='80' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterId"> </el-input>
+                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.id}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="builder"
-      label="建筑商"
-      width="120"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterBuilder"> </el-input>
+                    <div slot="reference"> <label> 建筑商 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.builder}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="item_name"
-      label="项目名称"
-      width="120"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterItem_name"> </el-input>
+                    <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.item_name}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="time"
-      label="竣工时间"
-      width="120"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterTime"> </el-input>
+                    <div slot="reference"> <label> 竣工时间 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.time}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="jindu"
-      label="工程进度"
-      width="120"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterJindu"> </el-input>
+                    <div slot="reference"> <label> 工程进度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.jindu}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="item_money"
-      label="项目总价"
-      width="100"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterItem_money"> </el-input>
+                    <div slot="reference"> <label> 项目总金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.item_money}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="total_quota"
-      label="授信总额度"
-      width="120"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterTotal_quota"> </el-input>
+                    <div slot="reference"> <label> 授信总额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.total_quota}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="money"
-      label="已申请融资金额"
-      width="150"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterMoney"> </el-input>
+                    <div slot="reference"> <label> 已申请金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.money}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="money1"
-      label="已完工金额"
-      width="100"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterMoney1"> </el-input>
+                    <div slot="reference"> <label> 已完工金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.money1}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="money2"
-      label="已付工程款"
-      width="100"
-      align="center">
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterMoney2"> </el-input>
+                    <div slot="reference"> <label> 已付工程款 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.money2}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="interest"
-      label="利息%"
-      width="100"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterInterest"> </el-input>
+                    <div slot="reference"> <label> 利息% </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.interest}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="interest1"
-      label="利息收入"
-      width="100"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterInterest1"> </el-input>
+                    <div slot="reference"> <label> 利息收入 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.interest1}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="Return"
-      label="回款率%"
-      width="100"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterReturn"> </el-input>
+                    <div slot="reference"> <label> 回款率% </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.Return}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="fax"
-      label="有无欠款"
-      width="100"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterfax"> </el-input>
+                    <div slot="reference"> <label> 有无欠款 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.fax}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="A"
-      label="A分数"
-      width="100"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterA"> </el-input>
+                    <div slot="reference"> <label> A分数 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.A}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="B"
-      label="α比率"
-      width="100"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterB"> </el-input>
+                    <div slot="reference"> <label> α比率 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.B}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="C"
-      label="β比率"
-      width="150"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterC"> </el-input>
+                    <div slot="reference"> <label> β比率 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.C}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="grade"
-      label="项目评级"
-      width="100"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterGrade"> </el-input>
+                    <div slot="reference"> <label> 项目评级 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.grade}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="cause"
-      label="原因"
-      width="150"
-      align="center">
+    <el-table-column min-width='100' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterCause"> </el-input>
+                    <div slot="reference"> <label> 原因 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.cause}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="current_process"
-      label="当前流程"
-      width="100"
-      align="center">
+    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -779,7 +945,9 @@ import WuliaoService from "../services/WuliaoService";
       handleClick(row) {
         console.log(row);
       },
-
+      filterCurrent(value, row){
+            return row.current_process === value;
+        },
 
     // 
     cancelForm() {
@@ -816,9 +984,28 @@ form: {
         },
         tableData:[],
         result:[],
-      addxiangmu:{},
-      updatexiangmu:{},
-      kanxiangmu:{},
+        addxiangmu:{},
+        updatexiangmu:{},
+        kanxiangmu:{},
+        filterId:'',
+        filterBuilder:'',
+        filterItem_name:'',
+        filterTime:'',
+        filterJindu:'',
+        filterItem_money:'',
+        filterTotal_quota:'',
+        filterMoney:'',
+        filterMoney1:'',
+        filterMoney2:'',
+        filterInterest:'',
+        filterInterest1:'',
+        Return:'',
+        filterfax:'',
+        filterA:'',
+        filterB:'',
+        filterC:'',
+        filterGrade:'',
+        filterCause:'',
         dialogFormVisible: false,
         dialogFormVisible1: false,
         dialogFormVisible2: false,

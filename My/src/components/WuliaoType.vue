@@ -6,45 +6,75 @@
       <el-breadcrumb-item>基本资料管理</el-breadcrumb-item>
       <el-breadcrumb-item>基本资料</el-breadcrumb-item>
       <el-breadcrumb-item>物料分类</el-breadcrumb-item>
-    </el-breadcrumb>
+  </el-breadcrumb>
     <el-row>
       <el-col :span="10">
         <el-button type="primary" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
   <el-table
-    :data="tableData"
-    border
-    style="width: 100%">
-    <el-table-column
-      prop="id"
-      label="编号"
-      width="150"
-      align="center">
+    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+      &(!filteredName || data.name.toLowerCase().includes(filteredName.toString().toLowerCase()))
+      &(!filteredType || data.type.toLowerCase().includes(filteredType.toString().toLowerCase()))
+      &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
+      )" border style="width: 100%">
+    <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterId"> </el-input>
+                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.id}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="name"
-      label="名称"
-      width="200"
-      align="center">
+    <el-table-column min-width='50' align="center">
+            <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filteredName"> </el-input>
+                    <div slot="reference"> <label> 名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.name}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="type"
-      label="类型"
-      width="200"
-      align="center">
+    <el-table-column min-width='50' align="center">
+            <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filteredType"> </el-input>
+                    <div slot="reference"> <label> 类型 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.type}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="remarks"
-      label="备注"
-      width="250"
-      align="center">
+    <el-table-column min-width='50' align="center">
+            <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterRemarks"> </el-input>
+                    <div slot="reference"> <label> 备注 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.remarks}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="current_process"
-      label="当前流程"
-      width="200"
-      align="center">
+    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
     </el-table-column>
     <el-table-column
       label="操作"
@@ -311,6 +341,9 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
       handleClick(row) {
         console.log(row);
       },
+      filterCurrent(value, row){
+            return row.current_process === value;
+        }
     },
 
     data() {
@@ -329,6 +362,10 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
         addtype:{},
         updatetype:{},
         kantype:{},
+        filterId:'',
+        filteredName:'', 
+        filteredType:'',
+        filterRemarks:'',
         dialogFormVisible: false,
         dialogFormVisible1: false,
         dialogFormVisible2: false,

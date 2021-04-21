@@ -13,32 +13,67 @@
       </el-col>
     </el-row>
   <el-table
-    :data="tableData"
-    border
-    style="width: 100%">
-    <el-table-column
-      prop="id"
-      label="编号"
-      width="100"
-      align="center">
+    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+      &(!filterSupplier_name || data.supplier_name.toLowerCase().includes(filterSupplier_name.toString().toLowerCase()))
+      &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
+      &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
+      &(!filterTotal_points || data.total_points.toLowerCase().includes(filterTotal_points.toString().toLowerCase()))
+      )" border style="width: 100%">
+    <el-table-column min-width='70' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterId"> </el-input>
+                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.id}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="supplier_name"
-      label="供应商名称"
-      width="250"
-      align="center">
+    <el-table-column min-width='70' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterSupplier_name"> </el-input>
+                    <div slot="reference"> <label> 供应商名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.supplier_name}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="year"
-      label="年度"
-      width="150"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterYear"> </el-input>
+                    <div slot="reference"> <label> 年度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.year}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="quarter"
-      label="季度"
-      width="150"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterQuarter"> </el-input>
+                    <div slot="reference"> <label> 季度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.quarter}}
+                </div>
+            </template>
     </el-table-column>
     <el-table-column
       prop="quantify_points"
@@ -52,17 +87,21 @@
       width="150"
       align="center">
     </el-table-column>
-    <el-table-column
-      prop="total_points"
-      label="评级总分"
-      width="150"
-      align="center">
+    <el-table-column min-width='130' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterTotal_points"> </el-input>
+                    <div slot="reference"> <label> 最终评级总分 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.total_points}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="current_process"
-      label="当前流程"
-      width="150"
-      align="center">
+     <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -551,7 +590,10 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
        },
       handleClick(row) {
         console.log(row);
-      }
+      },
+      filterCurrent(value, row){
+            return row.current_process === value;
+        }
     },
 
     data() {
@@ -574,9 +616,14 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
         },
         tableData:[],
         result:[],
-      addPingji:{},
-      updatePingji:{},
-      kanPingji:{},
+        addPingji:{},
+        updatePingji:{},
+        kanPingji:{},
+        filterId:'',
+        filterSupplier_name:'',
+        filterYear:'',
+        filterQuarter:'',
+        filterTotal_points:'',
         dialogFormVisible: false,
         dialogFormVisible1: false,
         dialogFormVisible2: false,

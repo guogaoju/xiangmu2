@@ -13,32 +13,66 @@
       </el-col>
     </el-row>
   <el-table
-    :data="tableData"
-    border
-    style="width: 100%">
-    <el-table-column
-      prop="id"
-      label="编号"
-      width="60"
-      align="center">
+    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+      &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
+      &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
+      &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
+      )" border style="width: 100%">
+    <el-table-column min-width='70' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterId"> </el-input>
+                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.id}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="qiye_name"
-      label="企业名称"
-      width="150"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterQiye_name"> </el-input>
+                    <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.qiye_name}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="year"
-      label="年度"
-      width="80"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterYear"> </el-input>
+                    <div slot="reference"> <label> 年度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.year}}
+                </div>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="quarter"
-      label="季度"
-      width="100"
-      align="center">
+    <el-table-column min-width='120' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterQuarter"> </el-input>
+                    <div slot="reference"> <label> 季度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.quarter}}
+                </div>
+            </template>
     </el-table-column>
     <el-table-column
       prop="total_assets"
@@ -154,11 +188,7 @@
       width="150"
       align="center">
     </el-table-column>
-    <el-table-column
-      prop="current_process"
-      label="当前流程"
-      width="100"
-      align="center">
+    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -866,7 +896,10 @@ import QiyeService from "../services/QiyeService"
        },
       handleClick(row) {
         console.log(row);
-      }
+      },
+      filterCurrent(value, row){
+            return row.current_process === value;
+        }
     },
 
     data() {

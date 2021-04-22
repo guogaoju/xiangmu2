@@ -156,8 +156,15 @@
             <el-row>
                 <el-form-item label="物料图片" ref="uploadElement" prop="avatar" :label-width="formLabelWidth">
                     <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
-                    <el-upload ref="upload" class="avatar-uploader" action="http://localhost:8080/api/Wuliao/upload" :show-file-list="false" :auto-upload="false" :data="addwuliao" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="addwuliao.avatar" :src="addwuliao.avatar" class="avatar">
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Wuliao/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="addwuliao" 
+                    :on-change="handleAvatarChange" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -215,7 +222,11 @@
             </el-row>
             <el-row>
                 <el-form-item label="物料图片" prop="avatar" :label-width="formLabelWidth">
-                    <el-upload v-model="updatewuliao.avatar" class="avatar-uploader" action="D:\img" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <el-upload v-model="updatewuliao.avatar" class="avatar-uploader" 
+                    action="" 
+                    :show-file-list="false" 
+                    :on-success="handleAvatarSuccess" 
+                    :before-upload="beforeAvatarUpload">
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -273,7 +284,11 @@
             </el-row>
             <el-row>
                 <el-form-item label="物料图片" prop="avatar" :label-width="formLabelWidth">
-                    <el-upload v-model="kanwuliao.avatar" class="avatar-uploader" action="http://localhost:80/system/user/uploadAvatar" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                    <el-upload v-model="kanwuliao.avatar" class="avatar-uploader" 
+                    action="" 
+                    :show-file-list="false" 
+                    :on-change="handleAvatarChange" 
+                    :before-upload="beforeAvatarUpload">
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -372,6 +387,7 @@ export default {
             WuliaoService.get(pa)
                 .then(response => {
                     this.kanwuliao = response.data;
+                    this.fileList[0].imageUrl=row.avatar;
                 })
                 .catch(e => {
                     console.log(e);
@@ -438,6 +454,10 @@ export default {
         handleClick(row) {
             console.log(row);
         },
+        handleAvatarChange(file,filelist) {
+
+            this.imageUrl = URL.createObjectURL(file.raw);
+        },
         handleAvatarSuccess(res, file) {
 
             this.imageUrl = URL.createObjectURL(file.raw);
@@ -461,6 +481,7 @@ export default {
 
     data() {
         return {
+            fileList:[{imageUrl:""}],
             imageUrl: '',
             TravelType: 1,
             formLabelWidth: "100px",

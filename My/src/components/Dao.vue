@@ -214,6 +214,10 @@ computed: {
                         this.$router.push('/JinduUpdate');
                         this.breadcrumbItems  = ['建筑项目进度更新']
                         break;
+                        case '3-5':
+                        this.$router.push('/Test');
+                        this.breadcrumbItems  = ['数据分析']
+                        break;
                     case '4-1':
                         this.$router.push('/Ruku');
                         this.breadcrumbItems  = ['入库记录']

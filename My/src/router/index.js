@@ -51,6 +51,10 @@ export default new Router({
           component: () => import('@/components/Hexin.vue')
         },
         {
+          path: '/Test',
+          component: () => import('@/components/Test.vue')
+        },
+        {
           path: '/CaiLiaogys',
           component: () => import('@/components/CaiLiaogys.vue')
         },

@@ -119,7 +119,6 @@
                 <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
             </template>
         </el-table-column>
-
     </el-table>
 
     <!-- 添加弹出层 -->
@@ -192,7 +191,7 @@
             </el-row>
         </el-form>
     </el-dialog>
-
+<!-- 测试 -->
     <!-- 修改弹出层 -->
     <el-dialog title="修改物料资料" :visible.sync="dialogFormVisible1">
         <el-form :model="updatewuliao" status-icon :rules="rules" ref="updatewuliao" label-width="100px" class="demo-ruleForm">

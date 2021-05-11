@@ -12,7 +12,8 @@ global.__basedir = __dirname;
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('./resources/static/assets/uploads'));
-
+app.use(express.static('./resources/static/assets/img'));
+app.use(express.static('./resources/static/assets/imgs'));
 const db = require("./app/models");
 db.sequelize.sync().then(() =>{
   // 第一次运行打开

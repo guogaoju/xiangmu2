@@ -220,13 +220,17 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-form-item label="物料图片" prop="avatar" :label-width="formLabelWidth">
-                    <el-upload v-model="updatewuliao.avatar" class="avatar-uploader" 
-                    action="" 
+                <el-form-item label="物料图片" ref="uploadElement" prop="avatar" :label-width="formLabelWidth">
+                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Wuliao/uploads" 
                     :show-file-list="false" 
-                    :on-success="handleAvatarSuccess" 
-                    :before-upload="beforeAvatarUpload">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    :auto-upload="false"
+                    :data="updatewuliao"  
+                    :on-change="handleAvatarChange" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl1" :src="imageUrl1" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -282,13 +286,16 @@
                 </el-col>
             </el-row>
             <el-row>
-                <el-form-item label="物料图片" prop="avatar" :label-width="formLabelWidth">
-                    <el-upload v-model="kanwuliao.avatar" class="avatar-uploader" 
-                    action="" 
+                 <el-form-item label="物料图片"  prop="avatar" :label-width="formLabelWidth">
+                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Wuliao/upload" 
                     :show-file-list="false" 
+                    :auto-upload="false" 
                     :on-change="handleAvatarChange" 
-                    :before-upload="beforeAvatarUpload">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl1" :src="imageUrl1" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -380,13 +387,15 @@ export default {
                 }
             })
         },
-        kanClick(index, row) {
+        kanClick(index,row) {
+            // this.kanwuliao = JSON.parse(JSON.stringify(index))
             this.dialogFormVisible2 = true
             let pa = this.tableData[index].id;
             WuliaoService.get(pa)
                 .then(response => {
                     this.kanwuliao = response.data;
-                    this.fileList[0].imageUrl=row.avatar;
+                    console.log(response.data.avatar)
+                    this.imageUrl1=response.data.avatar
                 })
                 .catch(e => {
                     console.log(e);
@@ -398,31 +407,47 @@ export default {
             WuliaoService.get(pa)
                 .then(response => {
                     this.updatewuliao = response.data;
+                    this.imageUrl1=response.data.avatar
+                    
                 })
                 .catch(e => {
                     console.log(e);
                 });
         },
-        updatesubmit() {
-            this.dialogFormVisible1 = false;
-            var data = {
+
+        
+        updatesubmit(formName) {
+            let vm = this;
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    vm.$refs.upload.submit();
+                    this.dialogFormVisible1 = false;
+                     var data = {
                 id: this.updatewuliao.id,
                 name: this.updatewuliao.name,
                 Specification: this.updatewuliao.Specification,
                 wuliaotype: this.updatewuliao.wuliaotype,
                 danwei: this.updatewuliao.danwei,
-                avatar: this.updatewuliao.avatar,
+                // "http://localhost:8080/" +req.file.filename,
+                avatar: this.imageUrl1,
                 remarks: this.updatewuliao.remarks,
                 current_process: this.updatewuliao.current_process
-            }
-            WuliaoService.update(data.id, data)
-                .then(response => {
-                    this.tableonload();
-                    console.log(response.data);
-                })
-                .catch(e => {
-                    console.log(e);
-                });
+                            }
+                    WuliaoService.update(data.id, data)
+                        .then(response => {
+                            this.tableonload();
+                            this.imageUrl=""
+                            //s刷新页面
+                            // this.$router.go(0)
+                            // console.log(response.data);
+                        })
+                        .catch(e => {
+                            console.log(e);
+                        });
+                } else {
+                    return false;
+                }
+            })
         },
         delClick(index, row) {
             let pa = this.tableData[index].id;
@@ -454,11 +479,12 @@ export default {
             console.log(row);
         },
         handleAvatarChange(file,filelist) {
-
+console.log(this.updatewuliao.avatar);
             this.imageUrl = URL.createObjectURL(file.raw);
+            this.imageUrl1 = URL.createObjectURL(file.raw);
         },
         handleAvatarSuccess(res, file) {
-
+this.imageUrl1 = URL.createObjectURL(file.raw);
             this.imageUrl = URL.createObjectURL(file.raw);
         },
         beforeAvatarUpload(file) {
@@ -482,6 +508,7 @@ export default {
         return {
             fileList:[{imageUrl:""}],
             imageUrl: '',
+            imageUrl1: '',
             TravelType: 1,
             formLabelWidth: "100px",
             rules: {},
@@ -494,6 +521,7 @@ export default {
             // current_process:'',
             filteredName: '',
             filterDanwei: '',
+            avatar:'',
             filterId:'',
             filterWuliaotype:'',
             filterRemarks:'',

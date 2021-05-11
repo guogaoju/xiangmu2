@@ -9,6 +9,8 @@ module.exports = app => {
     
     router.post("/upload", upload.single("file"), wuliao.create);
 
+    router.post("/uploads", upload.single("file"), wuliao.update);
+
     //查找所有
     router.get("/", wuliao.findAll);
   

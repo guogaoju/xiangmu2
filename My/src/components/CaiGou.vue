@@ -92,23 +92,23 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column
-      prop="statement"
-      label="结算单"
-      width="100"
-      align="center">
+    <el-table-column min-width="120"  prop="statement" label="结算单" align="center">
+            <template slot-scope="scope">
+                <el-image style="width: 100px; height: 100px" :src="scope.row.statement" :preview-src-list="[scope.row.statement]">
+                </el-image>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="delivery_note"
-      label="送货单"
-      width="120"
-      align="center">
+    <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
+            <template slot-scope="scope">
+                <el-image style="width: 100px; height: 100px" :src="scope.row.delivery_note" :preview-src-list="[scope.row.delivery_note]">
+                </el-image>
+            </template>
     </el-table-column>
-    <el-table-column
-      prop="bill"
-      label="发票"
-      width="150"
-      align="center">
+    <el-table-column min-width="120"  prop="bill" label="发票" align="center">
+            <template slot-scope="scope">
+                <el-image style="width: 100px; height: 100px" :src="scope.row.bill" :preview-src-list="[scope.row.bill]">
+                </el-image>
+            </template>
     </el-table-column>
     <el-table-column min-width='120' align="center">
              <!-- eslint-disable-next-line -->
@@ -215,49 +215,53 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="8">
-            <el-form-item label="结算单" prop="statement" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
-                    action=""
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-        </el-col>
-        <el-col :span="8">
-            <el-form-item label="送货单" prop="delivery_note" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
-                    action=""
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-        </el-col>
-        <el-col :span="8">
-            <el-form-item label="发票" prop="bill" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
-                    action=""
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        
-      </el-row>
+          <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
+                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Caigou/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="addcaigou" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,imageUrl)}" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl" :src="imageUrl" class="statement">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
+                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Caigou/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="addcaigou" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,imageUrl1)}" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl1" :src="imageUrl1" class="delivery_note">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+        </el-row>
+        <el-row>
+          <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
+                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Caigou/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="addcaigou" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,imageUrl2)}" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl2" :src="imageUrl2" class="bill">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
+        </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="融资总预算" prop="money1" :label-width="formLabelWidth">
@@ -611,8 +615,12 @@ import WuliaoService from "../services/WuliaoService";
        openFrom(){
            this.dialogFormVisible=true
        },
-        async addservice(){
-          this.dialogFormVisible=false;
+       addsubmit(formName){
+          let vm = this;
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+             vm.$refs.upload.submit();
+             this.dialogFormVisible=false;
             var data = {
               qiye_name: this.addcaigou.qiye_name,
               item_name:this.addcaigou.item_name,
@@ -627,20 +635,15 @@ import WuliaoService from "../services/WuliaoService";
               money3:this.addcaigou.money3,
               money4:this.addcaigou.money4,
               current_process:this.addcaigou.current_process
-          }
-         CaiGouService.create(data)
-        .then(response => {
+          } 
+          CaiGouService.create(data).then(response => {
           this.tableonload();
+           this.$router.go(0)
           console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
-        },
-       addsubmit(formName){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
           } else {
             return false;
           }
@@ -774,22 +777,29 @@ import WuliaoService from "../services/WuliaoService";
       filterCurrent(value, row){
             return row.current_process === value;
         },
-    handleAvatarSuccess(res, file) {
-         
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
-      beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+    handleAvatarChange(file,filelist,imageUrl) {
+             imageUrl = URL.createObjectURL(file.raw);
+           console.log(imageUrl)
+        },
+        handleAvatarSuccess(res, file) {
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
-      },
+            this.imageUrl = URL.createObjectURL(file.raw);
+        },
+        beforeAvatarUpload(file) {
+            const isJPG = file.type === 'image/jpeg';
+            const isLt2M = file.size / 1024 / 1024 < 2;
+
+            if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!');
+            }
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!');
+            }
+            return isJPG && isLt2M;
+        },
+        filterCurrent(value, row){
+            return row.current_process === value;
+        },
 
     // 
     cancelForm() {
@@ -802,7 +812,10 @@ import WuliaoService from "../services/WuliaoService";
 
     data() {
       return {
+        fileList:[{imageUrl:""}],
           imageUrl: '',
+          imageUrl1: '',
+          imageUrl2: '',
         dialog: false,
         loading: false,
 form: {

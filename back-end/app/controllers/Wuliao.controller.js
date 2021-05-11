@@ -25,10 +25,10 @@ exports.create = (req, res) => {
     };
     Wuliao.create(wuliao)
       .then(data => {
-        res.send(data);
+       return res.send(data);
       })
       .catch(err => {
-        res.status(500).send({
+        return res.status(500).send({
           message:
             err.message || "Some error occurred while creating the Wuliao."
         });
@@ -82,17 +82,17 @@ exports.update = (req, res) => {
     })
       .then(num => {
         if (num == 1) {
-          res.send({
+          return res.send({
             message: "Wuliao was updated successfully."
           });
         } else {
-          res.send({
+          return res.send({
             message: `Cannot update Wuliao with id=${id}. Maybe Wuliao was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
-        res.status(500).send({
+        return  res.status(500).send({
           message: "Error updating Wuliao with id=" + id
         });
       });

@@ -161,6 +161,8 @@
                     :auto-upload="false" 
                     :data="addwuliao" 
                     :on-change="handleAvatarChange" 
+                    //上传成功钩子，里面可以读到后端传回来的url
+                    :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload"
                     :file-list="fileList">
                         <img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -230,7 +232,8 @@
                     :on-change="handleAvatarChange" 
                     :before-upload="beforeAvatarUpload"
                     :file-list="fileList">
-                        <img v-if="imageUrl1" :src="imageUrl1" class="avatar">
+                    //用一个变量存url就行了
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -295,7 +298,7 @@
                     :on-change="handleAvatarChange" 
                     :before-upload="beforeAvatarUpload"
                     :file-list="fileList">
-                        <img v-if="imageUrl1" :src="imageUrl1" class="avatar">
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -343,6 +346,8 @@ export default {
                 });
         },
         openFrom() {
+            //新建时候清空url
+            this.imageUrl=""
             this.dialogFormVisible = true
             DanweiService.getAll()
                 .then(response => {
@@ -357,10 +362,13 @@ export default {
                     console.log(e);
                 });
         },
+
         addsubmit(formName) {
             let vm = this;
             this.$refs[formName].validate((valid) => {
                 if (valid) {
+                    //提交图片到后台，并读取返回的地址
+                    //提交成功后，会自动调用handleAvatarSuccess，得到图片url
                     vm.$refs.upload.submit();
                     this.dialogFormVisible = false;
                     var data = {
@@ -368,7 +376,8 @@ export default {
                         Specification: this.addwuliao.Specification,
                         wuliaotype: this.addwuliao.wuliaotype,
                         danwei: this.addwuliao.danwei,
-                        avatar: this.addwuliao.avatar,
+                        //读到的url在这用
+                        avatar: this.imageUrl,
                         remarks: this.addwuliao.remarks,
                         current_process: this.addwuliao.current_process
                     }
@@ -385,6 +394,8 @@ export default {
                 } else {
                     return false;
                 }
+                //上传完成后清空一下
+                this.imageUrl=""
             })
         },
         kanClick(index,row) {
@@ -394,8 +405,8 @@ export default {
             WuliaoService.get(pa)
                 .then(response => {
                     this.kanwuliao = response.data;
-                    console.log(response.data.avatar)
-                    this.imageUrl1=response.data.avatar
+                    //console.log(response.data.avatar)
+                    this.imageUrl=response.data.avatar
                 })
                 .catch(e => {
                     console.log(e);
@@ -407,7 +418,7 @@ export default {
             WuliaoService.get(pa)
                 .then(response => {
                     this.updatewuliao = response.data;
-                    this.imageUrl1=response.data.avatar
+                    this.imageUrl=response.data.avatar
                     
                 })
                 .catch(e => {
@@ -429,14 +440,13 @@ export default {
                 wuliaotype: this.updatewuliao.wuliaotype,
                 danwei: this.updatewuliao.danwei,
                 // "http://localhost:8080/" +req.file.filename,
-                avatar: this.imageUrl1,
+                avatar: this.imageUrl,
                 remarks: this.updatewuliao.remarks,
                 current_process: this.updatewuliao.current_process
                             }
                     WuliaoService.update(data.id, data)
                         .then(response => {
                             this.tableonload();
-                            this.imageUrl=""
                             //s刷新页面
                             // this.$router.go(0)
                             // console.log(response.data);
@@ -448,6 +458,7 @@ export default {
                     return false;
                 }
             })
+            this.imageUrl=""
         },
         delClick(index, row) {
             let pa = this.tableData[index].id;
@@ -479,13 +490,15 @@ export default {
             console.log(row);
         },
         handleAvatarChange(file,filelist) {
-console.log(this.updatewuliao.avatar);
+            //在上传之前，暂时用前端的临时url，显示图片用            
             this.imageUrl = URL.createObjectURL(file.raw);
-            this.imageUrl1 = URL.createObjectURL(file.raw);
+            //this.imageUrl1 = URL.createObjectURL(file.raw);
         },
         handleAvatarSuccess(res, file) {
-this.imageUrl1 = URL.createObjectURL(file.raw);
-            this.imageUrl = URL.createObjectURL(file.raw);
+            //this.imageUrl1 = URL.createObjectURL(file.raw);
+            //this.imageUrl = URL.createObjectURL(file.raw);
+            //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
+            this.imageUrl = res.url;
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';
@@ -508,7 +521,6 @@ this.imageUrl1 = URL.createObjectURL(file.raw);
         return {
             fileList:[{imageUrl:""}],
             imageUrl: '',
-            imageUrl1: '',
             TravelType: 1,
             formLabelWidth: "100px",
             rules: {},

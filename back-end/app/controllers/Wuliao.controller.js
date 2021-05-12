@@ -19,7 +19,8 @@ exports.create = (req, res) => {
       Specification:req.body.Specification,
       wuliaotype: req.body.wuliaotype,
       danwei:req.body.danwei,
-      avatar:"http://localhost:8080/" +req.file.filename,
+      //前端可以传来正确的url了
+      avatar:req.body.avatar,
       remarks:req.body.remarks,
       current_process:req.body.current_process,
     };

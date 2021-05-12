@@ -225,7 +225,7 @@
                     :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
                     :before-upload="beforeAvatarUpload"
                     :file-list="fileList">
-                        <img v-if="imageUrlfront[0]" :src="imageUrlfront[0]" class="statement">
+                        <img v-if="imageUrlback[0]" :src="imageUrlback[0]" class="statement">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -241,7 +241,7 @@
                     :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,1)}" 
                     :before-upload="beforeAvatarUpload"
                     :file-list="fileList">
-                        <img v-if="imageUrlfront[1]" :src="imageUrlfront[1]" class="delivery_note">
+                        <img v-if="imageUrlback[1]" :src="imageUrlback[1]" class="delivery_note">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -257,7 +257,7 @@
                     :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,2)}" 
                     :before-upload="beforeAvatarUpload"
                     :file-list="fileList">
-                        <img v-if="imageUrlfront[2]" :src="imageUrlfront[2]" class="bill">
+                        <img v-if="imageUrlback[2]" :src="imageUrlback[2]" class="bill">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -343,7 +343,7 @@
             <el-form-item label="结算单" prop="statement" :label-width="formLabelWidth">
                 <el-upload
                     class="avatar-uploader"
-                    action=""
+                    action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
@@ -356,7 +356,7 @@
             <el-form-item label="送货单" prop="delivery_note" :label-width="formLabelWidth">
                 <el-upload
                     class="avatar-uploader"
-                    action=""
+                    action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
@@ -371,7 +371,7 @@
             <el-form-item label="发票" prop="bill" :label-width="formLabelWidth">
                 <el-upload
                     class="avatar-uploader"
-                    action=""
+                    action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload">
@@ -613,7 +613,11 @@ import WuliaoService from "../services/WuliaoService";
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
+          this.imageUrlback[0]=""
+          this.imageUrlback[1]=""
+          this.imageUrlback[2]=""
+
+          this.dialogFormVisible=true
        },
        addsubmit(formName){
           let vm = this;
@@ -647,6 +651,9 @@ import WuliaoService from "../services/WuliaoService";
             return false;
           }
         });
+        this.imageUrlback[0]=""
+        this.imageUrlback[1]=""
+        this.imageUrlback[2]=""
         },
         addform(){
             this.dialog=true;
@@ -777,15 +784,21 @@ import WuliaoService from "../services/WuliaoService";
             return row.current_process === value;
         },
     handleAvatarChange(file,fileList,index) {
-           this.imageUrlfront[index] = URL.createObjectURL(file.raw);
-           this.$refs.upload.submit();
+           //this.imageUrlfront[index] = URL.createObjectURL(file.raw);
+            if (file.status !== 'ready'){
+              return;
+            }
+           if (index===0)
+              this.$refs.upload.submit();
+           if (index===1)
              this.$refs.upload1.submit();
+           if (index===2)
              this.$refs.upload2.submit();
         },
        handleAvatarSuccess(response,file,fileList,index) {
             //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
             this.imageUrlback[index] = response.url;
-           console.log(this.imageUrlback[index])
+            this.$forceUpdate();
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';

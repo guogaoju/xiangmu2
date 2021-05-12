@@ -216,48 +216,48 @@
       </el-row>
       <el-row>
           <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
-                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
                     <el-upload ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
                     :data="addcaigou" 
-                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,imageUrl)}" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
+                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
                     :before-upload="beforeAvatarUpload"
                     :file-list="fileList">
-                        <img v-if="imageUrl" :src="imageUrl" class="statement">
+                        <img v-if="imageUrlfront[0]" :src="imageUrlfront[0]" class="statement">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
         </el-row>
         <el-row>
           <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
-                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
-                    <el-upload ref="upload" class="avatar-uploader" 
+                    <el-upload ref="upload1" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
                     :data="addcaigou" 
-                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,imageUrl1)}" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,1)}"
+                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,1)}" 
                     :before-upload="beforeAvatarUpload"
                     :file-list="fileList">
-                        <img v-if="imageUrl1" :src="imageUrl1" class="delivery_note">
+                        <img v-if="imageUrlfront[1]" :src="imageUrlfront[1]" class="delivery_note">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
         </el-row>
         <el-row>
           <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
-                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
-                    <el-upload ref="upload" class="avatar-uploader" 
+                    <el-upload ref="upload2" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
                     :data="addcaigou" 
-                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,imageUrl2)}" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,2)}"
+                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,2)}" 
                     :before-upload="beforeAvatarUpload"
                     :file-list="fileList">
-                        <img v-if="imageUrl2" :src="imageUrl2" class="bill">
+                        <img v-if="imageUrlfront[2]" :src="imageUrlfront[2]" class="bill">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
@@ -619,17 +619,16 @@ import WuliaoService from "../services/WuliaoService";
           let vm = this;
         this.$refs[formName].validate((valid) => {
           if (valid) {
-             vm.$refs.upload.submit();
              this.dialogFormVisible=false;
             var data = {
               qiye_name: this.addcaigou.qiye_name,
               item_name:this.addcaigou.item_name,
               money: this.addcaigou.money,
               totalmoney : this.addcaigou.totalmoney ,
-              statement:this.addcaigou.statement,
               total_quota:this.addcaigou.total_quota,
-              delivery_note:this.addcaigou.delivery_note,
-              bill:this.addcaigou.bill,
+              statement:this.imageUrlback[0],
+              delivery_note:this.imageUrlback[1],
+              bill:this.imageUrlback[2],
               money1:this.addcaigou.money1,
               money2:this.addcaigou.money2,
               money3:this.addcaigou.money3,
@@ -638,7 +637,7 @@ import WuliaoService from "../services/WuliaoService";
           } 
           CaiGouService.create(data).then(response => {
           this.tableonload();
-           this.$router.go(0)
+          //  this.$router.go(0)
           console.log(response.data);
         })
         .catch(e => {
@@ -777,13 +776,16 @@ import WuliaoService from "../services/WuliaoService";
       filterCurrent(value, row){
             return row.current_process === value;
         },
-    handleAvatarChange(file,filelist,imageUrl) {
-             imageUrl = URL.createObjectURL(file.raw);
-           console.log(imageUrl)
+    handleAvatarChange(file,fileList,index) {
+           this.imageUrlfront[index] = URL.createObjectURL(file.raw);
+           this.$refs.upload.submit();
+             this.$refs.upload1.submit();
+             this.$refs.upload2.submit();
         },
-        handleAvatarSuccess(res, file) {
-
-            this.imageUrl = URL.createObjectURL(file.raw);
+       handleAvatarSuccess(response,file,fileList,index) {
+            //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
+            this.imageUrlback[index] = response.url;
+           console.log(this.imageUrlback[index])
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';
@@ -812,10 +814,13 @@ import WuliaoService from "../services/WuliaoService";
 
     data() {
       return {
-        fileList:[{imageUrl:""}],
-          imageUrl: '',
-          imageUrl1: '',
-          imageUrl2: '',
+        fileList:[],
+        imageUrl:'',
+          imageUrlfront:[],
+          imageUrlback:[],
+          // imageUrl1: '',
+          // imageUrl2: '',
+          // imageUrl3: '',
         dialog: false,
         loading: false,
 form: {

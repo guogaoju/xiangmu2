@@ -6,8 +6,12 @@ module.exports = app => {
   
     //新增
     router.post("/", caigou.create);
-    router.post("/upload", upload.single("file"), caigou.create);
-    router.post("/uploads", uploads.single("file"), caigou.create);
+     //上传图片后向前端返回文件路径，前端收到这个路径以后和别的表单数据一起提交
+     router.post("/upload", upload.single("file"), (req,res) => {
+      // 需要返回图片的访问地址    域名+文件名
+      const url = "http://localhost:8080/" +req.file.filename
+      res.json({url})
+    });
     //查找所有
     router.get("/", caigou.findAll);
   

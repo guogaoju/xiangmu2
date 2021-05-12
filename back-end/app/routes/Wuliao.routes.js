@@ -7,9 +7,9 @@ module.exports = app => {
     //新增
     router.post("/", wuliao.create);
     
-    //这么写的话就直接调用create接口，提交数据了
+    //这么写的话就会直接调用create接口，提交数据了
     //router.post("/upload", upload.single("file"), wuliao.create);
-    //这么写回返回文件路径，前端收到这个路径以后和别的表单数据一起提交
+    //上传图片后向前端返回文件路径，前端收到这个路径以后和别的表单数据一起提交
     router.post("/upload", upload.single("file"), (req,res) => {
       // 需要返回图片的访问地址    域名+文件名
       const url = "http://localhost:8080/" +req.file.filename

@@ -19,7 +19,7 @@ exports.create = (req, res) => {
       Specification:req.body.Specification,
       wuliaotype: req.body.wuliaotype,
       danwei:req.body.danwei,
-      //前端可以传来正确的url了
+      //用前端传过来的正确的url
       avatar:req.body.avatar,
       remarks:req.body.remarks,
       current_process:req.body.current_process,

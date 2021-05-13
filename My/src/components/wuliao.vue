@@ -395,7 +395,6 @@ export default {
             })
         },
         kanClick(index,row) {
-            // this.kanwuliao = JSON.parse(JSON.stringify(index))
             this.dialogFormVisible2 = true
             let pa = this.tableData[index].id;
             WuliaoService.get(pa)
@@ -437,7 +436,6 @@ export default {
                 Specification: this.updatewuliao.Specification,
                 wuliaotype: this.updatewuliao.wuliaotype,
                 danwei: this.updatewuliao.danwei,
-                // "http://localhost:8080/" +req.file.filename,
                 avatar: this.imageUrl,
                 remarks: this.updatewuliao.remarks,
                 current_process: this.updatewuliao.current_process
@@ -448,9 +446,6 @@ export default {
                             //删除旧图片
                             http.delete('/general/deletefile',{data:{filename:this.oldUrl}});
                             this.oldUrl=""
-                            //s刷新页面
-                            // this.$router.go(0)
-                            // console.log(response.data);
                         })
                         .catch(e => {
                             console.log(e);
@@ -533,6 +528,7 @@ export default {
 
     data() {
         return {
+
             fileList:[{imageUrl:""}],
             imageUrl: '',
             oldUrl: '',

@@ -904,6 +904,10 @@ import QiyeService from "../services/QiyeService"
 
     data() {
       return {
+        filterId:'',
+        filterQiye_name:'',
+        filterYear:'',
+        filterQuarter:'',
         TravelType:1,
         formLabelWidth: "100px",
         rules:{

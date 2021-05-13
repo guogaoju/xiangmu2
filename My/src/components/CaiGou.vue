@@ -228,7 +228,7 @@
                         <img v-if="imageUrlback[0]" :src="imageUrlback[0]" class="statement">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
-                </el-form-item>
+            </el-form-item>
         </el-row>
         <el-row>
           <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
@@ -244,7 +244,7 @@
                         <img v-if="imageUrlback[1]" :src="imageUrlback[1]" class="delivery_note">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
-                </el-form-item>
+            </el-form-item>
         </el-row>
         <el-row>
           <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
@@ -260,7 +260,7 @@
                         <img v-if="imageUrlback[2]" :src="imageUrlback[2]" class="bill">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
-                </el-form-item>
+            </el-form-item>
         </el-row>
       <el-row>
         <el-col :span="12">
@@ -339,47 +339,52 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
-            <el-form-item label="结算单" prop="statement" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
+            <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
+                    <el-upload ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="updatecaigou" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
+                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrlback[0]" :src="imageUrlback[0]" class="statement">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
             </el-form-item>
-        </el-col>
-        <el-col :span="12">
-            <el-form-item label="送货单" prop="delivery_note" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
+      </el-row> 
+      <el-row>
+          <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
+                    <el-upload ref="upload1" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="updatecaigou" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,1)}"
+                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,1)}" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrlback[1]" :src="imageUrlback[1]" class="delivery_note">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
             </el-form-item>
-        </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
-            <el-form-item label="发票" prop="bill" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
+          <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
+                    <el-upload ref="upload2" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="updatecaigou" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,2)}"
+                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,2)}" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrlback[2]" :src="imageUrlback[2]" class="bill">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
             </el-form-item>
-        </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
@@ -457,47 +462,52 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
-            <el-form-item label="结算单" prop="statement" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
-                    action=""
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
+          <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="kancaigou" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
+                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrlback[0]" :src="imageUrlback[0]" class="statement">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+          </el-form-item>
+      </el-row> 
+        <el-row>
+          <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
+                    <el-upload ref="upload1" class="avatar-uploader" 
+                    action="" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="kancaigou" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,1)}"
+                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,1)}" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrlback[1]" :src="imageUrlback[1]" class="delivery_note">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
             </el-form-item>
-        </el-col>
-        <el-col :span="12">
-            <el-form-item label="送货单" prop="delivery_note" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
-                    action=""
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-        </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
-            <el-form-item label="发票" prop="bill" :label-width="formLabelWidth">
-                <el-upload
-                    class="avatar-uploader"
-                    action=""
-                    :show-file-list="false"
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
+            <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
+                    <el-upload ref="upload2" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Caigou/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="kancaigou" 
+                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,2)}"
+                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,2)}" 
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrlback[2]" :src="imageUrlback[2]" class="bill">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
             </el-form-item>
-        </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
@@ -698,6 +708,9 @@ import WuliaoService from "../services/WuliaoService";
            CaiGouService.get(pa)
          .then(response => {
                 this.kancaigou=response.data;
+                this.imageUrlback[0]=response.data.statement
+                this.imageUrlback[1]=response.data.delivery_note
+                this.imageUrlback[2]=response.data.bill
               })
               .catch(e => {
                 console.log(e);
@@ -709,46 +722,56 @@ import WuliaoService from "../services/WuliaoService";
            CaiGouService.get(pa)
          .then(response => {
                 this.updatecaigou=response.data;
+                this.imageUrlback[0]=response.data.statement
+                this.imageUrlback[1]=response.data.delivery_note
+                this.imageUrlback[2]=response.data.bill
+                //旧图片url另存一份,将来imageUrl会被覆盖
+                    this.oldUrl = this.imageUrlback[index];
               })
               .catch(e => {
                 console.log(e);
               });
        },
-       updateservice(){
-          this.dialogFormVisible1=false;
+       updatesubmit(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.dialogFormVisible1=false;
           var data = {
             id:this.updatecaigou.id,
-        qiye_name: this.updatecaigou.qiye_name,
-        item_name:this.updatecaigou.item_name,
-        money: this.updatecaigou.money,
-        totalmoney : this.updatecaigou.totalmoney ,
-        statement:this.updatecaigou.statement,
-        total_quota:this.updatecaigou.total_quota,
-        delivery_note:this.updatecaigou.delivery_note,
-        bill:this.updatecaigou.bill,
-        money1:this.updatecaigou.money1,
-        money2:this.updatecaigou.money2,
-        money3:this.updatecaigou.money3,
-        money4:this.updatecaigou.money4,
-        current_process:this.updatecaigou.current_process
+            qiye_name: this.updatecaigou.qiye_name,
+            item_name:this.updatecaigou.item_name,
+            money: this.updatecaigou.money,
+            totalmoney : this.updatecaigou.totalmoney ,
+            total_quota:this.updatecaigou.total_quota,
+            statement:this.imageUrlback[0],
+            delivery_note:this.imageUrlback[1],
+            bill:this.imageUrlback[2],
+            money1:this.updatecaigou.money1,
+            money2:this.updatecaigou.money2,
+            money3:this.updatecaigou.money3,
+            money4:this.updatecaigou.money4,
+            current_process:this.updatecaigou.current_process
         }
+
           CaiGouService.update(data.id,data)
         .then(response => {
           this.tableonload();
+           //删除旧图片
+                            http.delete('/general/deletefile',{data:{filename:this.oldUrl}});
+                            this.oldUrl=""
           console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
-       },
-       updatesubmit(formName){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
           } else {
             return false;
           }
         });
+        this.imageUrlback[0]=""
+        this.imageUrlback[1]=""
+        this.imageUrlback[2]=""
+        this.tmpUrl=""
        },
        delClick(index,row){
               let pa=this.tableData[index].id;
@@ -796,6 +819,9 @@ import WuliaoService from "../services/WuliaoService";
              this.$refs.upload2.submit();
         },
        handleAvatarSuccess(response,file,fileList,index) {
+         if (this.tmpUrl){
+                http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
+            }
             //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
             this.imageUrlback[index] = response.url;
             this.$forceUpdate();
@@ -827,10 +853,12 @@ import WuliaoService from "../services/WuliaoService";
 
     data() {
       return {
+        oldUrl: '',
+        tmpUrl: '',
         fileList:[],
         imageUrl:'',
-          imageUrlfront:[],
-          imageUrlback:[],
+        imageUrlfront:[],
+        imageUrlback:[],
           // imageUrl1: '',
           // imageUrl2: '',
           // imageUrl3: '',

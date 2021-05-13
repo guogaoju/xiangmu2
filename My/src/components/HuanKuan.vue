@@ -104,11 +104,11 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column
-      prop="huan_stream"
-      label="还款流水"
-      width="150"
-      align="center">
+    <el-table-column min-width="55"  prop="huan_stream" label="还款流水" align="center">
+            <template slot-scope="scope">
+                <el-image style="width: 100px; height: 100px" :src="scope.row.huan_stream" :preview-src-list="[scope.row.huan_stream]">
+                </el-image>
+            </template>
     </el-table-column>
     <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
     </el-table-column>
@@ -169,17 +169,20 @@
           </el-form-item>
         </el-col>
         <el-col>
-            <el-form-item label="还款流水" prop="huan_stream" :label-width="formLabelWidth">
-                <el-upload
-                class="avatar-uploader"
-                action=""
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-             </el-form-item>
+                <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/HuanKuan/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="addhuankuan" 
+                    :on-change="handleAvatarChange" 
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl" :src="imageUrl" class="huan_stream">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -245,17 +248,21 @@
           </el-form-item>
         </el-col>
         <el-col>
-            <el-form-item label="还款流水" prop="huan_stream" :label-width="formLabelWidth">
-                <el-upload
-                class="avatar-uploader"
-                action=""
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-             </el-form-item>
+            <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
+                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/HuanKuan/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="updatehuankuan" 
+                    :on-change="handleAvatarChange" 
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl" :src="imageUrl" class="huan_stream">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -320,17 +327,21 @@
           </el-form-item>
         </el-col>
         <el-col>
-            <el-form-item label="还款流水" prop="huan_stream" :label-width="formLabelWidth">
-                <el-upload
-                class="avatar-uploader"
-                action=""
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-             </el-form-item>
+            <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
+                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/HuanKuan/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="kanhuankuan" 
+                    :on-change="handleAvatarChange" 
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl" :src="imageUrl" class="huan_stream">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -364,25 +375,22 @@ import HuanKuanService from "../services/HuanKuanService"
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
-        //    CailiaogysService.getAll()
-        // .then(response => {
-        //   this.result = response.data;
-        //   console.log(response.data);
-        // })
-        // .catch(e => {
-        //   console.log(e);
-        // });
+         //新建时候清空url
+          this.imageUrl=""
+          this.dialogFormVisible=true
        },
-       async addservice(){
-              this.dialogFormVisible=false;
+       addsubmit(formName){
+         let vm = this;
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.dialogFormVisible=false;
           var data = {
             item_name: this.addhuankuan.item_name,
             total_quota: this.addhuankuan.total_quota,
             money: this.addhuankuan.money,
             huan_money:this.addhuankuan.huan_money,
             huan_money1:this.addhuankuan.huan_money1,
-            huan_stream:this.addhuankuan.huan_stream,
+            huan_stream:this.imageUrl,
             current_process:this.addhuankuan.current_process
           }
         HuanKuanService.create(data)
@@ -393,14 +401,12 @@ import HuanKuanService from "../services/HuanKuanService"
         .catch(e => {
           console.log(e);
         });
-       },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
           } else {
             return false;
           }
+          //上传完成后清空一下
+                this.imageUrl=""
+                this.tmpUrl=""
         });
         },
        kanClick(index,row){
@@ -409,6 +415,7 @@ import HuanKuanService from "../services/HuanKuanService"
            HuanKuanService.get(pa)
          .then(response => {
                 this.kanhuankuan=response.data;
+                this.imageUrl=response.data.huan_stream
               })
               .catch(e => {
                 console.log(e);
@@ -420,12 +427,20 @@ import HuanKuanService from "../services/HuanKuanService"
            HuanKuanService.get(pa)
          .then(response => {
                 this.updatehuankuan=response.data;
+                 this.imageUrl=response.data.huan_stream;
+                    //旧图片url另存一份,将来imageUrl会被覆盖
+                    this.oldUrl = this.imageUrl;
               })
               .catch(e => {
                 console.log(e);
               });
        },
        updateservice(){
+            
+       },
+       updatesubmit(formName){
+          this.$refs[formName].validate((valid) => {
+          if (valid) {
             this.dialogFormVisible1=false;
             var data = {
             id:this.updatehuankuan.id,
@@ -434,26 +449,26 @@ import HuanKuanService from "../services/HuanKuanService"
             money: this.updatehuankuan.money,
             huan_money:this.updatehuankuan.huan_money,
             huan_money1:this.updatehuankuan.huan_money1,
-            huan_stream:this.updatehuankuan.huan_stream,
+            huan_stream:this.imageUrl,
             current_process:this.updatehuankuan.current_process
         }
           HuanKuanService.update(data.id,data)
         .then(response => {
           this.tableonload();
+          //删除旧图片
+              http.delete('/general/deletefile',{data:{filename:this.oldUrl}});
+              this.oldUrl=""
           console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
-       },
-       updatesubmit(formName){
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
           } else {
             return false;
           }
         });
+        this.imageUrl=""
+        this.tmpUrl=""
        },
         delClick(index,row){
               let pa=this.tableData[index].id;
@@ -487,11 +502,24 @@ import HuanKuanService from "../services/HuanKuanService"
       filterCurrent(value, row){
             return row.current_process === value;
         },
-
-      handleAvatarSuccess(res, file) {
-         
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
+        handleAvatarChange(file,filelist) {
+            //选中文件,上传成功,上传失败都会调用这个函数
+            //只有选择新文件的时候(file.status非ready),才执行后面的上传代码
+            //否则直接返回
+            if (file.status !== 'ready'){
+                return;
+            }
+            this.$refs.upload.submit();
+        },
+        handleAvatarSuccess(res, file) {
+            //如果上传过图片,先把旧的删除掉
+            if (this.tmpUrl){
+                http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
+            }
+            //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
+            this.imageUrl = res.url;
+            this.tmpUrl = this.imageUrl;
+        },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
@@ -508,7 +536,10 @@ import HuanKuanService from "../services/HuanKuanService"
 
     data() {
       return {
+        fileList:[{imageUrl:""}],
         imageUrl: '',
+        oldUrl: '',
+        tmpUrl: '',
         TravelType:1,
         formLabelWidth: "130px",
         rules:{

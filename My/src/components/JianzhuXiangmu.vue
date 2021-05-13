@@ -988,6 +988,8 @@ form: {
         updatexiangmu:{},
         kanxiangmu:{},
         filterId:'',
+        filterReturn:'',
+        filterHuan_money:'',
         filterBuilder:'',
         filterItem_name:'',
         filterTime:'',

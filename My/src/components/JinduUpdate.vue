@@ -73,11 +73,11 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column
-      prop="photo"
-      label="现场照片"
-      width="250"
-      align="center">
+    <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
+            <template slot-scope="scope">
+                <el-image style="width: 100px; height: 100px" :src="scope.row.photo" :preview-src-list="[scope.row.photo]">
+                </el-image>
+            </template>
     </el-table-column>
      <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
     </el-table-column>
@@ -125,17 +125,20 @@
           </el-form-item>
         </el-col>
          <el-col>
-            <el-form-item label="现场照片" prop="photo" :label-width="formLabelWidth">
-                <el-upload
-                class="avatar-uploader"
-                action=""
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-             </el-form-item>
+             <el-form-item label="现场照片" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Jindu/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="addjindu" 
+                    :on-change="handleAvatarChange" 
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl" :src="imageUrl" class="photo">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -190,17 +193,20 @@
           </el-form-item>
         </el-col>
          <el-col>
-            <el-form-item label="现场照片" prop="photo" :label-width="formLabelWidth">
-                <el-upload
-                class="avatar-uploader"
-                action=""
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-             </el-form-item>
+            <el-form-item label="现场照片" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Jindu/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="updatejindu" 
+                    :on-change="handleAvatarChange" 
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl" :src="imageUrl" class="photo">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -252,17 +258,20 @@
           </el-form-item>
         </el-col>
          <el-col>
-            <el-form-item label="现场照片" prop="photo" :label-width="formLabelWidth">
-                <el-upload
-                class="avatar-uploader"
-                action=""
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-             </el-form-item>
+            <el-form-item label="现场照片" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
+                    <el-upload ref="upload" class="avatar-uploader" 
+                    action="http://localhost:8080/api/Jindu/upload" 
+                    :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="kanjindu" 
+                    :on-change="handleAvatarChange" 
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :file-list="fileList">
+                        <img v-if="imageUrl" :src="imageUrl" class="photo">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -329,15 +338,9 @@ import JinduService from "../services/JinduService"
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
-        //    CailiaogysService.getAll()
-        // .then(response => {
-        //   this.result = response.data;
-        //   console.log(response.data);
-        // })
-        // .catch(e => {
-        //   console.log(e);
-        // });
+          //新建时候清空url
+          this.imageUrl=""
+          this.dialogFormVisible=true
        },
        addform(){
             this.dialog=true;
@@ -368,13 +371,15 @@ import JinduService from "../services/JinduService"
           console.log(e);
         });  
         },
-        async addservice(){
-              this.dialogFormVisible=false;
+       addsubmit(formName){
+         this.$refs[formName].validate((valid) => {
+          if (valid) {
+             this.dialogFormVisible=false;
           var data = {
           item_name: this.addjindu.item_name,
           before_jindu: this.addjindu.before_jindu,
           after_jindu: this.addjindu.after_jindu,
-          photo:this.addjindu.photo,
+          photo:this.imageUrl,
           current_process:this.addjindu.current_process
         }
         JinduService.create(data)
@@ -385,14 +390,12 @@ import JinduService from "../services/JinduService"
         .catch(e => {
           console.log(e);
         });
-        },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
           } else {
             return false;
           }
+          //上传完成后清空一下
+                this.imageUrl=""
+                this.tmpUrl=""
         });
         },
        kanClick(index,row){
@@ -401,6 +404,7 @@ import JinduService from "../services/JinduService"
            JinduService.get(pa)
          .then(response => {
                 this.kanjindu=response.data;
+                this.imageUrl=response.data.photo
               })
               .catch(e => {
                 console.log(e);
@@ -412,38 +416,43 @@ import JinduService from "../services/JinduService"
            JinduService.get(pa)
          .then(response => {
                 this.updatejindu=response.data;
+                this.imageUrl=response.data.photo;
+                    //旧图片url另存一份,将来imageUrl会被覆盖
+                    this.oldUrl = this.imageUrl;
               })
               .catch(e => {
                 console.log(e);
               });
        },
-       updateservice(){
-              this.dialogFormVisible1=false;
+       updatesubmit(formName){
+          this.$refs[formName].validate((valid) => {
+          if (valid) {
+            this.dialogFormVisible1=false;
             var data = {
             id:this.updatejindu.id,
             item_name: this.updatejindu.item_name,
             before_jindu: this.updatejindu.before_jindu,
             after_jindu: this.updatejindu.after_jindu,
-            photo:this.updatejindu.photo,
+            photo:this.imageUrl,
             current_process:this.updatejindu.current_process
         }
           JinduService.update(data.id,data)
         .then(response => {
           this.tableonload();
+          //删除旧图片
+              http.delete('/general/deletefile',{data:{filename:this.oldUrl}});
+              this.oldUrl=""
           console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
-       },
-       updatesubmit(formName){
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
           } else {
             return false;
           }
         });
+         this.imageUrl=""
+        this.tmpUrl=""
        },
         delClick(index,row){
               let pa=this.tableData[index].id;
@@ -483,10 +492,24 @@ import JinduService from "../services/JinduService"
       clearTimeout(this.timer);
     },
 
-      handleAvatarSuccess(res, file) {
-         
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
+       handleAvatarChange(file,filelist) {
+            //选中文件,上传成功,上传失败都会调用这个函数
+            //只有选择新文件的时候(file.status非ready),才执行后面的上传代码
+            //否则直接返回
+            if (file.status !== 'ready'){
+                return;
+            }
+            this.$refs.upload.submit();
+        },
+        handleAvatarSuccess(res, file) {
+            //如果上传过图片,先把旧的删除掉
+            if (this.tmpUrl){
+                http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
+            }
+            //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
+            this.imageUrl = res.url;
+            this.tmpUrl = this.imageUrl;
+        },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
@@ -515,7 +538,10 @@ form: {
         resource: '',
         desc: ''
       },
+        fileList:[{imageUrl:""}],
         imageUrl: '',
+        oldUrl: '',
+        tmpUrl: '',
         TravelType:1,
         formLabelWidth: "100px",
         rules:{

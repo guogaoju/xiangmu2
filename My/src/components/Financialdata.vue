@@ -204,25 +204,25 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog title="添加财务数据" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addfinance"
+        :model="finance"
         status-icon :rules="rules"
-        ref="addfinance"
+        ref="finance"
         label-width="100px"
         class="demo-ruleForm"
       >
       <el-row>
          <el-col :span="12">
           <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-select filterable v-model="addfinance.qiye_name" placeholder="请选择">
+            <el-select filterable v-model="finance.qiye_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="年度" prop="year" :label-width="formLabelWidth">
-            <el-select v-model="addfinance.year" clearable placeholder="请选择" >
+            <el-select v-model="finance.year" clearable placeholder="请选择" >
               <el-option label="2021" value="2021"></el-option>
               <el-option label="2020" value="2020"></el-option>
               <el-option label="2019" value="2019"></el-option>
@@ -234,7 +234,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="季度" prop="quarter" :label-width="formLabelWidth">
-            <el-select v-model="addfinance.quarter" clearable placeholder="请选择" >
+            <el-select v-model="finance.quarter" clearable placeholder="请选择" >
               <el-option label="第一季度" value="第一季度"></el-option>
               <el-option label="第二季度" value="第二季度"></el-option>
               <el-option label="第三季度" value="第三季度"></el-option>
@@ -244,107 +244,107 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="总资产" prop="total_assets" :label-width="formLabelWidth">
-            <el-input v-model="addfinance.total_assets"></el-input>
+            <el-input v-model="finance.total_assets"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="净资产" prop="net_assets" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.net_assets"></el-input>
+            <el-input v-model.number="finance.net_assets"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="资产负债率%" prop="Loar" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.Loar"></el-input>
+            <el-input v-model.number="finance.Loar"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="速动比率" prop="quick_ratio" :label-width="formLabelWidth">
-           <el-input v-model.number="addfinance.quick_ratio"></el-input>
+           <el-input v-model.number="finance.quick_ratio"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="流动比率" prop="current_ratio" :label-width="formLabelWidth">
-           <el-input v-model.number="addfinance.current_ratio"></el-input>
+           <el-input v-model.number="finance.current_ratio"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="存货周转天数" prop="days_inventory" :label-width="formLabelWidth">
-           <el-input v-model.number="addfinance.days_inventory"></el-input>
+           <el-input v-model.number="finance.days_inventory"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <span>流动债务在总负债中占比%</span>
           <el-form-item label="" prop="floating_debt" :label-width="formLabelWidth">
-           <el-input v-model.number="addfinance.floating_debt"></el-input>
+           <el-input v-model.number="finance.floating_debt"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="毛利率" prop="rate_margin" :label-width="formLabelWidth">
-           <el-input v-model.number="addfinance.rate_margin"></el-input>
+           <el-input v-model.number="finance.rate_margin"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="ROE" prop="ROE" :label-width="formLabelWidth">
-           <el-input v-model.number="addfinance.ROE"></el-input>
+           <el-input v-model.number="finance.ROE"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="应收账款" prop="accounts_receivable" :label-width="formLabelWidth">
-           <el-input v-model.number="addfinance.accounts_receivable"></el-input>
+           <el-input v-model.number="finance.accounts_receivable"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <span>应收账款周转天数</span>
           <el-form-item label="" prop="accounts_receivableDay" :label-width="formLabelWidth">
-           <el-input v-model.number="addfinance.accounts_receivableDay"></el-input>
+           <el-input v-model.number="finance.accounts_receivableDay"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="应付账款" prop="accounts_payable" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.accounts_payable"></el-input>
+            <el-input v-model.number="finance.accounts_payable"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <span>应付账款周转天数</span>
           <el-form-item label="" prop="accounts_payableDay" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.accounts_payableDay"></el-input>
+            <el-input v-model.number="finance.accounts_payableDay"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="营业收入" prop="operating_income" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.operating_income"></el-input>
+            <el-input v-model.number="finance.operating_income"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="营业外收入" prop="nonbusiness_income" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.nonbusiness_income"></el-input>
+            <el-input v-model.number="finance.nonbusiness_income"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="净利润" prop="net_profits" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.net_profits"></el-input>
+            <el-input v-model.number="finance.net_profits"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <span>经营活动产生的现金流量净额</span>
           <el-form-item label="" prop="total_money" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.total_money"></el-input>
+            <el-input v-model.number="finance.total_money"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -352,20 +352,20 @@
         <el-col :span="12">
           <span>投资活动产生的现金流量净额</span>
            <el-form-item label="" prop="total_money1" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.total_money1"></el-input>
+            <el-input v-model.number="finance.total_money1"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <span>筹资活动产生的现金流量净额</span>
           <el-form-item label="" prop="total_money2" :label-width="formLabelWidth">
-            <el-input v-model.number="addfinance.total_money2"></el-input>
+            <el-input v-model.number="finance.total_money2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addfinance.current_process"></el-input>
+            <el-input v-model="finance.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -373,7 +373,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addfinance')">立即添加</el-button>
+          <el-button type="primary" @click="submit('finance')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -381,347 +381,7 @@
     </el-form>
   </el-dialog>
 
-  <!-- 修改弹出层 -->
-  <el-dialog title="修改财务数据" width="50%" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatefinance"
-        status-icon :rules="rules"
-        ref="updatefinance"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="updatefinance.qiye_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="年度" prop="year" :label-width="formLabelWidth">
-            <el-select v-model="updatefinance.year" clearable placeholder="请选择" >
-              <el-option label="2021" value="2021"></el-option>
-              <el-option label="2020" value="2020"></el-option>
-              <el-option label="2019" value="2019"></el-option>
-              <el-option label="2018" value="2018"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="季度" prop="quarter" :label-width="formLabelWidth">
-            <el-select v-model="updatefinance.quarter" clearable placeholder="请选择" >
-              <el-option label="第一季度" value="第一季度"></el-option>
-              <el-option label="第二季度" value="第二季度"></el-option>
-              <el-option label="第三季度" value="第三季度"></el-option>
-              <el-option label="第四季度" value="第四季度"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="总资产" prop="total_assets" :label-width="formLabelWidth">
-            <el-input v-model="updatefinance.total_assets"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="净资产" prop="net_assets" :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.net_assets"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="资产负债率%" prop="Loar " :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.Loar "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="速动比率" prop="quick_ratio" :label-width="formLabelWidth">
-           <el-input v-model.number="updatefinance.quick_ratio"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="流动比率" prop="current_ratio" :label-width="formLabelWidth">
-           <el-input v-model.number="updatefinance.current_ratio"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="存货周转天数" prop="days_inventory" :label-width="formLabelWidth">
-           <el-input v-model.number="updatefinance.days_inventory"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>流动债务在总负债中占比</span>
-          <el-form-item label="%" prop="floating_debt" :label-width="formLabelWidth">
-           <el-input v-model.number="updatefinance.floating_debt"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="毛利率" prop="rate_margin" :label-width="formLabelWidth">
-           <el-input v-model.number="updatefinance.rate_margin"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="ROE" prop="ROE" :label-width="formLabelWidth">
-           <el-input v-model.number="updatefinance.ROE"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="应收账款" prop="accounts_receivable  " :label-width="formLabelWidth">
-           <el-input v-model.number="updatefinance.accounts_receivable  "></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>应收账款周转天数</span>
-          <el-form-item label="" prop="accounts_receivableDay" :label-width="formLabelWidth">
-           <el-input v-model.number="updatefinance.accounts_receivableDay"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-           <el-form-item label="应付账款" prop="accounts_payable" :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.accounts_payable"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>应付账款周转天数</span>
-          <el-form-item label="" prop="accounts_payableDay" :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.accounts_payableDay"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-           <el-form-item label="营业收入" prop="operating_income" :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.operating_income"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="营业外收入" prop="nonbusiness_income" :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.nonbusiness_income"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-           <el-form-item label="净利润" prop="net_profits" :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.net_profits"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>经营活动产生的现金流量净额</span>
-          <el-form-item label="" prop="total_money" :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.total_money"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <span>投资活动产生的现金流量净额</span>
-           <el-form-item label="" prop="total_money1" :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.total_money1"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>筹资活动产生的现金流量净额</span>
-          <el-form-item label="" prop="total_money2" :label-width="formLabelWidth">
-            <el-input v-model.number="updatefinance.total_money2"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatefinance.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatefinance')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 查看弹出层 -->
-  <el-dialog title="查看财务数据" width="50%" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kanfinance"
-        ref="kanfinance"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="kanfinance.qiye_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="年度" prop="year" :label-width="formLabelWidth">
-            <el-select v-model="kanfinance.year" clearable placeholder="请选择" >
-              <el-option label="2021" value="2021"></el-option>
-              <el-option label="2020" value="2020"></el-option>
-              <el-option label="2019" value="2019"></el-option>
-              <el-option label="2018" value="2018"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="季度" prop="quarter" :label-width="formLabelWidth">
-            <el-select v-model="kanfinance.quarter" clearable placeholder="请选择" >
-              <el-option label="第一季度" value="第一季度"></el-option>
-              <el-option label="第二季度" value="第二季度"></el-option>
-              <el-option label="第三季度" value="第三季度"></el-option>
-              <el-option label="第四季度" value="第四季度"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="总资产" prop="total_assets" :label-width="formLabelWidth">
-            <el-input v-model="kanfinance.total_assets"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="净资产" prop="net_assets" :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.net_assets"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="资产负债率%" prop="Loar " :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.Loar "></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="速动比率" prop="quick_ratio" :label-width="formLabelWidth">
-           <el-input v-model.number="kanfinance.quick_ratio"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="流动比率" prop="current_ratio" :label-width="formLabelWidth">
-           <el-input v-model.number="kanfinance.current_ratio"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="存货周转天数" prop="days_inventory" :label-width="formLabelWidth">
-           <el-input v-model.number="kanfinance.days_inventory"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>流动债务在总负债中占比</span>
-          <el-form-item label="%" prop="floating_debt" :label-width="formLabelWidth">
-           <el-input v-model.number="kanfinance.floating_debt"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="毛利率" prop="rate_margin" :label-width="formLabelWidth">
-           <el-input v-model.number="kanfinance.rate_margin"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="ROE" prop="ROE" :label-width="formLabelWidth">
-           <el-input v-model.number="kanfinance.ROE"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="应收账款" prop="accounts_receivable  " :label-width="formLabelWidth">
-           <el-input v-model.number="kanfinance.accounts_receivable  "></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>应收账款周转天数</span>
-          <el-form-item label="" prop="accounts_receivableDay" :label-width="formLabelWidth">
-           <el-input v-model.number="kanfinance.accounts_receivableDay"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-           <el-form-item label="应付账款" prop="accounts_payable" :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.accounts_payable"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>应付账款周转天数</span>
-          <el-form-item label="" prop="accounts_payableDay" :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.accounts_payableDay"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-           <el-form-item label="营业收入" prop="operating_income" :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.operating_income"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="营业外收入" prop="nonbusiness_income" :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.nonbusiness_income"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-           <el-form-item label="净利润" prop="net_profits" :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.net_profits"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>经营活动产生的现金流量净额</span>
-          <el-form-item label="" prop="total_money" :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.total_money"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <span>投资活动产生的现金流量净额</span>
-           <el-form-item label="" prop="total_money1" :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.total_money1"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <span>筹资活动产生的现金流量净额</span>
-          <el-form-item label="" prop="total_money2" :label-width="formLabelWidth">
-            <el-input v-model.number="kanfinance.total_money2"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kanfinance.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
+ 
 </div>
 
 </template>
@@ -745,7 +405,9 @@ import QiyeService from "../services/QiyeService"
         });
       },
        openFrom(){
+          this.finance={},
            this.dialogFormVisible=true
+           this.dialogTitle = "addData";
            QiyeService.getAll()
         .then(response => {
           this.result = response.data;
@@ -755,32 +417,32 @@ import QiyeService from "../services/QiyeService"
           console.log(e);
         });
        },
-       async addservice(){
+      addservice(){
               this.dialogFormVisible=false;
           var data = {
-        qiye_name: this.addfinance.qiye_name,
-        year: this.addfinance.year,
-        quarter: this.addfinance.quarter,
-        total_assets:this.addfinance.total_assets,
-        net_assets:this.addfinance.net_assets,
-        Loar:this.addfinance.Loar,
-        quick_ratio:this.addfinance.quick_ratio,
-        current_ratio:this.addfinance.current_ratio,
-        days_inventory:this.addfinance.days_inventory,
-        floating_debt:this.addfinance.floating_debt,
-        rate_margin:this.addfinance.rate_margin,
-        ROE:this.addfinance.ROE,
-        accounts_receivable:this.addfinance.accounts_receivable,
-        accounts_receivableDay:this.addfinance.accounts_receivableDay,
-        accounts_payable:this.addfinance.accounts_payable,
-        accounts_payableDay:this.addfinance.accounts_payableDay,
-        operating_income:this.addfinance.operating_income,
-        nonbusiness_income:this.addfinance.nonbusiness_income,
-        net_profits:this.addfinance.net_profits,
-        total_money:this.addfinance.total_money,
-        total_money1:this.addfinance.total_money1,
-        total_money2:this.addfinance.total_money2,
-        current_process:this.addfinance.current_process
+        qiye_name: this.finance.qiye_name,
+        year: this.finance.year,
+        quarter: this.finance.quarter,
+        total_assets:this.finance.total_assets,
+        net_assets:this.finance.net_assets,
+        Loar:this.finance.Loar,
+        quick_ratio:this.finance.quick_ratio,
+        current_ratio:this.finance.current_ratio,
+        days_inventory:this.finance.days_inventory,
+        floating_debt:this.finance.floating_debt,
+        rate_margin:this.finance.rate_margin,
+        ROE:this.finance.ROE,
+        accounts_receivable:this.finance.accounts_receivable,
+        accounts_receivableDay:this.finance.accounts_receivableDay,
+        accounts_payable:this.finance.accounts_payable,
+        accounts_payableDay:this.finance.accounts_payableDay,
+        operating_income:this.finance.operating_income,
+        nonbusiness_income:this.finance.nonbusiness_income,
+        net_profits:this.finance.net_profits,
+        total_money:this.finance.total_money,
+        total_money1:this.finance.total_money1,
+        total_money2:this.finance.total_money2,
+        current_process:this.finance.current_process
         }
         FinancialdataService.create(data)
         .then(response => {
@@ -791,28 +453,32 @@ import QiyeService from "../services/QiyeService"
           console.log(e);
         });
        },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+       submit(finance){
+         this.$refs[finance].validate((valid) => {
+          if (this.dialogTitle ==  "addData" ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else{
+        this.kanClick();
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            FinancialdataService.get(pa)
          .then(response => {
-                this.kanfinance=response.data;
+                this.finance=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true
+           this.dialogFormVisible=true
+           this.dialogTitle = "updataData"; 
            let pa=this.tableData[index].id;
            FinancialdataService.get(pa)
          .then(response => {
@@ -823,32 +489,32 @@ import QiyeService from "../services/QiyeService"
               });
        },
        updateservice(){
-            this.dialogFormVisible1=false;
+            this.dialogFormVisible=false;
           var data = {
-            id:this.updatefinance.id,
-            qiye_name: this.updatefinance.qiye_name,
-            year: this.updatefinance.year,
-            quarter: this.updatefinance.quarter,
-            total_assets:this.updatefinance.total_assets,
-            net_assets:this.updatefinance.net_assets,
-            Loar:this.updatefinance.Loar,
-            quick_ratio:this.updatefinance.quick_ratio,
-            current_ratio:this.updatefinance.current_ratio,
-            days_inventory:this.updatefinance.days_inventory,
-            floating_debt:this.updatefinance.floating_debt,
-            rate_margin:this.updatefinance.rate_margin,
-            ROE:this.updatefinance.ROE,
-            accounts_receivable:this.updatefinance.accounts_receivable,
-            accounts_receivableDay:this.updatefinance.accounts_receivableDay,
-            accounts_payable:this.updatefinance.accounts_payable,
-            accounts_payableDay:this.updatefinance.accounts_payableDay,
-            operating_income:this.updatefinance.operating_income,
-            nonbusiness_income:this.updatefinance.nonbusiness_income,
-            net_profits:this.updatefinance.net_profits,
-            total_money:this.updatefinance.total_money,
-            total_money1:this.updatefinance.total_money1,
-            total_money2:this.updatefinance.total_money2,
-            current_process:this.updatefinance.current_process
+            id:this.finance.id,
+            qiye_name: this.finance.qiye_name,
+            year: this.finance.year,
+            quarter: this.finance.quarter,
+            total_assets:this.finance.total_assets,
+            net_assets:this.finance.net_assets,
+            Loar:this.finance.Loar,
+            quick_ratio:this.finance.quick_ratio,
+            current_ratio:this.finance.current_ratio,
+            days_inventory:this.finance.days_inventory,
+            floating_debt:this.finance.floating_debt,
+            rate_margin:this.finance.rate_margin,
+            ROE:this.finance.ROE,
+            accounts_receivable:this.finance.accounts_receivable,
+            accounts_receivableDay:this.finance.accounts_receivableDay,
+            accounts_payable:this.finance.accounts_payable,
+            accounts_payableDay:this.finance.accounts_payableDay,
+            operating_income:this.finance.operating_income,
+            nonbusiness_income:this.finance.nonbusiness_income,
+            net_profits:this.finance.net_profits,
+            total_money:this.finance.total_money,
+            total_money1:this.finance.total_money1,
+            total_money2:this.finance.total_money2,
+            current_process:this.finance.current_process
         }
           FinancialdataService.update(data.id,data)
         .then(response => {
@@ -859,16 +525,7 @@ import QiyeService from "../services/QiyeService"
           console.log(e);
         });
        },
-       updatesubmit(formName){
-           this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-       },
-        delClick(index,row){
+        delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               FinancialdataService.delete(pa)
               .then(response => {
@@ -878,21 +535,24 @@ import QiyeService from "../services/QiyeService"
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+        delClick(index,row){     
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index)
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -904,6 +564,12 @@ import QiyeService from "../services/QiyeService"
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         filterId:'',
         filterQiye_name:'',
         filterYear:'',
@@ -917,12 +583,8 @@ import QiyeService from "../services/QiyeService"
         },
         result:[],
         tableData:[],
-        addfinance:{},
-        updatefinance:{},
-        kanfinance:{},
+        finance:{},
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

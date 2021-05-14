@@ -184,33 +184,33 @@
   <!-- 添加弹出层 -->
   <el-dialog title="添加采购" width="55%" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addcaigou"
+        :model="caigou"
         status-icon :rules="rules"
-        ref="addcaigou"
+        ref="caigou"
         label-width="100px"
         class="demo-ruleForm"
       >
       <el-row>
         <el-col :span="12">
           <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="addcaigou.qiye_name"></el-input>
+            <el-input v-model="caigou.qiye_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="addcaigou.item_name"></el-input>
+            <el-input v-model="caigou.item_name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
         <el-row>
         <el-col :span="12">
            <el-form-item label="已使用额度" prop="money" :label-width="formLabelWidth">
-            <el-input v-model="addcaigou.money"></el-input>
+            <el-input v-model="caigou.money"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="总授信额度" prop="totalmoney" :label-width="formLabelWidth">
-            <el-input v-model="addcaigou.totalmoney"></el-input>
+            <el-input v-model="caigou.totalmoney"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -220,7 +220,7 @@
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
-                    :data="addcaigou" 
+                    :data="caigou" 
                     :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
                     :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
                     :before-upload="beforeAvatarUpload"
@@ -236,7 +236,7 @@
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
-                    :data="addcaigou" 
+                    :data="caigou" 
                     :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,1)}"
                     :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,1)}" 
                     :before-upload="beforeAvatarUpload"
@@ -252,7 +252,7 @@
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
-                    :data="addcaigou" 
+                    :data="caigou" 
                     :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,2)}"
                     :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,2)}" 
                     :before-upload="beforeAvatarUpload"
@@ -265,31 +265,31 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="融资总预算" prop="money1" :label-width="formLabelWidth">
-            <el-input v-model="addcaigou.money1"></el-input>
+            <el-input v-model="caigou.money1"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="实际融资金额" prop="money2" :label-width="formLabelWidth">
-            <el-input v-model="addcaigou.money2"></el-input>
+            <el-input v-model="caigou.money2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="项目已使用融资额度" prop="money3" :label-width="formLabelWidth">
-            <el-input v-model="addcaigou.money3"></el-input>
+            <el-input v-model="caigou.money3"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="更新后已使用融资额度" prop="money4" :label-width="formLabelWidth">
-            <el-input v-model="addcaigou.money4"></el-input>
+            <el-input v-model="caigou.money4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addcaigou.current_process"></el-input>
+            <el-input v-model="caigou.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -298,251 +298,13 @@
             <el-button type="primary" @click="addform()">添加物料</el-button></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addcaigou')">立即添加</el-button>
+          <el-button type="primary" @click="submit('caigou')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
       </el-row>
     </el-form>
   </el-dialog>
-<!-- 修改弹出层 -->
-  <el-dialog title="修改采购" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatecaigou"
-        status-icon :rules="rules"
-        ref="updatecaigou"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="updatecaigou.qiye_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="updatecaigou.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-        <el-row>
-        <el-col :span="12">
-           <el-form-item label="已使用授信额度" prop="money" :label-width="formLabelWidth">
-            <el-input v-model="updatecaigou.money"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="总授信额度" prop="totalmoney" :label-width="formLabelWidth">
-            <el-input v-model="updatecaigou.totalmoney"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-            <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
-                    <el-upload ref="upload" class="avatar-uploader" 
-                    action="http://localhost:8080/api/Caigou/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="updatecaigou" 
-                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
-                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrlback[0]" :src="imageUrlback[0]" class="statement">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-            </el-form-item>
-      </el-row> 
-      <el-row>
-          <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
-                    <el-upload ref="upload1" class="avatar-uploader" 
-                    action="http://localhost:8080/api/Caigou/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="updatecaigou" 
-                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,1)}"
-                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,1)}" 
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrlback[1]" :src="imageUrlback[1]" class="delivery_note">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-            </el-form-item>
-      </el-row>
-      <el-row>
-          <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
-                    <el-upload ref="upload2" class="avatar-uploader" 
-                    action="http://localhost:8080/api/Caigou/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="updatecaigou" 
-                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,2)}"
-                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,2)}" 
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrlback[2]" :src="imageUrlback[2]" class="bill">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-            </el-form-item>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="融资总预算" prop="money1" :label-width="formLabelWidth">
-            <el-input v-model="updatecaigou.money1"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="实际融资金额" prop="money2" :label-width="formLabelWidth">
-            <el-input v-model="updatecaigou.money2"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="项目已使用融资额度" prop="money3" :label-width="formLabelWidth">
-            <el-input v-model="updatecaigou.money3"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="更新后已使用融资额度" prop="money4" :label-width="formLabelWidth">
-            <el-input v-model="updatecaigou.money4"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatecaigou.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatecaigou')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-<!-- 查看弹出层 -->
-  <el-dialog title="查看采购" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kancaigou"
-        status-icon :rules="rules"
-        ref="kancaigou"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="kancaigou.qiye_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="kancaigou.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-        <el-row>
-        <el-col :span="12">
-           <el-form-item label="已使用授信额度" prop="money" :label-width="formLabelWidth">
-            <el-input v-model="kancaigou.money"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="总授信额度" prop="totalmoney" :label-width="formLabelWidth">
-            <el-input v-model="kancaigou.totalmoney"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-          <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
-                    <el-upload ref="upload" class="avatar-uploader" 
-                    action="" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="kancaigou" 
-                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
-                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrlback[0]" :src="imageUrlback[0]" class="statement">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-          </el-form-item>
-      </el-row> 
-        <el-row>
-          <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
-                    <el-upload ref="upload1" class="avatar-uploader" 
-                    action="" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="kancaigou" 
-                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,1)}"
-                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,1)}" 
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrlback[1]" :src="imageUrlback[1]" class="delivery_note">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-            </el-form-item>
-      </el-row>
-      <el-row>
-            <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
-                    <el-upload ref="upload2" class="avatar-uploader" 
-                    action="http://localhost:8080/api/Caigou/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="kancaigou" 
-                    :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,2)}"
-                    :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,2)}" 
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrlback[2]" :src="imageUrlback[2]" class="bill">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-            </el-form-item>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="融资总预算" prop="money1" :label-width="formLabelWidth">
-            <el-input v-model="kancaigou.money1"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="实际融资金额" prop="money2" :label-width="formLabelWidth">
-            <el-input v-model="kancaigou.money2"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="项目已使用融资额度" prop="money3" :label-width="formLabelWidth">
-            <el-input v-model="kancaigou.money3"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="更新后已使用融资额度" prop="money4" :label-width="formLabelWidth">
-            <el-input v-model="kancaigou.money4"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kancaigou.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
   <el-drawer
   :visible.sync="dialog"
   direction="ltr"
@@ -626,28 +388,26 @@ import WuliaoService from "../services/WuliaoService";
           this.imageUrlback[0]=""
           this.imageUrlback[1]=""
           this.imageUrlback[2]=""
-
+          this.caigou={},
           this.dialogFormVisible=true
+          this.dialogTitle = "addData";
        },
-       addsubmit(formName){
-          let vm = this;
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-             this.dialogFormVisible=false;
+       addservice(){
+              this.dialogFormVisible=false;
             var data = {
-              qiye_name: this.addcaigou.qiye_name,
-              item_name:this.addcaigou.item_name,
-              money: this.addcaigou.money,
-              totalmoney : this.addcaigou.totalmoney ,
-              total_quota:this.addcaigou.total_quota,
+              qiye_name: this.caigou.qiye_name,
+              item_name:this.caigou.item_name,
+              money: this.caigou.money,
+              totalmoney : this.caigou.totalmoney ,
+              total_quota:this.caigou.total_quota,
               statement:this.imageUrlback[0],
               delivery_note:this.imageUrlback[1],
               bill:this.imageUrlback[2],
-              money1:this.addcaigou.money1,
-              money2:this.addcaigou.money2,
-              money3:this.addcaigou.money3,
-              money4:this.addcaigou.money4,
-              current_process:this.addcaigou.current_process
+              money1:this.caigou.money1,
+              money2:this.caigou.money2,
+              money3:this.caigou.money3,
+              money4:this.caigou.money4,
+              current_process:this.caigou.current_process
           } 
           CaiGouService.create(data).then(response => {
           this.tableonload();
@@ -657,13 +417,21 @@ import WuliaoService from "../services/WuliaoService";
         .catch(e => {
           console.log(e);
         });
-          } else {
-            return false;
-          }
+       },
+       submit(caigou){
+         this.$refs[caigou].validate((valid) => {
+          if (this.dialogTitle ==  "addData" ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else{
+        this.kanClick();
+      }
         });
         this.imageUrlback[0]=""
         this.imageUrlback[1]=""
         this.imageUrlback[2]=""
+        this.tmpUrl=""
         },
         addform(){
             this.dialog=true;
@@ -703,11 +471,12 @@ import WuliaoService from "../services/WuliaoService";
         });  
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            CaiGouService.get(pa)
          .then(response => {
-                this.kancaigou=response.data;
+                this.caigou=response.data;
                 this.imageUrlback[0]=response.data.statement
                 this.imageUrlback[1]=response.data.delivery_note
                 this.imageUrlback[2]=response.data.bill
@@ -717,11 +486,12 @@ import WuliaoService from "../services/WuliaoService";
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true;
+           this.dialogFormVisible=true;
+           this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
            CaiGouService.get(pa)
          .then(response => {
-                this.updatecaigou=response.data;
+                this.caigou=response.data;
                 this.imageUrlback[0]=response.data.statement
                 this.imageUrlback[1]=response.data.delivery_note
                 this.imageUrlback[2]=response.data.bill
@@ -732,25 +502,23 @@ import WuliaoService from "../services/WuliaoService";
                 console.log(e);
               });
        },
-       updatesubmit(formName){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.dialogFormVisible1=false;
+       updateservice(){
+              this.dialogFormVisible=false;
           var data = {
-            id:this.updatecaigou.id,
-            qiye_name: this.updatecaigou.qiye_name,
-            item_name:this.updatecaigou.item_name,
-            money: this.updatecaigou.money,
-            totalmoney : this.updatecaigou.totalmoney ,
-            total_quota:this.updatecaigou.total_quota,
+            id:this.caigou.id,
+            qiye_name: this.caigou.qiye_name,
+            item_name:this.caigou.item_name,
+            money: this.caigou.money,
+            totalmoney : this.caigou.totalmoney ,
+            total_quota:this.caigou.total_quota,
             statement:this.imageUrlback[0],
             delivery_note:this.imageUrlback[1],
             bill:this.imageUrlback[2],
-            money1:this.updatecaigou.money1,
-            money2:this.updatecaigou.money2,
-            money3:this.updatecaigou.money3,
-            money4:this.updatecaigou.money4,
-            current_process:this.updatecaigou.current_process
+            money1:this.caigou.money1,
+            money2:this.caigou.money2,
+            money3:this.caigou.money3,
+            money4:this.caigou.money4,
+            current_process:this.caigou.current_process
         }
 
           CaiGouService.update(data.id,data)
@@ -764,16 +532,8 @@ import WuliaoService from "../services/WuliaoService";
         .catch(e => {
           console.log(e);
         });
-          } else {
-            return false;
-          }
-        });
-        this.imageUrlback[0]=""
-        this.imageUrlback[1]=""
-        this.imageUrlback[2]=""
-        this.tmpUrl=""
        },
-       delClick(index,row){
+       delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               let a = this;
               CaiGouService.delete(pa)
@@ -784,21 +544,24 @@ import WuliaoService from "../services/WuliaoService";
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+       delClick(index,row){  
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -853,15 +616,18 @@ import WuliaoService from "../services/WuliaoService";
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         oldUrl: '',
         tmpUrl: '',
         fileList:[],
         imageUrl:'',
         imageUrlfront:[],
         imageUrlback:[],
-          // imageUrl1: '',
-          // imageUrl2: '',
-          // imageUrl3: '',
         dialog: false,
         loading: false,
 form: {
@@ -904,9 +670,7 @@ form: {
         },
         tableData:[],
         result:[],
-        addcaigou:{},
-        updatecaigou:{},
-        kancaigou:{},
+        caigou:{},
         filterId:'',
         filterQiye_name:'',
         filterItem_name:'',
@@ -917,8 +681,6 @@ form: {
         filterMoney3:'',
         filterMoney4:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

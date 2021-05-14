@@ -94,7 +94,7 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog title="添加企业访问记录" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
       <el-form
         :model="addfangwen"
         status-icon :rules="rules"
@@ -147,119 +147,10 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addfangwen')">立即添加</el-button>
+          <el-button type="primary" @click="addsubmit('addfangwen')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 修改弹出层 -->
-  <el-dialog title="修改企业访问记录" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatefangwen"
-        status-icon :rules="rules"
-        ref="updatefangwen"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="updatefangwen.qiye_name"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="拜访方式" prop="visit_type" :label-width="formLabelWidth">
-            <el-select v-model="updatefangwen.visit_type" clearable placeholder="请选择" >
-              <el-option label="电话" value="电话"></el-option>
-              <el-option label="上门" value="上门"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-        <el-row>
-        <el-col :span="12">
-          <el-form-item label="拜访时间" prop="visit_time" :label-width="formLabelWidth">
-            <el-date-picker v-model="updatefangwen.visit_time" type="date" placeholder="选择日期"></el-date-picker>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-           <el-form-item label="是否违约" prop="contract" :label-width="formLabelWidth">
-            <el-input v-model="updatefangwen.contract"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-          <el-col :span="12">
-          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="updatefangwen.remarks"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatefangwen.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatefangwen')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-  <!-- 查看弹出层 -->
-  <el-dialog title="查看企业访问记录" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kanfangwen"
-        ref="kanfangwen"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="kanfangwen.qiye_name"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="拜访方式" prop="visit_type" :label-width="formLabelWidth">
-            <el-select v-model="kanfangwen.visit_type" clearable placeholder="请选择" >
-              <el-option label="电话" value="电话"></el-option>
-              <el-option label="上门" value="上门"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-        <el-row>
-        <el-col :span="12">
-          <el-form-item label="拜访时间" prop="visit_time" :label-width="formLabelWidth">
-            <el-date-picker v-model="kanfangwen.visit_time" type="date" placeholder="选择日期"></el-date-picker>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-           <el-form-item label="是否违约" prop="contract" :label-width="formLabelWidth">
-            <el-input v-model="kanfangwen.contract"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-          <el-col :span="12">
-          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="kanfangwen.remarks"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kanfangwen.current_process"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -286,8 +177,10 @@ import QiyeService from "../services/QiyeService";
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
-           QiyeService.getAll()
+        this.addfangwen={},
+        this.dialogFormVisible=true
+        this.dialogTitle = "addData";
+        QiyeService.getAll()
         .then(response => {
           this.result = response.data;
           console.log(response.data);
@@ -296,17 +189,17 @@ import QiyeService from "../services/QiyeService";
           console.log(e);
         });
        },
-       async addservice(){
-              this.dialogFormVisible=false;
+        addservice(){
+          this.dialogFormVisible=false; 
           var data = {
-        qiye_name:this.addfangwen.qiye_name,
-        visit_type:this.addfangwen.visit_type,
-        visit_time:this.addfangwen.visit_time,
-        contract:this.addfangwen.contract,
-        remarks:this.addfangwen.remarks,
-        current_process:this.addfangwen.current_process
+            qiye_name:this.addfangwen.qiye_name,
+            visit_type:this.addfangwen.visit_type,
+            visit_time:this.addfangwen.visit_time,
+            contract:this.addfangwen.contract,
+            remarks:this.addfangwen.remarks,
+            current_process:this.addfangwen.current_process
         }
-
+            
         FangwenService.create(data)
         .then(response => {
           this.tableonload();
@@ -316,47 +209,51 @@ import QiyeService from "../services/QiyeService";
           console.log(e);
         });
        },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+       addsubmit(addfangwen){
+         this.$refs[addfangwen].validate((valid) => {
+          if (this.dialogTitle ==  "addData" ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else{
+        this.kanClick();
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
-           FangwenService.get(pa)
+        FangwenService.get(pa)
          .then(response => {
-                this.kanfangwen=response.data;
+                this.addfangwen=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true;
+           this.dialogFormVisible=true;
+           this.dialogTitle = "updataData"; 
            let pa=this.tableData[index].id;
            FangwenService.get(pa)
          .then(response => {
-                this.updatefangwen=response.data;
+                this.addfangwen=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
        updateservice(){
-              this.dialogFormVisible1=false;
+              this.dialogFormVisible=false;
           var data = {
-            id:this.updatefangwen.id,
-            qiye_name:this.updatefangwen.qiye_name,
-            visit_type:this.updatefangwen.visit_type,
-            visit_time:this.updatefangwen.visit_time,
-            contract:this.updatefangwen.contract,
-            remarks:this.updatefangwen.remarks,
-            current_process:this.updatefangwen.current_process
+            id:this.addfangwen.id,
+            qiye_name:this.addfangwen.qiye_name,
+            visit_type:this.addfangwen.visit_type,
+            visit_time:this.addfangwen.visit_time,
+            contract:this.addfangwen.contract,
+            remarks:this.addfangwen.remarks,
+            current_process:this.addfangwen.current_process
         }
           FangwenService.update(data.id,data)
         .then(response => {
@@ -367,17 +264,8 @@ import QiyeService from "../services/QiyeService";
           console.log(e);
         });
        },
-       updatesubmit(formName){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-       },
-       delClick(index,row){
-              let pa=this.tableData[index].id;
+       delClickconfirm(index,row){
+         let pa=this.tableData[index].id;
               FangwenService.delete(pa)
               .then(response => {
                 this.tableonload();
@@ -386,21 +274,27 @@ import QiyeService from "../services/QiyeService";
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+       delClick(index,row){   
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          
+          this.delClickconfirm(index);
+          this.$message({
+            
+            type: 'success',
+            message: '删除成功!'
+          });
+          
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -418,6 +312,13 @@ import QiyeService from "../services/QiyeService";
 
     data() {
       return {
+
+         titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+      dialogTitle:"",
         TravelType:1,
         formLabelWidth: "100px",
         rules:{
@@ -434,15 +335,11 @@ import QiyeService from "../services/QiyeService";
         tableData:[],
         result:[],
         addfangwen:{},
-        updatefangwen:{},
-        kanfangwen:{},
         filterId:'',
         filterQiye_name:'',
         filterVisit_time:'',
         filterRemarks:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

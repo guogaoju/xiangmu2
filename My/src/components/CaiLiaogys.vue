@@ -288,24 +288,24 @@
     </el-table-column>
   </el-table>
 
-  <!-- 添加弹出层 -->
-  <el-dialog title="添加供应商资料" :visible.sync="dialogFormVisible">
+  <!-- 弹出层 -->
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addZiliao"
+        :model="Ziliao"
         status-icon :rules="rules"
-        ref="addZiliao"
+        ref="Ziliao"
         label-width="100px"
         class="demo-ruleForm"
       >
       <el-row>
         <el-col :span="12">
           <el-form-item label="供应商名称" prop="supplier_name" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.supplier_name"></el-input>
+            <el-input v-model="Ziliao.supplier_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="行业" prop="trade" :label-width="formLabelWidth">
-            <el-select v-model="addZiliao.trade" clearable placeholder="请选择" >
+            <el-select v-model="Ziliao.trade" clearable placeholder="请选择" >
               <el-option label="制造业" value="制造业"></el-option>
               <el-option label="建筑业" value="建筑业"></el-option>
             </el-select>
@@ -315,103 +315,103 @@
         <el-row>
         <el-col :span="12">
            <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.address"></el-input>
+            <el-input v-model="Ziliao.address"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="联系人" prop="contact_person" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.contact_person"></el-input>
+            <el-input v-model="Ziliao.contact_person"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.phone"></el-input>
+            <el-input v-model="Ziliao.phone"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="传真" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.fax"></el-input>
+            <el-input v-model="Ziliao.fax"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="邮编" prop="post_code" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.post_code"></el-input>
+            <el-input v-model="Ziliao.post_code"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="法人" prop="juridical_person" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.juridical_person"></el-input>
+            <el-input v-model="Ziliao.juridical_person"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="开户银行" prop="bank_name" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.bank_name"></el-input>
+            <el-input v-model="Ziliao.bank_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="银行账号" prop="bank_card" :label-width="formLabelWidth">
-            <el-input v-model.number="addZiliao.bank_card"></el-input>
+            <el-input v-model.number="Ziliao.bank_card"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="税务登记号" prop="tax_card" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.tax_card"></el-input>
+            <el-input v-model="Ziliao.tax_card"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="税率" prop="vat" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.vat"></el-input>
+            <el-input v-model="Ziliao.vat"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="供应商类型" prop="supplier_type" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.supplier_type"></el-input>
+            <el-input v-model="Ziliao.supplier_type"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="折扣" prop="discount" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.discount"></el-input>
+            <el-input v-model="Ziliao.discount"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="注册商标" prop="registered_trademark" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.registered_trademark"></el-input>
+            <el-input v-model="Ziliao.registered_trademark"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="营业执照" prop="business_license" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.business_license"></el-input>
+            <el-input v-model="Ziliao.business_license"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.remarks"></el-input>
+            <el-input v-model="Ziliao.remarks"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="评级" prop="grade" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.grade"></el-input>
+            <el-input v-model="Ziliao.grade"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addZiliao.current_process"></el-input>
+            <el-input v-model="Ziliao.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -419,281 +419,10 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addZiliao')">立即添加</el-button>
+          <el-button type="primary" @click="submit('Ziliao')">立即添加</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 修改弹出层 -->
-  <el-dialog title="供应商资料" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updateZiliao"
-        status-icon :rules="rules"
-        ref="updateZiliao"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <!-- <el-form-item label="id" prop="id" :label-width="formLabelWidth">
-            <el-input v-bind:readonly="TravelType==1" v-model="updateZiliao.id"></el-input>
-      </el-form-item> -->
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="供应商名称" prop="supplier_name" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.supplier_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="行业" prop="trade" :label-width="formLabelWidth">
-            <el-select v-model="updateZiliao.trade" clearable placeholder="请选择" >
-              <el-option label="制造业" value="制造业"></el-option>
-              <el-option label="建筑业" value="建筑业"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-        <el-row>
-        <el-col :span="12">
-           <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.address"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="联系人" prop="contact_person" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.contact_person"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.phone"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="传真" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.fax"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="邮编" prop="post_code" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.post_code"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="法人" prop="juridical_person" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.juridical_person"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="开户银行" prop="bank_name" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.bank_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="银行账号" prop="bank_card" :label-width="formLabelWidth">
-            <el-input v-model.number="updateZiliao.bank_card"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="税务登记号" prop="tax_card" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.tax_card"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="税率" prop="vat" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.vat"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="供应商类型" prop="supplier_type" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.supplier_type"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="折扣" prop="discount" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.discount"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="注册商标" prop="registered_trademark" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.registered_trademark"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="营业执照" prop="business_license" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.business_license"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.remarks"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="评级" prop="grade" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.grade"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updateZiliao.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updateZiliao')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-  <!-- 查看弹出层 -->
-  <el-dialog title="供应商资料" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kanZiliao"
-        status-icon :rules="rules"
-        ref="kanZiliao"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="供应商名称" prop="supplier_name" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.supplier_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="行业" prop="trade" :label-width="formLabelWidth">
-            <el-select v-model="kanZiliao.trade" clearable placeholder="请选择" >
-              <el-option label="制造业" value="制造业"></el-option>
-              <el-option label="建筑业" value="建筑业"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-        <el-row>
-        <el-col :span="12">
-           <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.address"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="联系人" prop="contact_person" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.contact_person"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.phone"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="传真" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.fax"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="邮编" prop="post_code" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.post_code"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="法人" prop="juridical_person" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.juridical_person"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="开户银行" prop="bank_name" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.bank_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="银行账号" prop="bank_card" :label-width="formLabelWidth">
-            <el-input v-model.number="kanZiliao.bank_card"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="税务登记号" prop="tax_card" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.tax_card"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="税率" prop="vat" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.vat"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="供应商类型" prop="supplier_type" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.supplier_type"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="折扣" prop="discount" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.discount"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="注册商标" prop="registered_trademark" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.registered_trademark"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="营业执照" prop="business_license" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.business_license"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.remarks"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="评级" prop="grade" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.grade"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kanZiliao.current_process"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -720,7 +449,9 @@ import PingjiService from "../services/PingjiService";
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
+          this.Ziliao={},
+          this.dialogFormVisible=true
+          this.dialogTitle = "addData";
            PingjiService.getAll()
         .then(response => {
           this.result = response.data;
@@ -733,26 +464,26 @@ import PingjiService from "../services/PingjiService";
        async addservice(){
               this.dialogFormVisible=false;
           var data = {
-        supplier_name: this.addZiliao.supplier_name,
-        trade: this.addZiliao.trade,
-        address: this.addZiliao.address,
-        contact_person:this.addZiliao.contact_person,
-        phone:this.addZiliao.phone,
-        fax:this.addZiliao.fax,
-        post_code:this.addZiliao.post_code,
-        juridical_person:this.addZiliao.juridical_person,
-        bank_name:this.addZiliao.bank_name,
-        bank_card:this.addZiliao.bank_card,
-        tax_card:this.addZiliao.tax_card,
-        vat:this.addZiliao.vat,
-        email:this.addZiliao.email,
-        supplier_type:this.addZiliao.supplier_type,
-        discount:this.addZiliao.discount,
-        registered_trademark:this.addZiliao.registered_trademark,
-        business_license:this.addZiliao.business_license,
-        remarks:this.addZiliao.remarks,
-        grade:this.addZiliao.grade,
-        current_process:this.addZiliao.current_process
+        supplier_name: this.Ziliao.supplier_name,
+        trade: this.Ziliao.trade,
+        address: this.Ziliao.address,
+        contact_person:this.Ziliao.contact_person,
+        phone:this.Ziliao.phone,
+        fax:this.Ziliao.fax,
+        post_code:this.Ziliao.post_code,
+        juridical_person:this.Ziliao.juridical_person,
+        bank_name:this.Ziliao.bank_name,
+        bank_card:this.Ziliao.bank_card,
+        tax_card:this.Ziliao.tax_card,
+        vat:this.Ziliao.vat,
+        email:this.Ziliao.email,
+        supplier_type:this.Ziliao.supplier_type,
+        discount:this.Ziliao.discount,
+        registered_trademark:this.Ziliao.registered_trademark,
+        business_license:this.Ziliao.business_license,
+        remarks:this.Ziliao.remarks,
+        grade:this.Ziliao.grade,
+        current_process:this.Ziliao.current_process
         }
 
         CailiaogysService.create(data)
@@ -764,61 +495,65 @@ import PingjiService from "../services/PingjiService";
           console.log(e);
         });
        },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+       submit(Ziliao){
+          this.$refs[Ziliao].validate((valid) => {
+          if (this.dialogTitle ==  "addData" ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else{
+        this.kanClick();
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            CailiaogysService.get(pa)
          .then(response => {
-                this.kanZiliao=response.data;
+                this.Ziliao=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true
+           this.dialogFormVisible=true
+           this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
            CailiaogysService.get(pa)
          .then(response => {
-                this.updateZiliao=response.data;
+                this.Ziliao=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
        updateservice(){
-            this.dialogFormVisible1=false;
+            this.dialogFormVisible=false;
         var data = {
-          id:this.updateZiliao.id,
-        supplier_name: this.updateZiliao.supplier_name,
-        trade: this.updateZiliao.trade,
-        address: this.updateZiliao.address,
-        contact_person:this.updateZiliao.contact_person,
-        phone:this.updateZiliao.phone,
-        fax:this.updateZiliao.fax,
-        post_code:this.updateZiliao.post_code,
-        juridical_person:this.updateZiliao.juridical_person,
-        bank_name:this.updateZiliao.bank_name,
-        bank_card:this.updateZiliao.bank_card,
-        tax_card:this.updateZiliao.tax_card,
-        vat:this.updateZiliao.vat,
-        email:this.updateZiliao.email,
-        supplier_type:this.updateZiliao.supplier_type,
-        discount:this.updateZiliao.discount,
-        registered_trademark:this.updateZiliao.registered_trademark,
-        business_license:this.updateZiliao.business_license,
-        remarks:this.updateZiliao.remarks,
-        grade:this.updateZiliao.grade,
-        current_process:this.updateZiliao.current_process
+          id:this.Ziliao.id,
+        supplier_name: this.Ziliao.supplier_name,
+        trade: this.Ziliao.trade,
+        address: this.Ziliao.address,
+        contact_person:this.Ziliao.contact_person,
+        phone:this.Ziliao.phone,
+        fax:this.Ziliao.fax,
+        post_code:this.Ziliao.post_code,
+        juridical_person:this.Ziliao.juridical_person,
+        bank_name:this.Ziliao.bank_name,
+        bank_card:this.Ziliao.bank_card,
+        tax_card:this.Ziliao.tax_card,
+        vat:this.Ziliao.vat,
+        email:this.Ziliao.email,
+        supplier_type:this.Ziliao.supplier_type,
+        discount:this.Ziliao.discount,
+        registered_trademark:this.Ziliao.registered_trademark,
+        business_license:this.Ziliao.business_license,
+        remarks:this.Ziliao.remarks,
+        grade:this.Ziliao.grade,
+        current_process:this.Ziliao.current_process
         }
          CailiaogysService.update(data.id,data)
         .then(response => {
@@ -829,17 +564,8 @@ import PingjiService from "../services/PingjiService";
           console.log(e);
         });
        },
-       updatesubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-       },
-       delClick(index,row){
-         let pa=this.tableData[index].id;
+       delClickconfirm(index,row){
+              let pa=this.tableData[index].id;
               CailiaogysService.delete(pa)
               .then(response => {
                 this.tableonload();
@@ -848,6 +574,24 @@ import PingjiService from "../services/PingjiService";
               .catch(e => {
                 console.log(e);
               });
+       },
+       delClick(index,row){
+         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -865,6 +609,12 @@ import PingjiService from "../services/PingjiService";
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         TravelType:1,
         formLabelWidth: "100px",
         rules:{
@@ -893,9 +643,7 @@ import PingjiService from "../services/PingjiService";
             { required: true, message: '请输入营业执照', trigger: 'change' }
           ],
         },
-        addZiliao:{},
-        updateZiliao:{},
-        kanZiliao:{},
+        Ziliao:{},
         filterId:'',
         filterSupplier_name:'',
         filterAddress:'',
@@ -914,8 +662,6 @@ import PingjiService from "../services/PingjiService";
         filterRemarks:'',
         filterGrade:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
         tableData: [],
         result:[]
       }

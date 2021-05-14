@@ -435,9 +435,6 @@ import HuanKuanService from "../services/HuanKuanService"
                 console.log(e);
               });
        },
-       updateservice(){
-            
-       },
        updatesubmit(formName){
           this.$refs[formName].validate((valid) => {
           if (valid) {

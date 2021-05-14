@@ -133,12 +133,12 @@
     </el-table-column>
   </el-table>
 
-  <!-- 添加弹出层 -->
-  <el-dialog title="出库" width="45%" :visible.sync="dialogFormVisible">
+  <!-- 弹出层 -->
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addchuku"
+        :model="chuku"
         status-icon :rules="rules"
-        ref="addchuku"
+        ref="chuku"
         label-width="100px"
         class="demo-ruleForm"
       >
@@ -148,43 +148,43 @@
             <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
             </el-select> -->
-            <el-input v-model="addchuku.item_name"></el-input>
+            <el-input v-model="chuku.item_name"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="商品名" prop="goods_name" :label-width="formLabelWidth">
-           <el-input v-model="addchuku.goods_name"></el-input>
+           <el-input v-model="chuku.goods_name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="商品单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="addchuku.goods_danwei"></el-input>
+            <el-input v-model="chuku.goods_danwei"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="出库数量" prop="chuku_number" :label-width="formLabelWidth">
-            <el-input v-model="addchuku.chuku_number"></el-input>
+            <el-input v-model="chuku.chuku_number"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
             <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="addchuku.before_stock"></el-input>
+                <el-input v-model="chuku.before_stock"></el-input>
              </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="更新后库存" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="addchuku.after_stock"></el-input>
+            <el-input v-model="chuku.after_stock"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addchuku.current_process"></el-input>
+            <el-input v-model="chuku.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -192,135 +192,10 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addchuku')">立即添加</el-button>
+          <el-button type="primary" @click="submit('chuku')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 修改弹出层 -->
-  <el-dialog title="修改出库" width="45%" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatechuku"
-        status-icon :rules="rules"
-        ref="updatechuku"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input v-model="updatechuku.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="商品名" prop="goods_name" :label-width="formLabelWidth">
-           <el-input v-model="updatechuku.goods_name"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="商品单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="updatechuku.goods_danwei"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="出库数量" prop="chuku_number" :label-width="formLabelWidth">
-            <el-input v-model="updatechuku.chuku_number"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-            <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="updatechuku.before_stock"></el-input>
-             </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="更新后库存" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="updatechuku.after_stock"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatechuku.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatechuku')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 查看弹出层 -->
-  <el-dialog title="查看出库" width="45%" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kanchuku"
-        status-icon :rules="rules"
-        ref="kanchuku"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input v-model="kanchuku.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="商品名" prop="goods_name" :label-width="formLabelWidth">
-           <el-input v-model="kanchuku.goods_name"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="商品单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="kanchuku.goods_danwei"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="出库数量" prop="ruku_number" :label-width="formLabelWidth">
-            <el-input v-model="kanchuku.chuku_number"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-            <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="kanchuku.before_stock"></el-input>
-             </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="更新后库存" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="kanchuku.after_stock"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kanchuku.current_process"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -346,26 +221,20 @@ import ChukuService from "../services/ChukuService"
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
-        //    CailiaogysService.getAll()
-        // .then(response => {
-        //   this.result = response.data;
-        //   console.log(response.data);
-        // })
-        // .catch(e => {
-        //   console.log(e);
-        // });
+          this.chuku={},
+          this.dialogFormVisible=true
+          this.dialogTitle = "addData";
        },
-       async addservice(){
-              this.dialogFormVisible=false;
+       addservice(){
+          this.dialogFormVisible=false;
           var data = {
-        item_name: this.addchuku.item_name,
-        goods_name: this.addchuku.goods_name,
-        goods_danwei:this.addchuku.goods_danwei,
-        chuku_number:this.addchuku.chuku_number,
-        before_stock:this.addchuku.before_stock,
-        after_stock:this.addchuku.after_stock,
-        current_process:this.addchuku.current_process
+        item_name: this.chuku.item_name,
+        goods_name: this.chuku.goods_name,
+        goods_danwei:this.chuku.goods_danwei,
+        chuku_number:this.chuku.chuku_number,
+        before_stock:this.chuku.before_stock,
+        after_stock:this.chuku.after_stock,
+        current_process:this.chuku.current_process
         }
         ChukuService.create(data)
         .then(response => {
@@ -376,48 +245,52 @@ import ChukuService from "../services/ChukuService"
           console.log(e);
         });
        },
-       addsubmit(formName){
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+       submit(chuku){
+          this.$refs[chuku].validate((valid) => {
+          if (this.dialogTitle ==  "addData" ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else{
+        this.kanClick();
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            ChukuService.get(pa)
          .then(response => {
-                this.kanchuku=response.data;
+                this.chuku=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true
+           this.dialogFormVisible=true
+           this.dialogTitle = "updataData"; 
            let pa=this.tableData[index].id;
            ChukuService.get(pa)
          .then(response => {
-                this.updatechuku=response.data;
+                this.chuku=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
        updateservice(){
-              this.dialogFormVisible1=false;
+              this.dialogFormVisible=false;
           var data = {
-            id:this.updatechuku.id,
-            item_name: this.updatechuku.item_name,
-            goods_name: this.updatechuku.goods_name,
-            goods_danwei:this.updatechuku.goods_danwei,
-            chuku_number:this.updatechuku.chuku_number,
-            before_stock:this.updatechuku.before_stock,
-            after_stock:this.updatechuku.after_stock,
-            current_process:this.updatechuku.current_process
+            id:this.chuku.id,
+            item_name: this.chuku.item_name,
+            goods_name: this.chuku.goods_name,
+            goods_danwei:this.chuku.goods_danwei,
+            chuku_number:this.chuku.chuku_number,
+            before_stock:this.chuku.before_stock,
+            after_stock:this.chuku.after_stock,
+            current_process:this.chuku.current_process
         }
           ChukuService.update(data.id,data)
         .then(response => {
@@ -428,16 +301,7 @@ import ChukuService from "../services/ChukuService"
           console.log(e);
         });
        },
-       updatesubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-       },
-        delClick(index,row){
+       delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               ChukuService.delete(pa)
               .then(response => {
@@ -447,21 +311,24 @@ import ChukuService from "../services/ChukuService"
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+        delClick(index,row){  
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -473,6 +340,12 @@ import ChukuService from "../services/ChukuService"
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         TravelType:1,
         formLabelWidth: "100px",
         rules:{
@@ -488,9 +361,7 @@ import ChukuService from "../services/ChukuService"
         },
         tableData:[],
         result:[],
-        addchuku:{},
-        updatechuku:{},
-        kanchuku:{},
+        chuku:{},
         filterId:'',
         filterItem_name:'',
         filterGoods_name:'',
@@ -499,8 +370,6 @@ import ChukuService from "../services/ChukuService"
         filterBefore_stock:'',
         filterAfter_stock:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

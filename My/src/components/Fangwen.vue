@@ -209,14 +209,16 @@ import QiyeService from "../services/QiyeService";
           console.log(e);
         });
        },
-       addsubmit(addfangwen){
-         this.$refs[addfangwen].validate((valid) => {
-          if (this.dialogTitle ==  "addData" ) {
+        submit(addfangwen){
+          this.$refs[addfangwen].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
-      }else{
+      }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else{
+        return false
       }
         });
         },

@@ -118,48 +118,48 @@
     </el-table-column>
   </el-table>
 
-  <!-- 添加弹出层 -->
-  <el-dialog title="库存" width="45%" :visible.sync="dialogFormVisible">
+  <!-- 弹出层 -->
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addkucun"
+        :model="kucun"
         status-icon :rules="rules"
-        ref="addkucun"
+        ref="kucun"
         label-width="100px"
         class="demo-ruleForm"
       >
       <el-row>
          <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="addkucun.item_name"></el-input>
+            <el-input v-model="kucun.item_name"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="材料种类" prop="goods_type" :label-width="formLabelWidth">
-           <el-input v-model="addkucun.goods_type"></el-input>
+           <el-input v-model="kucun.goods_type"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="addkucun.goods_danwei"></el-input>
+            <el-input v-model="kucun.goods_danwei"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
             <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="addkucun.before_stock"></el-input>
+                <el-input v-model="kucun.before_stock"></el-input>
              </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="以供应总量" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="addkucun.after_stock"></el-input>
+            <el-input v-model="kucun.after_stock"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addkucun.current_process"></el-input>
+            <el-input v-model="kucun.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -167,115 +167,10 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addkucun')">立即添加</el-button>
+          <el-button type="primary" @click="submit('kucun')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 修改弹出层 -->
-  <el-dialog title="修改库存" width="45%" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatekucun"
-        status-icon :rules="rules"
-        ref="updatekucun"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="updatekucun.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="材料种类" prop="goods_type" :label-width="formLabelWidth">
-           <el-input v-model="updatekucun.goods_type"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="updatekucun.goods_danwei"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-            <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="updatekucun.before_stock"></el-input>
-             </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="以供应总量" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="updatekucun.after_stock"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatekucun.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatekucun')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 查看弹出层 -->
-  <el-dialog title="查看库存" width="45%" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kankucun"
-        status-icon :rules="rules"
-        ref="kankucun"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="kankucun.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="材料种类" prop="goods_type" :label-width="formLabelWidth">
-           <el-input v-model="kankucun.goods_type"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="kankucun.goods_danwei"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-            <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="kankucun.before_stock"></el-input>
-             </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="以供应总量" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="kankucun.after_stock"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kankucun.current_process"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -300,25 +195,19 @@ import KucunService from "../services/KucunService"
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
-        //    CailiaogysService.getAll()
-        // .then(response => {
-        //   this.result = response.data;
-        //   console.log(response.data);
-        // })
-        // .catch(e => {
-        //   console.log(e);
-        // });
+          this.kucun={},
+          this.dialogFormVisible=true
+          this.dialogTitle = "addData";
        },
-       async addservice(){
+       addservice(){
               this.dialogFormVisible=false;
           var data = {
-        item_name: this.addkucun.item_name,
-        goods_type: this.addkucun.goods_type,
-        goods_danwei:this.addkucun.goods_danwei,
-        before_stock:this.addkucun.before_stock,
-        after_stock:this.addkucun.after_stock,
-        current_process:this.addkucun.current_process
+        item_name: this.kucun.item_name,
+        goods_type: this.kucun.goods_type,
+        goods_danwei:this.kucun.goods_danwei,
+        before_stock:this.kucun.before_stock,
+        after_stock:this.kucun.after_stock,
+        current_process:this.kucun.current_process
         }
         KucunService.create(data)
         .then(response => {
@@ -329,47 +218,53 @@ import KucunService from "../services/KucunService"
           console.log(e);
         });
        },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+       submit(kucun){
+          this.$refs[kucun].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else if(this.dialogTitle ==  "kanData"){
+        this.kanClick();
+      }else{
+        return false
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            KucunService.get(pa)
          .then(response => {
-                this.kankucun=response.data;
+                this.kucun=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true
+           this.dialogFormVisible=true
+           this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
            KucunService.get(pa)
          .then(response => {
-                this.updatekucun=response.data;
+                this.kucun=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
        updateservice(){
-             this.dialogFormVisible1=false;
+             this.dialogFormVisible=false;
           var data = {
-            id:this.updatekucun.id,
-            item_name: this.updatekucun.item_name,
-            goods_type: this.updatekucun.goods_type,
-            goods_danwei:this.updatekucun.goods_danwei,
-            before_stock:this.updatekucun.before_stock,
-            after_stock:this.updatekucun.after_stock,
-            current_process:this.updatekucun.current_process
+            id:this.kucun.id,
+            item_name: this.kucun.item_name,
+            goods_type: this.kucun.goods_type,
+            goods_danwei:this.kucun.goods_danwei,
+            before_stock:this.kucun.before_stock,
+            after_stock:this.kucun.after_stock,
+            current_process:this.kucun.current_process
         }
           KucunService.update(data.id,data)
         .then(response => {
@@ -380,16 +275,7 @@ import KucunService from "../services/KucunService"
           console.log(e);
         });
        },
-       updatesubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-       },
-        delClick(index,row){
+       delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               KucunService.delete(pa)
               .then(response => {
@@ -399,21 +285,24 @@ import KucunService from "../services/KucunService"
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+        delClick(index,row){    
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -425,6 +314,12 @@ import KucunService from "../services/KucunService"
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         TravelType:1,
         formLabelWidth: "100px",
          rules:{
@@ -443,9 +338,7 @@ import KucunService from "../services/KucunService"
         },
         tableData:[],
         result:[],
-        addkucun:{},
-        updatekucun:{},
-        kankucun:{},
+        kucun:{},
         filterId:'',
         filterItem_name:'',
         filterGoods_type:'',
@@ -453,8 +346,6 @@ import KucunService from "../services/KucunService"
         filterBefore_stock:'',
         filterAfter_stock:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

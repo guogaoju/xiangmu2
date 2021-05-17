@@ -495,14 +495,16 @@ import PingjiService from "../services/PingjiService";
           console.log(e);
         });
        },
-       submit(Ziliao){
+      submit(Ziliao){
           this.$refs[Ziliao].validate((valid) => {
-          if (this.dialogTitle ==  "addData" ) {
+          if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
-      }else{
+      }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else{
+        return false
       }
         });
         },

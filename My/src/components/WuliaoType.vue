@@ -88,36 +88,36 @@
     </el-table-column>
   </el-table>
 
-  <!-- 添加弹出层 -->
-  <el-dialog title="添加物料分类" :visible.sync="dialogFormVisible">
+  <!-- 弹出层 -->
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addtype"
+        :model="type"
         status-icon :rules="rules"
-        ref="addtype"
+        ref="type"
         label-width="100px"
         class="demo-ruleForm"
       >
       <el-row>
         <el-col :span="12">
           <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-            <el-input v-model="addtype.name"></el-input>
+            <el-input v-model="type.name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="类型" prop="type" :label-width="formLabelWidth">
-            <el-input v-model="addtype.type"></el-input>
+            <el-input v-model="type.type"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
           <el-col :span="12">
           <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="addtype.remarks"></el-input>
+            <el-input v-model="type.remarks"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addtype.current_process"></el-input>
+            <el-input v-model="type.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -125,90 +125,10 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addtype')">立即添加</el-button>
+          <el-button type="primary" @click="submit('type')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 修改弹出层 -->
-  <el-dialog title="修改物料分类" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatetype"
-        status-icon :rules="rules"
-        ref="updatetype"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-            <el-input v-model="updatetype.name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="类型" prop="type" :label-width="formLabelWidth">
-            <el-input v-model="updatetype.type"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-          <el-col :span="12">
-          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="updatetype.remarks"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatetype.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatetype')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-  <!-- 查看弹出层 -->
-  <el-dialog title="查看物料分类" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kantype"
-        status-icon :rules="rules"
-        ref="kantype"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-            <el-input v-model="kantype.name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="类型" prop="type" :label-width="formLabelWidth">
-            <el-input v-model="kantype.type"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-          <el-col :span="12">
-          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="kantype.remarks"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kantype.current_process"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -235,14 +155,16 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
       },
        openFrom(){
            this.dialogFormVisible=true
+           this.type={},
+          this.dialogTitle = "addData";
        },
        async addservice(){
               this.dialogFormVisible=false;
           var data = {
-        name:this.addtype.name,
-        type:this.addtype.type,
-        remarks:this.addtype.remarks,
-        current_process:this.addtype.current_process
+        name:this.type.name,
+        type:this.type.type,
+        remarks:this.type.remarks,
+        current_process:this.type.current_process
         }
 
         WuliaoTypeService.create(data)
@@ -254,45 +176,51 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
           console.log(e);
         });
        },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+       submit(type){
+          this.$refs[type].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else if(this.dialogTitle ==  "kanData"){
+        this.kanClick();
+      }else{
+        return false
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            WuliaoTypeService.get(pa)
          .then(response => {
-                this.kantype=response.data;
+                this.type=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true;
+           this.dialogFormVisible=true;
+           this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
            WuliaoTypeService.get(pa)
          .then(response => {
-                this.updatetype=response.data;
+                this.type=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
        updateservice(){
-            this.dialogFormVisible1=false;
+            this.dialogFormVisible=false;
           var data = {
-            id:this.updatetype.id,
-            name:this.updatetype.name,
-            type:this.updatetype.type,
-            remarks:this.updatetype.remarks,
-            current_process:this.updatetype.current_process
+            id:this.type.id,
+            name:this.type.name,
+            type:this.type.type,
+            remarks:this.type.remarks,
+            current_process:this.type.current_process
         }
           WuliaoTypeService.update(data.id,data)
         .then(response => {
@@ -303,16 +231,7 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
           console.log(e);
         });
        },
-       updatesubmit(formName){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-       },
-       delClick(index,row){
+        delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               WuliaoTypeService.delete(pa)
               .then(response => {
@@ -322,21 +241,24 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+       delClick(index,row){    
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -348,6 +270,12 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         TravelType:1,
         formLabelWidth: "100px",
         rules:{
@@ -359,16 +287,12 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
           ],
         },
         tableData:[],
-        addtype:{},
-        updatetype:{},
-        kantype:{},
+        type:{},
         filterId:'',
         filteredName:'', 
         filteredType:'',
         filterRemarks:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

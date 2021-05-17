@@ -181,8 +181,8 @@
     </el-table-column>
   </el-table>
 
-  <!-- 添加弹出层 -->
-  <el-dialog title="添加采购" width="55%" :visible.sync="dialogFormVisible">
+  <!-- 弹出层 -->
+  <el-dialog :title="titleMap[dialogTitle]" width="55%" :visible.sync="dialogFormVisible">
       <el-form
         :model="caigou"
         status-icon :rules="rules"
@@ -419,13 +419,15 @@ import WuliaoService from "../services/WuliaoService";
         });
        },
        submit(caigou){
-         this.$refs[caigou].validate((valid) => {
-          if (this.dialogTitle ==  "addData" ) {
+          this.$refs[caigou].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
-      }else{
+      }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else{
+        return false
       }
         });
         this.imageUrlback[0]=""
@@ -433,6 +435,7 @@ import WuliaoService from "../services/WuliaoService";
         this.imageUrlback[2]=""
         this.tmpUrl=""
         },
+        
         addform(){
             this.dialog=true;
             WuliaoService.getAll()

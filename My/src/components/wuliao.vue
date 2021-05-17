@@ -122,31 +122,31 @@
     </el-table>
 
     <!-- 添加弹出层 -->
-    <el-dialog title="添加物料资料" :visible.sync="dialogFormVisible">
-        <el-form :model="addwuliao" status-icon :rules="rules" ref="addwuliao" label-width="100px" class="demo-ruleForm">
+    <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
+        <el-form :model="wuliao" status-icon :rules="rules" ref="wuliao" label-width="100px" class="demo-ruleForm">
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-                        <el-input v-model="addwuliao.name"></el-input>
+                        <el-input v-model="wuliao.name"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="规格型号" prop="Specification" :label-width="formLabelWidth">
-                        <el-input v-model="addwuliao.Specification"></el-input>
+                        <el-input v-model="wuliao.Specification"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="物料类型" prop="wuliaotype" :label-width="formLabelWidth">
-                        <el-select filterable v-model="addwuliao.wuliaotype" placeholder="请选择">
+                        <el-select filterable v-model="wuliao.wuliaotype" placeholder="请选择">
                             <el-option v-for="item in result1" :key="item.id" :label="item.name" :value="item.name"></el-option>
                         </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="计量单位" prop="danwei" :label-width="formLabelWidth">
-                        <el-select filterable v-model="addwuliao.danwei" placeholder="请选择单位">
+                        <el-select filterable v-model="wuliao.danwei" placeholder="请选择单位">
                             <el-option v-for="item in result" :key="item.id" :label="item.name" :value="item.name"></el-option>
                         </el-select>
                     </el-form-item>
@@ -159,7 +159,7 @@
                     action="http://localhost:8080/api/Wuliao/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
-                    :data="addwuliao" 
+                    :data="wuliao" 
                     :on-change="handleAvatarChange" 
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload"
@@ -172,12 +172,12 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-                        <el-input v-model="addwuliao.remarks"></el-input>
+                        <el-input v-model="wuliao.remarks"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-                        <el-input v-model="addwuliao.current_process"></el-input>
+                        <el-input v-model="wuliao.current_process"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -185,137 +185,13 @@
                 <el-col :span="6"></el-col>
                 <el-col :span="12">
                     <el-form-item>
-                        <el-button type="primary" @click="addsubmit('addwuliao')">立即添加</el-button>
+                        <el-button type="primary" @click="submit('wuliao')">立即添加</el-button>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6"></el-col>
             </el-row>
         </el-form>
-    </el-dialog>
-<!-- 测试 -->
-    <!-- 修改弹出层 -->
-    <el-dialog title="修改物料资料" :visible.sync="dialogFormVisible1">
-        <el-form :model="updatewuliao" status-icon :rules="rules" ref="updatewuliao" label-width="100px" class="demo-ruleForm">
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-                        <el-input v-model="updatewuliao.name"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="规格型号" prop="Specification" :label-width="formLabelWidth">
-                        <el-input v-model="updatewuliao.Specification"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="物料类型" prop="wuliaotype" :label-width="formLabelWidth">
-                        <el-input v-model="updatewuliao.wuliaotype"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="计量单位" prop="danwei" :label-width="formLabelWidth">
-                        <el-input v-model="updatewuliao.danwei"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-form-item label="物料图片" ref="uploadElement" prop="avatar" :label-width="formLabelWidth">
-                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
-                    <el-upload ref="upload" class="avatar-uploader" 
-                    action="http://localhost:8080/api/Wuliao/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false"
-                    :data="updatewuliao"  
-                    :on-change="handleAvatarChange" 
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-                        <el-input v-model="updatewuliao.remarks"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-                        <el-input v-model="updatewuliao.current_process"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="6"></el-col>
-                <el-col :span="12">
-                    <el-form-item>
-                        <el-button type="primary" @click="updatesubmit('updatewuliao')">立即修改</el-button>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="6"></el-col>
-            </el-row>
-        </el-form>
-    </el-dialog>
-    <!-- 查看弹出层 -->
-    <el-dialog title="查看物料资料" :visible.sync="dialogFormVisible2">
-        <el-form :model="kanwuliao" status-icon :rules="rules" ref="kanwuliao" label-width="100px" class="demo-ruleForm">
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-                        <el-input v-model="kanwuliao.name"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="规格型号" prop="Specification" :label-width="formLabelWidth">
-                        <el-input v-model="kanwuliao.Specification"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="物料类型" prop="wuliaotype" :label-width="formLabelWidth">
-                        <el-input v-model="kanwuliao.wuliaotype"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="计量单位" prop="danwei" :label-width="formLabelWidth">
-                        <el-input v-model="kanwuliao.danwei"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                 <el-form-item label="物料图片"  prop="avatar" :label-width="formLabelWidth">
-                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
-                    <el-upload ref="upload" class="avatar-uploader" 
-                    action="http://localhost:8080/api/Wuliao/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :on-change="handleAvatarChange" 
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-                        <el-input v-model="kanwuliao.remarks"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-                        <el-input v-model="kanwuliao.current_process"></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-        </el-form>
-    </el-dialog>
+    </el-dialog> 
 </div>
 </template>
 
@@ -340,6 +216,8 @@ export default {
                 });
         },
         openFrom() {
+            this.wuliao={},
+            this.dialogTitle = "addData";
             //新建时候清空url
             this.imageUrl=""
             this.dialogFormVisible = true
@@ -356,50 +234,50 @@ export default {
                     console.log(e);
                 });
         },
-
-        addsubmit(formName) {
-            let vm = this;
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    //提交图片到后台，并读取返回的地址
-                    //提交成功后，会自动调用handleAvatarSuccess，得到图片url
-                    //vm.$refs.upload.submit();
-                    this.dialogFormVisible = false;
+        addservice(){
+         this.dialogFormVisible = false;
                     var data = {
-                        name: this.addwuliao.name,
-                        Specification: this.addwuliao.Specification,
-                        wuliaotype: this.addwuliao.wuliaotype,
-                        danwei: this.addwuliao.danwei,
+                        name: this.wuliao.name,
+                        Specification: this.wuliao.Specification,
+                        wuliaotype: this.wuliao.wuliaotype,
+                        danwei: this.wuliao.danwei,
                         //读到的url在这用
                         avatar: this.imageUrl,
-                        remarks: this.addwuliao.remarks,
-                        current_process: this.addwuliao.current_process
+                        remarks: this.wuliao.remarks,
+                        current_process: this.wuliao.current_process
                     }
                     WuliaoService.create(data)
                         .then(response => {
                             this.tableonload();
-                            //s刷新页面
-                            //不需要全刷新,有上面那一句就够了
-                            //this.$router.go(0)
                             console.log(response.data);
                         })
                         .catch(e => {
                             console.log(e);
                         });
-                } else {
-                    return false;
-                }
-                //上传完成后清空一下
+                        //上传完成后清空一下
                 this.imageUrl=""
                 this.tmpUrl=""
-            })
+       },
+        submit(chuku){
+          this.$refs[chuku].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else if(this.dialogTitle ==  "kanData"){
+        this.kanClick();
+      }else{
+        return false
+      }
+        });
         },
         kanClick(index,row) {
-            this.dialogFormVisible2 = true
+            this.dialogFormVisible = true
+            this.dialogTitle = "kanData";
             let pa = this.tableData[index].id;
             WuliaoService.get(pa)
                 .then(response => {
-                    this.kanwuliao = response.data;
+                    this.wuliao = response.data;
                     //console.log(response.data.avatar)
                     this.imageUrl=response.data.avatar
                 })
@@ -408,11 +286,12 @@ export default {
                 });
         },
         updateClick(index, row) {
-            this.dialogFormVisible1 = true;
+            this.dialogFormVisible = true;
+            this.dialogTitle = "updataData";
             let pa = this.tableData[index].id;
             WuliaoService.get(pa)
                 .then(response => {
-                    this.updatewuliao = response.data;
+                    this.wuliao = response.data;
                     this.imageUrl=response.data.avatar;
                     //旧图片url另存一份,将来imageUrl会被覆盖
                     this.oldUrl = this.imageUrl;
@@ -421,24 +300,18 @@ export default {
                     console.log(e);
                 });
         },
-
-        
-        updatesubmit(formName) {
-            let vm = this;
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    //vm.$refs.upload.submit();
-                    //console.log(this.imageUrl);
-                    this.dialogFormVisible1 = false;
+        updateservice() {
+            
+                    this.dialogFormVisible = false;
                      var data = {
-                id: this.updatewuliao.id,
-                name: this.updatewuliao.name,
-                Specification: this.updatewuliao.Specification,
-                wuliaotype: this.updatewuliao.wuliaotype,
-                danwei: this.updatewuliao.danwei,
+                id: this.wuliao.id,
+                name: this.wuliao.name,
+                Specification: this.wuliao.Specification,
+                wuliaotype: this.wuliao.wuliaotype,
+                danwei: this.wuliao.danwei,
                 avatar: this.imageUrl,
-                remarks: this.updatewuliao.remarks,
-                current_process: this.updatewuliao.current_process
+                remarks: this.wuliao.remarks,
+                current_process: this.wuliao.current_process
                             }
                     WuliaoService.update(data.id, data)
                         .then(response => {
@@ -451,16 +324,12 @@ export default {
                             console.log(e);
                         });
 
-                } else {
-                    return false;
-                }
-            })
             this.imageUrl=""
             this.tmpUrl=""
 
         },
-        delClick(index, row) {
-            let pa = this.tableData[index].id;
+         delClickconfirm(index,row){
+              let pa = this.tableData[index].id;
             WuliaoService.delete(pa)
                 .then(response => {
                     this.tableonload();
@@ -469,21 +338,24 @@ export default {
                 .catch(e => {
                     console.log(e);
                 });
-            //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-            //   confirmButtonText: '确定',
-            //   cancelButtonText: '取消',
-            //   type: 'warning'
-            // }).then(() => {
-            //   this.$message({
-            //     type: 'success',
-            //     message: '删除成功!'
-            //   });
-            // }).catch(() => {
-            //   this.$message({
-            //     type: 'info',
-            //     message: '已取消删除'
-            //   });          
-            // });
+       },
+        delClick(index, row) {
+              this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+            this.delClickconfirm(index);
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消删除'
+              });          
+            });
         },
         handleClick(row) {
             console.log(row);
@@ -528,7 +400,12 @@ export default {
 
     data() {
         return {
-
+            titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
             fileList:[{imageUrl:""}],
             imageUrl: '',
             oldUrl: '',
@@ -539,9 +416,7 @@ export default {
             tableData: [],
             result: [],
             result1: [],
-            addwuliao: {},
-            updatewuliao: {},
-            kanwuliao: {},
+            wuliao: {},
             // current_process:'',
             filteredName: '',
             filterDanwei: '',
@@ -551,8 +426,6 @@ export default {
             filterRemarks:'',
             filterSpecification:'',
             dialogFormVisible: false,
-            dialogFormVisible1: false,
-            dialogFormVisible2: false,
         }
     }
 }

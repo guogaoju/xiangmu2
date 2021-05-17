@@ -95,11 +95,11 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog title="发起更新项目进度" width="45%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addjindu"
+        :model="jindu"
         status-icon :rules="rules"
-        ref="addjindu"
+        ref="jindu"
         label-width="100px"
         class="demo-ruleForm"
       >
@@ -109,19 +109,19 @@
             <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
             </el-select> -->
-            <el-input v-model="addjindu.item_name"></el-input>
+            <el-input v-model="jindu.item_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="当前进度" prop="before_jindu" :label-width="formLabelWidth">
-            <el-input v-model="addjindu.before_jindu"></el-input>
+            <el-input v-model="jindu.before_jindu"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="更新后进度" prop="after_jindu" :label-width="formLabelWidth">
-           <el-input v-model="addjindu.after_jindu"></el-input>
+           <el-input v-model="jindu.after_jindu"></el-input>
           </el-form-item>
         </el-col>
          <el-col>
@@ -130,7 +130,7 @@
                     action="http://localhost:8080/api/Jindu/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
-                    :data="addjindu" 
+                    :data="jindu" 
                     :on-change="handleAvatarChange" 
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload"
@@ -144,7 +144,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addjindu.current_process"></el-input>
+            <el-input v-model="jindu.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -154,136 +154,13 @@
         </el-col>    -->
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addjindu')">立即添加</el-button>
+          <el-button type="primary" @click="submit('jindu')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
       </el-row>
     </el-form>
   </el-dialog>
-
-  <!-- 修改弹出层 -->
-  <el-dialog title="修改项目进度" width="45%" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatejindu"
-        status-icon :rules="rules"
-        ref="updatejindu"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input v-model="updatejindu.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前进度" prop="before_jindu" :label-width="formLabelWidth">
-            <el-input v-model="updatejindu.before_jindu"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="更新后进度" prop="after_jindu" :label-width="formLabelWidth">
-           <el-input v-model="updatejindu.after_jindu"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col>
-            <el-form-item label="现场照片" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
-                    <el-upload ref="upload" class="avatar-uploader" 
-                    action="http://localhost:8080/api/Jindu/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="updatejindu" 
-                    :on-change="handleAvatarChange" 
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrl" :src="imageUrl" class="photo">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatejindu.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatejindu')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-  <!-- 查看弹出层 -->
-  <el-dialog title="查看项目进度" width="45%" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kanjindu"
-        status-icon :rules="rules"
-        ref="kanjindu"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input v-model="kanjindu.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前进度" prop="before_jindu" :label-width="formLabelWidth">
-            <el-input v-model="kanjindu.before_jindu"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="更新后进度" prop="after_jindu" :label-width="formLabelWidth">
-           <el-input v-model="kanjindu.after_jindu"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col>
-            <el-form-item label="现场照片" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
-                    <el-upload ref="upload" class="avatar-uploader" 
-                    action="http://localhost:8080/api/Jindu/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="kanjindu" 
-                    :on-change="handleAvatarChange" 
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrl" :src="imageUrl" class="photo">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kanjindu.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
   <el-drawer
   :visible.sync="dialog"
   direction="ltr"
@@ -338,9 +215,11 @@ import JinduService from "../services/JinduService"
         });
       },
        openFrom(){
+          this.jindu={},
+          this.dialogFormVisible=true
+          this.dialogTitle = "addData";
           //新建时候清空url
           this.imageUrl=""
-          this.dialogFormVisible=true
        },
        addform(){
             this.dialog=true;
@@ -371,16 +250,14 @@ import JinduService from "../services/JinduService"
           console.log(e);
         });  
         },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-             this.dialogFormVisible=false;
+        addservice(){
+               this.dialogFormVisible=false;
           var data = {
-          item_name: this.addjindu.item_name,
-          before_jindu: this.addjindu.before_jindu,
-          after_jindu: this.addjindu.after_jindu,
+          item_name: this.jindu.item_name,
+          before_jindu: this.jindu.before_jindu,
+          after_jindu: this.jindu.after_jindu,
           photo:this.imageUrl,
-          current_process:this.addjindu.current_process
+          current_process:this.jindu.current_process
         }
         JinduService.create(data)
         .then(response => {
@@ -390,20 +267,32 @@ import JinduService from "../services/JinduService"
         .catch(e => {
           console.log(e);
         });
-          } else {
-            return false;
-          }
-          //上传完成后清空一下
+        },
+        submit(jindu){
+          this.$refs[jindu].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else if(this.dialogTitle ==  "kanData"){
+        this.kanClick();
+      }else{
+        return false
+      }
+        });
+        //上传完成后清空一下
                 this.imageUrl=""
                 this.tmpUrl=""
-        });
+        
         },
+        
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            JinduService.get(pa)
          .then(response => {
-                this.kanjindu=response.data;
+                this.jindu=response.data;
                 this.imageUrl=response.data.photo
               })
               .catch(e => {
@@ -411,11 +300,12 @@ import JinduService from "../services/JinduService"
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true
+           this.dialogFormVisible=true
+           this.dialogTitle = "updataData"; 
            let pa=this.tableData[index].id;
            JinduService.get(pa)
          .then(response => {
-                this.updatejindu=response.data;
+                this.jindu=response.data;
                 this.imageUrl=response.data.photo;
                     //旧图片url另存一份,将来imageUrl会被覆盖
                     this.oldUrl = this.imageUrl;
@@ -424,17 +314,15 @@ import JinduService from "../services/JinduService"
                 console.log(e);
               });
        },
-       updatesubmit(formName){
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.dialogFormVisible1=false;
+        updateservice(){
+             this.dialogFormVisible=false;
             var data = {
-            id:this.updatejindu.id,
-            item_name: this.updatejindu.item_name,
-            before_jindu: this.updatejindu.before_jindu,
-            after_jindu: this.updatejindu.after_jindu,
+            id:this.jindu.id,
+            item_name: this.jindu.item_name,
+            before_jindu: this.jindu.before_jindu,
+            after_jindu: this.jindu.after_jindu,
             photo:this.imageUrl,
-            current_process:this.updatejindu.current_process
+            current_process:this.jindu.current_process
         }
           JinduService.update(data.id,data)
         .then(response => {
@@ -447,14 +335,10 @@ import JinduService from "../services/JinduService"
         .catch(e => {
           console.log(e);
         });
-          } else {
-            return false;
-          }
-        });
-         this.imageUrl=""
+        this.imageUrl=""
         this.tmpUrl=""
        },
-        delClick(index,row){
+       delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               JinduService.delete(pa)
               .then(response => {
@@ -464,21 +348,24 @@ import JinduService from "../services/JinduService"
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+        delClick(index,row){
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -526,7 +413,13 @@ import JinduService from "../services/JinduService"
 
     data() {
       return {
-          dialog: false,
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
+        dialog: false,
         loading: false,
 form: {
         name: '',
@@ -554,16 +447,12 @@ form: {
         },
         tableData:[],
         result:[],
-        addjindu:{},
-        updatejindu:{},
-        kanjindu:{},
+        jindu:{},
         filterId:'',
         filterItem_name:'',
         filterBefore_jindu:'',
         filterAfter_jindu:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

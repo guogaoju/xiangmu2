@@ -179,11 +179,11 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog title="入库" width="45%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addruku"
+        :model="ruku"
         status-icon :rules="rules"
-        ref="addruku"
+        ref="ruku"
         label-width="100px"
         class="demo-ruleForm"
       >
@@ -193,60 +193,60 @@
             <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
             </el-select> -->
-            <el-input v-model="addruku.item_name"></el-input>
+            <el-input v-model="ruku.item_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="供应商" prop="supplier" :label-width="formLabelWidth">
-            <el-input v-model="addruku.supplier"></el-input>
+            <el-input v-model="ruku.supplier"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="商品名" prop="goods_name" :label-width="formLabelWidth">
-           <el-input v-model="addruku.goods_name"></el-input>
+           <el-input v-model="ruku.goods_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="商品单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="addruku.goods_danwei"></el-input>
+            <el-input v-model="ruku.goods_danwei"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="入库数量" prop="ruku_number" :label-width="formLabelWidth">
-            <el-input v-model="addruku.ruku_number"></el-input>
+            <el-input v-model="ruku.ruku_number"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
             <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="addruku.before_stock"></el-input>
+                <el-input v-model="ruku.before_stock"></el-input>
              </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="更新后库存" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="addruku.after_stock"></el-input>
+            <el-input v-model="ruku.after_stock"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
             <el-form-item label="当前已供应" prop="before_supply" :label-width="formLabelWidth">
-                <el-input v-model="addruku.before_supply"></el-input>
+                <el-input v-model="ruku.before_supply"></el-input>
              </el-form-item>
         </el-col>
       </el-row>
       <el-row>
           <el-col :span="12">
             <el-form-item label="更新后已供应" prop="after_supply" :label-width="formLabelWidth">
-                <el-input v-model="addruku.after_supply"></el-input>
+                <el-input v-model="ruku.after_supply"></el-input>
              </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addruku.current_process"></el-input>
+            <el-input v-model="ruku.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -254,169 +254,10 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addruku')">立即添加</el-button>
+          <el-button type="primary" @click="submit('ruku')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 修改弹出层 -->
-  <el-dialog title="修改入库" width="45%" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updateruku"
-        status-icon :rules="rules"
-        ref="updateruku"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input v-model="updateruku.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="供应商" prop="supplier" :label-width="formLabelWidth">
-            <el-input v-model="updateruku.supplier"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="商品名" prop="goods_name" :label-width="formLabelWidth">
-           <el-input v-model="updateruku.goods_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="商品单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="updateruku.goods_danwei"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="入库数量" prop="ruku_number" :label-width="formLabelWidth">
-            <el-input v-model="updateruku.ruku_number"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-            <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="updateruku.before_stock"></el-input>
-             </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="更新后库存" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="updateruku.after_stock"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-            <el-form-item label="当前已供应" prop="before_supply" :label-width="formLabelWidth">
-                <el-input v-model="updateruku.before_supply"></el-input>
-             </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-          <el-col :span="12">
-            <el-form-item label="更新后已供应" prop="after_supply" :label-width="formLabelWidth">
-                <el-input v-model="updateruku.after_supply"></el-input>
-             </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updateruku.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updateruku')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 查看弹出层 -->
-  <el-dialog title="查看入库" width="45%" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kanruku"
-        status-icon :rules="rules"
-        ref="kanruku"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input v-model="kanruku.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="供应商" prop="supplier" :label-width="formLabelWidth">
-            <el-input v-model="kanruku.supplier"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="商品名" prop="goods_name" :label-width="formLabelWidth">
-           <el-input v-model="kanruku.goods_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="商品单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="kanruku.goods_danwei"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="入库数量" prop="ruku_number" :label-width="formLabelWidth">
-            <el-input v-model="kanruku.ruku_number"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-            <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="kanruku.before_stock"></el-input>
-             </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="更新后库存" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="kanruku.after_stock"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-            <el-form-item label="当前已供应" prop="before_supply" :label-width="formLabelWidth">
-                <el-input v-model="kanruku.before_supply"></el-input>
-             </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-          <el-col :span="12">
-            <el-form-item label="更新后已供应" prop="after_supply" :label-width="formLabelWidth">
-                <el-input v-model="kanruku.after_supply"></el-input>
-             </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kanruku.current_process"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -442,29 +283,24 @@ import RukuService from "../services/RukuService"
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
-        //    CailiaogysService.getAll()
-        // .then(response => {
-        //   this.result = response.data;
-        //   console.log(response.data);
-        // })
-        // .catch(e => {
-        //   console.log(e);
-        // });
+           
+          this.ruku={},
+          this.dialogFormVisible=true
+          this.dialogTitle = "addData";
        },
-       async addservice(){
+       addservice(){
               this.dialogFormVisible=false;
           var data = {
-        item_name: this.addruku.item_name,
-        supplier: this.addruku.supplier,
-        goods_name: this.addruku.goods_name,
-        goods_danwei:this.addruku.goods_danwei,
-        ruku_number:this.addruku.ruku_number,
-        before_stock:this.addruku.before_stock,
-        after_stock:this.addruku.after_stock,
-        before_supply:this.addruku.before_supply,
-        after_supply:this.addruku.after_supply,
-        current_process:this.addruku.current_process
+        item_name: this.ruku.item_name,
+        supplier: this.ruku.supplier,
+        goods_name: this.ruku.goods_name,
+        goods_danwei:this.ruku.goods_danwei,
+        ruku_number:this.ruku.ruku_number,
+        before_stock:this.ruku.before_stock,
+        after_stock:this.ruku.after_stock,
+        before_supply:this.ruku.before_supply,
+        after_supply:this.ruku.after_supply,
+        current_process:this.ruku.current_process
         }
         RukuService.create(data)
         .then(response => {
@@ -475,51 +311,57 @@ import RukuService from "../services/RukuService"
           console.log(e);
         });
        },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+       submit(ruku){
+           this.$refs[ruku].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData"&&valid) {
+        this.updateservice();
+      }else if(this.dialogTitle ==  "kanData"){
+        this.kanClick();
+      }else{
+        return false
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            RukuService.get(pa)
          .then(response => {
-                this.kanruku=response.data;
+                this.ruku=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true
+           this.dialogFormVisible=true
+           this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
            RukuService.get(pa)
          .then(response => {
-                this.updateruku=response.data;
+                this.ruku=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
        updateservice(){
-              this.dialogFormVisible1=false;
+              this.dialogFormVisible=false;
           var data = {
-            id:this.updateruku.id,
-            item_name: this.updateruku.item_name,
-            supplier: this.updateruku.supplier,
-            goods_name: this.updateruku.goods_name,
-            goods_danwei:this.updateruku.goods_danwei,
-            ruku_number:this.updateruku.ruku_number,
-            before_stock:this.updateruku.before_stock,
-            after_stock:this.updateruku.after_stock,
-            before_supply:this.updateruku.before_supply,
-            after_supply:this.updateruku.after_supply,
-            current_process:this.updateruku.current_process
+            id:this.ruku.id,
+            item_name: this.ruku.item_name,
+            supplier: this.ruku.supplier,
+            goods_name: this.ruku.goods_name,
+            goods_danwei:this.ruku.goods_danwei,
+            ruku_number:this.ruku.ruku_number,
+            before_stock:this.ruku.before_stock,
+            after_stock:this.ruku.after_stock,
+            before_supply:this.ruku.before_supply,
+            after_supply:this.ruku.after_supply,
+            current_process:this.ruku.current_process
         }
           RukuService.update(data.id,data)
         .then(response => {
@@ -530,16 +372,7 @@ import RukuService from "../services/RukuService"
           console.log(e);
         });
        },
-       updatesubmit(formName){
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-       },
-        delClick(index,row){
+        delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               RukuService.delete(pa)
               .then(response => {
@@ -549,21 +382,24 @@ import RukuService from "../services/RukuService"
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+        delClick(index,row){   
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -575,6 +411,12 @@ import RukuService from "../services/RukuService"
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         TravelType:1,
         formLabelWidth: "100px",
         rules:{
@@ -593,9 +435,7 @@ import RukuService from "../services/RukuService"
         },
         tableData:[],
         result:[],
-        addruku:{},
-        updateruku:{},
-        kanruku:{},
+        ruku:{},
         filterId:'',
         filterItem_name:'',
         filterSupplier:'',
@@ -607,8 +447,6 @@ import RukuService from "../services/RukuService"
         filterBefore_supply:'',
         filterAfter_supply:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

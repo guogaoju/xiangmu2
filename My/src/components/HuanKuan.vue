@@ -125,12 +125,12 @@
     </el-table-column>
   </el-table>
 
-  <!-- 添加弹出层 -->
-  <el-dialog title="发起还款" width="45%" :visible.sync="dialogFormVisible">
+  <!-- 弹出层 -->
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addhuankuan"
+        :model="huankuan"
         status-icon :rules="rules"
-        ref="addhuankuan"
+        ref="huankuan"
         label-width="100px"
         class="demo-ruleForm"
       >
@@ -140,24 +140,24 @@
             <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
             </el-select> -->
-            <el-input v-model="addhuankuan.item_name"></el-input>
+            <el-input v-model="huankuan.item_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input v-model="addhuankuan.total_quota"></el-input>
+            <el-input v-model="huankuan.total_quota"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="已用授信额度" prop="money" :label-width="formLabelWidth">
-           <el-input v-model="addhuankuan.money"></el-input>
+           <el-input v-model="huankuan.money"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="还款金额" prop="huan_money" :label-width="formLabelWidth">
-            <el-input v-model="addhuankuan.huan_money"></el-input>
+            <el-input v-model="huankuan.huan_money"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -165,7 +165,7 @@
          <el-col :span="12">
              <span>还款后使用授信额度</span>
           <el-form-item label="" prop="huan_money1" :label-width="formLabelWidth">
-            <el-input v-model="addhuankuan.huan_money1"></el-input>
+            <el-input v-model="huankuan.huan_money1"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
@@ -174,7 +174,7 @@
                     action="http://localhost:8080/api/HuanKuan/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
-                    :data="addhuankuan" 
+                    :data="huankuan" 
                     :on-change="handleAvatarChange" 
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload"
@@ -188,7 +188,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addhuankuan.current_process"></el-input>
+            <el-input v-model="huankuan.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -196,160 +196,10 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addhuankuan')">立即添加</el-button>
+          <el-button type="primary" @click="submit('huankuan')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 修改评级弹出层 -->
-  <el-dialog title="修改还款" width="45%" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatehuankuan"
-        status-icon :rules="rules"
-        ref="updatehuankuan"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="还款项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input v-model="updatehuankuan.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input v-model="updatehuankuan.total_quota"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="已用授信额度" prop="money" :label-width="formLabelWidth">
-           <el-input v-model="updatehuankuan.money"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="还款金额" prop="huan_money" :label-width="formLabelWidth">
-            <el-input v-model="updatehuankuan.huan_money"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-             <span>还款后使用授信额度</span>
-          <el-form-item label="" prop="huan_money1" :label-width="formLabelWidth">
-            <el-input v-model="updatehuankuan.huan_money1"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col>
-            <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
-                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
-                    <el-upload ref="upload" class="avatar-uploader" 
-                    action="http://localhost:8080/api/HuanKuan/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="updatehuankuan" 
-                    :on-change="handleAvatarChange" 
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrl" :src="imageUrl" class="huan_stream">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatehuankuan.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatehuankuan')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-  <!-- 查看弹出层 -->
-  <el-dialog title="查看还款" width="45%" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kanhuankuan"
-        status-icon :rules="rules"
-        ref="kanhuankuan"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="还款项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input v-model="kanhuankuan.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input v-model="kanhuankuan.total_quota"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="已用授信额度" prop="money" :label-width="formLabelWidth">
-           <el-input v-model="kanhuankuan.money"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="还款金额" prop="huan_money" :label-width="formLabelWidth">
-            <el-input v-model="kanhuankuan.huan_money"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-             <span>还款后使用授信额度</span>
-          <el-form-item label="" prop="huan_money1" :label-width="formLabelWidth">
-            <el-input v-model="kanhuankuan.huan_money1"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col>
-            <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
-                    <!-- <el-input v-model="addwuliao.avatar" v-if="false"></el-input> -->
-                    <el-upload ref="upload" class="avatar-uploader" 
-                    action="http://localhost:8080/api/HuanKuan/upload" 
-                    :show-file-list="false" 
-                    :auto-upload="false" 
-                    :data="kanhuankuan" 
-                    :on-change="handleAvatarChange" 
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
-                        <img v-if="imageUrl" :src="imageUrl" class="huan_stream">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kanhuankuan.current_process"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -377,21 +227,20 @@ import HuanKuanService from "../services/HuanKuanService"
        openFrom(){
          //新建时候清空url
           this.imageUrl=""
+          this.huankuan={},
           this.dialogFormVisible=true
+          this.dialogTitle = "addData";
        },
-       addsubmit(formName){
-         let vm = this;
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.dialogFormVisible=false;
+       addservice(){
+              this.dialogFormVisible=false;
           var data = {
-            item_name: this.addhuankuan.item_name,
-            total_quota: this.addhuankuan.total_quota,
-            money: this.addhuankuan.money,
-            huan_money:this.addhuankuan.huan_money,
-            huan_money1:this.addhuankuan.huan_money1,
+            item_name: this.huankuan.item_name,
+            total_quota: this.huankuan.total_quota,
+            money: this.huankuan.money,
+            huan_money:this.huankuan.huan_money,
+            huan_money1:this.huankuan.huan_money1,
             huan_stream:this.imageUrl,
-            current_process:this.addhuankuan.current_process
+            current_process:this.huankuan.current_process
           }
         HuanKuanService.create(data)
         .then(response => {
@@ -401,20 +250,27 @@ import HuanKuanService from "../services/HuanKuanService"
         .catch(e => {
           console.log(e);
         });
-          } else {
-            return false;
-          }
-          //上传完成后清空一下
-                this.imageUrl=""
-                this.tmpUrl=""
+       },
+        submit(huankuan){
+          this.$refs[huankuan].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else if(this.dialogTitle ==  "kanData"){
+        this.kanClick();
+      }else{
+        return false
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            HuanKuanService.get(pa)
          .then(response => {
-                this.kanhuankuan=response.data;
+                this.huankuan=response.data;
                 this.imageUrl=response.data.huan_stream
               })
               .catch(e => {
@@ -422,11 +278,12 @@ import HuanKuanService from "../services/HuanKuanService"
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true
+           this.dialogFormVisible=true
+           this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
            HuanKuanService.get(pa)
          .then(response => {
-                this.updatehuankuan=response.data;
+                this.huankuan=response.data;
                  this.imageUrl=response.data.huan_stream;
                     //旧图片url另存一份,将来imageUrl会被覆盖
                     this.oldUrl = this.imageUrl;
@@ -435,19 +292,17 @@ import HuanKuanService from "../services/HuanKuanService"
                 console.log(e);
               });
        },
-       updatesubmit(formName){
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.dialogFormVisible1=false;
+       updateservice(){
+              this.dialogFormVisible=false;
             var data = {
-            id:this.updatehuankuan.id,
-            item_name: this.updatehuankuan.item_name,
-            total_quota: this.updatehuankuan.total_quota,
-            money: this.updatehuankuan.money,
-            huan_money:this.updatehuankuan.huan_money,
-            huan_money1:this.updatehuankuan.huan_money1,
+            id:this.huankuan.id,
+            item_name: this.huankuan.item_name,
+            total_quota: this.huankuan.total_quota,
+            money: this.huankuan.money,
+            huan_money:this.huankuan.huan_money,
+            huan_money1:this.huankuan.huan_money1,
             huan_stream:this.imageUrl,
-            current_process:this.updatehuankuan.current_process
+            current_process:this.huankuan.current_process
         }
           HuanKuanService.update(data.id,data)
         .then(response => {
@@ -460,14 +315,8 @@ import HuanKuanService from "../services/HuanKuanService"
         .catch(e => {
           console.log(e);
         });
-          } else {
-            return false;
-          }
-        });
-        this.imageUrl=""
-        this.tmpUrl=""
        },
-        delClick(index,row){
+       delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               HuanKuanService.delete(pa)
               .then(response => {
@@ -477,21 +326,24 @@ import HuanKuanService from "../services/HuanKuanService"
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+        delClick(index,row){   
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -533,6 +385,12 @@ import HuanKuanService from "../services/HuanKuanService"
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         fileList:[{imageUrl:""}],
         imageUrl: '',
         oldUrl: '',
@@ -549,9 +407,7 @@ import HuanKuanService from "../services/HuanKuanService"
         },
         tableData:[],
         result:[],
-        addhuankuan:{},
-        updatehuankuan:{},
-        kanhuankuan:{},
+        huankuan:{},
         filterId:'',
         filterItem_name:'',
         filterTotal_quota:'',
@@ -559,8 +415,6 @@ import HuanKuanService from "../services/HuanKuanService"
         filterHuan_money:'',
         filterHuan_money1:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

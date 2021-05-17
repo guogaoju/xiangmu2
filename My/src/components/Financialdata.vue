@@ -203,7 +203,7 @@
     </el-table-column>
   </el-table>
 
-  <!-- 添加弹出层 -->
+  <!-- 弹出层 -->
   <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
       <el-form
         :model="finance"
@@ -453,14 +453,16 @@ import QiyeService from "../services/QiyeService"
           console.log(e);
         });
        },
-       submit(finance){
-         this.$refs[finance].validate((valid) => {
-          if (this.dialogTitle ==  "addData" ) {
+        submit(finance){
+          this.$refs[finance].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
-      }else{
+      }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else{
+        return false
       }
         });
         },

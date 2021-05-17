@@ -209,83 +209,83 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog title="添加制造项目" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addxiangmu"
+        :model="xiangmu"
         status-icon :rules="rules"
-        ref="addxiangmu"
+        ref="xiangmu"
         label-width="100px"
         class="demo-ruleForm"
       >
       <el-row>
         <el-col :span="12">
           <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.qiye_name"></el-input>
+            <el-input v-model="xiangmu.qiye_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.item_name"></el-input>
+            <el-input v-model="xiangmu.item_name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
         <el-row>
         <el-col :span="12">
            <el-form-item label="截至日期" prop="time" :label-width="formLabelWidth">
-            <el-date-picker v-model="addxiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
+            <el-date-picker v-model="xiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="工程进度" prop="jindu" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.jindu"></el-input>
+            <el-input v-model="xiangmu.jindu"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="项目总金额" prop="item_money" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.item_money"></el-input>
+            <el-input v-model="xiangmu.item_money"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.total_quota"></el-input>
+            <el-input v-model="xiangmu.total_quota"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="已贷金额" prop="money" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.money"></el-input>
+            <el-input v-model="xiangmu.money"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="利息%" prop="interest" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.interest"></el-input>
+            <el-input v-model="xiangmu.interest"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="回款率%" prop="Return" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.Return"></el-input>
+            <el-input v-model="xiangmu.Return"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="本月待还款" prop="huan_money" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.huan_money"></el-input>
+            <el-input v-model="xiangmu.huan_money"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="有无欠款" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.fax"></el-input>
+            <el-input v-model="xiangmu.fax"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addxiangmu.current_process"></el-input>
+            <el-input v-model="xiangmu.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -294,189 +294,13 @@
             <el-button type="primary" @click="addform()">添加物料</el-button></el-col> 
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addxiangmu')">立即添加</el-button>
+          <el-button type="primary" @click="submit('xiangmu')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
       </el-row>
     </el-form>
   </el-dialog>
-<!-- 修改弹出层 -->
-  <el-dialog title="修改制造项目" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatexiangmu"
-        status-icon :rules="rules"
-        ref="updatexiangmu"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.qiye_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-        <el-row>
-        <el-col :span="12">
-           <el-form-item label="截至日期" prop="time" :label-width="formLabelWidth">
-            <el-date-picker v-model="updatexiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="工程进度" prop="jindu" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.jindu"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-           <el-form-item label="项目总金额" prop="item_money" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.item_money"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.total_quota"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="已贷金额" prop="money" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.money"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="利息%" prop="interest" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.interest"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="回款率%" prop="Return" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.Return"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="本月待还款" prop="huan_money" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.huan_money"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="有无欠款" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.fax"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatexiangmu.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatexiangmu')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-<!-- 查看弹出层 -->
-  <el-dialog title="查看制造项目" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kanxiangmu"
-        status-icon :rules="rules"
-        ref="kanxiangmu"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.qiye_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.item_name"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-        <el-row>
-        <el-col :span="12">
-           <el-form-item label="截至日期" prop="time" :label-width="formLabelWidth">
-            <el-date-picker v-model="kanxiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="工程进度" prop="jindu" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.jindu"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-           <el-form-item label="项目总金额" prop="item_money" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.item_money"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.total_quota"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="已贷金额" prop="money" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.money"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="利息%" prop="interest" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.interest"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="回款率%" prop="Return" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.Return"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="本月待还款" prop="huan_money" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.huan_money"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="有无欠款" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.fax"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kanxiangmu.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
   <el-drawer
   :visible.sync="dialog"
   direction="ltr"
@@ -531,7 +355,9 @@ import ZhizaoService from "../services/ZhizaoService";
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
+           this.xiangmu={},
+          this.dialogFormVisible=true
+          this.dialogTitle = "addData";
        },
        addform(){
             this.dialog=true;
@@ -561,21 +387,21 @@ import ZhizaoService from "../services/ZhizaoService";
           console.log(e);
         });  
         },
-         async addservice(){
+         addservice(){
                 this.dialogFormVisible=false;
           var data = {
-          qiye_name: this.addxiangmu.qiye_name,
-          item_name:this.addxiangmu.item_name,
-          time: this.addxiangmu.time,
-          jindu : this.addxiangmu.jindu ,
-          item_money:this.addxiangmu.item_money,
-          total_quota:this.addxiangmu.total_quota,
-          money:this.addxiangmu.money,
-          interest:this.addxiangmu.interest,
-          Return:this.addxiangmu.Return,
-          huan_money:this.addxiangmu.huan_money,
-          fax:this.addxiangmu.fax,
-          current_process:this.addxiangmu.current_process
+          qiye_name: this.xiangmu.qiye_name,
+          item_name:this.xiangmu.item_name,
+          time: this.xiangmu.time,
+          jindu : this.xiangmu.jindu ,
+          item_money:this.xiangmu.item_money,
+          total_quota:this.xiangmu.total_quota,
+          money:this.xiangmu.money,
+          interest:this.xiangmu.interest,
+          Return:this.xiangmu.Return,
+          huan_money:this.xiangmu.huan_money,
+          fax:this.xiangmu.fax,
+          current_process:this.xiangmu.current_process
         }
         ZhizaoService.create(data)
         .then(response => {
@@ -586,53 +412,59 @@ import ZhizaoService from "../services/ZhizaoService";
           console.log(e);
         });
         },
-       addsubmit(formName){
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+        submit(xiangmu){
+          this.$refs[xiangmu].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else if(this.dialogTitle ==  "kanData"){
+        this.kanClick();
+      }else{
+        return false
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            ZhizaoService.get(pa)
          .then(response => {
-                this.kanxiangmu=response.data;
+                this.xiangmu=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true;
+           this.dialogFormVisible=true;
+           this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
            ZhizaoService.get(pa)
          .then(response => {
-                this.updatexiangmu=response.data;
+                this.xiangmu=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
        updateservice(){
-            this.dialogFormVisible1=false;
+            this.dialogFormVisible=false;
           var data = {
-            id:this.updatexiangmu.id,
-            qiye_name: this.updatexiangmu.qiye_name,
-            item_name:this.updatexiangmu.item_name,
-            time: this.updatexiangmu.time,
-            jindu : this.updatexiangmu.jindu ,
-            item_money:this.updatexiangmu.item_money,
-            total_quota:this.updatexiangmu.total_quota,
-            money:this.updatexiangmu.money,
-            interest:this.updatexiangmu.interest,
-            Return:this.updatexiangmu.Return,
-            huan_money:this.updatexiangmu.huan_money,
-            fax:this.updatexiangmu.fax,
-            current_process:this.updatexiangmu.current_process
+            id:this.xiangmu.id,
+            qiye_name: this.xiangmu.qiye_name,
+            item_name:this.xiangmu.item_name,
+            time: this.xiangmu.time,
+            jindu : this.xiangmu.jindu ,
+            item_money:this.xiangmu.item_money,
+            total_quota:this.xiangmu.total_quota,
+            money:this.xiangmu.money,
+            interest:this.xiangmu.interest,
+            Return:this.xiangmu.Return,
+            huan_money:this.xiangmu.huan_money,
+            fax:this.xiangmu.fax,
+            current_process:this.xiangmu.current_process
         }
           ZhizaoService.update(data.id,data)
         .then(response => {
@@ -643,16 +475,7 @@ import ZhizaoService from "../services/ZhizaoService";
           console.log(e);
         });
        },
-       updatesubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-       },
-       delClick(index,row){
+       delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               let a = this;
               ZhizaoService.delete(pa)
@@ -663,21 +486,24 @@ import ZhizaoService from "../services/ZhizaoService";
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+       delClick(index,row){   
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -694,6 +520,12 @@ import ZhizaoService from "../services/ZhizaoService";
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         dialog: false,
         loading: false,
 form: {
@@ -718,9 +550,7 @@ form: {
           ],
         },
         tableData:[],
-      addxiangmu:{},
-      updatexiangmu:{},
-      kanxiangmu:{},
+      xiangmu:{},
       filterId:'',
         filterQiye_name: '',
         filterItem_name:'',
@@ -734,8 +564,6 @@ form: {
         filterHuan_money:'',
         filterfax:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

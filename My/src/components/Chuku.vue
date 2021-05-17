@@ -145,9 +145,6 @@
       <el-row>
          <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
             <el-input v-model="chuku.item_name"></el-input>
           </el-form-item>
         </el-col>
@@ -247,12 +244,14 @@ import ChukuService from "../services/ChukuService"
        },
        submit(chuku){
           this.$refs[chuku].validate((valid) => {
-          if (this.dialogTitle ==  "addData" ) {
+          if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
-      }else{
+      }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else{
+        return false
       }
         });
         },

@@ -89,35 +89,35 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog title="添加计量单位" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
       <el-form
-        :model="adddanwei"
+        :model="danwei"
         status-icon :rules="rules"
-        ref="adddanwei"
+        ref="danwei"
         label-width="100px"
         class="demo-ruleForm"
       >
       <el-row>
         <el-col :span="12">
           <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-            <el-input v-model="adddanwei.name"></el-input>
+            <el-input v-model="danwei.name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="类型" prop="type" :label-width="formLabelWidth">
-            <el-input v-model="adddanwei.type"></el-input>
+            <el-input v-model="danwei.type"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
           <el-col :span="12">
           <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="adddanwei.remarks"></el-input>
+            <el-input v-model="danwei.remarks"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="adddanwei.current_process"></el-input>
+            <el-input v-model="danwei.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -125,90 +125,10 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('adddanwei')">立即添加</el-button>
+          <el-button type="primary" @click="submit('danwei')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 修改弹出层 -->
-  <el-dialog title="修改计量单位" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatedanwei"
-        status-icon :rules="rules"
-        ref="updatedanwei"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-            <el-input v-model="updatedanwei.name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="类型" prop="type" :label-width="formLabelWidth">
-            <el-input v-model="updatedanwei.type"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-          <el-col :span="12">
-          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="updatedanwei.remarks"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatedanwei.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatedanwei')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-  <!-- 查看弹出层 -->
-  <el-dialog title="查看计量单位" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kandanwei"
-        status-icon :rules="rules"
-        ref="kandanwei"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-            <el-input v-model="kandanwei.name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="类型" prop="type" :label-width="formLabelWidth">
-            <el-input v-model="kandanwei.type"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-          <el-col :span="12">
-          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="kandanwei.remarks"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kandanwei.current_process"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -234,15 +154,17 @@ import DanweiService from "../services/DanweiService";
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
+          this.danwei={}
+          this.dialogFormVisible=true
+          this.dialogTitle = "addData";
        },
-       async addservice(){
+       addservice(){
               this.dialogFormVisible=false;
           var data = {
-        name:this.adddanwei.name,
-        type:this.adddanwei.type,
-        remarks:this.adddanwei.remarks,
-        current_process:this.adddanwei.current_process
+        name:this.danwei.name,
+        type:this.danwei.type,
+        remarks:this.danwei.remarks,
+        current_process:this.danwei.current_process
         }
 
         DanweiService.create(data)
@@ -254,45 +176,51 @@ import DanweiService from "../services/DanweiService";
           console.log(e);
         });
        },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+       submit(danwei){
+          this.$refs[danwei].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else if(this.dialogTitle ==  "kanData"){
+        this.kanClick();
+      }else{
+        return false
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            DanweiService.get(pa)
          .then(response => {
-                this.kandanwei=response.data;
+                this.danwei=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true;
+           this.dialogFormVisible=true;
+           this.dialogTitle = "updataData"; 
            let pa=this.tableData[index].id;
            DanweiService.get(pa)
          .then(response => {
-                this.updatedanwei=response.data;
+                this.danwei=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
        updateservice(){
-          this.dialogFormVisible1=false;
+          this.dialogFormVisible=false;
           var data = {
-            id:this.updatedanwei.id,
-            name:this.updatedanwei.name,
-            type:this.updatedanwei.type,
-            remarks:this.updatedanwei.remarks,
-            current_process:this.updatedanwei.current_process
+            id:this.danwei.id,
+            name:this.danwei.name,
+            type:this.danwei.type,
+            remarks:this.danwei.remarks,
+            current_process:this.danwei.current_process
         }
           DanweiService.update(data.id,data)
         .then(response => {
@@ -303,16 +231,7 @@ import DanweiService from "../services/DanweiService";
           console.log(e);
         });
        },
-       updatesubmit(formName){
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-       },
-       delClick(index,row){
+      delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               DanweiService.delete(pa)
               .then(response => {
@@ -322,21 +241,24 @@ import DanweiService from "../services/DanweiService";
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+       delClick(index,row){ 
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index)
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -348,6 +270,12 @@ import DanweiService from "../services/DanweiService";
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         TravelType:1,
         formLabelWidth: "100px",
         rules:{
@@ -359,16 +287,12 @@ import DanweiService from "../services/DanweiService";
           ],
         },
         tableData:[],
-        adddanwei:{},
-        updatedanwei:{},
-        kandanwei:{},
+        danwei:{},
         filterId:'',
         filteredName:'', 
         filteredType:'',
         filterRemarks:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

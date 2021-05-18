@@ -9,6 +9,21 @@ module.exports = (sequelize, Sequelize) => {
           quarter: {
             type: Sequelize.STRING
           },
+          score1:{
+            type: Sequelize.STRING
+          },
+          score2:{
+            type: Sequelize.STRING
+          },
+          score3:{
+            type: Sequelize.STRING
+          },
+          score4:{
+            type: Sequelize.STRING
+          },
+          score5:{
+            type: Sequelize.STRING
+          },
           quantify_points: {
             type: Sequelize.STRING
           },

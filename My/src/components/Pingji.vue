@@ -117,32 +117,32 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog title="添加供应商评级" width="45%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
       <el-form
-        :model="addPingji"
+        :model="Pingji"
         status-icon :rules="rules"
-        ref="addPingji"
+        ref="Pingji"
         label-width="100px"
         class="demo-ruleForm"
       >
       <el-row>
          <el-col :span="12">
           <el-form-item label="供应商名称" prop="supplier_name" :label-width="formLabelWidth">
-            <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
+            <el-select filterable v-model="Pingji.supplier_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="定量评分" prop="quantify_points" :label-width="formLabelWidth">
-            <el-input v-model.number="addPingji.quantify_points"></el-input>
+            <el-input v-model.number="Pingji.quantify_points"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="季度" prop="quarter" :label-width="formLabelWidth">
-            <el-select v-model="addPingji.quarter" clearable placeholder="请选择" >
+            <el-select v-model="Pingji.quarter" clearable placeholder="请选择" >
               <el-option label="第一季度" value="第一季度"></el-option>
               <el-option label="第二季度" value="第二季度"></el-option>
               <el-option label="第三季度" value="第三季度"></el-option>
@@ -152,7 +152,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="年度" prop="year" :label-width="formLabelWidth">
-            <el-select v-model="addPingji.year" clearable placeholder="请选择" >
+            <el-select v-model="Pingji.year" clearable placeholder="请选择" >
               <el-option label="2021" value="2021"></el-option>
               <el-option label="2020" value="2020"></el-option>
               <el-option label="2019" value="2019"></el-option>
@@ -165,13 +165,13 @@
          <el-col :span="12">
            <span>是否与城投公司或南昌县国有平台有过合作</span>
           <el-form-item label="满分5分" prop="score1" :label-width="formLabelWidth">
-            <el-input v-model.number="addPingji.score1"></el-input>
+            <el-input v-on:change="test" v-model.number="Pingji.score1"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>在江西省内履约、产品质量、口碑情况</span>
           <el-form-item label="满分10分" prop="score2" :label-width="formLabelWidth">
-            <el-input v-model.number="addPingji.score2"></el-input>
+            <el-input v-on:change="test" v-model.number="Pingji.score2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -179,13 +179,13 @@
          <el-col :span="12">
            <span>总体征信情况</span>
           <el-form-item label="满分5分" prop="score3" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score3"></el-input>
+           <el-input v-on:change="test" v-model.number="Pingji.score3"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>经营管理情况（生产管理、财务管理、销售管理）</span>
           <el-form-item label="满分5分" prop="score4" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score4"></el-input>
+           <el-input v-on:change="test" v-model.number="Pingji.score4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -193,25 +193,24 @@
          <el-col :span="12">
            <span>行业地位</span>
           <el-form-item label="满分5分" prop="score5" :label-width="formLabelWidth">
-           <el-input v-model.number="addPingji.score5"></el-input>
+           <el-input v-on:change="test" v-model.number="Pingji.score5"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
            <el-form-item label="定性总评分" prop="qualitative_points" :label-width="formLabelWidth">
-             <el-button @click="addsum('addPingji')">定性总评分合计</el-button>
-            <el-input v-model.number="addPingji.qualitative_points"></el-input>
+            <el-input v-model.number="Pingji.qualitative_points"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="评级总分" prop="total_points" :label-width="formLabelWidth">
-            <el-input v-model.number="addPingji.total_points"></el-input>
+            <el-input v-model.number="Pingji.total_points"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addPingji.current_process"></el-input>
+            <el-input v-model="Pingji.current_process"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -219,227 +218,14 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addPingji')">立即添加</el-button>
+          <el-button type="primary" @click="submit('Pingji')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-
-  <!-- 修改评级弹出层 -->
-  <el-dialog title="修改评级" width="45%" :visible.sync="dialogFormVisible1">
-      <el-form
-        :model="updatePingji"
-        status-icon :rules="rules"
-        ref="updatePingji"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-       <el-form-item label="id" prop="id" :label-width="formLabelWidth">
-            <el-input v-bind:readonly="TravelType==1" v-model="updatePingji.id"></el-input>
-          </el-form-item>
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="供应商名称" prop="supplier_name" :label-width="formLabelWidth">
-            <el-input v-model="updatePingji.supplier_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="定量评分" prop="quantify_points" :label-width="formLabelWidth">
-            <el-input v-model.number="updatePingji.quantify_points"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="季度" prop="quarter" :label-width="formLabelWidth">
-            <el-select v-model="updatePingji.quarter" clearable placeholder="请选择" >
-              <el-option label="第一季度" value="第一季度"></el-option>
-              <el-option label="第二季度" value="第二季度"></el-option>
-              <el-option label="第三季度" value="第三季度"></el-option>
-              <el-option label="第四季度" value="第四季度"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="年度" prop="year" :label-width="formLabelWidth">
-            <el-select v-model="updatePingji.year" clearable placeholder="请选择" >
-              <el-option label="2021" value="2021"></el-option>
-              <el-option label="2020" value="2020"></el-option>
-              <el-option label="2019" value="2019"></el-option>
-              <el-option label="2018" value="2018"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <!-- <el-row>
-         <el-col :span="12">
-           <span>是否与城投公司或南昌县国有平台有过合作</span>
-          <el-form-item label="满分5分" prop="score1" :label-width="formLabelWidth">
-            <el-input v-model.number="updatePingji.score1"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-            <span>在江西省内履约、产品质量、口碑情况</span>
-          <el-form-item label="满分10分" prop="score2" :label-width="formLabelWidth">
-            <el-input v-model.number="updatePingji.score2"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-           <span>总体征信情况</span>
-          <el-form-item label="满分5分" prop="score3" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score3"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-            <span>经营管理情况（生产管理、财务管理、销售管理）</span>
-          <el-form-item label="满分5分" prop="score4" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score4"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-           <span>行业地位</span>
-          <el-form-item label="满分5分" prop="score5" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score5"></el-input>
-          </el-form-item>
-        </el-col> -->
-        <el-row>
-         <el-col :span="12">
-           <el-form-item label="定性总评分" prop="qualitative_points" :label-width="formLabelWidth">
-             <el-button @click="addsum('updatePingji')">定性总评分合计</el-button>
-            <el-input v-model.number="updatePingji.qualitative_points"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="评级总分" prop="total_points" :label-width="formLabelWidth">
-            <el-input v-model.number="updatePingji.total_points"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="updatePingji.current_process"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="6"></el-col>  
-        <el-col :span="12">
-        <el-form-item>
-          <el-button type="primary" @click="updatesubmit('updatePingji')">立即修改</el-button>
-        </el-form-item>
-         </el-col>  
-         <el-col :span="6"></el-col>
-      </el-row>
-    </el-form>
-  </el-dialog>
-  <el-dialog title="查看评级" width="45%" :visible.sync="dialogFormVisible2">
-      <el-form
-        :model="kanPingji"
-        status-icon :rules="rules"
-        ref="kanPingji"
-        label-width="100px"
-        class="demo-ruleForm"
-      >
-      <el-row>
-         <el-col :span="12">
-          <el-form-item label="供应商名称" prop="supplier_name" :label-width="formLabelWidth">
-            <el-input v-model="kanPingji.supplier_name"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="定量评分" prop="quantify_points" :label-width="formLabelWidth">
-            <el-input v-model.number="kanPingji.quantify_points"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="季度" prop="quarter" :label-width="formLabelWidth">
-            <el-select v-model="kanPingji.quarter" clearable placeholder="请选择" >
-              <el-option label="第一季度" value="第一季度"></el-option>
-              <el-option label="第二季度" value="第二季度"></el-option>
-              <el-option label="第三季度" value="第三季度"></el-option>
-              <el-option label="第四季度" value="第四季度"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="年度" prop="year" :label-width="formLabelWidth">
-            <el-select v-model="kanPingji.year" clearable placeholder="请选择" >
-              <el-option label="2021" value="2021"></el-option>
-              <el-option label="2020" value="2020"></el-option>
-              <el-option label="2019" value="2019"></el-option>
-              <el-option label="2018" value="2018"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <!-- <el-row>
-         <el-col :span="12">
-           <span>是否与城投公司或南昌县国有平台有过合作</span>
-          <el-form-item label="满分5分" prop="score1" :label-width="formLabelWidth">
-            <el-input v-model.number="updatePingji.score1"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-            <span>在江西省内履约、产品质量、口碑情况</span>
-          <el-form-item label="满分10分" prop="score2" :label-width="formLabelWidth">
-            <el-input v-model.number="updatePingji.score2"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-           <span>总体征信情况</span>
-          <el-form-item label="满分5分" prop="score3" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score3"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col :span="12">
-            <span>经营管理情况（生产管理、财务管理、销售管理）</span>
-          <el-form-item label="满分5分" prop="score4" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score4"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-         <el-col :span="12">
-           <span>行业地位</span>
-          <el-form-item label="满分5分" prop="score5" :label-width="formLabelWidth">
-           <el-input v-model.number="updatePingji.score5"></el-input>
-          </el-form-item>
-        </el-col> -->
-        <el-row>
-         <el-col :span="12">
-           <el-form-item label="定性总评分" prop="qualitative_points" :label-width="formLabelWidth">
-             <!-- <el-button @click="addsum('updatePingji')">定性总评分合计</el-button> -->
-            <el-input v-model.number="kanPingji.qualitative_points"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="评级总分" prop="total_points" :label-width="formLabelWidth">
-            <el-input v-model.number="kanPingji.total_points"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kanPingji.current_process"></el-input>
-          </el-form-item>
-        </el-col>
       </el-row>
     </el-form>
   </el-dialog>
 </div>
-
 </template>
 
 <script>
@@ -450,10 +236,10 @@ import CailiaogysService from "../services/CailiaogysService"
           this.tableonload();
       },
     methods: {
-      addsum(){
-this.addPingji.qualitative_points=this.addPingji.score1+this.addPingji.score2+this.addPingji.score3+this.addPingji.score4+this.addPingji.score5,
-this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.quantify_points
-      },
+     test: function () {
+            this.Pingji.qualitative_points=this.Pingji.score1+this.Pingji.score2+this.Pingji.score3+this.Pingji.score4+this.Pingji.score5
+            this.Pingji.total_points=this.Pingji.quantify_points+this.Pingji.qualitative_points
+        },
       async tableonload(){
          PingjiService.getAll()
         .then(response => {
@@ -465,7 +251,9 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
         });
       },
        openFrom(){
-           this.dialogFormVisible=true
+          this.Pingji={},
+          this.dialogFormVisible=true
+          this.dialogTitle = "addData";
            CailiaogysService.getAll()
         .then(response => {
           this.result = response.data;
@@ -475,21 +263,21 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
           console.log(e);
         });
        },
-       async addservice(){
+       addservice(){
               this.dialogFormVisible=false;
           var data = {
-        supplier_name: this.addPingji.supplier_name,
-        year: this.addPingji.year,
-        quarter: this.addPingji.quarter,
-        // score1:this.addPingji.score1,
-        // score2:this.addPingji.score2,
-        // score3:this.addPingji.score3,
-        // score4:this.addPingji.score4,
-        // score5:this.addPingji.score5,
-        quantify_points:this.addPingji.quantify_points,
-        qualitative_points:this.addPingji.qualitative_points,
-        total_points:this.addPingji.total_points,
-        current_process:this.addPingji.current_process
+        supplier_name: this.Pingji.supplier_name,
+        year: this.Pingji.year,
+        quarter: this.Pingji.quarter,
+        score1:this.Pingji.score1,
+        score2:this.Pingji.score2,
+        score3:this.Pingji.score3,
+        score4:this.Pingji.score4,
+        score5:this.Pingji.score5,
+        quantify_points:this.Pingji.quantify_points,
+        qualitative_points:this.Pingji.qualitative_points,
+        total_points:this.Pingji.total_points,
+        current_process:this.Pingji.current_process
         }
         PingjiService.create(data)
         .then(response => {
@@ -500,32 +288,38 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
           console.log(e);
         });
        },
-       addsubmit(formName){
-         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.addservice();
-          } else {
-            return false;
-          }
+       submit(Pingji){
+          this.$refs[Pingji].validate((valid) => {
+          if (this.dialogTitle ==  "addData"&&valid ) {
+        this.addservice();
+      } else if(this.dialogTitle ==  "updataData") {
+        this.updateservice();
+      }else if(this.dialogTitle ==  "kanData"){
+        this.kanClick();
+      }else{
+        return false
+      }
         });
         },
        kanClick(index,row){
-          this.dialogFormVisible2=true
+          this.dialogFormVisible=true
+          this.dialogTitle = "kanData";
           let pa=this.tableData[index].id;
            PingjiService.get(pa)
          .then(response => {
-                this.kanPingji=response.data;
+                this.Pingji=response.data;
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
-           this.dialogFormVisible1=true
+           this.dialogFormVisible=true
+           this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
            PingjiService.get(pa)
          .then(response => {
-                this.updatePingji=response.data;
+                this.Pingji=response.data;
               })
               .catch(e => {
                 console.log(e);
@@ -534,14 +328,19 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
        updateservice(){
             this.dialogFormVisible1=false;
             var data = {
-            id:this.updatePingji.id,
-            supplier_name: this.updatePingji.supplier_name,
-            year: this.updatePingji.year,
-            quarter: this.updatePingji.quarter,
-            quantify_points:this.updatePingji.quantify_points,
-            qualitative_points:this.updatePingji.qualitative_points,
-            total_points:this.updatePingji.total_points,
-            current_process:this.updatePingji.current_process
+            id:this.Pingji.id,
+            supplier_name: this.Pingji.supplier_name,
+            year: this.Pingji.year,
+            quarter: this.Pingji.quarter,
+            score1:this.Pingji.score1,
+            score2:this.Pingji.score2,
+            score3:this.Pingji.score3,
+            score4:this.Pingji.score4,
+            score5:this.Pingji.score5,
+            quantify_points:this.Pingji.quantify_points,
+            qualitative_points:this.Pingji.qualitative_points,
+            total_points:this.Pingji.total_points,
+            current_process:this.Pingji.current_process
         }
           PingjiService.update(data.id,data)
         .then(response => {
@@ -552,17 +351,7 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
           console.log(e);
         });
        },
-       updatesubmit(formName){
-          this.$refs[formName].validate((valid) => {
-          if (valid) {
-            this.updateservice();
-          } else {
-            return false;
-          }
-        });
-        
-       },
-        delClick(index,row){
+       delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               PingjiService.delete(pa)
               .then(response => {
@@ -572,21 +361,24 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
               .catch(e => {
                 console.log(e);
               });
-        //   this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        //   confirmButtonText: '确定',
-        //   cancelButtonText: '取消',
-        //   type: 'warning'
-        // }).then(() => {
-        //   this.$message({
-        //     type: 'success',
-        //     message: '删除成功!'
-        //   });
-        // }).catch(() => {
-        //   this.$message({
-        //     type: 'info',
-        //     message: '已取消删除'
-        //   });          
-        // });
+       },
+        delClick(index,row){    
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delClickconfirm(index);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
        },
       handleClick(row) {
         console.log(row);
@@ -598,6 +390,12 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
 
     data() {
       return {
+        titleMap: {
+        addData: "添加数据",
+        updataData: "修改数据",
+        kanData: "查看数据",
+      },
+        dialogTitle:"",
         TravelType:1,
         formLabelWidth: "100px",
         rules:{
@@ -616,17 +414,13 @@ this.addPingji.total_points=this.addPingji.qualitative_points+this.addPingji.qua
         },
         tableData:[],
         result:[],
-        addPingji:{},
-        updatePingji:{},
-        kanPingji:{},
+        Pingji:{},
         filterId:'',
         filterSupplier_name:'',
         filterYear:'',
         filterQuarter:'',
         filterTotal_points:'',
         dialogFormVisible: false,
-        dialogFormVisible1: false,
-        dialogFormVisible2: false,
       }
     }
   }

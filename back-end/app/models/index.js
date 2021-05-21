@@ -42,6 +42,8 @@ db.chuku = require("./Chuku.model.js")(sequelize, Sequelize);
 db.kucun = require("./Kucun.model.js")(sequelize, Sequelize);
 db.user = require("./user.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
+db.bumen = require("./Bumen.model.js")(sequelize, Sequelize);
+db.dept = require("./Dept.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",

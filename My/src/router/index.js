@@ -47,6 +47,10 @@ export default new Router({
           component: () => import('@/components/Erro.vue')
         },
         {
+          path: '/Bumen',
+          component: () => import('@/components/Bumen.vue')
+        },
+        {
           path: '/Hexin',
           component: () => import('@/components/Hexin.vue')
         },

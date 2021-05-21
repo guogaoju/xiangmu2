@@ -19,6 +19,15 @@
                         </router-link>
                     </li>
                 </span>
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
+                    <li  class="nav-item">
+                        <router-link style="color:white" to="/Bumen" class="nav-link">
+                            <font-awesome-icon icon="user" />
+                            人员部门管理
+                            <!-- {{ currentUser.username }} -->
+                        </router-link>
+                    </li>
+                </span>
                 
             <!-- </div> -->
         </div>

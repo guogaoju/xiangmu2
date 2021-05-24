@@ -17,38 +17,11 @@
       @close="handleClose"
       background-color=""
       text-color="black"
-      active-text-color="#ffd04b">
-      <el-menu-item index="1">
+      active-text-color="#ffd04b"
+      >
+      <el-menu-item :index="items.id.toString()" v-for="items in result1" :key="items.id">
         <i class="el-icon-menu"></i>
-        <span slot="title">全部成员</span>
-      </el-menu-item>
-      <el-menu-item index="2">
-        <i class="el-icon-menu"></i>
-        <span slot="title">CEO办公室</span>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <i class="el-icon-document"></i>
-        <span slot="title">信融部</span>
-      </el-menu-item>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-        <span slot="title">集采部</span>
-      </el-menu-item>
-      <el-menu-item index="5">
-        <i class="el-icon-setting"></i>
-        <span slot="title">风控部</span>
-      </el-menu-item>
-      <el-menu-item index="6">
-        <i class="el-icon-setting"></i>
-        <span slot="title">法务部</span>
-      </el-menu-item>
-      <el-menu-item index="7">
-        <i class="el-icon-setting"></i>
-        <span slot="title">财务部</span>
-      </el-menu-item>
-      <el-menu-item index="8">
-        <i class="el-icon-setting"></i>
-        <span slot="title">研发部</span>
+        <span slot="title">{{items.name}}</span>
       </el-menu-item>
     </el-menu>
     </el-col>
@@ -93,8 +66,8 @@
                         <el-input v-model="form.username"></el-input>
                     </el-form-item>
                     <el-form-item label="部门权限" prop="dept" :label-width="formLabelWidth">
-                      <el-checkbox-group v-model="form.dept">
-                          <el-checkbox-button v-for="item in result" :label="item.name" :key="item.id" :value="item.name">{{item}}</el-checkbox-button>
+                      <el-checkbox-group v-model="getNewList">
+                          <el-checkbox-button v-for="item in result" :label="item.name" :key="item.id" :value="item.name">{{item.name}}</el-checkbox-button>
                       </el-checkbox-group>
                     </el-form-item>
                     <el-form-item>
@@ -178,6 +151,7 @@ export default {
           } 
           DeptService.create(data).then(response => {
           this.tableonload();
+          location. reload()
           console.log(response.data);
         })
         .catch(e => {
@@ -280,6 +254,7 @@ export default {
     },
     data() {
       return {
+        getNewList:[],
         result:'',
         result1:'',
         titleMap: {

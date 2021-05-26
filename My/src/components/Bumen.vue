@@ -66,8 +66,8 @@
                         <el-input v-model="form.username"></el-input>
                     </el-form-item>
                     <el-form-item label="部门权限" prop="dept" :label-width="formLabelWidth">
-                      <el-checkbox-group v-model="getNewList">
-                          <el-checkbox-button v-for="item in result" :label="item.name" :key="item.id" :value="item.name">{{item.name}}</el-checkbox-button>
+                      <el-checkbox-group v-model="dept">
+                          <el-checkbox-button v-for="item in result1" :label="item.name" :key="item.id">{{item.name}}</el-checkbox-button>
                       </el-checkbox-group>
                     </el-form-item>
                     <el-form-item>
@@ -262,7 +262,7 @@ export default {
         updataData: "修改数据",
       },
         dialogTitle:"",
-          form: {},
+          form: {dept:[]},
           form1: {},
           rules: {},
         tableData: [],

@@ -17,9 +17,10 @@ app.use(express.static('./resources/static/assets/imgs'));
 const db = require("./app/models");
 db.sequelize.sync().then(() =>{
   // 第一次运行打开
-  // initial();
+  //initial();
 });
 const Role = db.role;
+const Dept = db.dept;
 
 function initial() {
   Role.create({
@@ -35,6 +36,15 @@ function initial() {
   Role.create({
     id: 3,
     name: "admin"
+  });
+
+  Dept.create({
+    id: 1,
+    name: "风控部"
+  });
+  Dept.create({
+    id: 2,
+    name: "财务部"
   });
 }
 

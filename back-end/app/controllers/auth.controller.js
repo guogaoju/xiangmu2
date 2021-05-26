@@ -2,7 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
-
+const Dept = db.dept;
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
@@ -25,14 +25,29 @@ exports.signup = (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "用户注册成功！" });
           });
         });
       } else {
         // user role = 1
         user.setRoles([1]).then(() => {
-          res.send({ message: "用户注册成功！" });
         });
+      };
+      //添加部门信息
+      if (req.body.depts) {
+        Dept.findAll({
+          where: {
+            name: {
+              [Op.or]: req.body.depts
+            }
+          }
+        }).then(depts => {
+          user.setDepts(depts).then(() => {
+            res.send({ message: "用户注册成功！" });
+          });
+        });
+      } else {
+        // 部门可以为空
+        res.send({ message: "用户注册成功！" });
       }
     })
     .catch(err => {

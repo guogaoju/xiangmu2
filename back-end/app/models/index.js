@@ -65,6 +65,6 @@ db.dept.belongsToMany(db.user, {
   otherKey: "userId"
 });
 
-
-db.ROLES = ["user", "admin", "moderator"];
+//这是为了在中间件里面验证user的role是否存在，这样写是不对的，应该根据数据库里的内容验证，而不是根据这个提前定义好的静态数组
+//db.ROLES = ["user", "admin", "moderator"];
 module.exports = db;

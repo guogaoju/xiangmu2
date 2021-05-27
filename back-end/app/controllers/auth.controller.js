@@ -7,6 +7,7 @@ const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
+const { dept } = require("../models");
 
 exports.signup = (req, res) => {
   // 数据库添加用户表
@@ -33,15 +34,15 @@ exports.signup = (req, res) => {
         });
       };
       //添加部门信息
-      if (req.body.depts) {
+      if (req.body.dept) {
         Dept.findAll({
           where: {
             name: {
-              [Op.or]: req.body.depts
+              [Op.or]: req.body.dept
             }
           }
-        }).then(depts => {
-          user.setDepts(depts).then(() => {
+        }).then(dept => {
+          user.setDepts(dept).then(() => {
             res.send({ message: "用户注册成功！" });
           });
         });
@@ -55,6 +56,51 @@ exports.signup = (req, res) => {
     });
 };
 
+exports.update = (req, res) => {
+  const id = req.params.userid;
+  //修改
+  User.update(req.body, {
+    where: { id: id }
+  })
+  .then(user => {
+    if (req.body.roles) {
+      Role.findAll({
+        where: {
+          name: {
+            [Op.or]: req.body.roles
+          }
+        }
+      }).then(roles => {
+        user.setRoles(roles).then(() => {
+        });
+      });
+    } else {
+      // user role = 1
+      user.setRoles([1]).then(() => {
+      });
+    };
+    //修改部门信息
+    if (req.body.dept) {
+      Dept.findAll({
+        where: {
+          name: {
+            [Op.or]: req.body.dept
+          }
+        }
+      }).then(dept => {
+        user.setDepts(dept).then(() => {
+          res.send({ message: "用户修改成功！" });
+        });
+      });
+    } else {
+      // 部门可以为空
+      res.send({ message: "用户修改成功！" });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({ message: err.message });
+    });
+};
 exports.signin = (req, res) => {
   User.findOne({
     where: {

@@ -22,5 +22,11 @@ module.exports = function(app) {
   );
 
   app.post("/api/signin", controller.signin);
-  app.put("/api/signupdate", controller.update);
+  //app.put("/api/signupdate", controller.update);
+  app.put("/api/signupdate/:userid",
+  [
+    verifySignUp.checkRolesExisted,
+    verifySignUp.checkDeptExisted
+  ],
+  controller.update);
 };

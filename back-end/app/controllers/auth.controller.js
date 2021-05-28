@@ -72,18 +72,13 @@ exports.findOne = (req, res) => {
 };
 //查找全部信息
 exports.findAll = (req, res) => {
-  User.findAll()
-  .then(user => {
-        user.getRoles().then(() => {
-        });
-    //查找部门信息
-        user.getDepts().then(() => {
-          
-        });
-        res.send(user);
+  User.findAll({include : [Role,Dept] })
+  .then(user => {  
+        res.send(user)
   })
   .catch(err => {
-    res.status(500).send({ message: err.message });
+    res.status(500).send({ message: err.message
+  });
     });
 };
 exports.update = (req, res) => {

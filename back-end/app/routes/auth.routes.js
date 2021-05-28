@@ -29,4 +29,8 @@ module.exports = function(app) {
     verifySignUp.checkDeptExisted
   ],
   controller.update);
+
+  app.delete("/api/signdelete/:userid",controller.delete);
+  app.get("/api/signselect/:userid",controller.findOne);
+  app.get("/api/signselectAll",controller.findAll);
 };

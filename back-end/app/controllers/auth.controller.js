@@ -34,15 +34,15 @@ exports.signup = (req, res) => {
         });
       };
       //添加部门信息
-      if (req.body.dept) {
+      if (req.body.depts) {
         Dept.findAll({
           where: {
             name: {
-              [Op.or]: req.body.dept
+              [Op.or]: req.body.depts
             }
           }
-        }).then(dept => {
-          user.setDepts(dept).then(() => {
+        }).then(depts => {
+          user.setDepts(depts).then(() => {
             res.send({ message: "用户注册成功！" });
           });
         });
@@ -57,22 +57,17 @@ exports.signup = (req, res) => {
 };
 //根据id查找
 exports.findOne = (req, res) => {
-  const id = req.params.userid;
-  User.findByPk(id)
+  User.findOne({ where: { id: req.params.userid },include : [Role,Dept] })
   .then(user => {
-        user.getRoles().then(roles => {
-          console.log(roles)
-        });
-    //查找部门信息
-        user.getDepts().then(dept => {
-          console.log(dept)
-        });
-        user.roles=role.name
-        user.dept=dept.name
-        console.log(user);
+        for (let i = 0; i < user.depts.length; i++)
+          console.log(user.depts[i].name);
+        for (let i = 0; i < user.roles.length; i++)
+          console.log(user.roles[i].name);  
+        res.send(user)
   })
   .catch(err => {
-    res.status(500).send({ message: err.message });
+    res.status(500).send({ message: "Error retrieving user with id=" + id
+  });
     });
 };
 //查找全部信息
@@ -119,15 +114,15 @@ exports.update = (req, res) => {
       });
     };
     //修改部门信息
-    if (req.body.dept) {
+    if (req.body.depts) {
       Dept.findAll({
         where: {
           name: {
-            [Op.or]: req.body.dept
+            [Op.or]: req.body.depts
           }
         }
-      }).then(dept => {
-        user.setDepts(dept).then(() => {
+      }).then(depts => {
+        user.setDepts(depts).then(() => {
           res.send({ message: "用户修改成功！" });
         });
       });

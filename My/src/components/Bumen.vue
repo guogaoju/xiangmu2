@@ -138,9 +138,9 @@ export default {
         AuthService.getAll()
         .then(response => {
           this.tableData = response.data;
-          this.tableData.depts="test"
+          //this.tableData.depts="test"
           // this.tableData.depts=response.data.depts[0].name
-          console.log(response.data);
+          //console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -167,10 +167,11 @@ export default {
               depts:this.form.depts,
               //问题一-----------------------------------
           } 
-          console.log(data);
+          //console.log(data);
+          //问题出在这个AuthService.register函数里
           AuthService.register(data).then(response => {
           this.tableonload();
-          console.log(response.data);
+          //console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -220,13 +221,24 @@ export default {
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
-           AuthService.get(pa)
-         .then(response => {
-                this.form=response.data;
-              })
-              .catch(e => {
-                console.log(e);
-              });
+           //把depts的名字一个一个读出来，存在deptName数组里
+           var deptName=[];
+            for(var i=0;i<this.tableData[index].depts.length;i++){
+             deptName.push(this.tableData[index].depts[i].name)
+            }
+            this.form = this.tableData[index];
+            //把字符串数组赋给form.depts
+            //如果不这样的话，form.depts默认存储的是depts对象数组，而不是字符串数组
+            this.form.depts = deptName;
+            //不需要重新请求数据，已经有现成的存在tableData里面了
+        //    AuthService.get(pa)
+        //  .then(response => {
+        //         this.form=response.data;
+        //         this.form.depts = deptName;
+        //       })
+        //       .catch(e => {
+        //         console.log(e);
+        //       });
        },
        updateservice(){
           this.dialogFormVisible=false;
@@ -242,7 +254,7 @@ export default {
         AuthService.update(data.userid,data)
         .then(response => {
           this.tableonload();
-          console.log(response.data);
+          //console.log(response.data);
         })
         .catch(e => {
           console.log(e);

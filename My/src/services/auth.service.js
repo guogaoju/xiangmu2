@@ -30,12 +30,18 @@ class AuthService {
     localStorage.removeItem('user');
   }
   register(user) {
+    /*
     return http.post('signup', {
       name:user.name,
       username: user.username,
       email: user.email,
-      password: user.password
+      password: user.password,
+      //问题出在这里，这个地方少一句
+      depts: user.depts
     });
+    */
+   //其实直接这样就行 不需要重新赋一遍值
+    return http.post('signup',user);
   }
 }
 export default new AuthService();

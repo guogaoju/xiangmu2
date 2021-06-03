@@ -19,7 +19,11 @@
       text-color="black"
       active-text-color="#ffd04b"
       >
-      <el-menu-item :index="items.id.toString()" v-for="items in result1" :key="items.id">
+     <el-menu-item index="1">
+        <i class="el-icon-menu"></i>
+        <span slot="title">全部成员</span>
+      </el-menu-item>
+      <el-menu-item :index="items.id.toString()+1" v-for="items in result1" :key="items.id">
         <i class="el-icon-menu"></i>
         <span slot="title">{{items.name}}</span>
       </el-menu-item>
@@ -41,8 +45,9 @@
       width="120">
     </el-table-column>
     <el-table-column
-      prop="dept"
+      prop="depts"
       label="部门"
+      :formatter="getfor"
       show-overflow-tooltip>
     </el-table-column>
     <el-table-column
@@ -58,18 +63,35 @@
     </el-col>
     </el-row>
     <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
-                    <el-form ref="form" :model="form" status-icon :rules="rules" label-width="80px">
+            <el-form ref="form" :model="form" status-icon :rules="rules" label-width="80px">
+              <el-row>
+                <el-col :span="12">
                     <el-form-item label="姓名">
                         <el-input v-model="form.name"></el-input>
                     </el-form-item>
                     <el-form-item label="账号">
                         <el-input v-model="form.username"></el-input>
                     </el-form-item>
-                    <el-form-item label="部门权限" prop="dept" :label-width="formLabelWidth">
-                      <el-checkbox-group v-model="dept">
-                          <el-checkbox-button v-for="item in result1" :label="item.name" :key="item.id">{{item.name}}</el-checkbox-button>
-                      </el-checkbox-group>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="密码">
+                        <el-input v-model="form.password"></el-input>
                     </el-form-item>
+                    <el-form-item label="email">
+                        <el-input v-model="form.email"></el-input>
+                    </el-form-item>
+                </el-col>
+              </el-row>
+                <el-form-item label="部门权限" prop="depts" :label-width="formLabelWidth">
+                    <el-select v-model="form.depts" multiple placeholder="请选择">
+                          <el-option
+                            v-for="item in result1"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.name">
+                          </el-option>
+                    </el-select>
+                </el-form-item>
                     <el-form-item>
                         <el-button type="warning" @click="submit('form')">确定</el-button>
                     </el-form-item>
@@ -90,6 +112,7 @@
 <script>
 import DeptService from "../services/DeptService";
 import BumenService from "../services/BumenService";
+import AuthService from "../services/auth.service";
 export default {
     created () {
           this.tableonload();
@@ -97,17 +120,26 @@ export default {
           DeptService.getAll()
           .then(response => {
           this.result1 = response.data;
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
       },
     methods: {
+          getfor(row,column){
+            var deptName =[]
+            for(var i=0;i<row.depts.length;i++){
+              deptName.push(row.depts[i].name)
+            }
+            return deptName.join();
+          },
         async tableonload(){
-        BumenService.getAll()
+        AuthService.getAll()
         .then(response => {
           this.tableData = response.data;
+          this.tableData.depts="test"
+          // this.tableData.depts=response.data.depts[0].name
           console.log(response.data);
         })
         .catch(e => {
@@ -120,7 +152,7 @@ export default {
           this.dialogTitle = "addData";
           DeptService.getAll()
                 .then(response => {
-                    this.result = response.data;
+                    this.result = response.data
                 }).catch(e => {
                     console.log(e);
                 });
@@ -130,9 +162,13 @@ export default {
             var data = {
               name: this.form.name,
               username:this.form.username,
-              dept: this.form.dept,
+              password:this.form.password,
+              email:this.form.email,
+              depts:this.form.depts,
+              //问题一-----------------------------------
           } 
-          BumenService.create(data).then(response => {
+          console.log(data);
+          AuthService.register(data).then(response => {
           this.tableonload();
           console.log(response.data);
         })
@@ -170,9 +206,9 @@ export default {
        },
        submit(form){
           this.$refs[form].validate((valid) => {
-          if (this.dialogTitle ==  "addData"&&valid ) {
+          if (this.dialogTitle ==  "addData"&&valid) {
         this.addservice();
-        this.form=""
+        this.form={}
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
       }else{
@@ -184,7 +220,7 @@ export default {
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
-           BumenService.get(pa)
+           AuthService.get(pa)
          .then(response => {
                 this.form=response.data;
               })
@@ -193,14 +229,17 @@ export default {
               });
        },
        updateservice(){
-              this.dialogFormVisible=false;
+          this.dialogFormVisible=false;
           var data = {
-            id:this.form.id,
-            name: this.form.name,
-            username:this.form.username,
-            dept: this.form.dept,
+            userid:this.form.id,
+              name: this.form.name,
+              username:this.form.username,
+              password:this.form.password,
+              email:this.form.email,
+              depts:this.form.depts,
+            
         }
-        BumenService.update(data.id,data)
+        AuthService.update(data.userid,data)
         .then(response => {
           this.tableonload();
           console.log(response.data);
@@ -212,7 +251,7 @@ export default {
        delClickconfirm(index,row){
               let pa=this.tableData[index].id;
               let a = this;
-              BumenService.delete(pa)
+              AuthService.delete(pa)
               .then(response => {
                 this.tableonload();
                 console.log(response.pa);
@@ -261,8 +300,9 @@ export default {
         addData: "添加数据",
         updataData: "修改数据",
       },
+        // depts:[],
         dialogTitle:"",
-          form: {dept:[]},
+          form: {},
           form1: {},
           rules: {},
         tableData: [],

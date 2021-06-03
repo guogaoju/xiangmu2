@@ -10,8 +10,11 @@ var bcrypt = require("bcryptjs");
 const { dept } = require("../models");
 
 exports.signup = (req, res) => {
+  //问题一------------------------
+  console.log(req.body+"------------------")
   // 数据库添加用户表
   User.create({
+    name: req.body.name,
     username: req.body.username,
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8)

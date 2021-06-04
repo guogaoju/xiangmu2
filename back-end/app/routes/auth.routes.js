@@ -33,4 +33,6 @@ module.exports = function(app) {
   app.delete("/api/signdelete/:userid",controller.delete);
   app.get("/api/signselect/:userid",controller.findOne);
   app.get("/api/signselectAll",controller.findAll);
+
+  app.get("/api/signselectdept/:deptid",controller.findDeptUsers);
 };

@@ -2,33 +2,28 @@
     <div>
         <el-row>
           <el-col :span="6" style="float:right">
-                <el-button type="warning" @click="openFrom()">添加成员</el-button>
+                <el-button type="warning" round size="small" @click="openFrom()">添加成员</el-button>
             </el-col>
             <el-col :span="18" style="float:right;">
-                <el-button type="warning" @click="openFrom1()">添加部门</el-button>
+                <el-button type="warning" round size="small" @click="openFrom1()">添加部门</el-button>
             </el-col>
         </el-row>
             <el-row :gutter="12">
                 <el-col :xs="4" :sm="4" :md="4" :lg="4">
-        <el-menu
-      default-active="1"
-      class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
-      background-color=""
-      text-color="black"
+                   <el-button style="margin-top:10px" type="warning" @click="All()" round size="small">全部成员</el-button>
+   <el-table
+    @row-click="rowClicked"
+      :data="tableData1"
       active-text-color="#ffd04b"
-      >
-     <el-menu-item index="1">
-        <i class="el-icon-menu"></i>
-        <span slot="title">全部成员</span>
-      </el-menu-item>
-      <el-menu-item :index="items.id.toString()+1" v-for="items in result1" :key="items.id">
-        <i class="el-icon-menu"></i>
-        <span slot="title">{{items.name}}</span>
-      </el-menu-item>
-    </el-menu>
+      style="width: 100%">
+      <el-table-column
+        prop="name"
+        label="全部部门"
+        >
+      </el-table-column>
+    </el-table>
     </el-col>
+
     <el-col :xs="16" :sm="16" :md="16" :lg="16">
         <el-table
     ref="multipleTable"
@@ -119,14 +114,28 @@ export default {
           this.dialog = true
           DeptService.getAll()
           .then(response => {
+          this.tableData1 = response.data;
           this.result1 = response.data;
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
       },
     methods: {
+      All(){
+        this.tableonload();
+      },
+      rowClicked(row, event, column){
+          let deptid=row.id;
+           AuthService.get(deptid)
+         .then(response => {
+           this.tableData = response.data;
+               console.log(response.data[0].depts)
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
           getfor(row,column){
             var deptName =[]
             for(var i=0;i<row.depts.length;i++){
@@ -138,9 +147,6 @@ export default {
         AuthService.getAll()
         .then(response => {
           this.tableData = response.data;
-          //this.tableData.depts="test"
-          // this.tableData.depts=response.data.depts[0].name
-          //console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -318,6 +324,8 @@ export default {
           form1: {},
           rules: {},
         tableData: [],
+        tableData1:[],
+        menu: [],
         size:'50%',
         dialog: false,
         loading: false,

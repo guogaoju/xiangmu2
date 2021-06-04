@@ -73,6 +73,20 @@ exports.findOne = (req, res) => {
   });
     });
 };
+exports.findDeptUsers = (req, res) => {
+  console.log(req.body.deptid+"------------------")
+  User.findAll({ include:[{model: Dept,
+    where: {
+        id: req.params.deptid
+    }}] })
+  .then(user => {  
+        res.send(user)
+  })
+  .catch(err => {
+    res.status(500).send({ message: err.message
+  });
+    });
+};
 //查找全部信息
 exports.findAll = (req, res) => {
   User.findAll({include : [Role,Dept] })
@@ -84,6 +98,17 @@ exports.findAll = (req, res) => {
   });
     });
 };
+// //查找全部信息
+// exports.findAll = (req, res) => {
+//   User.findAll({include : [Role,Dept] })
+//   .then(user => {  
+//         res.send(user)
+//   })
+//   .catch(err => {
+//     res.status(500).send({ message: err.message
+//   });
+//     });
+// };
 exports.update = (req, res) => {
   const id = req.params.userid;
   //修改

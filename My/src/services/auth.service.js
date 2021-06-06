@@ -7,7 +7,7 @@ class AuthService {
   get(userid) {
     return http.get(`/signselect/${userid}`);
   }
-  get(deptid) {
+  getDept(deptid) {
     return http.get(`/signselectdept/${deptid}`);
   }
   update(userid, data) {

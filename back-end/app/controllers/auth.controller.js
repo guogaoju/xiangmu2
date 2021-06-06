@@ -62,10 +62,6 @@ exports.signup = (req, res) => {
 exports.findOne = (req, res) => {
   User.findOne({ where: { id: req.params.userid },include : [Role,Dept] })
   .then(user => {
-        for (let i = 0; i < user.depts.length; i++)
-          console.log(user.depts[i].name);
-        for (let i = 0; i < user.roles.length; i++)
-          console.log(user.roles[i].name);  
         res.send(user)
   })
   .catch(err => {
@@ -74,13 +70,31 @@ exports.findOne = (req, res) => {
     });
 };
 exports.findDeptUsers = (req, res) => {
-  console.log(req.body.deptid+"------------------")
-  User.findAll({ include:[{model: Dept,
+  //console.log(req.body.deptid+"------------------")
+  User.findAll({ include:[{
+    model: Dept,    
     where: {
         id: req.params.deptid
-    }}] })
+    }
+    }] })
   .then(user => {  
-        res.send(user)
+        var userIds = [];
+        for (var i = 0; i < user.length; i++) {
+          userIds.push(user[i].id);
+        }
+        console.log(userIds);
+        User.findAll({ where: {id:userIds},include:[{
+          model: Dept
+          }] })
+          .then(user=>{
+            res.send(user)
+          }
+
+          )
+          .catch(err => {
+            res.status(500).send({ message: err.message
+          });
+            })
   })
   .catch(err => {
     res.status(500).send({ message: err.message

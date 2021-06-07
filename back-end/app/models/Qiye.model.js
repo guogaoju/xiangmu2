@@ -3,6 +3,10 @@ module.exports = (sequelize, Sequelize) => {
       register_name: {
             type: Sequelize.STRING
           },
+        //   nodeId: {
+        //     type: Sequelize.INTEGER,
+        //     field: 'node_id',
+        // },
           introduction: {
             type: Sequelize.STRING
           },

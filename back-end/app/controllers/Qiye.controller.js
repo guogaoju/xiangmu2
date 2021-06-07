@@ -1,5 +1,6 @@
 const db = require("../models");
 const Qiye = db.qiye;
+const QiyeState = db.QiyeState;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
@@ -30,12 +31,28 @@ exports.create = (req, res) => {
     bank_name:req.body.bank_name,
     bank_card:req.body.bank_card,
     create_time:req.body.create_time,
-    current_process:req.body.current_process,
+    // nodeName:req.body.nodeName,
   };
 // 新建controller层
   Qiye.create(qiye)
-    .then(data => {
-      res.send(data);
+    .then(qiye => {
+      if (req.body.qiyeState) {
+        QiyeState.findAll({
+          where: {
+            name: {
+              [Op.or]: req.body.qiyeState
+            }
+          }
+        }).then(qiyeState => {
+          qiye.setQiyeState(qiyeState).then(() => {
+          });
+        });
+      } else {
+        // user role = 1
+        qiye.setQiyeState([1]).then(() => {
+        });
+      };
+      res.send(qiye);
     })
     .catch(err => {
       res.status(500).send({
@@ -48,12 +65,8 @@ exports.create = (req, res) => {
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
     const register_name = req.query.register_name;
-    const introduction = req.query.introduction;
-    var condition = register_name  ? { register_name: { [Op.like]: `%${register_name}%` } } : null||
-    introduction  ? { introduction: { [Op.like]: `%${introduction}%` } } : null
-    ;
-    // var condition1 = introduction  ? { introduction: { [Op.like]: `%${introduction}%` } } : null;
-    Qiye.findAll({ where: condition})
+    var condition = register_name  ? { register_name: { [Op.like]: `%${register_name}%` } } : null;
+    Qiye.findAll({ where: condition,include : [QiyeState]} )
       .then(data => {
         res.send(data);
       })
@@ -67,9 +80,9 @@ exports.findAll = (req, res) => {
 
 //根据id查找
 exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Qiye.findByPk(id)
+    Qiye.findOne({ where: { id: req.params.id },include : [QiyeState] })
       .then(data => {
+
         res.send(data);
       })
       .catch(err => {
@@ -85,23 +98,12 @@ exports.update = (req, res) => {
     const id = req.params.id;
     Qiye.update(req.body, {
       where: { id: id }
+    }).then(data =>{
+      res.send(data)
     })
-      .then(num => {
-        if (num == 1) {
-          res.send({
-            message: "Qiye was updated successfully."
-          });
-        } else {
-          res.send({
-            message: `Cannot update Qiye with id=${id}. Maybe Qiye was not found or req.body is empty!`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error updating Qiye with id=" + id
-        });
-      });
+    .catch(err => {
+      res.status(500).send({ message: err.message });
+    });
 };
 
 //删除

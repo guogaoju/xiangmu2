@@ -146,7 +146,7 @@ export default {
         async tableonload(){
         AuthService.getAll()
         .then(response => {
-          this.tableData = response.data;
+          this.tableData = response.data; 
         })
         .catch(e => {
           console.log(e);

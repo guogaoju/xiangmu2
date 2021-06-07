@@ -45,6 +45,7 @@ db.role = require("./role.model.js")(sequelize, Sequelize);
 db.bumen = require("./Bumen.model.js")(sequelize, Sequelize);
 db.dept = require("./Dept.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
+db.QiyeState = require("./QiyeState.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -65,7 +66,8 @@ db.dept.belongsToMany(db.user, {
   foreignKey: "deptId",
   otherKey: "userId"
 });
-
+db.QiyeState.hasMany(db.qiye);
+db.qiye.belongsTo(db.QiyeState);
 //这是为了在中间件里面验证user的role是否存在，这样写是不对的，应该根据数据库里的内容验证，而不是根据这个提前定义好的静态数组
 //db.ROLES = ["user", "admin", "moderator"];
 module.exports = db;

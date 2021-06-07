@@ -286,7 +286,8 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+    <!-- :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent" -->
+    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -311,6 +312,8 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18"> 
+            <el-row>
         <el-col :span="12">
           <el-form-item label="注册名称" prop="register_name" :label-width="formLabelWidth">
             <el-input v-model="Qiye.register_name"></el-input>
@@ -427,8 +430,8 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input v-model="Qiye.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -441,6 +444,21 @@
          </el-col>  
          <el-col :span="6"></el-col>
       </el-row>
+        </el-col>
+        <el-col :span="6">
+      <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt">
+            {{activity.nodeName}}
+          </el-timeline-item>
+      </el-timeline>
+        </el-col>
+      </el-row>
+      
+      
     </el-form>
   </el-dialog>
 </div>
@@ -448,7 +466,9 @@
 </template>
 
 <script>
+import moment from 'moment'
 import QiyeService from "../services/QiyeService";
+import QiyeStateService from "../services/QiyeStateService";
   export default {
     created () {
           this.tableonload();
@@ -458,16 +478,28 @@ import QiyeService from "../services/QiyeService";
         QiyeService.getAll()
         .then(response => {
           this.tableData = response.data;
+          this.tableData.nodeName=row.qiyeState.nodeName
           console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
       },
+      getfor(row,column){
+            return row.qiyeState.nodeName;
+          },
        openFrom(){
            this.Qiye={},
           this.dialogFormVisible=true
           this.dialogTitle = "addData";
+        QiyeStateService.getAll()
+        .then(response => {
+          this.activities=response.data
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
        },
        addservice(){
           this.dialogFormVisible=false;
@@ -490,7 +522,7 @@ import QiyeService from "../services/QiyeService";
             account_type:this.Qiye.account_type,
             bank_name:this.Qiye.bank_name,
             bank_card:this.Qiye.bank_card,
-            current_process:this.Qiye.current_process
+            // nodeName:this.Qiye.nodeName
           }
         QiyeService.create(data)
         .then(response => {
@@ -521,6 +553,7 @@ import QiyeService from "../services/QiyeService";
            QiyeService.get(pa)
          .then(response => {
                 this.Qiye=response.data;
+                this.Qiye.nodeName = response.data.qiyeState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -533,6 +566,7 @@ import QiyeService from "../services/QiyeService";
            QiyeService.get(pa)
          .then(response => {
                 this.Qiye=response.data;
+                this.Qiye.nodeName = response.data.qiyeState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -560,7 +594,7 @@ import QiyeService from "../services/QiyeService";
         account_type:this.Qiye.account_type,
         bank_name:this.Qiye.bank_name,
         bank_card:this.Qiye.bank_card,
-        current_process:this.Qiye.current_process
+        // nodeName:this.Qiye.nodeName
         }
           QiyeService.update(data.id,data)
         .then(response => {
@@ -613,6 +647,7 @@ import QiyeService from "../services/QiyeService";
 
     data() {
       return {
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",

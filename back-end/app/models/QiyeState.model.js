@@ -3,9 +3,12 @@ module.exports = (sequelize, Sequelize) => {
       nodeName: {
         type: Sequelize.STRING
       },
-    //   nodeDeptname: {
-    //     type: Sequelize.STRING
-    //   }
+      nodebutton: {
+        type: Sequelize.STRING
+      },
+      nextStateid: {
+        type: Sequelize.INTEGER
+      }
     });
   
     return QiyeState;

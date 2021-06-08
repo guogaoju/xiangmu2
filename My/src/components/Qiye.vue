@@ -13,6 +13,7 @@
     </el-col>
   </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterRegister_name || data.register_name.toLowerCase().includes(filterRegister_name.toString().toLowerCase()))
       &(!filterIntroduction || data.introduction.toLowerCase().includes(filterIntroduction.toString().toLowerCase()))
@@ -303,7 +304,7 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
+  <el-dialog id="finance" :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
       <el-form
         :model="Qiye"
         status-icon :rules="rules"
@@ -316,19 +317,19 @@
             <el-row>
         <el-col :span="12">
           <el-form-item label="注册名称" prop="register_name" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.register_name"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.register_name"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="企业简介" prop="introduction" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.introduction"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.introduction"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="行业" prop="trade" :label-width="formLabelWidth">
-            <el-select v-model="Qiye.trade" clearable placeholder="请选择" >
+            <el-select :disabled="validated" v-model="Qiye.trade" clearable placeholder="请选择" >
               <el-option label="制造业" value="制造业"></el-option>
               <el-option label="建筑业" value="建筑业"></el-option>
             </el-select>
@@ -336,43 +337,43 @@
         </el-col>
          <el-col :span="12">
           <el-form-item label="社会信用代码" prop="credit_code" :label-width="formLabelWidth">
-            <el-input v-model.number="Qiye.credit_code"></el-input>
+            <el-input :disabled="validated" v-model.number="Qiye.credit_code"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
         <el-row>
         <el-col :span="12">
           <el-form-item label="法人代表" prop="juridical_person" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.juridical_person"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.juridical_person"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
            <el-form-item label="注册资本" prop="register_money" :label-width="formLabelWidth">
-            <el-input v-model.number="Qiye.register_money"></el-input>
+            <el-input :disabled="validated" v-model.number="Qiye.register_money"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
           <el-col :span="12">
            <el-form-item label="核心企业" prop="hexinqiye" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.hexinqiye"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.hexinqiye"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.address"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.address"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="营业期限" prop="business_term" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.business_term"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.business_term"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <el-form-item label="营业范围" prop="business_scope" :label-width="formLabelWidth">
-            <el-select v-model="Qiye.business_scope" placeholder="请选择" >
+            <el-select :disabled="validated" v-model="Qiye.business_scope" placeholder="请选择" >
               <el-option label="制造业" value="制造业"></el-option>
               <el-option label="建筑业" value="建筑业"></el-option>
               <el-option label="其他" value="其他"></el-option>
@@ -383,55 +384,55 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="邮编" prop="post_code" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.post_code"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.post_code"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.phone"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.phone"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.email"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.email"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="传真" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.fax"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.fax"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="账户类型" prop="account_type" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.account_type"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.account_type"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="所属银行" prop="bank_name" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.bank_name"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.bank_name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="银行卡号" prop="bank_card" :label-width="formLabelWidth">
-            <el-input v-model.number="Qiye.bank_card"></el-input>
+            <el-input :disabled="validated" v-model.number="Qiye.bank_card"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="成立日期" prop="create_time" :label-width="formLabelWidth">
-            <el-date-picker v-model="Qiye.create_time" type="date" placeholder="选择日期"></el-date-picker>
+            <el-date-picker :disabled="validated" v-model="Qiye.create_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.nodeName"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -439,7 +440,11 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('Qiye')">确定</el-button>
+          
+  <!-- <el-button v-if="this.Qiye.nodeName ==='addData'" type="primary">提交</el-button>
+  <el-button v-else type="primary">审核</el-button> -->
+
+          <el-button type="primary" ref="buttonname" @click="submit('Qiye')">确定</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -470,15 +475,44 @@ import moment from 'moment'
 import QiyeService from "../services/QiyeService";
 import QiyeStateService from "../services/QiyeStateService";
   export default {
+   
     created () {
           this.tableonload();
       },
     methods: {
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.dialogTitle = "examine";
+          let pa=row.id;
+          this.paa=pa
+           QiyeService.get(pa)
+         .then(response => {
+          this.nextState=response.data.qiyeState.nextStateid
+          console.log(this.nextState)
+           if(response.data.qiyeState.nodeName==="审核"){
+                 this.Qiye=response.data;
+                this.Qiye.nodeName = response.data.qiyeState.nodeName;
+                this.validated=true;
+           }else if(response.data.qiyeState.nodeName==="新增"){
+                this.Qiye=response.data;
+                this.Qiye.nodeName = response.data.qiyeState.nodeName;
+                this.validated=false;
+           }
+               //改变按钮
+                // this.$refs.buttonname.innerText=response.data.qiyeState.nodebutton;
+              })
+              .catch(e => {
+                console.log(e);
+              });
+                // console.log(row, event, column)
+       },
+
       async tableonload(){
         QiyeService.getAll()
         .then(response => {
           this.tableData = response.data;
-          this.tableData.nodeName=row.qiyeState.nodeName
+          // this.tableData.nodeName=row.qiyeState.nodeName
+          
           console.log(response.data);
         })
         .catch(e => {
@@ -541,11 +575,14 @@ import QiyeStateService from "../services/QiyeStateService";
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.updateState();
       }else{
-        return false
+          return false
       }
         });
         },
+       
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
@@ -572,6 +609,19 @@ import QiyeStateService from "../services/QiyeStateService";
                 console.log(e);
               });
        },
+       updateState(index,row){
+        var data = {
+           qiyeStateId:this.nextState
+          }
+          QiyeService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
        updateservice(){
             this.dialogFormVisible=false;
           var data = {
@@ -594,7 +644,7 @@ import QiyeStateService from "../services/QiyeStateService";
         account_type:this.Qiye.account_type,
         bank_name:this.Qiye.bank_name,
         bank_card:this.Qiye.bank_card,
-        // nodeName:this.Qiye.nodeName
+        nodeName:this.Qiye.nodeName
         }
           QiyeService.update(data.id,data)
         .then(response => {
@@ -647,11 +697,13 @@ import QiyeStateService from "../services/QiyeStateService";
 
     data() {
       return {
+        validated:false,
         activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "审核数据",
       },
         dialogTitle:"",
         arr:[],
@@ -683,6 +735,8 @@ import QiyeStateService from "../services/QiyeStateService";
             { required: true, message: '请输入选择时间', trigger: 'change' }
           ],
         },
+        paa:'',
+        nextState:'',
         tableData:[],
         Qiye:{},
         filterId:'',

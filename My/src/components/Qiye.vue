@@ -444,7 +444,7 @@
   <!-- <el-button v-if="this.Qiye.nodeName ==='addData'" type="primary">提交</el-button>
   <el-button v-else type="primary">审核</el-button> -->
 
-          <el-button type="primary" ref="buttonname" @click="submit('Qiye')">确定</el-button>
+          <el-button type="primary" ref="buttonname" id="submitButton" @click="submit('Qiye')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -493,13 +493,13 @@ import QiyeStateService from "../services/QiyeStateService";
                  this.Qiye=response.data;
                 this.Qiye.nodeName = response.data.qiyeState.nodeName;
                 this.validated=true;
+                this.buttonText = '通过';
            }else if(response.data.qiyeState.nodeName==="新增"){
                 this.Qiye=response.data;
                 this.Qiye.nodeName = response.data.qiyeState.nodeName;
                 this.validated=false;
+                this.buttonText = '提交';
            }
-               //改变按钮
-                // this.$refs.buttonname.innerText=response.data.qiyeState.nodebutton;
               })
               .catch(e => {
                 console.log(e);
@@ -704,7 +704,7 @@ import QiyeStateService from "../services/QiyeStateService";
         updataData: "修改数据",
         kanData: "查看数据",
         examine: "审核数据",
-      },
+        },
         dialogTitle:"",
         arr:[],
         TravelType:1,
@@ -736,6 +736,7 @@ import QiyeStateService from "../services/QiyeStateService";
           ],
         },
         paa:'',
+        buttonText: '确定',
         nextState:'',
         tableData:[],
         Qiye:{},

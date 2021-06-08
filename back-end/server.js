@@ -16,34 +16,51 @@ app.use(express.static('./resources/static/assets/img'));
 app.use(express.static('./resources/static/assets/imgs'));
 const db = require("./app/models");
 db.sequelize.sync().then(() =>{
-  // initial();
+   //initial();
 });
 const Role = db.role;
 const Dept = db.dept;
-
+const QiyeState = db.QiyeState;
 function initial() {
-  Role.create({
-    id: 1,
-    name: "user"
-  });
+  // Role.create({
+  //   id: 1,
+  //   name: "user"
+  // });
  
-  Role.create({
-    id: 2,
-    name: "moderator"
-  });
+  // Role.create({
+  //   id: 2,
+  //   name: "moderator"
+  // });
  
-  Role.create({
-    id: 3,
-    name: "admin"
-  });
+  // Role.create({
+  //   id: 3,
+  //   name: "admin"
+  // });
 
-  Dept.create({
-    id: 1,
-    name: "风控部"
+  // Dept.create({
+  //   id: 1,
+  //   name: "风控部"
+  // });
+  // Dept.create({
+  //   id: 2,
+  //   name: "财务部"
+  // });
+  QiyeState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2
   });
-  Dept.create({
-    id: 2,
-    name: "财务部"
+  QiyeState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3
+  });
+  QiyeState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
   });
 }
 

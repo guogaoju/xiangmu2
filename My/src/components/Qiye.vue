@@ -440,10 +440,6 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          
-  <!-- <el-button v-if="this.Qiye.nodeName ==='addData'" type="primary">提交</el-button>
-  <el-button v-else type="primary">审核</el-button> -->
-
           <el-button type="primary" ref="buttonname" id="submitButton" @click="submit('Qiye')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
@@ -456,7 +452,8 @@
             v-for="(activity, index) in activities"
             :key="index"
             :size="activity.size"
-            :timestamp="activity.createdAt">
+            :timestamp="activity.createdAt"
+            >
             {{activity.nodeName}}
           </el-timeline-item>
       </el-timeline>
@@ -474,8 +471,8 @@
 import moment from 'moment'
 import QiyeService from "../services/QiyeService";
 import QiyeStateService from "../services/QiyeStateService";
+import StatelogService from "../services/StatelogService";
   export default {
-   
     created () {
           this.tableonload();
       },
@@ -487,24 +484,18 @@ import QiyeStateService from "../services/QiyeStateService";
           this.paa=pa
            QiyeService.get(pa)
          .then(response => {
+          this.qiyeid=pa
           this.nextState=response.data.qiyeState.nextStateid
-          console.log(this.nextState)
-           if(response.data.qiyeState.nodeName==="审核"){
-                 this.Qiye=response.data;
-                this.Qiye.nodeName = response.data.qiyeState.nodeName;
-                this.validated=true;
-                this.buttonText = '通过';
-           }else if(response.data.qiyeState.nodeName==="新增"){
+          this.oldStateid=response.data.qiyeState.id
+          console.log(response.data)
                 this.Qiye=response.data;
                 this.Qiye.nodeName = response.data.qiyeState.nodeName;
-                this.validated=false;
-                this.buttonText = '提交';
-           }
+                this.validated=true;
+                this.buttonText = response.data.qiyeState.nodebutton;
               })
               .catch(e => {
                 console.log(e);
               });
-                // console.log(row, event, column)
        },
 
       async tableonload(){
@@ -512,7 +503,20 @@ import QiyeStateService from "../services/QiyeStateService";
         .then(response => {
           this.tableData = response.data;
           // this.tableData.nodeName=row.qiyeState.nodeName
-          
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              qiyeId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState}
+              StatelogService.create(data).then(response => {
           console.log(response.data);
         })
         .catch(e => {
@@ -525,6 +529,7 @@ import QiyeStateService from "../services/QiyeStateService";
        openFrom(){
            this.Qiye={},
           this.dialogFormVisible=true
+          this.validated=false;
           this.dialogTitle = "addData";
         QiyeStateService.getAll()
         .then(response => {
@@ -562,6 +567,17 @@ import QiyeStateService from "../services/QiyeStateService";
         .then(response => {
           this.tableonload();
           console.log(response.data);
+           var data = {
+             //userid拿不到，默认1
+              userId:1,
+              qiyeId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.qiyeStateId}
+              StatelogService.create(data).then(response => {
+              console.log(response.data);
+              }).catch(e => {
+                console.log(e);
+              });
         })
         .catch(e => {
           console.log(e);
@@ -576,7 +592,9 @@ import QiyeStateService from "../services/QiyeStateService";
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
       }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
         this.updateState();
+        this.addStatelog();
       }else{
           return false
       }
@@ -598,6 +616,7 @@ import QiyeStateService from "../services/QiyeStateService";
        },
         updateClick(index,row){
            this.dialogFormVisible=true;
+           this.validated=false;
            this.dialogTitle = "updataData";
            let pa=this.tableData[index].id;
            QiyeService.get(pa)
@@ -706,7 +725,6 @@ import QiyeStateService from "../services/QiyeStateService";
         examine: "审核数据",
         },
         dialogTitle:"",
-        arr:[],
         TravelType:1,
         formLabelWidth: "120px",
          rules:{
@@ -737,6 +755,9 @@ import QiyeStateService from "../services/QiyeStateService";
         },
         paa:'',
         buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
         nextState:'',
         tableData:[],
         Qiye:{},

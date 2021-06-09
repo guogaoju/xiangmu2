@@ -36,29 +36,8 @@ exports.create = (req, res) => {
 // 新建controller层
   Qiye.create(qiye)
     .then(qiye => {
-      if (req.body.qiyeState) {
-        QiyeState.findAll({
-          where: {
-            name: {
-              [Op.or]: req.body.qiyeState
-            }
-          }
-        }).then(qiyeState => {
-          qiye.setQiyeState(qiyeState).then(() => {
-          });
-        });
-      } else {
-        // user role = 1
-        qiye.setQiyeState([1]).then(() => {
-        });
-      };
-      res.send(qiye);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the qiye."
-      });
+        qiye.setQiyeState([1])
+        res.send(qiye)
     });
 };
 
@@ -92,7 +71,6 @@ exports.findOne = (req, res) => {
       });
 };
 
-
 //修改
 exports.update = (req, res) => {
     const id = req.params.id;
@@ -105,6 +83,7 @@ exports.update = (req, res) => {
       res.status(500).send({ message: err.message });
     });
 };
+
 
 //删除
 exports.delete = (req, res) => {

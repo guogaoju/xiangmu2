@@ -1,7 +1,7 @@
 const db = require("../models");
 const QiyeState = db.QiyeState;
 const Op = db.Sequelize.Op;
-
+const Dept = db.dept;
 //新建企业评级controller
 exports.create = (req, res) => {
   // Validate request
@@ -32,7 +32,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    QiyeState.findAll()
+    QiyeState.findAll({include : [Dept]})
       .then(data => {
         res.send(data);
       })
@@ -46,9 +46,9 @@ exports.findAll = (req, res) => {
 
 // 根据id查询
 exports.findOne = (req, res) => {
-    const id = req.params.id;
+    // const id = req.params.id;
 
-    QiyeState.findByPk(id)
+    QiyeState.findOne({ where: { id: req.params.id },include : [Dept] })
       .then(data => {
         res.send(data);
       })

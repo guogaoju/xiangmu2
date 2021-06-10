@@ -12,8 +12,10 @@ module.exports = (sequelize, Sequelize) => {
       },
       nextStateid: {
         type: Sequelize.INTEGER
-      }
+      },
+     
+      
     });
-  
+    {timestamps: false}
     return QiyeState;
   };

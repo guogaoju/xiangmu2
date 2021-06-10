@@ -95,6 +95,17 @@ db.QiyeState.hasMany(db.Statelog, {
 // db.Statelog.belongsTo(db.QiyeState,{
 //   as:"newstate"
 // });
+//状态表和部门表
+db.QiyeState.belongsToMany(db.dept, {
+  through: "qiyestate_dept",
+  foreignKey: "qiyestateId",
+  otherKey: "deptId"
+});
+db.dept.belongsToMany(db.QiyeState, {
+  through: "qiyestate_dept",
+  foreignKey: "deptId",
+  otherKey: "qiyestateId"
+});
 //这是为了在中间件里面验证user的role是否存在，这样写是不对的，应该根据数据库里的内容验证，而不是根据这个提前定义好的静态数组
 //db.ROLES = ["user", "admin", "moderator"];
 module.exports = db;

@@ -33,9 +33,12 @@ exports.create = (req, res) => {
   
   //新建
   exports.findAll = (req, res) => {
-      // const title = req.query.title;
-      // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-      Statelog.findAll()
+      console.log(req.body)
+      const qiyeId = req.query.qiyeId;
+      var condition = qiyeId ? { qiyeId: { [Op.like]: `%${qiyeId}%` } } : null;
+      Statelog.findAll({
+          where:condition
+      })
         .then(data => {
           res.send(data);
         })

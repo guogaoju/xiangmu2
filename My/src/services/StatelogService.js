@@ -3,6 +3,9 @@ class StatelogService {
   getAll() {
     return http.get("/Statelog");
   }
+  findByLog(qiyeId) {
+    return http.get(`/Statelog?qiyeId=${qiyeId}`);
+  }
   get(id) {
     return http.get(`/Statelog/${id}`);
   }

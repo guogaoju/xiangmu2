@@ -453,6 +453,7 @@
             :key="index"
             :size="activity.size"
             :timestamp="activity.createdAt"
+            :color="activity.color"
             >
             {{activity.nodeName}}
           </el-timeline-item>
@@ -475,11 +476,13 @@ import StatelogService from "../services/StatelogService";
   export default {
     created () {
           this.tableonload();
+          
       },
     methods: {
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.dialogTitle = "examine";
+        this.selectState();
           let pa=row.id;
           this.paa=pa
            QiyeService.get(pa)
@@ -487,11 +490,13 @@ import StatelogService from "../services/StatelogService";
           this.qiyeid=pa
           this.nextState=response.data.qiyeState.nextStateid
           this.oldStateid=response.data.qiyeState.id
-          console.log(response.data)
+          this.selectlog();
+          console.log(this.activities)
                 this.Qiye=response.data;
                 this.Qiye.nodeName = response.data.qiyeState.nodeName;
                 this.validated=true;
                 this.buttonText = response.data.qiyeState.nodebutton;
+                
               })
               .catch(e => {
                 console.log(e);
@@ -523,22 +528,48 @@ import StatelogService from "../services/StatelogService";
           console.log(e);
         });
       },
+      selectlog(){
+        let qiyeId=this.qiyeid
+          StatelogService.findByLog(qiyeId).then(response => {
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+
+          
+      },
+      selectState(){
+         QiyeStateService.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.qiyeState.nodeName;
           },
        openFrom(){
            this.Qiye={},
           this.dialogFormVisible=true
+          this.selectState();
           this.validated=false;
           this.dialogTitle = "addData";
-        QiyeStateService.getAll()
-        .then(response => {
-          this.activities=response.data
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
+       
        },
        addservice(){
           this.dialogFormVisible=false;

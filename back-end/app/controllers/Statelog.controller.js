@@ -18,6 +18,7 @@ exports.create = (req, res) => {
               qiyeId: req.body.qiyeId,
               oldstateid: req.body.oldstateid,
               newstateid:req.body.newstateid,
+              operateId:req.body.operateId,
     };
     Statelog.create(Statelogs)
       .then(data => {
@@ -35,7 +36,7 @@ exports.create = (req, res) => {
   exports.findAll = (req, res) => {
       console.log(req.body)
       const qiyeId = req.query.qiyeId;
-      var condition = qiyeId ? { qiyeId: { [Op.like]: `%${qiyeId}%` } } : null;
+      var condition = qiyeId ? { qiyeId: qiyeId}  : null;
       Statelog.findAll({
           where:condition
       })

@@ -47,6 +47,7 @@ db.dept = require("./Dept.model.js")(sequelize, Sequelize);
 db.role = require("./role.model.js")(sequelize, Sequelize);
 db.QiyeState = require("./QiyeState.model.js")(sequelize, Sequelize);
 db.Statelog = require("./Statelog.model.js")(sequelize, Sequelize);
+db.operate = require("./operateType.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -106,6 +107,12 @@ db.dept.belongsToMany(db.QiyeState, {
   foreignKey: "deptId",
   otherKey: "qiyestateId"
 });
+//记录表和操作类型表
+db.operate.hasMany(db.Statelog, {
+  foreignKey: "operateId",
+});
+db.Statelog.belongsTo(db.operate);
+
 //这是为了在中间件里面验证user的role是否存在，这样写是不对的，应该根据数据库里的内容验证，而不是根据这个提前定义好的静态数组
 //db.ROLES = ["user", "admin", "moderator"];
 module.exports = db;

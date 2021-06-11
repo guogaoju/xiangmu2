@@ -16,11 +16,13 @@ app.use(express.static('./resources/static/assets/img'));
 app.use(express.static('./resources/static/assets/imgs'));
 const db = require("./app/models");
 db.sequelize.sync().then(() =>{
-   //initial();
+   initial();
 });
 const Role = db.role;
 const Dept = db.dept;
 const QiyeState = db.QiyeState;
+const operate = db.operate;
+const qiyestate_dept = db.qiyestate_dept;
 function initial() {
   // Role.create({
   //   id: 1,
@@ -45,22 +47,53 @@ function initial() {
   //   id: 2,
   //   name: "财务部"
   // });
+  // qiyestate_dept.create({
+  //   qiyestateId:1,
+  //   deptId: "1",
+  // });
+  // qiyestate_dept.create({
+  //   qiyestateId:2,
+  //   deptId: "2",
+  // });
+  // qiyestate_dept.create({
+  //   qiyestateId:2,
+  //   deptId: "2",
+  // });
+  operate.create({
+    id:1,
+    operate_name: "新增",
+  });
+  operate.create({
+    id:2,
+    operate_name: "修改",
+  });
+  operate.create({
+    id:3,
+    operate_name: "删除",
+  });
+  operate.create({
+    id:4,
+    operate_name: "审批流程",
+  });
   QiyeState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2
+    nextStateid: 2,
+    lastone:0
   });
   QiyeState.create({
     id:2,
     nodeName: "审核",
     nodebutton: "审核",
-    nextStateid: 3
+    nextStateid: 3,
+    lastone:0
   });
   QiyeState.create({
     id:3,
     nodeName: "审批",
     nodebutton: "审批",
+    lastone:1
   });
 }
 
@@ -114,6 +147,7 @@ require("./app/routes/Dept.routes")(app);
 require("./app/routes/Role.routes")(app);
 require("./app/routes/QiyeState.routes")(app);
 require("./app/routes/Statelog.routes")(app);
+require("./app/routes/operateType.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

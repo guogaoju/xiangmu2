@@ -2,6 +2,7 @@ const db = require("../models");
 const Qiye = db.qiye;
 const QiyeState = db.QiyeState;
 const Op = db.Sequelize.Op;
+const Statelog = db.Statelog;
 
 // 新建controller层
 exports.create = (req, res) => {
@@ -106,5 +107,14 @@ exports.delete = (req, res) => {
         res.status(500).send({
           message: "Could not delete Qiye with id=" + id
         });
+        // Statelog.findByPk(id)
+        // .then(Statelog => {
+        //   //删除角色中间表信息
+        //   Statelog.setQiyeState([])
+        // })
+        // .catch(err => {
+        //   res.status(500).send({ message: err.message });
+        //   });
       });
+
 };

@@ -13,7 +13,9 @@ module.exports = (sequelize, Sequelize) => {
       nextStateid: {
         type: Sequelize.INTEGER
       },
-     
+      lastone:{
+        type: Sequelize.INTEGER,
+      }
       
     });
     {timestamps: false}

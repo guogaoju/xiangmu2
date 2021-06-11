@@ -296,9 +296,9 @@
       width="250"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -440,7 +440,8 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" ref="buttonname" id="submitButton" @click="submit('Qiye')">{{buttonText}}</el-button>
+          <el-button type="primary" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Qiye')">{{buttonText}}</el-button>
+          <!-- <el-button type="primary" @click="addsubmit()">隐藏</el-button> -->
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
@@ -479,6 +480,9 @@ import StatelogService from "../services/StatelogService";
           
       },
     methods: {
+      // addsubmit(){
+      //   this.$refs.buttonname.hide();
+      // },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.dialogTitle = "examine";
@@ -487,6 +491,9 @@ import StatelogService from "../services/StatelogService";
           this.paa=pa
            QiyeService.get(pa)
          .then(response => {
+            if(response.data.qiyeState.lastone===1){
+                  this.isshow=false;
+                }
           this.qiyeid=pa
           this.nextState=response.data.qiyeState.nextStateid
           this.oldStateid=response.data.qiyeState.id
@@ -496,7 +503,7 @@ import StatelogService from "../services/StatelogService";
                 this.Qiye.nodeName = response.data.qiyeState.nodeName;
                 this.validated=true;
                 this.buttonText = response.data.qiyeState.nodebutton;
-                
+               
               })
               .catch(e => {
                 console.log(e);
@@ -520,7 +527,9 @@ import StatelogService from "../services/StatelogService";
               userId:1,
               qiyeId: this.qiyeid,
               oldstateid: this.oldStateid,
-              newstateid:this.nextState}
+              newstateid:this.nextState,
+              operateId:4
+              }
               StatelogService.create(data).then(response => {
           console.log(response.data);
         })
@@ -603,7 +612,9 @@ import StatelogService from "../services/StatelogService";
               userId:1,
               qiyeId: response.data.id,
               oldstateid: 1,
-              newstateid:response.data.qiyeStateId}
+              newstateid:response.data.qiyeStateId,
+              operateId:1,
+              }
               StatelogService.create(data).then(response => {
               console.log(response.data);
               }).catch(e => {
@@ -747,13 +758,14 @@ import StatelogService from "../services/StatelogService";
 
     data() {
       return {
+        isshow:true,
         validated:false,
         activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
-        examine: "审核数据",
+        examine: "企业信息",
         },
         dialogTitle:"",
         TravelType:1,

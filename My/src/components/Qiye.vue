@@ -440,7 +440,7 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Qiye')">{{buttonText}}</el-button>
+          <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Qiye')">{{buttonText}}</el-button>
           <!-- <el-button type="primary" @click="addsubmit()">隐藏</el-button> -->
         </el-form-item>
          </el-col>  
@@ -480,9 +480,6 @@ import StatelogService from "../services/StatelogService";
           
       },
     methods: {
-      // addsubmit(){
-      //   this.$refs.buttonname.hide();
-      // },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.dialogTitle = "examine";
@@ -498,7 +495,7 @@ import StatelogService from "../services/StatelogService";
           this.nextState=response.data.qiyeState.nextStateid
           this.oldStateid=response.data.qiyeState.id
           this.selectlog();
-          console.log(this.activities)
+          // console.log(this.activities)
                 this.Qiye=response.data;
                 this.Qiye.nodeName = response.data.qiyeState.nodeName;
                 this.validated=true;
@@ -514,8 +511,7 @@ import StatelogService from "../services/StatelogService";
         QiyeService.getAll()
         .then(response => {
           this.tableData = response.data;
-          // this.tableData.nodeName=row.qiyeState.nodeName
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -531,7 +527,7 @@ import StatelogService from "../services/StatelogService";
               operateId:4
               }
               StatelogService.create(data).then(response => {
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -551,7 +547,7 @@ import StatelogService from "../services/StatelogService";
                             }
                        }
        
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -606,7 +602,6 @@ import StatelogService from "../services/StatelogService";
         QiyeService.create(data)
         .then(response => {
           this.tableonload();
-          console.log(response.data);
            var data = {
              //userid拿不到，默认1
               userId:1,
@@ -616,7 +611,7 @@ import StatelogService from "../services/StatelogService";
               operateId:1,
               }
               StatelogService.create(data).then(response => {
-              console.log(response.data);
+              // console.log(response.data);
               }).catch(e => {
                 console.log(e);
               });
@@ -633,6 +628,7 @@ import StatelogService from "../services/StatelogService";
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+        
       }else if(this.dialogTitle ==  "examine"&&valid){
         this.dialogFormVisible=false;
         this.updateState();
@@ -646,6 +642,8 @@ import StatelogService from "../services/StatelogService";
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
+          this.annui=true;
+          this.validated=true;
           let pa=this.tableData[index].id;
            QiyeService.get(pa)
          .then(response => {
@@ -677,7 +675,7 @@ import StatelogService from "../services/StatelogService";
           QiyeService.update(this.paa,data)
         .then(response => {
           this.tableonload();
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -710,7 +708,7 @@ import StatelogService from "../services/StatelogService";
           QiyeService.update(data.id,data)
         .then(response => {
           this.tableonload();
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -721,7 +719,7 @@ import StatelogService from "../services/StatelogService";
               QiyeService.delete(pa)
               .then(response => {
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);
@@ -758,6 +756,7 @@ import StatelogService from "../services/StatelogService";
 
     data() {
       return {
+        annui:'',
         isshow:true,
         validated:false,
         activities: [],

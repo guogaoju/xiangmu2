@@ -15,8 +15,9 @@ app.use(express.static('./resources/static/assets/uploads'));
 app.use(express.static('./resources/static/assets/img'));
 app.use(express.static('./resources/static/assets/imgs'));
 const db = require("./app/models");
+const { response } = require("express");
 db.sequelize.sync().then(() =>{
-   initial();
+  //  initial();
 });
 const Role = db.role;
 const Dept = db.dept;
@@ -81,6 +82,9 @@ function initial() {
     nodebutton: "提交",
     nextStateid: 2,
     lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
   });
   QiyeState.create({
     id:2,
@@ -88,15 +92,25 @@ function initial() {
     nodebutton: "审核",
     nextStateid: 3,
     lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
   });
   QiyeState.create({
     id:3,
     nodeName: "审批",
     nodebutton: "审批",
     lastone:1
-  });
-}
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
 
+}
+// QiyeState.findOne({where:{id:1},include:[Dept]})
+// .then(data =>{
+//   console.log(data) 
+// })
 //清空数据库 db.sequelize.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
 //   });

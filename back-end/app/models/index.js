@@ -107,6 +107,11 @@ db.dept.belongsToMany(db.QiyeState, {
   foreignKey: "deptId",
   otherKey: "qiyestateId"
 });
+// db.QiyeState.setdept(db.dept,{
+// qiyestateId:1,
+// deptId:2
+// })
+
 //记录表和操作类型表
 db.operate.hasMany(db.Statelog, {
   foreignKey: "operateId",

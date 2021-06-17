@@ -1,5 +1,6 @@
 const db = require("../models");
 const Finance = db.finance;
+const FinanceState = db.FinanceState;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
@@ -34,13 +35,14 @@ exports.create = (req, res) => {
             total_money:req.body.total_money,
             total_money1:req.body.total_money1,
             total_money2:req.body.total_money2,
-            current_process:req.body.current_process
+            // current_process:req.body.current_process
   };
 
 // 新增
   Finance.create(finance)
-    .then(data => {
-      res.send(data);
+    .then(finance => {
+      finance.setFinanceState([1])
+      res.send(finance);
     })
     .catch(err => {
       res.status(500).send({
@@ -54,7 +56,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Finance.findAll()
+    Finance.findAll({include : [FinanceState]})
       .then(data => {
         res.send(data);
       })
@@ -69,8 +71,7 @@ exports.findAll = (req, res) => {
 
 //根据id查找
 exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Finance.findByPk(id)
+    Finance.findOne({ where: { id: req.params.id },include : [FinanceState] })
       .then(data => {
         res.send(data);
       })

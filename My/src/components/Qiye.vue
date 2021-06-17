@@ -304,7 +304,7 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog id="finance" :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
+  <el-dialog id="finance" :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="Qiye"
         status-icon :rules="rules"
@@ -480,8 +480,14 @@ import StatelogService from "../services/StatelogService";
           
       },
     methods: {
+      //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
+        this.annui=false
         this.dialogTitle = "examine";
         this.selectState();
           let pa=row.id;
@@ -551,9 +557,7 @@ import StatelogService from "../services/StatelogService";
         })
         .catch(e => {
           console.log(e);
-        });
-
-          
+        });   
       },
       selectState(){
          QiyeStateService.getAll()
@@ -573,8 +577,9 @@ import StatelogService from "../services/StatelogService";
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
+
+          this.annui=false;
           this.dialogTitle = "addData";
-       
        },
        addservice(){
           this.dialogFormVisible=false;
@@ -638,14 +643,36 @@ import StatelogService from "../services/StatelogService";
       }
         });
         },
+        selectlogs(){
+          console.log(this.pa)
+        let qiyeId=this.pa
+          StatelogService.findByLog(qiyeId).then(response => {
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
        
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
           this.validated=true;
-          let pa=this.tableData[index].id;
-           QiyeService.get(pa)
+          this.selectState();
+          this.pa=this.tableData[index].id;
+           this.selectlogs();
+           QiyeService.get(this.pa)
          .then(response => {
                 this.Qiye=response.data;
                 this.Qiye.nodeName = response.data.qiyeState.nodeName;
@@ -656,10 +683,13 @@ import StatelogService from "../services/StatelogService";
        },
         updateClick(index,row){
            this.dialogFormVisible=true;
+           this.annui=false;
            this.validated=false;
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           QiyeService.get(pa)
+           this.selectState();
+           this.pa=this.tableData[index].id;
+           this.selectlogs();
+           QiyeService.get(this.pa)
          .then(response => {
                 this.Qiye=response.data;
                 this.Qiye.nodeName = response.data.qiyeState.nodeName;
@@ -756,6 +786,7 @@ import StatelogService from "../services/StatelogService";
 
     data() {
       return {
+        pa:'',
         annui:'',
         isshow:true,
         validated:false,

@@ -13,6 +13,7 @@
         </el-col>
   </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
       &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
@@ -157,7 +158,9 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+    <!-- <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+    </el-table-column> -->
+    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -165,15 +168,15 @@
       width="250"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="Pingji"
         status-icon :rules="rules"
@@ -181,17 +184,19 @@
         label-width="100px"
         class="demo-ruleForm"
       >
-      <el-row>
+        <el-row>
+          <el-col :span="18">
+              <el-row>
          <el-col :span="12">
           <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-select filterable v-model="Pingji.qiye_name" placeholder="请选择">
+            <el-select :disabled="validated" filterable v-model="Pingji.qiye_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="行业" prop="trade" :label-width="formLabelWidth">
-            <el-select v-model="Pingji.trade" clearable placeholder="请选择" >
+            <el-select :disabled="validated" v-model="Pingji.trade" clearable placeholder="请选择" >
               <el-option label="制造业" value="制造业"></el-option>
               <el-option label="建筑业" value="建筑业"></el-option>
             </el-select>
@@ -201,7 +206,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="年度" prop="year" :label-width="formLabelWidth">
-            <el-select v-model="Pingji.year" clearable placeholder="请选择" >
+            <el-select :disabled="validated" v-model="Pingji.year" clearable placeholder="请选择" >
               <el-option label="2021" value="2021"></el-option>
               <el-option label="2020" value="2020"></el-option>
               <el-option label="2019" value="2019"></el-option>
@@ -211,7 +216,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="季度" prop="quarter" :label-width="formLabelWidth">
-            <el-select v-model="Pingji.quarter" clearable placeholder="请选择" >
+            <el-select :disabled="validated" v-model="Pingji.quarter" clearable placeholder="请选择" >
               <el-option label="第一季度" value="第一季度"></el-option>
               <el-option label="第二季度" value="第二季度"></el-option>
               <el-option label="第三季度" value="第三季度"></el-option>
@@ -224,13 +229,13 @@
          <el-col :span="12">
            <span>偿债能力</span>
           <el-form-item label="满分30分" prop="score1" :label-width="formLabelWidth">
-            <el-input v-on:change="test" v-model.number="Pingji.score1"></el-input>
+            <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score1"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>盈利能力</span>
           <el-form-item label="满分30分" prop="score2" :label-width="formLabelWidth">
-            <el-input v-on:change="test" v-model.number="Pingji.score2"></el-input>
+            <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -238,13 +243,13 @@
          <el-col :span="12">
            <span>现金流量</span>
           <el-form-item label="满分20分" prop="score3" :label-width="formLabelWidth">
-           <el-input v-on:change="test" v-model.number="Pingji.score3"></el-input>
+           <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score3"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>运营能力</span>
           <el-form-item label="满分20分" prop="score4" :label-width="formLabelWidth">
-           <el-input v-on:change="test" v-model.number="Pingji.score4"></el-input>
+           <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -252,13 +257,13 @@
          <el-col :span="12">
            <span>股东背景</span>
           <el-form-item label="满分20分" prop="score5" :label-width="formLabelWidth">
-           <el-input v-on:change="test1" v-model.number="Pingji.score5"></el-input>
+           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score5"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <span>重大事件</span>
           <el-form-item label="满分25分" prop="score6" :label-width="formLabelWidth">
-           <el-input v-on:change="test1" v-model.number="Pingji.score6"></el-input>
+           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score6"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -266,13 +271,13 @@
          <el-col :span="12">
            <span>行业口碑</span>
           <el-form-item label="满分10分" prop="score7" :label-width="formLabelWidth">
-           <el-input v-on:change="test1" v-model.number="Pingji.score7"></el-input>
+           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score7"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <span>重大事故</span>
           <el-form-item label="满分20分" prop="score8" :label-width="formLabelWidth">
-           <el-input v-on:change="test1" v-model.number="Pingji.score8"></el-input>
+           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score8"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -280,31 +285,31 @@
          <el-col :span="12">
            <span>过往经验</span>
           <el-form-item label="满分25分" prop="score9" :label-width="formLabelWidth">
-           <el-input v-on:change="test1" v-model.number="Pingji.score9"></el-input>
+           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score9"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="定量总分" prop="quantify_points " :label-width="formLabelWidth">
-           <el-input v-model.number="Pingji.quantify_points"></el-input>
+           <el-input :disabled="validated" v-model.number="Pingji.quantify_points"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="定性总评分" prop="qualitative_points" :label-width="formLabelWidth">
-            <el-input v-model.number="Pingji.qualitative_points"></el-input>
+            <el-input :disabled="validated" v-model.number="Pingji.qualitative_points"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="最终评级总分" prop="total_points" :label-width="formLabelWidth">
-            <el-input v-model.number="Pingji.total_points"></el-input>
+            <el-input :disabled="validated" v-model.number="Pingji.total_points"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="Pingji.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="Pingji.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -312,11 +317,27 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('Pingji')">确定</el-button>
+          <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Pingji')">{{buttonText}}</el-button>
+          <!-- <el-button type="primary" @click="submit('Pingji')">确定</el-button> -->
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
       </el-row>
+          </el-col>
+          <el-col :span="6">
+          <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline>
+        </el-col>
+        </el-row>
     </el-form>
   </el-dialog>
 </div>
@@ -326,11 +347,95 @@
 <script>
 import QiyeService from "../services/QiyeService"
 import QiyePingjiService from "../services/QiyePingjiService"
+import QiyepingjiStateService from "../services/QiyepingjiStateService"
+import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+       //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         QiyepingjiStateService.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        console.log(this.qiyeid)
+        let qiyepingjiId=this.qiyeid
+          QiyepingjiStatelogService.findByLog(qiyepingjiId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           QiyePingjiService.get(pa)
+         .then(response => {
+            if(response.data.QiyepingjiState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.QiyepingjiState.nextStateid
+          this.oldStateid=response.data.QiyepingjiState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.Pingji=response.data;
+                this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.QiyepingjiState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              qiyepingjiId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              QiyepingjiStatelogService.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      getfor(row,column){
+            return row.QiyepingjiState.nodeName;
+          },
       test: function () {
             this.Pingji.quantify_points=this.Pingji.score1+this.Pingji.score2+this.Pingji.score3+this.Pingji.score4
         },
@@ -342,7 +447,7 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
          QiyePingjiService.getAll()
          .then(response => {
           this.tableData = response.data;
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -351,6 +456,9 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
        openFrom(){
           this.Pingji={},
           this.dialogFormVisible=true
+          this.selectState();
+          this.validated=false;
+          this.annui=false;
           this.dialogTitle = "addData";
            QiyeService.getAll()
            .then(response =>{
@@ -378,12 +486,24 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
         quantify_points:this.Pingji.quantify_points,
         qualitative_points:this.Pingji.qualitative_points,
         total_points:this.Pingji.total_points,
-        current_process:this.Pingji.current_process
+        nodeName:this.Pingji.nodeName
         }
         QiyePingjiService.create(data)
         .then(response => {
           this.tableonload();
-          console.log(response.data);
+          // console.log(response.data);
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              qiyepingjiId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.QiyepingjiStateId,
+              operateId:1,
+              }
+              QiyepingjiStatelogService.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
         })
         .catch(e => {
           console.log(e);
@@ -397,18 +517,48 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+        selectlogs(){
+        let qiyepingjiId=this.pa
+          QiyepingjiStatelogService.findByLog(qiyepingjiId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           QiyePingjiService.get(pa)
+           this.annui=true;
+          this.validated=true;
+          this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           QiyePingjiService.get(this.pa)
          .then(response => {
-                this.Pingji=response.data; 
+                this.Pingji=response.data;
+                this.Pingji.nodeName = response.data.QiyepingjiState.nodeName; 
               })
               .catch(e => {
                 console.log(e);
@@ -417,10 +567,15 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
         updateClick(index,row){
            this.dialogFormVisible=true
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           QiyePingjiService.get(pa)
+           this.annui=false;
+           this.validated=false;
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           QiyePingjiService.get(this.pa)
          .then(response => {
                 this.Pingji=response.data;
+                this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -446,12 +601,25 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
             quantify_points:this.Pingji.quantify_points,
             qualitative_points:this.Pingji.qualitative_points,
             total_points:this.Pingji.total_points,
-            current_process:this.Pingji.current_process
+            nodeName:this.Pingji.nodeName
         }
           QiyePingjiService.update(data.id,data)
         .then(response => {
           this.tableonload();
           console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+       updateState(index,row){
+        var data = {
+           QiyepingjiStateId:this.nextState
+          }
+          QiyePingjiService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -499,10 +667,22 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
 
     data() {
       return {
+        pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "企业评级信息",
       },
         dialogTitle:"",
         TravelType:1,

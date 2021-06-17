@@ -14,6 +14,7 @@ exports.create = (req, res) => {
     return;
   }
   const qiye = {
+    
     register_name: req.body.register_name,
     introduction:req.body.introduction,
     trade: req.body.trade,
@@ -44,9 +45,9 @@ exports.create = (req, res) => {
 
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
-    const register_name = req.query.register_name;
-    var condition = register_name  ? { register_name: { [Op.like]: `%${register_name}%` } } : null;
-    Qiye.findAll({ where: condition,include : [QiyeState]} )
+    // const register_name = req.query.register_name;
+    // var condition = register_name  ? { register_name: { [Op.like]: `%${register_name}%` } } : null;
+    Qiye.findAll({order: [['id', 'ASC']],include : [QiyeState]} )
       .then(data => {
         res.send(data);
       })

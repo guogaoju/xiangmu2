@@ -23,7 +23,7 @@ const Role = db.role;
 const Dept = db.dept;
 const QiyeState = db.QiyeState;
 const operate = db.operate;
-const qiyestate_dept = db.qiyestate_dept;
+const QiyepingjiState = db.QiyepingjiState;
 function initial() {
   // Role.create({
   //   id: 1,
@@ -105,12 +105,37 @@ function initial() {
     data.setDepts([2]).then(()=>{
     })
   });;
+  QiyepingjiState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  QiyepingjiState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  QiyepingjiState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
+    lastone:1
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
 
 }
-// QiyeState.findOne({where:{id:1},include:[Dept]})
-// .then(data =>{
-//   console.log(data) 
-// })
 //清空数据库 db.sequelize.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
 //   });
@@ -162,6 +187,10 @@ require("./app/routes/Role.routes")(app);
 require("./app/routes/QiyeState.routes")(app);
 require("./app/routes/Statelog.routes")(app);
 require("./app/routes/operateType.routes")(app);
+require("./app/routes/QiyepingjiState.routes")(app);
+require("./app/routes/QiyepingjiStatelog.routes")(app);
+require("./app/routes/FinanceStatelog.routes")(app);
+require("./app/routes/FinanceState.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

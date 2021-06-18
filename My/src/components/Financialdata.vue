@@ -453,6 +453,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
       },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
+        this.annui=false
         this.dialogTitle = "examine";
         this.selectState();
           let pa=row.id;

@@ -13,6 +13,7 @@
       </el-col>
     </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterSupplier_name || data.supplier_name.toLowerCase().includes(filterSupplier_name.toString().toLowerCase()))
       &(!filterAddress || data.address.toLowerCase().includes(filterAddress.toString().toLowerCase()))
@@ -273,7 +274,7 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -281,15 +282,15 @@
       width="250"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="Ziliao"
         status-icon :rules="rules"
@@ -298,14 +299,16 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18">
+          <el-row>
         <el-col :span="12">
           <el-form-item label="供应商名称" prop="supplier_name" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.supplier_name"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.supplier_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="行业" prop="trade" :label-width="formLabelWidth">
-            <el-select v-model="Ziliao.trade" clearable placeholder="请选择" >
+            <el-select :disabled="validated" v-model="Ziliao.trade" clearable placeholder="请选择" >
               <el-option label="制造业" value="制造业"></el-option>
               <el-option label="建筑业" value="建筑业"></el-option>
             </el-select>
@@ -315,103 +318,103 @@
         <el-row>
         <el-col :span="12">
            <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.address"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.address"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="联系人" prop="contact_person" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.contact_person"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.contact_person"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.phone"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.phone"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="传真" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.fax"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.fax"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="邮编" prop="post_code" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.post_code"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.post_code"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="法人" prop="juridical_person" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.juridical_person"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.juridical_person"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="开户银行" prop="bank_name" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.bank_name"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.bank_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="银行账号" prop="bank_card" :label-width="formLabelWidth">
-            <el-input v-model.number="Ziliao.bank_card"></el-input>
+            <el-input :disabled="validated" v-model.number="Ziliao.bank_card"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="税务登记号" prop="tax_card" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.tax_card"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.tax_card"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="税率" prop="vat" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.vat"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.vat"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="供应商类型" prop="supplier_type" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.supplier_type"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.supplier_type"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="折扣" prop="discount" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.discount"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.discount"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="注册商标" prop="registered_trademark" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.registered_trademark"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.registered_trademark"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="营业执照" prop="business_license" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.business_license"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.business_license"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.remarks"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.remarks"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="评级" prop="grade" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.grade"></el-input>
+            <el-input :disabled="validated" v-model="Ziliao.grade"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="Ziliao.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="Ziliao.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -419,10 +422,24 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('Ziliao')">立即添加</el-button>
+          <el-button type="primary"  v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Ziliao')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+          </el-col>  
+        <el-col :span="6">
+          <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline></el-col>  
       </el-row>
     </el-form>
   </el-dialog>
@@ -433,11 +450,108 @@
 <script>
 import CailiaogysService from "../services/CailiaogysService";
 import PingjiService from "../services/PingjiService";
+import CailiaoState from "../services/CailiaoState"
+import CailiaoStatelog from "../services/CailiaoStatelog"
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+      //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         CailiaoState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let cailiaogyId=this.qiyeid
+          CailiaoStatelog.findByLog(cailiaogyId).then(response => {
+            // console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           CailiaogysService.get(pa)
+         .then(response => {
+            if(response.data.CailiaoState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.CailiaoState.nextStateid
+          this.oldStateid=response.data.CailiaoState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.Ziliao=response.data;
+                this.Ziliao.nodeName = response.data.CailiaoState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.CailiaoState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              cailiaogyId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              CailiaoStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           CailiaoStateId:this.nextState
+          }
+          CailiaogysService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.CailiaoState.nodeName;
+          },
       async tableonload(){
         CailiaogysService.getAll()
         .then(response => {
@@ -451,7 +565,10 @@ import PingjiService from "../services/PingjiService";
        openFrom(){
           this.Ziliao={},
           this.dialogFormVisible=true
-          this.dialogTitle = "addData";
+         this.selectState();
+          this.validated=false;
+          this.annui=false;
+        this.dialogTitle = "addData";
            PingjiService.getAll()
         .then(response => {
           this.result = response.data;
@@ -483,12 +600,24 @@ import PingjiService from "../services/PingjiService";
         business_license:this.Ziliao.business_license,
         remarks:this.Ziliao.remarks,
         grade:this.Ziliao.grade,
-        current_process:this.Ziliao.current_process
+        nodeName:this.Ziliao.nodeName
         }
 
         CailiaogysService.create(data)
         .then(response => {
           this.tableonload();
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              cailiaogyId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.CailiaoStateId,
+              operateId:1,
+              }
+              CailiaoStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           console.log(response.data);
         })
         .catch(e => {
@@ -503,18 +632,47 @@ import PingjiService from "../services/PingjiService";
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+        selectlogs(){
+           console.log(this.pa)
+        let CailiaoId=this.pa
+          CailiaoStatelog.findByLog(CailiaoId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           CailiaogysService.get(pa)
+          this.annui=true;
+          this.validated=true;
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           CailiaogysService.get(this.pa)
          .then(response => {
                 this.Ziliao=response.data;
+                this.Ziliao.nodeName = response.data.CailiaoState.nodeName; 
               })
               .catch(e => {
                 console.log(e);
@@ -523,10 +681,15 @@ import PingjiService from "../services/PingjiService";
         updateClick(index,row){
            this.dialogFormVisible=true
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           CailiaogysService.get(pa)
+            this.annui=false;
+           this.validated=false; 
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           CailiaogysService.get(this.pa)
          .then(response => {
                 this.Ziliao=response.data;
+                this.Ziliao.nodeName = response.data.CailiaoState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -555,7 +718,7 @@ import PingjiService from "../services/PingjiService";
         business_license:this.Ziliao.business_license,
         remarks:this.Ziliao.remarks,
         grade:this.Ziliao.grade,
-        current_process:this.Ziliao.current_process
+        nodeName:this.Ziliao.nodeName
         }
          CailiaogysService.update(data.id,data)
         .then(response => {
@@ -611,10 +774,22 @@ import PingjiService from "../services/PingjiService";
 
     data() {
       return {
+        pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "访问信息",
       },
         dialogTitle:"",
         TravelType:1,

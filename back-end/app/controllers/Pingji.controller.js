@@ -1,5 +1,6 @@
 const db = require("../models");
 const Pingji = db.pingji;
+const PingjiState = db.PingjiState;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
@@ -23,13 +24,14 @@ exports.create = (req, res) => {
     quantify_points:req.body.quantify_points,
     qualitative_points:req.body.qualitative_points,
     total_points:req.body.total_points,
-    current_process:req.body.current_process,
+    // current_process:req.body.current_process,
   };
 
 // 新增
   Pingji.create(pingji)
-    .then(data => {
-      res.send(data);
+    .then(pingji => {
+      pingji.setPingjiState([1])
+      res.send(pingji);
     })
     .catch(err => {
       res.status(500).send({
@@ -43,7 +45,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const total_points = req.query.total_points;
     var condition = total_points ? { total_points: { [Op.like]: `%${total_points}%` } } : null;
-    Pingji.findAll({ where: condition })
+    Pingji.findAll({ where: condition ,include : [PingjiState]})
       .then(data => {
         res.send(data);
       })
@@ -57,8 +59,7 @@ exports.findAll = (req, res) => {
 
 //根据id查找
 exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Pingji.findByPk(id)
+    Pingji.findOne({ where: { id: req.params.id },include : [PingjiState] })
       .then(data => {
         res.send(data);
       })

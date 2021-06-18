@@ -384,8 +384,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
                                 }
                             }
                        }
-       
-          // console.log(response.data);
+
         })
         .catch(e => {
           console.log(e);
@@ -393,6 +392,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
       },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
+        this.annui=false
         this.dialogTitle = "examine";
         this.selectState();
           let pa=row.id;

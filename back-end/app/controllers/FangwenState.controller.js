@@ -1,86 +1,85 @@
 const db = require("../models");
-const Fangwen = db.fangwen;
 const FangwenState = db.FangwenState;
 const Op = db.Sequelize.Op;
-// 新建controller层
+const Dept = db.dept;
+//新建企业评级controller
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.qiye_name) {
+  if (!req.body.nodeName) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
-  const fangwen = {
-    qiye_name: req.body.qiye_name,
-    visit_type:req.body.visit_type,
-    visit_time: req.body.visit_time,
-    contract:req.body.contract,
-    remarks:req.body.remarks,
-    // current_process:req.body.current_process,
+  //新增
+  const FangwenStates = {
+    nodeName:req.body.nodeName,
+    
   };
-// 新增
-  Fangwen.create(fangwen)
-    .then(fangwen => {
-      fangwen.setFangwenState([1])
-      res.send(fangwen);
+  FangwenState.create(FangwenStates)
+    .then(data => {
+      res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Fangwen."
+          err.message || "Some error occurred while creating the FangwenState."
       });
     });
 };
 
-//从数据库查找所有,模糊查询
+//从数据库查找所有，模糊查询
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Fangwen.findAll({include : [FangwenState]})
+    FangwenState.findAll({include : [Dept]})
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving Fangwen."
+            err.message || "Some error occurred while retrieving FangwenState."
         });
       });
 };
 
-//根据id查找
+// 根据id查询
 exports.findOne = (req, res) => {
-    Fangwen.findOne({ where: { id: req.params.id },include : [FangwenState] })
+    // const id = req.params.id;
+
+    FangwenState.findOne({ where: { id: req.params.id },include : [Dept] })
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Fangwen with id=" + id
+          message: "Error retrieving FangwenState with id=" + id
         });
       });
 };
+
+
 //修改
 exports.update = (req, res) => {
     const id = req.params.id;
-    Fangwen.update(req.body, {
+    FangwenState.update(req.body, {
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Fangwen was updated successfully."
+            message: "FangwenState was updated successfully."
           });
         } else {
           res.send({
-            message: `Cannot update Fangwen with id=${id}. Maybe Fangwen was not found or req.body is empty!`
+            message: `Cannot update FangwenState with id=${id}. Maybe FangwenState was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Fangwen with id=" + id
+          message: "Error updating FangwenState with id=" + id
         });
       });
 };
@@ -88,23 +87,23 @@ exports.update = (req, res) => {
 //删除
 exports.delete = (req, res) => {
     const id = req.params.id;
-    Fangwen.destroy({
+    FangwenState.destroy({
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Fangwen was deleted successfully!"
+            message: "FangwenState was deleted successfully!"
           });
         } else {
           res.send({
-            message: `Cannot delete Fangwen with id=${id}. Maybe Fangwen was not found!`
+            message: `Cannot delete FangwenState with id=${id}. Maybe FangwenState was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Fangwen with id=" + id
+          message: "Could not delete FangwenState with id=" + id
         });
       });
 };

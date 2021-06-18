@@ -1,5 +1,6 @@
 const db = require("../models");
 const Cailiaogys = db.cailiaogys;
+const CailiaoState = db.CailiaoState;
 const Op = db.Sequelize.Op;
 
 // 新建评级controller层
@@ -31,13 +32,14 @@ exports.create = (req, res) => {
     business_license:req.body.business_license,
     remarks:req.body.remarks,
     grade:req.body.grade,
-    current_process:req.body.current_process,
+    // current_process:req.body.current_process,
   };
 
 // 新增
   Cailiaogys.create(cailiaogys)
-    .then(data => {
-      res.send(data);
+    .then(cailiaogys => {
+      cailiaogys.setCailiaoState([1])
+      res.send(cailiaogys);
     })
     .catch(err => {
       res.status(500).send({
@@ -53,7 +55,7 @@ exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
   
-    Cailiaogys.findAll()
+    Cailiaogys.findAll({order: [['id', 'ASC']],include : [CailiaoState]})
       .then(data => {
         res.send(data);
       })
@@ -68,9 +70,7 @@ exports.findAll = (req, res) => {
 
 //根据id查找
 exports.findOne = (req, res) => {
-    const id = req.params.id;
-
-    Cailiaogys.findByPk(id)
+    Cailiaogys.findOne({ where: { id: req.params.id },include : [CailiaoState] })
       .then(data => {
         res.send(data);
       })

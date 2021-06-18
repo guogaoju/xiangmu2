@@ -52,6 +52,12 @@ db.QiyepingjiState = require("./QiyepingjiState.model.js")(sequelize, Sequelize)
 db.QiyepingjiStatelog = require("./QiyepingjiStatelog.model.js")(sequelize, Sequelize);
 db.FinanceState = require("./FinanceState.model.js")(sequelize, Sequelize);
 db.FinanceStatelog = require("./FinanceStatelog.model.js")(sequelize, Sequelize);
+db.FangwenStatelog = require("./FangwenStatelog.model.js")(sequelize, Sequelize);
+db.FangwenState = require("./FangwenState.model.js")(sequelize, Sequelize);
+db.CailiaoState = require("./CailiaoState.model.js")(sequelize, Sequelize);
+db.CailiaoStatelog = require("./CailiaoStatelog.model.js")(sequelize, Sequelize);
+db.PingjiStatelog = require("./PingjiStatelog.model.js")(sequelize, Sequelize);
+db.PingjiState = require("./PingjiState.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -182,6 +188,117 @@ db.FinanceState.hasMany(db.FinanceStatelog, {
 });
 //记录表和操作类型表
 db.operate.hasMany(db.FinanceStatelog, {
+  foreignKey: "operateId",
+});
+
+
+//fangwen表和fangwen状态表
+db.FangwenState.hasMany(db.fangwen);
+db.fangwen.belongsTo(db.FangwenState);
+//fangwen状态表和部门表
+db.FangwenState.belongsToMany(db.dept, {
+  through: "FangwenState_dept",
+  foreignKey: "FangwenStateId",
+  otherKey: "deptId"
+});
+db.dept.belongsToMany(db.FangwenState, {
+  through: "FangwenState_dept",
+  foreignKey: "deptId",
+  otherKey: "FangwenStateId"
+});
+//fangwenStatelog记录表和user表
+db.user.hasMany(db.FangwenStatelog, {
+  foreignKey: "userId",
+});
+db.FangwenStatelog.belongsTo(db.user);
+//记录表和fangwen表
+db.fangwen.hasMany(db.FangwenStatelog, {
+  foreignKey: "fangwenId",
+});
+db.FangwenStatelog.belongsTo(db.fangwen);
+//记录表和fangwenState表
+db.FangwenState.hasMany(db.FangwenStatelog, {
+  foreignKey: "oldstateid"
+});
+db.FangwenState.hasMany(db.FangwenStatelog, {
+  foreignKey: "newstateid"
+});
+//记录表和操作类型表
+db.operate.hasMany(db.FangwenStatelog, {
+  foreignKey: "operateId",
+});
+
+
+//Cailiaogys表和Cailiao状态表
+db.CailiaoState.hasMany(db.cailiaogys);
+db.cailiaogys.belongsTo(db.CailiaoState);
+//cailiaogys状态表和部门表
+db.CailiaoState.belongsToMany(db.dept, {
+  through: "CailiaoState_dept",
+  foreignKey: "CailiaoStateId",
+  otherKey: "deptId"
+});
+db.dept.belongsToMany(db.CailiaoState, {
+  through: "CailiaoState_dept",
+  foreignKey: "deptId",
+  otherKey: "CailiaoStateId"
+});
+//CailiaoStatelog记录表和user表
+db.user.hasMany(db.CailiaoStatelog, {
+  foreignKey: "userId",
+});
+db.CailiaoStatelog.belongsTo(db.user);
+//CailiaoStatelog记录表和cailiaogys表
+db.cailiaogys.hasMany(db.CailiaoStatelog, {
+  foreignKey: "cailiaogyId",
+});
+db.CailiaoStatelog.belongsTo(db.cailiaogys);
+//记录表和qiyepingjiState表
+db.CailiaoState.hasMany(db.CailiaoStatelog, {
+  foreignKey: "oldstateid"
+});
+db.CailiaoState.hasMany(db.CailiaoStatelog, {
+  foreignKey: "newstateid"
+});
+//记录表和操作类型表
+db.operate.hasMany(db.CailiaoStatelog, {
+  foreignKey: "operateId",
+});
+
+
+//Pingji表和PingjiState状态表
+db.PingjiState.hasMany(db.pingji);
+db.pingji.belongsTo(db.PingjiState);
+//cailiaogys状态表和部门表
+db.PingjiState.belongsToMany(db.dept, {
+  through: "PingjiState_dept",
+  foreignKey: "PingjiStateId",
+  otherKey: "deptId"
+});
+db.dept.belongsToMany(db.PingjiState, {
+  through: "PingjiState_dept",
+  foreignKey: "deptId",
+  otherKey: "PingjiStateId"
+});
+//CailiaoStatelog记录表和user表
+db.user.hasMany(db.PingjiStatelog, {
+  foreignKey: "userId",
+});
+db.PingjiStatelog.belongsTo(db.user);
+//CailiaoStatelog记录表和cailiaogys表
+db.pingji.hasMany(db.PingjiStatelog, {
+  foreignKey: "pingjiId",
+});
+db.PingjiStatelog.belongsTo(db.pingji);
+//记录表和qiyepingjiState表
+db.PingjiState.hasMany(db.PingjiStatelog, {
+  foreignKey: "oldstateid"
+});
+db.PingjiState.hasMany(db.PingjiStatelog, {
+  foreignKey: "newstateid"
+});
+//记录表和操作类型表
+db.operate.hasMany(db.PingjiStatelog, {
   foreignKey: "operateId",
 });
 //这是为了在中间件里面验证user的role是否存在，这样写是不对的，应该根据数据库里的内容验证，而不是根据这个提前定义好的静态数组

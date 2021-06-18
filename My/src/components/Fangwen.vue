@@ -13,6 +13,7 @@
       </el-col>
     </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
       &(!filterVisit_time || data.visit_time.toLowerCase().includes(filterVisit_time.toString().toLowerCase()))
@@ -78,7 +79,7 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+     <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -86,15 +87,15 @@
       width="300"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="addfangwen"
         status-icon :rules="rules"
@@ -103,16 +104,18 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18">
+          <el-row>
         <el-col :span="12">
           <el-form-item label="企业名称" prop="qiye_name" :label-width="formLabelWidth">
-            <el-select filterable v-model="addfangwen.qiye_name" placeholder="请选择">
+            <el-select :disabled="validated" filterable v-model="addfangwen.qiye_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="拜访方式" prop="visit_type" :label-width="formLabelWidth">
-            <el-select v-model="addfangwen.visit_type" clearable placeholder="请选择" >
+            <el-select :disabled="validated" v-model="addfangwen.visit_type" clearable placeholder="请选择" >
               <el-option label="电话" value="电话"></el-option>
               <el-option label="上门" value="上门"></el-option>
             </el-select>
@@ -122,24 +125,24 @@
         <el-row>
         <el-col :span="12">
           <el-form-item label="拜访时间" prop="visit_time" :label-width="formLabelWidth">
-           <el-date-picker v-model="addfangwen.visit_time" type="date" placeholder="选择日期"></el-date-picker>
+           <el-date-picker :disabled="validated" v-model="addfangwen.visit_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
          <el-col :span="12">
            <el-form-item label="是否违约" prop="contract" :label-width="formLabelWidth">
-            <el-input v-model="addfangwen.contract"></el-input>
+            <el-input :disabled="validated" v-model="addfangwen.contract"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
           <el-col :span="12">
           <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="addfangwen.remarks"></el-input>
+            <el-input :disabled="validated" v-model="addfangwen.remarks"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="addfangwen.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="addfangwen.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -147,10 +150,24 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="addsubmit('addfangwen')">确定</el-button>
+          <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('addfangwen')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+        </el-col>
+        <el-col :span="6">
+           <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline></el-col>   
       </el-row>
     </el-form>
   </el-dialog>
@@ -161,11 +178,108 @@
 <script>
 import FangwenService from "../services/FangwenService";
 import QiyeService from "../services/QiyeService";
+import FangwenState from "../services/FangwenState"
+import FangwenStatelog from "../services/FangwenStatelog"
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+      //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         FangwenState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let fangwenId=this.qiyeid
+          FangwenStatelog.findByLog(fangwenId).then(response => {
+            // console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           FangwenService.get(pa)
+         .then(response => {
+            if(response.data.FangwenState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.FangwenState.nextStateid
+          this.oldStateid=response.data.FangwenState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.addfangwen=response.data;
+                this.addfangwen.nodeName = response.data.FangwenState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.FangwenState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              fangwenId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              FangwenStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           FangwenStateId:this.nextState
+          }
+          FangwenService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.FangwenState.nodeName;
+          },
       async tableonload(){
         FangwenService.getAll()
         .then(response => {
@@ -179,11 +293,14 @@ import QiyeService from "../services/QiyeService";
        openFrom(){
         this.addfangwen={},
         this.dialogFormVisible=true
+        this.selectState();
+          this.validated=false;
+          this.annui=false;
         this.dialogTitle = "addData";
         QiyeService.getAll()
         .then(response => {
           this.result = response.data;
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -197,13 +314,25 @@ import QiyeService from "../services/QiyeService";
             visit_time:this.addfangwen.visit_time,
             contract:this.addfangwen.contract,
             remarks:this.addfangwen.remarks,
-            current_process:this.addfangwen.current_process
+            nodeName:this.addfangwen.nodeName
         }
             
         FangwenService.create(data)
         .then(response => {
           this.tableonload();
-          console.log(response.data);
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              fangwenId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.FangwenStateId,
+              operateId:1,
+              }
+              FangwenStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -217,18 +346,47 @@ import QiyeService from "../services/QiyeService";
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+        selectlogs(){
+           console.log(this.pa)
+        let fangwenId=this.pa
+          FangwenStatelog.findByLog(fangwenId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-        FangwenService.get(pa)
+          this.annui=true;
+          this.validated=true;
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+        FangwenService.get(this.pa)
          .then(response => {
                 this.addfangwen=response.data;
+                this.addfangwen.nodeName = response.data.FangwenState.nodeName; 
               })
               .catch(e => {
                 console.log(e);
@@ -237,10 +395,15 @@ import QiyeService from "../services/QiyeService";
         updateClick(index,row){
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData"; 
-           let pa=this.tableData[index].id;
-           FangwenService.get(pa)
+            this.annui=false;
+           this.validated=false; 
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           FangwenService.get(this.pa)
          .then(response => {
                 this.addfangwen=response.data;
+                this.addfangwen.nodeName = response.data.FangwenState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -255,7 +418,7 @@ import QiyeService from "../services/QiyeService";
             visit_time:this.addfangwen.visit_time,
             contract:this.addfangwen.contract,
             remarks:this.addfangwen.remarks,
-            current_process:this.addfangwen.current_process
+            nodeName:this.addfangwen.nodeName
         }
           FangwenService.update(data.id,data)
         .then(response => {
@@ -314,11 +477,22 @@ import QiyeService from "../services/QiyeService";
 
     data() {
       return {
-
+          pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
          titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "访问信息",
       },
       dialogTitle:"",
         TravelType:1,

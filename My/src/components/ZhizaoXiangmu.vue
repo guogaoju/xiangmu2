@@ -12,6 +12,7 @@
       </el-col>
     </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
       &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
@@ -193,7 +194,7 @@
                 </div>
             </template>
     </el-table-column>
-     <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+     <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -201,15 +202,15 @@
       width="250"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="xiangmu"
         status-icon :rules="rules"
@@ -218,86 +219,103 @@
         class="demo-ruleForm"
       >
       <el-row>
+         <el-col :span="18">
+          <el-row>
         <el-col :span="12">
           <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.qiye_name"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.qiye_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.item_name"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.item_name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
         <el-row>
         <el-col :span="12">
            <el-form-item label="截至日期" prop="time" :label-width="formLabelWidth">
-            <el-date-picker v-model="xiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
+            <el-date-picker :disabled="validated" v-model="xiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="工程进度" prop="jindu" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.jindu"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.jindu"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="项目总金额" prop="item_money" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.item_money"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.item_money"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.total_quota"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.total_quota"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="已贷金额" prop="money" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.money"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.money"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="利息%" prop="interest" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.interest"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.interest"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="回款率%" prop="Return" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.Return"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.Return"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="本月待还款" prop="huan_money" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.huan_money"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.huan_money"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="有无欠款" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.fax"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.fax"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="xiangmu.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="xiangmu.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="6">
-            <el-button type="primary" @click="addform()">添加物料</el-button></el-col> 
+            <el-button type="primary" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button></el-col>
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('xiangmu')">确定</el-button>
+          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" id="submitButton" @click="submit('xiangmu')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+         </el-col>  
+         <el-col :span="6">
+           <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline>
+         </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -339,11 +357,108 @@
 import addWuliaoService from "../services/addWuliaoService";
 import WuliaoService from "../services/WuliaoService";
 import ZhizaoService from "../services/ZhizaoService";
+import ZhizaoState from "../services/ZhizaoState";
+import ZhizaoStatelog from "../services/ZhizaoStatelog";
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+       //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         ZhizaoState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let zhizaoId=this.qiyeid
+          ZhizaoStatelog.findByLog(zhizaoId).then(response => {
+            // console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           ZhizaoService.get(pa)
+         .then(response => {
+            if(response.data.ZhizaoState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.ZhizaoState.nextStateid
+          this.oldStateid=response.data.ZhizaoState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.xiangmu=response.data;
+                this.xiangmu.nodeName = response.data.ZhizaoState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.ZhizaoState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              zhizaoId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              ZhizaoStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           ZhizaoStateId:this.nextState
+          }
+          ZhizaoService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.ZhizaoState.nodeName;
+          },
       async tableonload(){
         ZhizaoService.getAll()
         .then(response => {
@@ -358,6 +473,9 @@ import ZhizaoService from "../services/ZhizaoService";
            this.xiangmu={},
           this.dialogFormVisible=true
           this.dialogTitle = "addData";
+          this.selectState();
+          this.validated=false;
+          this.annui=false;
        },
        addform(){
             this.dialog=true;
@@ -401,11 +519,23 @@ import ZhizaoService from "../services/ZhizaoService";
           Return:this.xiangmu.Return,
           huan_money:this.xiangmu.huan_money,
           fax:this.xiangmu.fax,
-          current_process:this.xiangmu.current_process
+          nodeName:this.xiangmu.nodeName
         }
         ZhizaoService.create(data)
         .then(response => {
           this.tableonload();
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              zhizaoId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.ZhizaoStateId,
+              operateId:1,
+              }
+              ZhizaoStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           console.log(response.data);
         })
         .catch(e => {
@@ -420,18 +550,47 @@ import ZhizaoService from "../services/ZhizaoService";
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+        selectlogs(){
+          //  console.log(this.pa)
+        let zhizaoId=this.pa
+          ZhizaoStatelog.findByLog(zhizaoId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           ZhizaoService.get(pa)
+          this.annui=true;
+          this.validated=true;
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           ZhizaoService.get(this.pa)
          .then(response => {
                 this.xiangmu=response.data;
+                this.xiangmu.nodeName = response.data.ZhizaoState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -440,10 +599,15 @@ import ZhizaoService from "../services/ZhizaoService";
         updateClick(index,row){
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           ZhizaoService.get(pa)
+            this.annui=false;
+           this.validated=false; 
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           ZhizaoService.get(this.pa)
          .then(response => {
                 this.xiangmu=response.data;
+                this.xiangmu.nodeName = response.data.ZhizaoState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -464,7 +628,7 @@ import ZhizaoService from "../services/ZhizaoService";
             Return:this.xiangmu.Return,
             huan_money:this.xiangmu.huan_money,
             fax:this.xiangmu.fax,
-            current_process:this.xiangmu.current_process
+            nodeName:this.xiangmu.nodeName
         }
           ZhizaoService.update(data.id,data)
         .then(response => {
@@ -520,10 +684,22 @@ import ZhizaoService from "../services/ZhizaoService";
 
     data() {
       return {
+        pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "制造项目",
       },
         dialogTitle:"",
         dialog: false,

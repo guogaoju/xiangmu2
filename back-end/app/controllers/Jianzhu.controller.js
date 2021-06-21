@@ -1,5 +1,6 @@
 const db = require("../models");
 const Jianzhu = db.jianzhu;
+const JianzhuState = db.JianzhuState;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
@@ -30,12 +31,13 @@ exports.create = (req, res) => {
         C:req.body.C,
         grade:req.body.grade,
         cause:req.body.cause,
-        current_process:req.body.current_process
+        // current_process:req.body.current_process
   };
 // 新增
   Jianzhu.create(jianzhu)
-    .then(data => {
-      res.send(data);
+    .then(jianzhu => {
+      jianzhu.setJianzhuState([1])
+      res.send(jianzhu);
     })
     .catch(err => {
       res.status(500).send({
@@ -48,7 +50,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Jianzhu.findAll()
+    Jianzhu.findAll({order: [['id', 'ASC']],include : [JianzhuState]})
       .then(data => {
         res.send(data);
       })
@@ -61,14 +63,13 @@ exports.findAll = (req, res) => {
 };
 //根据id查找
 exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Jianzhu.findByPk(id)
+    Jianzhu.findOne({ where: { id: req.params.id },include : [JianzhuState] })
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Jianzhu with id=" + id
+          message: "Error retrieving Jianzhu with id=" 
         });
       });
 };

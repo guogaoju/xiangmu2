@@ -1,5 +1,6 @@
 const db = require("../models");
 const Core_firm = db.core_firm;
+const corefirmState = db.corefirmState;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
@@ -28,12 +29,13 @@ exports.create = (req, res) => {
     account_type:req.body.account_type,
     bank_name:req.body.bank_name,
     bank_card:req.body.bank_card,
-    current_process:req.body.current_process,
+    // current_process:req.body.current_process,
   };
 // 新增
   Core_firm.create(core_firm)
-    .then(data => {
-      res.send(data);
+    .then(core_firm => {
+      core_firm.setCorefirmState([1])
+      res.send(core_firm);
     })
     .catch(err => {
       res.status(500).send({
@@ -47,7 +49,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Core_firm.findAll()
+    Core_firm.findAll({order: [['id', 'ASC']],include : [corefirmState]})
       .then(data => {
         res.send(data);
       })
@@ -61,8 +63,7 @@ exports.findAll = (req, res) => {
 
 //根据id查找
 exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Core_firm.findByPk(id)
+    Core_firm.findOne({ where: { id: req.params.id },include : [corefirmState] })
       .then(data => {
         res.send(data);
       })

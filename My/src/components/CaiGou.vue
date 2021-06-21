@@ -12,6 +12,7 @@
       </el-col>
     </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
       &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
@@ -166,7 +167,7 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="100" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+     <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -174,15 +175,15 @@
       width="250"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" width="55%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" width="55%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="caigou"
         status-icon :rules="rules"
@@ -191,32 +192,34 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18">
+        <el-row>
         <el-col :span="12">
           <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input v-model="caigou.qiye_name"></el-input>
+            <el-input :disabled="validated" v-model="caigou.qiye_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="caigou.item_name"></el-input>
+            <el-input :disabled="validated" v-model="caigou.item_name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
         <el-row>
         <el-col :span="12">
            <el-form-item label="已使用额度" prop="money" :label-width="formLabelWidth">
-            <el-input v-model="caigou.money"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="总授信额度" prop="totalmoney" :label-width="formLabelWidth">
-            <el-input v-model="caigou.totalmoney"></el-input>
+            <el-input :disabled="validated" v-model="caigou.totalmoney"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
           <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
-                    <el-upload ref="upload" class="avatar-uploader" 
+                    <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -232,7 +235,7 @@
         </el-row>
         <el-row>
           <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
-                    <el-upload ref="upload1" class="avatar-uploader" 
+                    <el-upload :disabled="validated" ref="upload1" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -248,7 +251,7 @@
         </el-row>
         <el-row>
           <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
-                    <el-upload ref="upload2" class="avatar-uploader" 
+                    <el-upload :disabled="validated" ref="upload2" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -265,43 +268,58 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="融资总预算" prop="money1" :label-width="formLabelWidth">
-            <el-input v-model="caigou.money1"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money1"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="实际融资金额" prop="money2" :label-width="formLabelWidth">
-            <el-input v-model="caigou.money2"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="项目已使用融资额度" prop="money3" :label-width="formLabelWidth">
-            <el-input v-model="caigou.money3"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money3"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="更新后已使用融资额度" prop="money4" :label-width="formLabelWidth">
-            <el-input v-model="caigou.money4"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="caigou.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="caigou.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="6">
-            <el-button type="primary" @click="addform()">添加物料</el-button></el-col>  
+            <el-button type="primary" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('caigou')">确定</el-button>
+          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" id="submitButton" @click="submit('caigou')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+         </el-col>  
+         <el-col :span="6">
+           <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline>
+         </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -368,12 +386,109 @@
 import addWuliaoService from "../services/addWuliaoService";
 import CaiGouwuliaoService from "../services/CaiGouwuliaoService";
 import CaiGouService from "../services/CaiGouService";
+import CaigouState from "../services/CaigouState";
+import CaigouStatelog from "../services/CaigouStatelog";
 import WuliaoService from "../services/WuliaoService";
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+      //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         CaigouState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let caigouId=this.qiyeid
+          CaigouStatelog.findByLog(caigouId).then(response => {
+            // console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           CaiGouService.get(pa)
+         .then(response => {
+            if(response.data.CaigouState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.CaigouState.nextStateid
+          this.oldStateid=response.data.CaigouState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.caigou=response.data;
+                this.caigou.nodeName = response.data.CaigouState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.CaigouState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              caigouId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              CaigouStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           CaigouStateId:this.nextState
+          }
+          CaiGouService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.CaigouState.nodeName;
+          },
       async tableonload(){
         CaiGouService.getAll()
         .then(response => {
@@ -391,6 +506,9 @@ import WuliaoService from "../services/WuliaoService";
           this.caigou={},
           this.dialogFormVisible=true
           this.dialogTitle = "addData";
+          this.selectState();
+          this.validated=false;
+          this.annui=false;
        },
        addservice(){
               this.dialogFormVisible=false;
@@ -407,11 +525,22 @@ import WuliaoService from "../services/WuliaoService";
               money2:this.caigou.money2,
               money3:this.caigou.money3,
               money4:this.caigou.money4,
-              current_process:this.caigou.current_process
+              nodeName:this.caigou.nodeName
           } 
           CaiGouService.create(data).then(response => {
           this.tableonload();
-          //  this.$router.go(0)
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              caigouId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.CaigouStateId,
+              operateId:1,
+              }
+              CaigouStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           console.log(response.data);
         })
         .catch(e => {
@@ -426,6 +555,10 @@ import WuliaoService from "../services/WuliaoService";
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
@@ -473,13 +606,38 @@ import WuliaoService from "../services/WuliaoService";
           console.log(e);
         });  
         },
+         selectlogs(){
+          //  console.log(this.pa)
+        let caigouId=this.pa
+          CaigouStatelog.findByLog(caigouId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           CaiGouService.get(pa)
+          this.annui=true;
+          this.validated=true;
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           CaiGouService.get(this.pa)
          .then(response => {
                 this.caigou=response.data;
+                this.caigou.nodeName = response.data.CaigouState.nodeName;
                 this.imageUrlback[0]=response.data.statement
                 this.imageUrlback[1]=response.data.delivery_note
                 this.imageUrlback[2]=response.data.bill
@@ -491,10 +649,15 @@ import WuliaoService from "../services/WuliaoService";
         updateClick(index,row){
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           CaiGouService.get(pa)
+           this.annui=false;
+           this.validated=false; 
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           CaiGouService.get(this.pa)
          .then(response => {
                 this.caigou=response.data;
+                this.caigou.nodeName = response.data.CaigouState.nodeName;
                 this.imageUrlback[0]=response.data.statement
                 this.imageUrlback[1]=response.data.delivery_note
                 this.imageUrlback[2]=response.data.bill
@@ -521,7 +684,7 @@ import WuliaoService from "../services/WuliaoService";
             money2:this.caigou.money2,
             money3:this.caigou.money3,
             money4:this.caigou.money4,
-            current_process:this.caigou.current_process
+            nodeName:this.caigou.nodeName
         }
 
           CaiGouService.update(data.id,data)
@@ -619,10 +782,22 @@ import WuliaoService from "../services/WuliaoService";
 
     data() {
       return {
+        pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "采购",
       },
         dialogTitle:"",
         oldUrl: '',

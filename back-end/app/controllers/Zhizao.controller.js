@@ -1,5 +1,6 @@
 const db = require("../models");
 const Zhizao = db.zhizao;
+const ZhizaoState = db.ZhizaoState;
 const Op = db.Sequelize.Op;
 
 //新建controller
@@ -25,11 +26,12 @@ exports.create = (req, res) => {
         Return:req.body.Return,
         Rhuan_money:req.body.huan_money,
         fax:req.body.fax,
-        current_process:req.body.current_process
+        // current_process:req.body.current_process
   };
   Zhizao.create(zhizao)
-    .then(data => {
-      res.send(data);
+    .then(zhizao => {
+      zhizao.setZhizaoState([1])
+      res.send(zhizao);
     })
     .catch(err => {
       res.status(500).send({
@@ -43,7 +45,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Zhizao.findAll()
+    Zhizao.findAll({order: [['id', 'ASC']],include : [ZhizaoState]})
       .then(data => {
         res.send(data);
       })
@@ -57,14 +59,13 @@ exports.findAll = (req, res) => {
 
 //根据id查询
 exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Zhizao.findByPk(id)
+    Zhizao.findOne({ where: { id: req.params.id },include : [ZhizaoState] })
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Zhizao with id=" + id
+          message: "Error retrieving Zhizao with id="
         });
       });
 };

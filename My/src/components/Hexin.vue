@@ -13,6 +13,7 @@
       </el-col>
     </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterRegister_name || data.register_name.toLowerCase().includes(filterRegister_name.toString().toLowerCase()))
       &(!filterCredit_code || data.credit_code.toLowerCase().includes(filterCredit_code.toString().toLowerCase()))
@@ -256,7 +257,7 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -264,15 +265,15 @@
       width="250"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="Qiye"
         status-icon :rules="rules"
@@ -281,14 +282,16 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18">
+            <el-row>
         <el-col :span="12">
           <el-form-item label="注册名称" prop="register_name" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.register_name"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.register_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="行业" prop="trade" :label-width="formLabelWidth">
-            <el-select v-model="Qiye.trade" clearable placeholder="请选择" >
+            <el-select :disabled="validated" v-model="Qiye.trade" clearable placeholder="请选择" >
               <el-option label="制造业" value="制造业"></el-option>
               <el-option label="建筑业" value="建筑业"></el-option>
             </el-select>
@@ -298,37 +301,37 @@
         <el-row>
         <el-col :span="12">
            <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.address"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.address"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="法人" prop="juridical_person" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.juridical_person"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.juridical_person"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="注册资本" prop="register_money" :label-width="formLabelWidth">
-            <el-input v-model.number="Qiye.register_money"></el-input>
+            <el-input :disabled="validated" v-model.number="Qiye.register_money"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="创建时间" prop="create_time" :label-width="formLabelWidth">
             <!-- <el-input v-model="addQiye.create_time"></el-input> -->
-            <el-date-picker v-model="Qiye.create_time" type="date" placeholder="选择日期"></el-date-picker>
+            <el-date-picker :disabled="validated" v-model="Qiye.create_time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="营业期限" prop="business_term" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.business_term"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.business_term"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
            <el-form-item label="营业范围" prop="business_scope" :label-width="formLabelWidth">
-            <el-select v-model="Qiye.business_scope" placeholder="请选择" >
+            <el-select :disabled="validated" v-model="Qiye.business_scope" placeholder="请选择" >
               <el-option label="制造业" value="制造业"></el-option>
               <el-option label="建筑业" value="建筑业"></el-option>
               <el-option label="其他" value="其他"></el-option>
@@ -339,55 +342,55 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="邮编" prop="post_code" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.post_code"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.post_code"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.phone"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.phone"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.email"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.email"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="传真" prop="fax" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.fax"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.fax"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="账户类型" prop="account_type" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.account_type"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.account_type"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="所属银行" prop="bank_name" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.bank_name"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.bank_name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="银行卡号" prop="bank_card" :label-width="formLabelWidth">
-            <el-input v-model.number="Qiye.bank_card"></el-input>
+            <el-input :disabled="validated" v-model.number="Qiye.bank_card"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="社会信用代码" prop="credit_code" :label-width="formLabelWidth">
-            <el-input v-model.number="Qiye.credit_code"></el-input>
+            <el-input :disabled="validated" v-model.number="Qiye.credit_code"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="Qiye.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="Qiye.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -395,10 +398,25 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('Qiye')">确定</el-button>
+          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Qiye')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+        </el-col>  
+         <el-col :span="6">
+          <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline>
+         </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -408,11 +426,108 @@
 
 <script>
 import HexinService from "../services/HexinService";
+import HexinState from "../services/HexinState";
+import HexinStatelog from "../services/HexinStatelog";
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+       //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         HexinState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let core_firmId=this.qiyeid
+          HexinStatelog.findByLog(core_firmId).then(response => {
+            // console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           HexinService.get(pa)
+         .then(response => {
+            if(response.data.corefirmState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.corefirmState.nextStateid
+          this.oldStateid=response.data.corefirmState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.Qiye=response.data;
+                this.Qiye.nodeName = response.data.corefirmState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.corefirmState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              core_firmId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              HexinStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           corefirmStateId:this.nextState
+          }
+          HexinService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.corefirmState.nodeName;
+          },
       async tableonload(){
         HexinService.getAll()
         .then(response => {
@@ -426,7 +541,10 @@ import HexinService from "../services/HexinService";
        openFrom(){
           this.Qiye={},
           this.dialogFormVisible=true
-          this.dialogTitle = "addData";
+          this.selectState();
+          this.validated=false;
+          this.annui=false;
+        this.dialogTitle = "addData";
        },
       addservice(){
               this.dialogFormVisible=false;
@@ -447,11 +565,23 @@ import HexinService from "../services/HexinService";
           account_type:this.Qiye.account_type,
           bank_name:this.Qiye.bank_name,
           bank_card:this.Qiye.bank_card,
-          current_process:this.Qiye.current_process
+          nodeName:this.Qiye.nodeName
         }
         HexinService.create(data)
         .then(response => {
           this.tableonload();
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              core_firmId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.corefirmStateId,
+              operateId:1,
+              }
+              HexinStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           console.log(response.data);
         })
         .catch(e => {
@@ -466,18 +596,47 @@ import HexinService from "../services/HexinService";
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+        selectlogs(){
+          //  console.log(this.pa)
+        let core_firmId=this.pa
+          HexinStatelog.findByLog(core_firmId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           HexinService.get(pa)
+          this.annui=true;
+          this.validated=true;
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           HexinService.get(this.pa)
          .then(response => {
                 this.Qiye=response.data;
+                this.Qiye.nodeName = response.data.corefirmState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -486,10 +645,15 @@ import HexinService from "../services/HexinService";
         updateClick(index,row){
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           HexinService.get(pa)
+            this.annui=false;
+           this.validated=false; 
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           HexinService.get(this.pa)
          .then(response => {
                 this.Qiye=response.data;
+                this.Qiye.nodeName = response.data.corefirmState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -515,7 +679,7 @@ import HexinService from "../services/HexinService";
             account_type:this.Qiye.account_type,
             bank_name:this.Qiye.bank_name,
             bank_card:this.Qiye.bank_card,
-            current_process:this.Qiye.current_process
+            nodeName:this.Qiye.nodeName
         }
           HexinService.update(data.id,data)
         .then(response => {
@@ -569,10 +733,22 @@ import HexinService from "../services/HexinService";
 
     data() {
       return {
+        pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "核心企业",
       },
         dialogTitle:"",
         TravelType:1,

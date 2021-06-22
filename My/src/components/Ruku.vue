@@ -12,6 +12,7 @@
       </el-col>
     </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
       &(!filterSupplier || data.supplier.toLowerCase().includes(filterSupplier.toString().toLowerCase()))
@@ -163,7 +164,7 @@
                 </div>
             </template>
     </el-table-column>
-   <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+   <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -171,15 +172,15 @@
       width="300"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="ruku"
         status-icon :rules="rules"
@@ -188,65 +189,67 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18">
+          <el-row>
          <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
             <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
             </el-select> -->
-            <el-input v-model="ruku.item_name"></el-input>
+            <el-input :disabled="validated" v-model="ruku.item_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="供应商" prop="supplier" :label-width="formLabelWidth">
-            <el-input v-model="ruku.supplier"></el-input>
+            <el-input :disabled="validated" v-model="ruku.supplier"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="商品名" prop="goods_name" :label-width="formLabelWidth">
-           <el-input v-model="ruku.goods_name"></el-input>
+           <el-input :disabled="validated" v-model="ruku.goods_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="商品单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="ruku.goods_danwei"></el-input>
+            <el-input :disabled="validated" v-model="ruku.goods_danwei"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="入库数量" prop="ruku_number" :label-width="formLabelWidth">
-            <el-input v-model="ruku.ruku_number"></el-input>
+            <el-input :disabled="validated" v-model="ruku.ruku_number"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
             <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="ruku.before_stock"></el-input>
+                <el-input :disabled="validated" v-model="ruku.before_stock"></el-input>
              </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="更新后库存" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="ruku.after_stock"></el-input>
+            <el-input :disabled="validated" v-model="ruku.after_stock"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
             <el-form-item label="当前已供应" prop="before_supply" :label-width="formLabelWidth">
-                <el-input v-model="ruku.before_supply"></el-input>
+                <el-input :disabled="validated" v-model="ruku.before_supply"></el-input>
              </el-form-item>
         </el-col>
       </el-row>
       <el-row>
           <el-col :span="12">
             <el-form-item label="更新后已供应" prop="after_supply" :label-width="formLabelWidth">
-                <el-input v-model="ruku.after_supply"></el-input>
+                <el-input :disabled="validated" v-model="ruku.after_supply"></el-input>
              </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="ruku.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="ruku.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -254,10 +257,25 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('ruku')">确定</el-button>
+          <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('ruku')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+        </el-col>  
+         <el-col :span="6">
+           <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline>
+         </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -267,11 +285,109 @@
 
 <script>
 import RukuService from "../services/RukuService"
+import RukuState from "../services/RukuState"
+import RukuStatelog from "../services/RukuStatelog"
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+      //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         RukuState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let rukuId=this.qiyeid
+        // console.log(rukuId)
+          RukuStatelog.findByLog(rukuId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           RukuService.get(pa)
+         .then(response => {
+            if(response.data.RukuState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.RukuState.nextStateid
+          this.oldStateid=response.data.RukuState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.ruku=response.data;
+                this.ruku.nodeName = response.data.RukuState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.RukuState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              rukuId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              RukuStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           RukuStateId:this.nextState
+          }
+          RukuService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.RukuState.nodeName;
+          },
       async tableonload(){
          RukuService.getAll()
         .then(response => {
@@ -283,10 +399,12 @@ import RukuService from "../services/RukuService"
         });
       },
        openFrom(){
-           
           this.ruku={},
           this.dialogFormVisible=true
-          this.dialogTitle = "addData";
+          this.selectState();
+          this.validated=false;
+          this.annui=false;
+        this.dialogTitle = "addData";
        },
        addservice(){
               this.dialogFormVisible=false;
@@ -300,11 +418,23 @@ import RukuService from "../services/RukuService"
         after_stock:this.ruku.after_stock,
         before_supply:this.ruku.before_supply,
         after_supply:this.ruku.after_supply,
-        current_process:this.ruku.current_process
+        nodeName:this.ruku.nodeName
         }
         RukuService.create(data)
         .then(response => {
           this.tableonload();
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              rukuId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.RukuStateId,
+              operateId:1,
+              }
+              RukuStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           console.log(response.data);
         })
         .catch(e => {
@@ -319,18 +449,46 @@ import RukuService from "../services/RukuService"
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+         selectlogs(){
+        let rukuId=this.pa
+          RukuStatelog.findByLog(rukuId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           RukuService.get(pa)
+          this.annui=true;
+          this.validated=true;
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           RukuService.get(this.pa)
          .then(response => {
                 this.ruku=response.data;
+                this.ruku.nodeName = response.data.RukuState.nodeName; 
               })
               .catch(e => {
                 console.log(e);
@@ -339,10 +497,15 @@ import RukuService from "../services/RukuService"
         updateClick(index,row){
            this.dialogFormVisible=true
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           RukuService.get(pa)
+           this.annui=false;
+           this.validated=false; 
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           RukuService.get(this.pa)
          .then(response => {
                 this.ruku=response.data;
+                this.ruku.nodeName = response.data.RukuState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -361,7 +524,7 @@ import RukuService from "../services/RukuService"
             after_stock:this.ruku.after_stock,
             before_supply:this.ruku.before_supply,
             after_supply:this.ruku.after_supply,
-            current_process:this.ruku.current_process
+            nodeName:this.ruku.nodeName
         }
           RukuService.update(data.id,data)
         .then(response => {
@@ -411,10 +574,22 @@ import RukuService from "../services/RukuService"
 
     data() {
       return {
+        pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+         examine: "入库信息",
       },
         dialogTitle:"",
         TravelType:1,

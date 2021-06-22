@@ -66,6 +66,14 @@ db.ZhizaoState = require("./ZhizaoState.model.js")(sequelize, Sequelize);
 db.ZhizaoStatelog = require("./ZhizaoStatelog.model.js")(sequelize, Sequelize);
 db.CaigouStatelog = require("./CaigouStatelog.model.js")(sequelize, Sequelize);
 db.CaigouState = require("./CaigouState.model.js")(sequelize, Sequelize);
+db.HuankuanState = require("./HuankuanState.model.js")(sequelize, Sequelize);
+db.HuankuanStatelog = require("./HuankuanStatelog.model.js")(sequelize, Sequelize);
+db.JinduStatelog = require("./JinduStatelog.model.js")(sequelize, Sequelize);
+db.JinduState = require("./JinduState.model.js")(sequelize, Sequelize);
+db.RukuState = require("./RukuState.model.js")(sequelize, Sequelize);
+db.RukuStatelog = require("./RukuStatelog.model.js")(sequelize, Sequelize);
+db.ChukuStatelog = require("./ChukuStatelog.model.js")(sequelize, Sequelize);
+db.ChukuState = require("./ChukuState.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -455,6 +463,153 @@ db.CaigouState.hasMany(db.CaigouStatelog, {
 });
 //记录表和操作类型表
 db.operate.hasMany(db.CaigouStatelog, {
+  foreignKey: "operateId",
+});
+
+
+//huankuan表和HuankuanState状态表
+db.HuankuanState.hasMany(db.huankuan);
+db.huankuan.belongsTo(db.HuankuanState);
+//HuankuanState状态表和部门表
+db.HuankuanState.belongsToMany(db.dept, {
+  through: "HuankuanState_dept",
+  foreignKey: "HuankuanStateId",
+  otherKey: "deptId"
+});
+db.dept.belongsToMany(db.HuankuanState, {
+  through: "HuankuanState_dept",
+  foreignKey: "deptId",
+  otherKey: "HuankuanStateId"
+});
+//HuankuanStatelog记录表和user表
+db.user.hasMany(db.HuankuanStatelog, {
+  foreignKey: "userId",
+});
+db.HuankuanStatelog.belongsTo(db.user);
+//HuankuanStatelog记录表和huankuan表
+db.huankuan.hasMany(db.HuankuanStatelog, {
+  foreignKey: "huankuanId",
+});
+db.HuankuanStatelog.belongsTo(db.huankuan);
+//记录表和ZhizaoState表
+db.HuankuanState.hasMany(db.HuankuanStatelog, {
+  foreignKey: "oldstateid"
+});
+db.HuankuanState.hasMany(db.HuankuanStatelog, {
+  foreignKey: "newstateid"
+});
+//记录表和操作类型表
+db.operate.hasMany(db.HuankuanStatelog, {
+  foreignKey: "operateId",
+});
+
+
+//jindu表和JinduState状态表
+db.JinduState.hasMany(db.jindu);
+db.jindu.belongsTo(db.JinduState);
+//JinduState状态表和部门表
+db.JinduState.belongsToMany(db.dept, {
+  through: "JinduState_dept",
+  foreignKey: "JinduStateId",
+  otherKey: "deptId"
+});
+db.dept.belongsToMany(db.JinduState, {
+  through: "JinduState_dept",
+  foreignKey: "deptId",
+  otherKey: "JinduStateId"
+});
+//JinduStatelog记录表和user表
+db.user.hasMany(db.JinduStatelog, {
+  foreignKey: "userId",
+});
+db.JinduStatelog.belongsTo(db.user);
+//JinduStatelog记录表和jindu表
+db.jindu.hasMany(db.JinduStatelog, {
+  foreignKey: "jinduId",
+});
+db.JinduStatelog.belongsTo(db.jindu);
+//记录表和JinduState表
+db.JinduState.hasMany(db.JinduStatelog, {
+  foreignKey: "oldstateid"
+});
+db.JinduState.hasMany(db.JinduStatelog, {
+  foreignKey: "newstateid"
+});
+//记录表和操作类型表
+db.operate.hasMany(db.JinduStatelog, {
+  foreignKey: "operateId",
+});
+
+
+//ruku表和RukuState状态表
+db.RukuState.hasMany(db.ruku);
+db.ruku.belongsTo(db.RukuState);
+//RukuState状态表和部门表
+db.RukuState.belongsToMany(db.dept, {
+  through: "RukuState_dept",
+  foreignKey: "RukuStateId",
+  otherKey: "deptId"
+});
+db.dept.belongsToMany(db.RukuState, {
+  through: "RukuState_dept",
+  foreignKey: "deptId",
+  otherKey: "RukuStateId"
+});
+//RukuStatelog记录表和user表
+db.user.hasMany(db.RukuStatelog, {
+  foreignKey: "userId",
+});
+db.RukuStatelog.belongsTo(db.user);
+//JinduStatelog记录表和ruku表
+db.ruku.hasMany(db.RukuStatelog, {
+  foreignKey: "rukuId",
+});
+db.RukuStatelog.belongsTo(db.ruku);
+//记录表和RukuState表
+db.RukuState.hasMany(db.RukuStatelog, {
+  foreignKey: "oldstateid"
+});
+db.RukuState.hasMany(db.RukuStatelog, {
+  foreignKey: "newstateid"
+});
+//记录表和操作类型表
+db.operate.hasMany(db.RukuStatelog, {
+  foreignKey: "operateId",
+});
+
+//chuku表和ChukuState状态表
+db.ChukuState.hasMany(db.chuku);
+db.chuku.belongsTo(db.ChukuState);
+//ChukuState状态表和部门表
+db.ChukuState.belongsToMany(db.dept, {
+  through: "ChukuState_dept",
+  foreignKey: "ChukuStateId",
+  otherKey: "deptId"
+});
+db.dept.belongsToMany(db.ChukuState, {
+  through: "ChukuState_dept",
+  foreignKey: "deptId",
+  otherKey: "ChukuStateId"
+});
+//ChukuStatelog记录表和user表
+db.user.hasMany(db.ChukuStatelog, {
+  foreignKey: "userId",
+});
+db.ChukuStatelog.belongsTo(db.user);
+//ChukuStatelog记录表和ruku表
+db.chuku.hasMany(db.ChukuStatelog, {
+  foreignKey: "chukuId",
+});
+db.ChukuStatelog.belongsTo(db.chuku);
+//记录表和RukuState表
+db.ChukuState.hasMany(db.ChukuStatelog, {
+  foreignKey: "oldstateid"
+});
+db.ChukuState.hasMany(db.ChukuStatelog, {
+  foreignKey: "newstateid"
+});
+//记录表和操作类型表
+db.operate.hasMany(db.ChukuStatelog, {
   foreignKey: "operateId",
 });
 //这是为了在中间件里面验证user的role是否存在，这样写是不对的，应该根据数据库里的内容验证，而不是根据这个提前定义好的静态数组

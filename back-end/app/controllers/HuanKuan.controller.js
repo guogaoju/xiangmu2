@@ -1,5 +1,6 @@
 const db = require("../models");
 const HuanKuan = db.huankuan;
+const HuanKuanState = db.HuankuanState;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
@@ -18,13 +19,14 @@ exports.create = (req, res) => {
         huan_money:req.body.huan_money,
         huan_money1:req.body.huan_money1,
         huan_stream:req.body.huan_stream,
-        current_process:req.body.current_process
+        // current_process:req.body.current_process
   };
 
 // 新增
   HuanKuan.create(huankuan)
-    .then(data => {
-      res.send(data);
+    .then(huankuan => {
+      huankuan.setHuankuanState([1])
+      res.send(huankuan);
     })
     .catch(err => {
       res.status(500).send({
@@ -38,7 +40,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    HuanKuan.findAll()
+    HuanKuan.findAll({include : [HuanKuanState]})
       .then(data => {
         res.send(data);
       })
@@ -53,7 +55,7 @@ exports.findAll = (req, res) => {
 //根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    HuanKuan.findByPk(id)
+    HuanKuan.findOne({ where: { id: req.params.id },include : [HuanKuanState] })
       .then(data => {
         res.send(data);
       })

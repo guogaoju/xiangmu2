@@ -32,6 +32,10 @@ const corefirmState = db.corefirmState;
 const JianzhuState = db.JianzhuState;
 const ZhizaoState = db.ZhizaoState;
 const CaigouState = db.CaigouState;
+const HuankuanState = db.HuankuanState;
+const JinduState = db.JinduState;
+const RukuState = db.RukuState;
+const ChukuState = db.ChukuState;
 function initial() {
   // Role.create({
   //   id: 1,
@@ -382,6 +386,126 @@ function initial() {
     data.setDepts([2]).then(()=>{
     })
   });;
+
+  HuankuanState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  HuankuanState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  HuankuanState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
+    lastone:1
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
+
+  JinduState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  JinduState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  JinduState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
+    lastone:1
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
+
+  ChukuState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  ChukuState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  ChukuState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
+    lastone:1
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
+
+  RukuState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  RukuState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  RukuState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
+    lastone:1
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
 }
 //清空数据库 db.sequelize.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
@@ -452,6 +576,14 @@ require("./app/routes/ZhizaoState.routes")(app);
 require("./app/routes/ZhizaoStatelog.routes")(app);
 require("./app/routes/CaigouStatelog.routes")(app);
 require("./app/routes/CaigouState.routes")(app);
+require("./app/routes/HuankuanState.routes")(app);
+require("./app/routes/HuankuanStatelog.routes")(app);
+require("./app/routes/JinduStatelog.routes")(app);
+require("./app/routes/JinduState.routes")(app);
+require("./app/routes/RukuState.routes")(app);
+require("./app/routes/RukuStatelog.routes")(app);
+require("./app/routes/ChukuState.routes")(app);
+require("./app/routes/ChukuStatelog.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

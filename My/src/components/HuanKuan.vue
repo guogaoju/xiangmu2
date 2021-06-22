@@ -12,6 +12,7 @@
       </el-col>
     </el-row>
   <el-table
+  @row-click="handdle"
      :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
       &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
@@ -110,7 +111,7 @@
                 </el-image>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -118,15 +119,15 @@
       width="300"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="huankuan"
         status-icon :rules="rules"
@@ -135,29 +136,31 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18">
+          <el-row>
          <el-col :span="12">
           <el-form-item label="还款项目名称" prop="item_name" :label-width="formLabelWidth">
             <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
             </el-select> -->
-            <el-input v-model="huankuan.item_name"></el-input>
+            <el-input :disabled="validated" v-model="huankuan.item_name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input v-model="huankuan.total_quota"></el-input>
+            <el-input :disabled="validated" v-model="huankuan.total_quota"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="已用授信额度" prop="money" :label-width="formLabelWidth">
-           <el-input v-model="huankuan.money"></el-input>
+           <el-input :disabled="validated" v-model="huankuan.money"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="还款金额" prop="huan_money" :label-width="formLabelWidth">
-            <el-input v-model="huankuan.huan_money"></el-input>
+            <el-input :disabled="validated" v-model="huankuan.huan_money"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -165,12 +168,12 @@
          <el-col :span="12">
              <span>还款后使用授信额度</span>
           <el-form-item label="" prop="huan_money1" :label-width="formLabelWidth">
-            <el-input v-model="huankuan.huan_money1"></el-input>
+            <el-input :disabled="validated" v-model="huankuan.huan_money1"></el-input>
           </el-form-item>
         </el-col>
         <el-col>
                 <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
-                    <el-upload ref="upload" class="avatar-uploader" 
+                    <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/HuanKuan/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -187,8 +190,8 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="huankuan.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="huankuan.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -196,10 +199,25 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('huankuan')">确定</el-button>
+           <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('huankuan')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+        </el-col>  
+         <el-col :span="6">
+           <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline>
+         </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -209,11 +227,109 @@
 
 <script>
 import HuanKuanService from "../services/HuanKuanService"
+import HuankuanState from "../services/HuankuanState"
+import HuankuanStatelog from "../services/HuankuanStatelog"
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+      //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         HuankuanState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let huankuanId=this.qiyeid
+        console.log(huankuanId)
+          HuankuanStatelog.findByLog(huankuanId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           HuanKuanService.get(pa)
+         .then(response => {
+            if(response.data.HuankuanState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.HuankuanState.nextStateid
+          this.oldStateid=response.data.HuankuanState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.huankuan=response.data;
+                this.huankuan.nodeName = response.data.HuankuanState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.HuankuanState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              huankuanId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              HuankuanStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           HuankuanStateId:this.nextState
+          }
+          HuanKuanService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.HuankuanState.nodeName;
+          },
       async tableonload(){
          HuanKuanService.getAll()
         .then(response => {
@@ -229,7 +345,10 @@ import HuanKuanService from "../services/HuanKuanService"
           this.imageUrl=""
           this.huankuan={},
           this.dialogFormVisible=true
-          this.dialogTitle = "addData";
+          this.selectState();
+          this.validated=false;
+          this.annui=false;
+        this.dialogTitle = "addData";
        },
        addservice(){
               this.dialogFormVisible=false;
@@ -240,11 +359,23 @@ import HuanKuanService from "../services/HuanKuanService"
             huan_money:this.huankuan.huan_money,
             huan_money1:this.huankuan.huan_money1,
             huan_stream:this.imageUrl,
-            current_process:this.huankuan.current_process
+            nodeName:this.huankuan.nodeName
           }
         HuanKuanService.create(data)
         .then(response => {
           this.tableonload();
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              huankuanId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.HuankuanStateId,
+              operateId:1,
+              }
+              HuankuanStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           console.log(response.data);
         })
         .catch(e => {
@@ -259,18 +390,46 @@ import HuanKuanService from "../services/HuanKuanService"
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+        selectlogs(){
+        let huankuanId=this.pa
+          HuankuanStatelog.findByLog(huankuanId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           HuanKuanService.get(pa)
+          this.annui=true;
+          this.validated=true;
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           HuanKuanService.get(this.pa)
          .then(response => {
                 this.huankuan=response.data;
+                this.huankuan.nodeName = response.data.FangwenState.nodeName; 
                 this.imageUrl=response.data.huan_stream
               })
               .catch(e => {
@@ -280,10 +439,15 @@ import HuanKuanService from "../services/HuanKuanService"
         updateClick(index,row){
            this.dialogFormVisible=true
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           HuanKuanService.get(pa)
+           this.annui=false;
+           this.validated=false; 
+           this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           HuanKuanService.get(this.pa)
          .then(response => {
                 this.huankuan=response.data;
+                this.huankuan.nodeName = response.data.FangwenState.nodeName; 
                  this.imageUrl=response.data.huan_stream;
                     //旧图片url另存一份,将来imageUrl会被覆盖
                     this.oldUrl = this.imageUrl;
@@ -302,7 +466,7 @@ import HuanKuanService from "../services/HuanKuanService"
             huan_money:this.huankuan.huan_money,
             huan_money1:this.huankuan.huan_money1,
             huan_stream:this.imageUrl,
-            current_process:this.huankuan.current_process
+            nodeName:this.huankuan.nodeName
         }
           HuanKuanService.update(data.id,data)
         .then(response => {
@@ -385,10 +549,22 @@ import HuanKuanService from "../services/HuanKuanService"
 
     data() {
       return {
+        pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "还款信息",
       },
         dialogTitle:"",
         fileList:[{imageUrl:""}],

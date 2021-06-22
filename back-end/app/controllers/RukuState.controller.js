@@ -1,69 +1,60 @@
 const db = require("../models");
-const Ruku = db.ruku;
 const RukuState = db.RukuState;
 const Op = db.Sequelize.Op;
-
-//新建
+const Dept = db.dept;
+//新建企业评级controller
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.item_name) {
+  if (!req.body.nodeName) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
-  //新建
-  const ruku = {
-            item_name:req.body.item_name,
-            supplier: req.body.supplier,
-            goods_name: req.body.goods_name,
-            goods_danwei:req.body.goods_danwei,
-            ruku_number:req.body.ruku_number,
-            before_stock:req.body.before_stock,
-            after_stock:req.body.after_stock,
-            before_supply:req.body.before_supply,
-            after_supply:req.body.after_supply,
-            // current_process:req.body.current_process
+  //新增
+  const RukuStates = {
+    nodeName:req.body.nodeName,
+    
   };
-  Ruku.create(ruku)
-    .then(ruku => {
-      ruku.setRukuState([1])
-      res.send(ruku);
+  RukuState.create(RukuStates)
+    .then(data => {
+      res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Ruku."
+          err.message || "Some error occurred while creating the RukuState."
       });
     });
 };
 
-//新建
+//从数据库查找所有，模糊查询
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Ruku.findAll({include : [RukuState]})
+    RukuState.findAll({include : [Dept]})
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving Ruku."
+            err.message || "Some error occurred while retrieving RukuState."
         });
       });
 };
 
-//根据id查询
+// 根据id查询
 exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Ruku.findOne({ where: { id: req.params.id },include : [RukuState] })
+    // const id = req.params.id;
+
+    RukuState.findOne({ where: { id: req.params.id },include : [Dept] })
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Ruku with id=" + id
+          message: "Error retrieving RukuState with id=" + id
         });
       });
 };
@@ -72,23 +63,23 @@ exports.findOne = (req, res) => {
 //修改
 exports.update = (req, res) => {
     const id = req.params.id;
-    Ruku.update(req.body, {
+    RukuState.update(req.body, {
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Ruku was updated successfully."
+            message: "RukuState was updated successfully."
           });
         } else {
           res.send({
-            message: `Cannot update Ruku with id=${id}. Maybe Ruku was not found or req.body is empty!`
+            message: `Cannot update RukuState with id=${id}. Maybe RukuState was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating Ruku with id=" + id
+          message: "Error updating RukuState with id=" + id
         });
       });
 };
@@ -96,23 +87,23 @@ exports.update = (req, res) => {
 //删除
 exports.delete = (req, res) => {
     const id = req.params.id;
-    Ruku.destroy({
+    RukuState.destroy({
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "Ruku was deleted successfully!"
+            message: "RukuState was deleted successfully!"
           });
         } else {
           res.send({
-            message: `Cannot delete Ruku with id=${id}. Maybe Ruku was not found!`
+            message: `Cannot delete RukuState with id=${id}. Maybe RukuState was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete Ruku with id=" + id
+          message: "Could not delete RukuState with id=" + id
         });
       });
 };

@@ -1,5 +1,6 @@
 const db = require("../models");
 const Kucun = db.kucun;
+const KucunState = db.KucunState;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
@@ -17,13 +18,14 @@ exports.create = (req, res) => {
         goods_danwei: req.body.goods_danwei ,
         before_stock:req.body.before_stock,
         after_stock:req.body.after_stock,
-        current_process:req.body.current_process
+        // current_process:req.body.current_process
   };
 
 // 新增
   Kucun.create(kucun)
-    .then(data => {
-      res.send(data);
+    .then(kucun => {
+      kucun.setKucunState([1])
+      res.send(kucun);
     })
     .catch(err => {
       res.status(500).send({
@@ -37,7 +39,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Kucun.findAll()
+    Kucun.findAll({include : [KucunState]})
       .then(data => {
         res.send(data);
       })
@@ -52,7 +54,7 @@ exports.findAll = (req, res) => {
 //根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Kucun.findByPk(id)
+    Kucun.findOne({ where: { id: req.params.id },include : [KucunState] })
       .then(data => {
         res.send(data);
       })

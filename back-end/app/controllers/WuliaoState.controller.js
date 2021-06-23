@@ -1,5 +1,5 @@
 const db = require("../models");
-const QiyepingjiState = db.QiyepingjiState;
+const WuliaoState = db.WuliaoState;
 const Op = db.Sequelize.Op;
 const Dept = db.dept;
 //新建企业评级controller
@@ -12,18 +12,18 @@ exports.create = (req, res) => {
     return;
   }
   //新增
-  const qiyepingjiStateS = {
+  const WuliaoStates = {
     nodeName:req.body.nodeName,
     
   };
-  QiyepingjiState.create(qiyepingjiStateS)
+  WuliaoState.create(WuliaoStates)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the qiyeState."
+          err.message || "Some error occurred while creating the WuliaoState."
       });
     });
 };
@@ -32,14 +32,14 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    QiyepingjiState.findAll({include : [Dept]})
+    WuliaoState.findAll({include : [Dept]})
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving QiyeState."
+            err.message || "Some error occurred while retrieving WuliaoState."
         });
       });
 };
@@ -48,13 +48,13 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     // const id = req.params.id;
 
-    QiyepingjiState.findOne({ where: { id: req.params.id },include : [Dept] })
+    WuliaoState.findOne({ where: { id: req.params.id },include : [Dept] })
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving QiyePingji with id=" + id
+          message: "Error retrieving WuliaoState with id=" + id
         });
       });
 };
@@ -63,23 +63,23 @@ exports.findOne = (req, res) => {
 //修改
 exports.update = (req, res) => {
     const id = req.params.id;
-    QiyepingjiState.update(req.body, {
+    WuliaoState.update(req.body, {
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "QiyePingji was updated successfully."
+            message: "WuliaoState was updated successfully."
           });
         } else {
           res.send({
-            message: `Cannot update QiyePingji with id=${id}. Maybe QiyePingji was not found or req.body is empty!`
+            message: `Cannot update WuliaoState with id=${id}. Maybe WuliaoState was not found or req.body is empty!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error updating QiyePingji with id=" + id
+          message: "Error updating WuliaoState with id=" + id
         });
       });
 };
@@ -87,23 +87,23 @@ exports.update = (req, res) => {
 //删除
 exports.delete = (req, res) => {
     const id = req.params.id;
-    QiyepingjiState.destroy({
+    WuliaoState.destroy({
       where: { id: id }
     })
       .then(num => {
         if (num == 1) {
           res.send({
-            message: "QiyePingji was deleted successfully!"
+            message: "WuliaoState was deleted successfully!"
           });
         } else {
           res.send({
-            message: `Cannot delete QiyePingji with id=${id}. Maybe QiyePingji was not found!`
+            message: `Cannot delete WuliaoState with id=${id}. Maybe WuliaoState was not found!`
           });
         }
       })
       .catch(err => {
         res.status(500).send({
-          message: "Could not delete QiyePingji with id=" + id
+          message: "Could not delete WuliaoState with id=" + id
         });
       });
 };

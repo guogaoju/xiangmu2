@@ -1,5 +1,6 @@
 const db = require("../models");
 const Wuliao = db.wuliao;
+const WuliaoState = db.WuliaoState;
 const Op = db.Sequelize.Op;
 const fs = require("fs");
 
@@ -22,11 +23,12 @@ exports.create = (req, res) => {
       //用前端传过来的正确的url
       avatar:req.body.avatar,
       remarks:req.body.remarks,
-      current_process:req.body.current_process,
+      // current_process:req.body.current_process,
     };
     Wuliao.create(wuliao)
-      .then(data => {
-       return res.send(data);
+      .then(wuliao => {
+        wuliao.setWuliaoState([1])
+        res.send(wuliao)
       })
       .catch(err => {
         return res.status(500).send({
@@ -46,7 +48,7 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
   
-    Wuliao.findAll({ where: condition })
+    Wuliao.findAll({ where: condition ,include : [WuliaoState]})
       .then(data => {
         res.send(data);
       })
@@ -62,7 +64,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Wuliao.findByPk(id)
+    Wuliao.findOne({ where: { id: req.params.id },include : [WuliaoState] })
       .then(data => {
         res.send(data);
       })

@@ -13,6 +13,7 @@
       </el-col>
     </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filteredName || data.name.toLowerCase().includes(filteredName.toString().toLowerCase()))
       &(!filteredType || data.type.toLowerCase().includes(filteredType.toString().toLowerCase()))
@@ -74,22 +75,22 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       label="操作"
       width="350"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="danwei"
         status-icon :rules="rules"
@@ -98,26 +99,28 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18">
+          <el-row>
         <el-col :span="12">
           <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-            <el-input v-model="danwei.name"></el-input>
+            <el-input :disabled="validated" v-model="danwei.name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="类型" prop="type" :label-width="formLabelWidth">
-            <el-input v-model="danwei.type"></el-input>
+            <el-input :disabled="validated" v-model="danwei.type"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
           <el-col :span="12">
           <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="danwei.remarks"></el-input>
+            <el-input :disabled="validated" v-model="danwei.remarks"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="danwei.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="danwei.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -125,10 +128,25 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('danwei')">确定</el-button>
+         <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('danwei')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+        </el-col>  
+         <el-col :span="6">
+           <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline>
+         </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -138,11 +156,109 @@
 
 <script>
 import DanweiService from "../services/DanweiService";
+import DanweiState from "../services/DanweiState";
+import DanweiStatelog from "../services/DanweiStatelog";
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+      //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         DanweiState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let danweiId=this.qiyeid
+        // console.log(rukuId)
+          DanweiStatelog.findByLog(danweiId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           DanweiService.get(pa)
+         .then(response => {
+            if(response.data.DanweiState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.DanweiState.nextStateid
+          this.oldStateid=response.data.DanweiState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.danwei=response.data;
+                this.danwei.nodeName = response.data.DanweiState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.DanweiState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              danweiId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              DanweiStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           DanweiStateId:this.nextState
+          }
+          DanweiService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.DanweiState.nodeName;
+          },
       async tableonload(){
         DanweiService.getAll()
         .then(response => {
@@ -156,6 +272,9 @@ import DanweiService from "../services/DanweiService";
        openFrom(){
           this.danwei={}
           this.dialogFormVisible=true
+          this.selectState();
+          this.validated=false;
+          this.annui=false;
           this.dialogTitle = "addData";
        },
        addservice(){
@@ -164,12 +283,24 @@ import DanweiService from "../services/DanweiService";
         name:this.danwei.name,
         type:this.danwei.type,
         remarks:this.danwei.remarks,
-        current_process:this.danwei.current_process
+        nodeName:this.danwei.nodeName
         }
 
         DanweiService.create(data)
         .then(response => {
           this.tableonload();
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              danweiId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.DanweiStateId,
+              operateId:1,
+              }
+              DanweiStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           console.log(response.data);
         })
         .catch(e => {
@@ -184,18 +315,46 @@ import DanweiService from "../services/DanweiService";
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+        selectlogs(){
+        let danweiId=this.pa
+          DanweiStatelog.findByLog(danweiId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           DanweiService.get(pa)
+          this.annui=true;
+          this.validated=true;
+          this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           DanweiService.get(this.pa)
          .then(response => {
                 this.danwei=response.data;
+                this.danwei.nodeName = response.data.DanweiState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -204,10 +363,15 @@ import DanweiService from "../services/DanweiService";
         updateClick(index,row){
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData"; 
-           let pa=this.tableData[index].id;
-           DanweiService.get(pa)
+           this.annui=false;
+           this.validated=false; 
+           this.selectState();
+            this.pa=this.tableData[index].id;
+            this.selectlogs();
+           DanweiService.get(this.pa)
          .then(response => {
                 this.danwei=response.data;
+                this.danwei.nodeName = response.data.DanweiState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -220,7 +384,7 @@ import DanweiService from "../services/DanweiService";
             name:this.danwei.name,
             type:this.danwei.type,
             remarks:this.danwei.remarks,
-            current_process:this.danwei.current_process
+            nodeName:this.danwei.nodeName
         }
           DanweiService.update(data.id,data)
         .then(response => {
@@ -270,10 +434,22 @@ import DanweiService from "../services/DanweiService";
 
     data() {
       return {
+        pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "单位信息",
       },
         dialogTitle:"",
         TravelType:1,

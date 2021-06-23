@@ -1,5 +1,6 @@
 const db = require("../models");
 const WuliaoType = db.wuliaotype;
+const WuliaoTypeState = db.WuliaoTypeState;
 const Op = db.Sequelize.Op;
 
 //新增controller
@@ -16,11 +17,12 @@ exports.create = (req, res) => {
     name: req.body.name,
     type: req.body.type,
     remarks:req.body.remarks,
-    current_process:req.body.current_process,
+    // current_process:req.body.current_process,
   };
   WuliaoType.create(wuliaotype)
-    .then(data => {
-      res.send(data);
+    .then(wuliaotype => {
+      wuliaotype.setWuliaoTypeState([1])
+        res.send(wuliaotype)
     })
     .catch(err => {
       res.status(500).send({
@@ -34,7 +36,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    WuliaoType.findAll({ where: condition })
+    WuliaoType.findAll({ where: condition ,include : [WuliaoTypeState] })
       .then(data => {
         res.send(data);
       })
@@ -49,7 +51,7 @@ exports.findAll = (req, res) => {
 //根据id查询
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    WuliaoType.findByPk(id)
+    WuliaoType.findOne({ where: { id: req.params.id },include : [WuliaoTypeState] })
       .then(data => {
         res.send(data);
       })

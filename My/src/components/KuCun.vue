@@ -12,6 +12,7 @@
       </el-col>
     </el-row>
   <el-table
+  @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
       &(!filterGoods_type || data.goods_type.toLowerCase().includes(filterGoods_type.toString().toLowerCase()))
@@ -103,7 +104,7 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
+    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -111,15 +112,15 @@
       width="350"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="kucun"
         status-icon :rules="rules"
@@ -128,38 +129,39 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18"><el-row>
          <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input v-model="kucun.item_name"></el-input>
+            <el-input :disabled="validated" v-model="kucun.item_name"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="材料种类" prop="goods_type" :label-width="formLabelWidth">
-           <el-input v-model="kucun.goods_type"></el-input>
+           <el-input :disabled="validated" v-model="kucun.goods_type"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input v-model="kucun.goods_danwei"></el-input>
+            <el-input :disabled="validated" v-model="kucun.goods_danwei"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
             <el-form-item label="当前库存" prop="before_stock" :label-width="formLabelWidth">
-                <el-input v-model="kucun.before_stock"></el-input>
+                <el-input :disabled="validated" v-model="kucun.before_stock"></el-input>
              </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="以供应总量" prop="after_stock" :label-width="formLabelWidth">
-            <el-input v-model="kucun.after_stock"></el-input>
+            <el-input :disabled="validated" v-model="kucun.after_stock"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="kucun.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="kucun.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -167,10 +169,25 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('kucun')">确定</el-button>
+          <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('kucun')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+      </el-col>  
+         <el-col :span="6">
+           <el-timeline>
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :size="activity.size"
+            :timestamp="activity.createdAt"
+            :color="activity.color"
+            >
+            {{activity.nodeName}}
+          </el-timeline-item>
+          </el-timeline>
+         </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -179,11 +196,109 @@
 
 <script>
 import KucunService from "../services/KucunService"
+import KucunState from "../services/KucunState"
+import KucunStatelog from "../services/KucunStatelog"
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+      //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         KucunState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let kucunId=this.qiyeid
+        // console.log(rukuId)
+          KucunStatelog.findByLog(kucunId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           KucunService.get(pa)
+         .then(response => {
+            if(response.data.KucunState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.KucunState.nextStateid
+          this.oldStateid=response.data.KucunState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.kucun=response.data;
+                this.kucun.nodeName = response.data.KucunState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.KucunState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              kucunId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              KucunStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           KucunStateId:this.nextState
+          }
+          KucunService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.KucunState.nodeName;
+          },
       async tableonload(){
          KucunService.getAll()
         .then(response => {
@@ -197,6 +312,9 @@ import KucunService from "../services/KucunService"
        openFrom(){
           this.kucun={},
           this.dialogFormVisible=true
+          this.selectState();
+          this.validated=false;
+          this.annui=false;
           this.dialogTitle = "addData";
        },
        addservice(){
@@ -207,11 +325,23 @@ import KucunService from "../services/KucunService"
         goods_danwei:this.kucun.goods_danwei,
         before_stock:this.kucun.before_stock,
         after_stock:this.kucun.after_stock,
-        current_process:this.kucun.current_process
+        nodeName:this.kucun.nodeName
         }
         KucunService.create(data)
         .then(response => {
           this.tableonload();
+          var data = {
+             //userid拿不到，默认1
+              userId:1,
+              kucunId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.KucunStateId,
+              operateId:1,
+              }
+              KucunStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           console.log(response.data);
         })
         .catch(e => {
@@ -226,18 +356,46 @@ import KucunService from "../services/KucunService"
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+        selectlogs(){
+        let kucunId=this.pa
+          KucunStatelog.findByLog(kucunId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           KucunService.get(pa)
+          this.annui=true;
+          this.validated=true;
+          this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           KucunService.get(this.pa)
          .then(response => {
                 this.kucun=response.data;
+                this.kucun.nodeName = response.data.KucunState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -246,10 +404,15 @@ import KucunService from "../services/KucunService"
         updateClick(index,row){
            this.dialogFormVisible=true
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           KucunService.get(pa)
+           this.annui=false;
+           this.validated=false; 
+           this.selectState();
+            this.pa=this.tableData[index].id;
+            this.selectlogs();
+           KucunService.get(this.pa)
          .then(response => {
                 this.kucun=response.data;
+                this.kucun.nodeName = response.data.KucunState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -264,7 +427,7 @@ import KucunService from "../services/KucunService"
             goods_danwei:this.kucun.goods_danwei,
             before_stock:this.kucun.before_stock,
             after_stock:this.kucun.after_stock,
-            current_process:this.kucun.current_process
+            nodeName:this.kucun.nodeName
         }
           KucunService.update(data.id,data)
         .then(response => {
@@ -314,10 +477,22 @@ import KucunService from "../services/KucunService"
 
     data() {
       return {
+        pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+        examine: "库存信息",
       },
         dialogTitle:"",
         TravelType:1,

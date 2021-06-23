@@ -1,5 +1,6 @@
 const db = require("../models");
 const Danwei = db.danwei;
+const DanweiState = db.DanweiState;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
@@ -20,8 +21,9 @@ exports.create = (req, res) => {
 
 // 新增
   Danwei.create(danwei)
-    .then(data => {
-      res.send(data);
+    .then(danwei => {
+      danwei.setDanweiState([1])
+      res.send(danwei);
     })
     .catch(err => {
       res.status(500).send({
@@ -36,7 +38,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    Danwei.findAll({ where: condition })
+    Danwei.findAll({ where: condition ,include : [DanweiState]})
       .then(data => {
         res.send(data);
       })
@@ -51,7 +53,7 @@ exports.findAll = (req, res) => {
 //根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Danwei.findByPk(id)
+    Danwei.findOne({ where: { id: req.params.id },include : [DanweiState] })
       .then(data => {
         res.send(data);
       })

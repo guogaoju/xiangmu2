@@ -36,6 +36,10 @@ const HuankuanState = db.HuankuanState;
 const JinduState = db.JinduState;
 const RukuState = db.RukuState;
 const ChukuState = db.ChukuState;
+const KucunState = db.ChukuState;
+const WuliaoState = db.ChukuState;
+const WuliaoTypeState = db.ChukuState;
+const DanweiState = db.ChukuState;
 function initial() {
   // Role.create({
   //   id: 1,
@@ -506,6 +510,128 @@ function initial() {
     data.setDepts([2]).then(()=>{
     })
   });;
+
+
+  KucunState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  KucunState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  KucunState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
+    lastone:1
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
+
+
+  WuliaoState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  WuliaoState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  WuliaoState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
+    lastone:1
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
+
+  DanweiState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  DanweiState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  DanweiState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
+    lastone:1
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
+
+  WuliaoTypeState.create({
+    id:1,
+    nodeName: "提交",
+    nodebutton: "提交",
+    nextStateid: 2,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  WuliaoTypeState.create({
+    id:2,
+    nodeName: "审核",
+    nodebutton: "审核",
+    nextStateid: 3,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  WuliaoTypeState.create({
+    id:3,
+    nodeName: "审批",
+    nodebutton: "审批",
+    lastone:1
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
 }
 //清空数据库 db.sequelize.sync({ force: true }).then(() => {
 //     console.log("Drop and re-sync db.");
@@ -584,6 +710,14 @@ require("./app/routes/RukuState.routes")(app);
 require("./app/routes/RukuStatelog.routes")(app);
 require("./app/routes/ChukuState.routes")(app);
 require("./app/routes/ChukuStatelog.routes")(app);
+require("./app/routes/KucunStatelog.routes")(app);
+require("./app/routes/KucunState.routes")(app);
+require("./app/routes/WuliaoState.routes")(app);
+require("./app/routes/WuliaoStatelog.routes")(app);
+require("./app/routes/DanweiStatelog.routes")(app);
+require("./app/routes/DanweiState.routes")(app);
+require("./app/routes/WuliaoTypeStatelog.routes")(app);
+require("./app/routes/WuliaoTypeState.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

@@ -13,6 +13,7 @@
       </el-col>
     </el-row>
   <el-table
+   @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filteredName || data.name.toLowerCase().includes(filteredName.toString().toLowerCase()))
       &(!filteredType || data.type.toLowerCase().includes(filteredType.toString().toLowerCase()))
@@ -74,22 +75,21 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column prop="current_process" label="当前流程" width="120" align="center" :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent">
-    </el-table-column>
+    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor"></el-table-column>
     <el-table-column
       label="操作"
       width="350"
       align="center">
       <template slot-scope="scope">
-        <el-button @click="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
+        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible">
+  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="type"
         status-icon :rules="rules"
@@ -98,26 +98,28 @@
         class="demo-ruleForm"
       >
       <el-row>
+        <el-col :span="18">
+          <el-row>
         <el-col :span="12">
           <el-form-item label="名称" prop="name" :label-width="formLabelWidth">
-            <el-input v-model="type.name"></el-input>
+            <el-input :disabled="validated" v-model="type.name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="类型" prop="type" :label-width="formLabelWidth">
-            <el-input v-model="type.type"></el-input>
+            <el-input :disabled="validated" v-model="type.type"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
           <el-col :span="12">
           <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input v-model="type.remarks"></el-input>
+            <el-input :disabled="validated" v-model="type.remarks"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="当前流程" prop="current_process" :label-width="formLabelWidth">
-            <el-input v-model="type.current_process"></el-input>
+          <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="type.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -125,10 +127,25 @@
         <el-col :span="6"></el-col>  
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" @click="submit('type')">确定</el-button>
+          <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('type')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          <el-col :span="6"></el-col>
+      </el-row>
+        </el-col>  
+         <el-col :span="6">
+           <el-timeline>
+                        <el-timeline-item
+                            v-for="(activity, index) in activities"
+                            :key="index"
+                            :size="activity.size"
+                            :timestamp="activity.createdAt"
+                            :color="activity.color"
+                            >
+                            {{activity.nodeName}}
+                        </el-timeline-item>
+                    </el-timeline>
+         </el-col>
       </el-row>
     </el-form>
   </el-dialog>
@@ -138,11 +155,109 @@
 
 <script>
 import WuliaoTypeService from "../services/WuliaoTypeService";
+import WuliaoTypeState from "../services/WuliaoTypeState";
+import WuliaoTypeStatelog from "../services/WuliaoTypeStatelog";
   export default {
     created () {
           this.tableonload();
       },
     methods: {
+      //关闭弹框的事件
+    closeDialog(){
+      this.buttonText="确定"
+      this.isshow=true;
+    },
+      selectState(){
+         WuliaoTypeState.getAll()
+        .then(response => {
+          this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectlog(){
+        let wuliaotypeId=this.qiyeid
+        // console.log(rukuId)
+          WuliaoTypeStatelog.findByLog(wuliaotypeId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+       
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
+      handdle(row, event, column) { 
+        this.dialogFormVisible=true
+        this.annui=false
+        this.dialogTitle = "examine";
+        this.selectState();
+          let pa=row.id;
+          this.paa=pa
+           WuliaoTypeService.get(pa)
+         .then(response => {
+            if(response.data.WuliaoTypeState.lastone===1){
+                  this.isshow=false;
+                }
+          this.qiyeid=pa
+          this.nextState=response.data.WuliaoTypeState.nextStateid
+          this.oldStateid=response.data.WuliaoTypeState.id
+          this.selectlog();
+          // console.log(this.activities)
+                this.type=response.data;
+                this.type.nodeName = response.data.WuliaoTypeState.nodeName;
+                this.validated=true;
+                this.buttonText = response.data.WuliaoTypeState.nodebutton;
+               
+              })
+              .catch(e => {
+                console.log(e);
+              });
+       },
+       addStatelog(){
+         var data = {
+           //userid拿不到，默认2
+              userId:1,
+              wuliaotypeId: this.qiyeid,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:4
+              }
+              WuliaoTypeStatelog.create(data).then(response => {
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      },
+      updateState(index,row){
+        var data = {
+           WuliaoTypeStateId:this.nextState
+          }
+          WuliaoTypeService.update(this.paa,data)
+        .then(response => {
+          this.tableonload();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+       },
+      getfor(row,column){
+            return row.WuliaoTypeState.nodeName;
+          },
       async tableonload(){
         WuliaoTypeService.getAll()
         .then(response => {
@@ -156,6 +271,9 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
        openFrom(){
            this.dialogFormVisible=true
            this.type={},
+           this.selectState();
+          this.validated=false;
+          this.annui=false;
           this.dialogTitle = "addData";
        },
        async addservice(){
@@ -164,12 +282,24 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
         name:this.type.name,
         type:this.type.type,
         remarks:this.type.remarks,
-        current_process:this.type.current_process
+        nodeName:this.type.nodeName
         }
 
         WuliaoTypeService.create(data)
         .then(response => {
           this.tableonload();
+           var data = {
+             //userid拿不到，默认1
+              userId:1,
+              wuliaotypeId: response.data.id,
+              oldstateid: 1,
+              newstateid:response.data.WuliaoTypeStateId,
+              operateId:1,
+              }
+              WuliaoTypeStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           console.log(response.data);
         })
         .catch(e => {
@@ -184,18 +314,46 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
+      }else if(this.dialogTitle ==  "examine"&&valid){
+        this.dialogFormVisible=false;
+        this.updateState();
+        this.addStatelog();
       }else{
         return false
       }
         });
         },
+        selectlogs(){
+        let wuliaotypeId=this.pa
+          WuliaoTypeStatelog.findByLog(wuliaotypeId).then(response => {
+            console.log(response.data)
+              for (let j = 0; j < this.activities.length; j++) {
+                    let old = this.activities[j].id;
+                        for (var i = 0; i < response.data.length; i++) {
+                            let pre = response.data[i].newstateid;
+                                if (pre === old) {
+                                    this.activities[j].color='#0bbd87'
+                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                }
+                            }
+                       }
+        })
+        .catch(e => {
+          console.log(e);
+        });   
+      },
        kanClick(index,row){
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
-          let pa=this.tableData[index].id;
-           WuliaoTypeService.get(pa)
+           this.annui=true;
+          this.validated=true;
+          this.selectState();
+          this.pa=this.tableData[index].id;
+          this.selectlogs();
+           WuliaoTypeService.get(this.pa)
          .then(response => {
                 this.type=response.data;
+                this.type.nodeName = response.data.WuliaoState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -204,10 +362,15 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
         updateClick(index,row){
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";
-           let pa=this.tableData[index].id;
-           WuliaoTypeService.get(pa)
+           this.annui=false;
+           this.validated=false; 
+           this.selectState();
+            this.pa=this.tableData[index].id;
+            this.selectlogs();
+           WuliaoTypeService.get(this.pa)
          .then(response => {
                 this.type=response.data;
+                 this.type.nodeName = response.data.WuliaoState.nodeName;
               })
               .catch(e => {
                 console.log(e);
@@ -220,7 +383,7 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
             name:this.type.name,
             type:this.type.type,
             remarks:this.type.remarks,
-            current_process:this.type.current_process
+            nodeName:this.type.nodeName
         }
           WuliaoTypeService.update(data.id,data)
         .then(response => {
@@ -270,10 +433,22 @@ import WuliaoTypeService from "../services/WuliaoTypeService";
 
     data() {
       return {
+         pa:'',
+        paa:'',
+        buttonText: '确定',
+        qiyeid:'',
+        oldstateid:'',
+        oldStateid:'',
+        nextState:'',
+        annui:'',
+        isshow:true,
+        validated:false,
+        activities: [],
         titleMap: {
         addData: "添加数据",
         updataData: "修改数据",
         kanData: "查看数据",
+         examine: "物料类型信息",
       },
         dialogTitle:"",
         TravelType:1,

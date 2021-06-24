@@ -363,7 +363,7 @@ function initial() {
 
   CaigouState.create({
     id:1,
-    nodeName: "提交",
+    nodeName: "采购申请",
     nodebutton: "提交",
     nextStateid: 2,
     lastone:0
@@ -373,7 +373,7 @@ function initial() {
   });
   CaigouState.create({
     id:2,
-    nodeName: "审核",
+    nodeName: "采购审核",
     nodebutton: "审核",
     nextStateid: 3,
     lastone:0
@@ -383,7 +383,37 @@ function initial() {
   });
   CaigouState.create({
     id:3,
-    nodeName: "审批",
+    nodeName: "采购审批",
+    nodebutton: "审批",
+    nextStateid: 4,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([2]).then(()=>{
+    })
+  });;
+  CaigouState.create({
+    id:4,
+    nodeName: "付款申请",
+    nodebutton: "申请",
+    nextStateid: 5,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  CaigouState.create({
+    id:5,
+    nodeName: "付款审核",
+    nodebutton: "审核",
+    nextStateid: 6,
+    lastone:0
+  }).then(data=>{
+    data.setDepts([1,2]).then(()=>{
+    })
+  });
+  CaigouState.create({
+    id:6,
+    nodeName: "付款审批",
     nodebutton: "审批",
     lastone:1
   }).then(data=>{
@@ -718,6 +748,7 @@ require("./app/routes/DanweiStatelog.routes")(app);
 require("./app/routes/DanweiState.routes")(app);
 require("./app/routes/WuliaoTypeStatelog.routes")(app);
 require("./app/routes/WuliaoTypeState.routes")(app);
+require("./app/routes/Rongzi.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

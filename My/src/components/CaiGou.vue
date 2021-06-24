@@ -183,7 +183,7 @@
   </el-table>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" width="55%" :visible.sync="dialogFormVisible" @close='closeDialog'>
+  <el-dialog :title="titleMap[dialogTitle]" width="60%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="caigou"
         status-icon :rules="rules"
@@ -192,7 +192,7 @@
         class="demo-ruleForm"
       >
       <el-row>
-        <el-col :span="18">
+        <el-col :span="20">
         <el-row>
         <el-col :span="12">
           <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
@@ -218,7 +218,8 @@
         </el-col>
       </el-row>
       <el-row>
-          <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
+        <el-col :span="8">
+            <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
                     <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
@@ -232,8 +233,8 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
             </el-form-item>
-        </el-row>
-        <el-row>
+        </el-col>
+        <el-col :span="8">
           <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
                     <el-upload :disabled="validated" ref="upload1" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
@@ -248,9 +249,9 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
             </el-form-item>
-        </el-row>
-        <el-row>
-          <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
+        </el-col> 
+        <el-col :span="8">
+            <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
                     <el-upload :disabled="validated" ref="upload2" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
@@ -264,7 +265,70 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
             </el-form-item>
+          </el-col> 
         </el-row>
+         <el-row>
+            <el-col :span="4">
+            <el-form-item></el-form-item>
+        </el-col>
+           <el-col :span="4">
+             <el-button type="warning" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button> 
+             </el-col>
+            
+         </el-row>
+      <el-row>
+        
+        <el-col :span="4">
+            <el-form-item></el-form-item>
+        </el-col>
+        <el-col :span="20">
+          <el-table
+            :data="tableData2"
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="wuliaotype"
+              label="物料类型"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="danwei"
+              label="单位"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="shenqing"
+              label="申请数量"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="price"
+              label="单价"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="yugutatol"
+              label="预估融资"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="shijitatol"
+              label="实际融资"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="rate"
+              label="税率%"
+              width="80">
+            </el-table-column>
+            <el-table-column
+              prop="supplier_name"
+              label="供应商"
+              width="150">
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="融资总预算" prop="money1" :label-width="formLabelWidth">
@@ -297,17 +361,16 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="6">
-            <el-button type="primary" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button></el-col>  
+        <el-col :span="12"><el-form-item></el-form-item></el-col> 
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" id="submitButton" @click="submit('caigou')">{{buttonText}}</el-button>
+          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" id="submitButton" @submit="submit('caigou')" @click="add('rongzi')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
-         <el-col :span="6"></el-col>
+         
       </el-row>
          </el-col>  
-         <el-col :span="6">
+         <el-col :span="4">
            <el-timeline>
           <el-timeline-item
             v-for="(activity, index) in activities"
@@ -330,53 +393,54 @@
   ref="drawer"
   status-icon :rules="rules1"
   >
-    <el-form :model="form">
-      <el-form-item label="项目名称" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="物料名称" :label-width="formLabelWidth">
-          <el-select filterable v-model="form.wname" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.name" :value="item.name"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="申请数量" :label-width="formLabelWidth">
-        <el-input v-model="form.shu" autocomplete="off"></el-input>
-      </el-form-item>
-       <el-form-item label="预估单价" :label-width="formLabelWidth">
-        <el-input v-model="form.unit_price" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="预估总价" :label-width="formLabelWidth">
-        <el-input v-model="form.unit_totalprice" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="供应商" :label-width="formLabelWidth">
-        <el-input v-model="form.supplier" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="实际数量" :label-width="formLabelWidth">
-        <el-input v-model="form.reality_number" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="实际单价" :label-width="formLabelWidth">
-        <el-input v-model="form.reality_price" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="实际总价" :label-width="formLabelWidth">
-        <el-input v-model="form.reality_totalprice" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="税率%" :label-width="formLabelWidth">
-        <el-input v-model="form.tax_rate" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="税率单价" :label-width="formLabelWidth">
-        <el-input v-model="form.tax_rateprice" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="税率金额" :label-width="formLabelWidth">
-        <el-input v-model="form.tax_ratemoney" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="交货日期" :label-width="formLabelWidth">
-        <el-input v-model="form.time" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item>
-          <el-button type="primary" @click="addsubmit1()">立即添加</el-button>
-    </el-form-item>
-    </el-form>
+     <el-form
+        :model="rongzi"
+        status-icon :rules="rules"
+        ref="rongzi"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+      <span>融资预算</span>
+       
+          <el-form-item label="物料种类" prop="wuliaotype" :label-width="formLabelWidth">
+            <el-input  v-model="rongzi.wuliaotype"></el-input>
+          </el-form-item>
       
+          <el-form-item label="单位" prop="danwei" :label-width="formLabelWidth">
+            <el-input  v-model="rongzi.danwei"></el-input>
+          </el-form-item>
+      
+          <el-form-item label="申请数量" prop="shenqing" :label-width="formLabelWidth">
+            <el-input v-model="rongzi.shenqing"></el-input>
+          </el-form-item>
+       
+       
+          <el-form-item label="单价" prop="price" :label-width="formLabelWidth">
+            <el-input  v-model="rongzi.price"></el-input>
+          </el-form-item>
+       
+        
+          <el-form-item label="预估总额" prop="yugutatol" :label-width="formLabelWidth">
+            <el-input  v-model="rongzi.yugutatol"></el-input>
+          </el-form-item>
+       
+          <el-form-item label="实际总额" prop="shijitatol" :label-width="formLabelWidth">
+            <el-input v-model="rongzi.shijitatol"></el-input>
+          </el-form-item>
+     
+        
+       
+          <el-form-item label="税率" prop="rate" :label-width="formLabelWidth">
+            <el-input  v-model="rongzi.rate"></el-input>
+          </el-form-item>
+      
+       
+          <el-form-item label="供应商" prop="supplier_name" :label-width="formLabelWidth">
+            <el-input v-model="rongzi.supplier_name"></el-input>
+          </el-form-item>
+      
+       <el-button type="primary" @click="addsubmit1('rongzi')">立即添加</el-button>
+      </el-form>   
 </el-drawer>
 </div>
 
@@ -389,6 +453,7 @@ import CaiGouService from "../services/CaiGouService";
 import CaigouState from "../services/CaigouState";
 import CaigouStatelog from "../services/CaigouStatelog";
 import WuliaoService from "../services/WuliaoService";
+import RongziService from "../services/RongziService";
   export default {
     created () {
           this.tableonload();
@@ -437,6 +502,10 @@ import WuliaoService from "../services/WuliaoService";
         this.selectState();
           let pa=row.id;
           this.paa=pa
+          RongziService.findByLog(row.id).then(response =>{
+            this.tableData2=response.data
+            console.log(response.data )
+          })
            CaiGouService.get(pa)
          .then(response => {
             if(response.data.CaigouState.lastone===1){
@@ -493,7 +562,7 @@ import WuliaoService from "../services/WuliaoService";
         CaiGouService.getAll()
         .then(response => {
           this.tableData = response.data;
-          console.log(response.data);
+          console.log(this.tableData);
         })
         .catch(e => {
           console.log(e);
@@ -505,10 +574,36 @@ import WuliaoService from "../services/WuliaoService";
           this.imageUrlback[2]=""
           this.caigou={},
           this.dialogFormVisible=true
+          // RongziService.getAll()
           this.dialogTitle = "addData";
           this.selectState();
           this.validated=false;
           this.annui=false;
+       },
+       addrongzi(){
+          var data = {
+              wuliaotype: this.rongzi.wuliaotype,
+              danwei:this.rongzi.danwei,
+              shenqing: this.rongzi.shenqing,
+              price : this.rongzi.price ,
+              yugutatol:this.rongzi.yugutatol,
+              shijitatol:this.rongzi.shijitatol,
+              rate:this.rongzi.rate,
+              supplier_name:this.rongzi.supplier_name,
+              
+          }
+          RongziService.create(data).then(response =>{
+            console.log(response.data);
+          }).catch(e => {
+          console.log(e);
+        });   
+       },
+       addsubmit1(rongzi){
+          this.$refs[rongzi].validate((valid) => {
+this.addrongzi();
+this.dialog=false;
+          })
+          
        },
        addservice(){
               this.dialogFormVisible=false;
@@ -578,33 +673,6 @@ import WuliaoService from "../services/WuliaoService";
         .catch(e => {
           console.log(e);
         });
-        },
-        addsubmit1(){
-          this.dialog=false;
-          var data = {
-        name: this.form.name,
-        wname:this.form.wname,
-        shu : this.form.shu ,
-        unit_price:this.form.unit_price,
-        unit_totalprice:this.form.unit_totalprice,
-        supplier:this.form.supplier,
-        reality_number:this.form.reality_number,
-        reality_price:this.form.reality_price,
-        reality_totalprice:this.form.reality_totalprice,
-        tax_rate:this.form.tax_rate,
-        tax_rateprice:this.form.tax_rateprice,
-        tax_ratemoney:this.form.tax_ratemoney,
-        time:this.form.time,
-        }
-
-        CaiGouwuliaoService.create(data)
-        .then(response => {
-          this.tableonload();
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });  
         },
          selectlogs(){
           //  console.log(this.pa)
@@ -782,6 +850,7 @@ import WuliaoService from "../services/WuliaoService";
 
     data() {
       return {
+       tableData2: [],
         pa:'',
         paa:'',
         buttonText: '确定',
@@ -808,16 +877,6 @@ import WuliaoService from "../services/WuliaoService";
         imageUrlback:[],
         dialog: false,
         loading: false,
-form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
         TravelType:1,
         formLabelWidth: "160px",
         rules1:{
@@ -849,6 +908,7 @@ form: {
         tableData:[],
         result:[],
         caigou:{},
+        rongzi:{},
         filterId:'',
         filterQiye_name:'',
         filterItem_name:'',

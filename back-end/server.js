@@ -749,6 +749,7 @@ require("./app/routes/DanweiState.routes")(app);
 require("./app/routes/WuliaoTypeStatelog.routes")(app);
 require("./app/routes/WuliaoTypeState.routes")(app);
 require("./app/routes/Rongzi.routes")(app);
+require("./app/routes/Addjianzhuwuliao.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

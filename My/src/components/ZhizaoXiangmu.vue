@@ -269,6 +269,61 @@
         </el-col>
       </el-row>
       <el-row>
+            <!-- <el-col :span="4">
+            <el-form-item></el-form-item>
+            </el-col> -->
+           <el-col :span="4">
+             <el-button type="warning" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button> 
+             </el-col>
+         </el-row>
+      <el-row>
+        <el-col :span="4">
+            <el-form-item></el-form-item>
+        </el-col>
+        <el-col :span="20">
+          <el-table
+            :data="tableData2"
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="supplier_name"
+              label="供应商"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="item_name"
+              label="项目名称"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="wuliaoname"
+              label="物料名称"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="danwei"
+              label="单位"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="need"
+              label="合同需求"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="Supplied"
+              label="已供应"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="Supplieds"
+              label="还需供应"
+              width="100">
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
           <el-form-item label="回款率%" prop="Return" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="xiangmu.Return"></el-input>
@@ -293,14 +348,12 @@
         </el-col>
       </el-row>
       <el-row>
-         <el-col :span="6">
-            <el-button type="primary" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button></el-col>
+        <el-col :span="12"><el-form-item></el-form-item></el-col> 
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" id="submitButton" @click="submit('xiangmu')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
-         <el-col :span="6"></el-col>
       </el-row>
          </el-col>  
          <el-col :span="6">
@@ -326,34 +379,42 @@
   ref="drawer"
   >
     <el-form :model="form">
+      <el-form-item label="供应商名称" :label-width="formLabelWidth">
+        <el-input v-model="form.supplier_name" autocomplete="off"></el-input>
+      </el-form-item>
       <el-form-item label="项目名称" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-input v-model="form.item_name" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="物料名称" :label-width="formLabelWidth">
-          <el-select filterable v-model="form.wname" placeholder="请选择">
+          <el-select filterable v-model="form.wuliaoname" placeholder="请选择">
               <el-option v-for="item in result" :key="item.id" :label="item.name" :value="item.name"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="单位" prop="danwei" :label-width="formLabelWidth">
+                        <el-select v-model="form.danwei" placeholder="请选择单位">
+                            <el-option v-for="item in result1" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                        </el-select>
+            </el-form-item>
       <el-form-item label="需要数量" :label-width="formLabelWidth">
-        <el-input v-model="form.shu" autocomplete="off"></el-input>
+        <el-input v-model="form.need" autocomplete="off"></el-input>
       </el-form-item>
        <el-form-item label="已供应" :label-width="formLabelWidth">
-        <el-input v-model="form.shu1" autocomplete="off"></el-input>
+        <el-input v-model="form.Supplied" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="还需供应" :label-width="formLabelWidth">
-        <el-input v-model="form.shu2" autocomplete="off"></el-input>
+        <el-input v-model="form.Supplieds" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item>
           <el-button type="primary" @click="addsubmit1()">立即添加</el-button>
     </el-form-item>
     </el-form>
-      
 </el-drawer>
 </div>
 
 </template>
 
 <script>
+import DanweiService from "../services/DanweiService";
 import addWuliaoService from "../services/addWuliaoService";
 import WuliaoService from "../services/WuliaoService";
 import ZhizaoService from "../services/ZhizaoService";
@@ -407,6 +468,10 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         this.selectState();
           let pa=row.id;
           this.paa=pa
+          addWuliaoService.findByLog(row.id).then(response =>{
+            this.tableData2=response.data
+            console.log(response.data )
+          })
            ZhizaoService.get(pa)
          .then(response => {
             if(response.data.ZhizaoState.lastone===1){
@@ -479,6 +544,12 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
        },
        addform(){
             this.dialog=true;
+            DanweiService.getAll()
+                .then(response => {
+                    this.result1 = response.data;
+                }).catch(e => {
+                    console.log(e);
+                });
             WuliaoService.getAll()
         .then(response => {
           this.result = response.data;
@@ -490,11 +561,15 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         addsubmit1(){
           this.dialog=false;
           var data = {
-        name: this.form.name,
-        wname:this.form.wname,
-        shu : this.form.shu ,
-        shu1:this.form.shu1,
-        shu2:this.form.shu2,
+        supplier_name:this.form.supplier_name,
+        item_name:this.form.item_name,
+        wuliaoname:this.form.wuliaoname,
+        danwei: this.form.danwei ,
+        need:this.form.need,
+        Supplied:this.form.Supplied,
+        Supplieds:this.form.Supplieds,
+        zhizaoId:4,
+        //暂时写死的，
         }
         addWuliaoService.create(data)
         .then(response => {
@@ -715,6 +790,7 @@ form: {
         desc: ''
       },
       result:[],
+      result1:[],
         TravelType:1,
         formLabelWidth: "100px",
         rules:{
@@ -726,6 +802,7 @@ form: {
           ],
         },
         tableData:[],
+        tableData2:[],
       xiangmu:{},
       filterId:'',
         filterQiye_name: '',

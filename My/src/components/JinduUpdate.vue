@@ -122,12 +122,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12">
-          <el-form-item label="更新后进度" prop="after_jindu" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model="jindu.after_jindu"></el-input>
-          </el-form-item>
-        </el-col>
-         <el-col>
+        <el-col :span="24">
              <el-form-item label="现场照片" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
                     <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Jindu/upload" 
@@ -146,21 +141,68 @@
       </el-row>
       <el-row>
         <el-col :span="12">
+          <el-form-item label="更新后进度" prop="after_jindu" :label-width="formLabelWidth">
+           <el-input :disabled="validated" v-model="jindu.after_jindu"></el-input>
+          </el-form-item>
+        </el-col>
+         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="jindu.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <!-- <el-col :span="6">
-            <el-button type="primary" @click="addform()">添加物料</el-button>
-        </el-col>    -->
-        <el-col :span="12">
+            <!-- <el-col :span="4">
+            <el-form-item></el-form-item>
+            </el-col> -->
+             <el-col :span="6">
+            <el-button type="warning" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button>
+            </el-col>   
+         </el-row>
+      <el-row>
+        <el-col :span="4">
+            <el-form-item></el-form-item>
+        </el-col>
+        <el-col :span="20">
+          <el-table
+            :data="tableData2"
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="name"
+              label="项目名称"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="wname"
+              label="物料名称"
+              width="120">
+            </el-table-column>
+            <el-table-column
+              prop="before_stock"
+              label="当前库存"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="consume"
+              label="消耗量"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="after_stock"
+              label="更新后库存"
+              width="100">
+            </el-table-column>
+          </el-table>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="10"><el-form-item></el-form-item></el-col> 
+        <el-col :span="14">
         <el-form-item>
           <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('jindu')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
-         <el-col :span="6"></el-col>
       </el-row>
          </el-col>  
          <el-col :span="6">
@@ -268,6 +310,10 @@ import JinduStatelog from "../services/JinduStatelog"
         this.selectState();
           let pa=row.id;
           this.paa=pa
+          addjinduwuliao.findByLog(row.id).then(response =>{
+            this.tableData2=response.data
+            console.log(response.data )
+          })
            JinduService.get(pa)
          .then(response => {
             if(response.data.JinduState.lastone===1){
@@ -358,6 +404,8 @@ import JinduStatelog from "../services/JinduStatelog"
         before_stock : this.form.before_stock ,
         consume:this.form.consume,
         after_stock:this.form.after_stock,
+        jinduId:4,
+        //暂时写死的，
         }
 
         addjinduwuliao.create(data)
@@ -620,6 +668,7 @@ form: {
             { required: true, message: '请输入当前进度', trigger: 'change' }
           ],
         },
+        tableData2:[],
         tableData:[],
         result:[],
         jindu:{},

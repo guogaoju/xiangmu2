@@ -4,6 +4,9 @@ class addWuliaoService {
   getAll() {
     return http.get("/addWuliao");
   }
+  findByLog(zhizaoId) {
+    return http.get(`/addWuliao?zhizaoId=${zhizaoId}`);
+  }
   get(id) {
     return http.get(`/addWuliao/${id}`);
   }

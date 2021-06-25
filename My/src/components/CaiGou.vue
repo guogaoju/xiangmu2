@@ -270,14 +270,13 @@
          <el-row>
             <el-col :span="4">
             <el-form-item></el-form-item>
-        </el-col>
+            </el-col>
            <el-col :span="4">
              <el-button type="warning" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button> 
              </el-col>
             
          </el-row>
       <el-row>
-        
         <el-col :span="4">
             <el-form-item></el-form-item>
         </el-col>
@@ -401,15 +400,16 @@
         class="demo-ruleForm"
       >
       <span>融资预算</span>
-       
           <el-form-item label="物料种类" prop="wuliaotype" :label-width="formLabelWidth">
-            <el-input  v-model="rongzi.wuliaotype"></el-input>
-          </el-form-item>
-      
-          <el-form-item label="单位" prop="danwei" :label-width="formLabelWidth">
-            <el-input  v-model="rongzi.danwei"></el-input>
-          </el-form-item>
-      
+                        <el-select v-model="rongzi.wuliaotype" placeholder="请选择物料">
+                            <el-option v-for="item in result" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                        </el-select>
+            </el-form-item>
+          <el-form-item label="计量单位" prop="danwei" :label-width="formLabelWidth">
+                        <el-select v-model="rongzi.danwei" placeholder="请选择单位">
+                            <el-option v-for="item in result1" :key="item.id" :label="item.name" :value="item.name"></el-option>
+                        </el-select>
+            </el-form-item>
           <el-form-item label="申请数量" prop="shenqing" :label-width="formLabelWidth">
             <el-input v-model="rongzi.shenqing"></el-input>
           </el-form-item>
@@ -447,7 +447,7 @@
 </template>
 
 <script>
-import addWuliaoService from "../services/addWuliaoService";
+import DanweiService from "../services/DanweiService";
 import CaiGouwuliaoService from "../services/CaiGouwuliaoService";
 import CaiGouService from "../services/CaiGouService";
 import CaigouState from "../services/CaigouState";
@@ -593,6 +593,7 @@ import RongziService from "../services/RongziService";
               
           }
           RongziService.create(data).then(response =>{
+            this.tableonload();
             console.log(response.data);
           }).catch(e => {
           console.log(e);
@@ -666,6 +667,12 @@ this.dialog=false;
         
         addform(){
             this.dialog=true;
+            DanweiService.getAll()
+                .then(response => {
+                    this.result1 = response.data;
+                }).catch(e => {
+                    console.log(e);
+                });
             WuliaoService.getAll()
         .then(response => {
           this.result = response.data;
@@ -907,6 +914,7 @@ this.dialog=false;
         },
         tableData:[],
         result:[],
+        result1:[],
         caigou:{},
         rongzi:{},
         filterId:'',

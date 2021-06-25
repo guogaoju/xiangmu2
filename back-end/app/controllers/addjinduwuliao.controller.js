@@ -33,9 +33,11 @@ exports.create = (req, res) => {
 
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
-    // const title = req.query.title;
-    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Addjinduwuliao.findAll()
+    const jinduId = req.query.jinduId;
+    var condition = jinduId ? { jinduId: jinduId}  : null;
+    Addjinduwuliao.findAll({
+      where:condition
+  })
       .then(data => {
         res.send(data);
       })

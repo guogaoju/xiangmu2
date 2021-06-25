@@ -4,7 +4,9 @@ class addjinduwuliao {
   getAll() {
     return http.get("/addjinduwuliao");
   }
-
+  findByLog(jinduId) {
+    return http.get(`/addjinduwuliao?jinduId=${jinduId}`);
+  }
   get(id) {
     return http.get(`/addjinduwuliao/${id}`);
   }

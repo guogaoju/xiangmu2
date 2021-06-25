@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Addwuliao = sequelize.define("addwuliao", {
+    const Addjianzhuwuliao = sequelize.define("Addjianzhuwuliao", {
       supplier_name: {
         type: Sequelize.STRING
       },
@@ -22,5 +22,5 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
           },
         });
-    return Addwuliao;
+    return Addjianzhuwuliao;
   };

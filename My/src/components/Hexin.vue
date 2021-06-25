@@ -395,13 +395,12 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="6"></el-col>  
+        <el-col :span="12"><el-form-item></el-form-item></el-col>  
         <el-col :span="12">
         <el-form-item>
           <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Qiye')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
-         <el-col :span="6"></el-col>
       </el-row>
         </el-col>  
          <el-col :span="6">

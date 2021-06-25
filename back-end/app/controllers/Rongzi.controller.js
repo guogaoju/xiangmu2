@@ -21,6 +21,7 @@ exports.create = (req, res) => {
     yugutatol:req.body.yugutatol,
     shijitatol:req.body.shijitatol,
     rate:req.body.rate,
+    caigouId:req.body.caigouId,
   };
   Rongzi.create(Rongzis)
     .then(data => {

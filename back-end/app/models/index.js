@@ -83,6 +83,7 @@ db.DanweiStatelog = require("./DanweiStatelog.model.js")(sequelize, Sequelize);
 db.WuliaoTypeState = require("./WuliaoTypeState.model.js")(sequelize, Sequelize);
 db.WuliaoTypeStatelog = require("./WuliaoTypeStatelog.model.js")(sequelize, Sequelize);
 db.Rongzi = require("./Rongzi.model.js")(sequelize, Sequelize);
+db.Addjianzhuwuliao = require("./Addjianzhuwuliao.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -768,9 +769,22 @@ db.operate.hasMany(db.WuliaoTypeStatelog, {
   foreignKey: "operateId",
 });
 
-//记录表和操作类型表
+//采购表和采购融资表
 db.caigou.hasMany(db.Rongzi, {
   foreignKey: "caigouId",
+});
+
+//zhizao表和add采购表
+db.zhizao.hasMany(db.addwuliao, {
+  foreignKey: "zhizaoId",
+});
+//jindu表和采购表
+db.jindu.hasMany(db.addjinduwuliao, {
+  foreignKey: "jinduId",
+});
+//jianzhu表和add采购表
+db.jianzhu.hasMany(db.Addjianzhuwuliao, {
+  foreignKey: "jianzhuId",
 });
 //这是为了在中间件里面验证user的role是否存在，这样写是不对的，应该根据数据库里的内容验证，而不是根据这个提前定义好的静态数组
 //db.ROLES = ["user", "admin", "moderator"];

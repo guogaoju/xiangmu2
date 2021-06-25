@@ -1,5 +1,5 @@
 const db = require("../models");
-const Addwuliao = db.addwuliao;
+const Addjianzhuwuliao = db.Addjianzhuwuliao;
 const Op = db.Sequelize.Op;
 
 // 新建物料controller层
@@ -20,25 +20,25 @@ exports.create = (req, res) => {
     need:req.body.need,
     Supplied:req.body.Supplied,
     Supplieds:req.body.Supplieds,
-    zhizaoId:req.body.zhizaoId,
+    jianzhuId:req.body.jianzhuId,
   };
-  Addwuliao.create(addwuliao)
+  Addjianzhuwuliao.create(addwuliao)
     .then(data => {
       res.send(data);
     })
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Addwuliao."
+          err.message || "Some error occurred while creating the Addjianzhuwuliao."
       });
     });
 };
 
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
-    const zhizaoId = req.query.zhizaoId;
-    var condition = zhizaoId ? { zhizaoId: zhizaoId}  : null;
-    Addwuliao.findAll({
+    const jianzhuId = req.query.jianzhuId;
+    var condition = jianzhuId ? { jianzhuId: jianzhuId}  : null;
+    Addjianzhuwuliao.findAll({
       where:condition
   })
       .then(data => {
@@ -47,7 +47,7 @@ exports.findAll = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while retrieving Addwuliao."
+            err.message || "Some error occurred while retrieving Addjianzhuwuliao."
         });
       });
 };
@@ -55,13 +55,13 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Addwuliao.findByPk(id)
+    Addjianzhuwuliao.findByPk(id)
       .then(data => {
         res.send(data);
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving AddWuliao with id=" + id
+          message: "Error retrieving Addjianzhuwuliao with id=" + id
         });
       });
 };

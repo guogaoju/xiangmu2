@@ -210,7 +210,7 @@
   </el-table>
 
   <!-- 添加弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
+  <el-dialog :title="titleMap[dialogTitle]" width="60%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="xiangmu"
         status-icon :rules="rules"
@@ -269,9 +269,9 @@
         </el-col>
       </el-row>
       <el-row>
-            <!-- <el-col :span="4">
+            <el-col :span="4">
             <el-form-item></el-form-item>
-            </el-col> -->
+            </el-col>
            <el-col :span="4">
              <el-button type="warning" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button> 
              </el-col>
@@ -298,7 +298,7 @@
             <el-table-column
               prop="wuliaoname"
               label="物料名称"
-              width="100">
+              width="120">
             </el-table-column>
             <el-table-column
               prop="danwei"
@@ -792,7 +792,7 @@ form: {
       result:[],
       result1:[],
         TravelType:1,
-        formLabelWidth: "100px",
+        formLabelWidth: "160px",
         rules:{
           qiye_name: [
             { required: true, message: '请输入企业信息', trigger: 'blur' },

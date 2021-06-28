@@ -152,10 +152,10 @@
         </el-col>
       </el-row>
       <el-row>
-            <!-- <el-col :span="4">
+            <el-col :span="4">
             <el-form-item></el-form-item>
-            </el-col> -->
-             <el-col :span="6">
+            </el-col>
+             <el-col :span="4">
             <el-button type="warning" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button>
             </el-col>   
          </el-row>

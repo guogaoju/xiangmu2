@@ -205,7 +205,7 @@
   </el-table>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
+  <el-dialog :title="titleMap[dialogTitle]" width="65%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="finance"
         status-icon :rules="rules"
@@ -282,8 +282,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <span>流动债务在总负债中占比%</span>
-          <el-form-item label="" prop="floating_debt" :label-width="formLabelWidth">
+          <el-form-item label="流动债务在总负债中占比%" prop="floating_debt" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-model.number="finance.floating_debt"></el-input>
           </el-form-item>
         </el-col>
@@ -307,8 +306,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <span>应收账款周转天数</span>
-          <el-form-item label="" prop="accounts_receivableDay" :label-width="formLabelWidth">
+          <el-form-item label="应收账款周转天数" prop="accounts_receivableDay" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-model.number="finance.accounts_receivableDay"></el-input>
           </el-form-item>
         </el-col>
@@ -320,8 +318,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <span>应付账款周转天数</span>
-          <el-form-item label="" prop="accounts_payableDay" :label-width="formLabelWidth">
+          <el-form-item label="应付账款周转天数" prop="accounts_payableDay" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model.number="finance.accounts_payableDay"></el-input>
           </el-form-item>
         </el-col>
@@ -345,22 +342,19 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <span>经营活动产生的现金流量净额</span>
-          <el-form-item label="" prop="total_money" :label-width="formLabelWidth">
+          <el-form-item label="经营活动产生的现金流量净额" prop="total_money" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model.number="finance.total_money"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <span>投资活动产生的现金流量净额</span>
-           <el-form-item label="" prop="total_money1" :label-width="formLabelWidth">
+           <el-form-item label="投资活动产生的现金流量净额" prop="total_money1" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model.number="finance.total_money1"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <span>筹资活动产生的现金流量净额</span>
-          <el-form-item label="" prop="total_money2" :label-width="formLabelWidth">
+          <el-form-item label="筹资活动产生的现金流量净额" prop="total_money2" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model.number="finance.total_money2"></el-input>
           </el-form-item>
         </el-col>
@@ -754,7 +748,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
         filterYear:'',
         filterQuarter:'',
         TravelType:1,
-        formLabelWidth: "100px",
+        formLabelWidth: "200px",
         rules:{
           qiye_name: [
             { required: true, message: '请输入企业名称', trigger: 'blur' },

@@ -751,7 +751,7 @@ import HexinStatelog from "../services/HexinStatelog";
       },
         dialogTitle:"",
         TravelType:1,
-        formLabelWidth: "100px",
+        formLabelWidth: "120px",
         rules:{
           register_name: [
             { required: true, message: '请输入注册名称', trigger: 'blur' },

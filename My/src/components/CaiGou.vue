@@ -218,7 +218,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="7">
             <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
                     <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
@@ -234,7 +234,7 @@
                     </el-upload>
             </el-form-item>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="7">
           <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
                     <el-upload :disabled="validated" ref="upload1" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
@@ -250,7 +250,7 @@
                     </el-upload>
             </el-form-item>
         </el-col> 
-        <el-col :span="8">
+        <el-col :span="7">
             <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
                     <el-upload :disabled="validated" ref="upload2" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
@@ -288,42 +288,50 @@
             <el-table-column
               prop="wuliaotype"
               label="物料类型"
-              width="120">
+              width="120"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="danwei"
               label="单位"
-              width="100">
+              width="100"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="shenqing"
               label="申请数量"
-              width="100">
+              width="100"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="price"
               label="单价"
-              width="100">
+              width="100"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="yugutatol"
               label="预估融资"
-              width="120">
+              width="120"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="shijitatol"
               label="实际融资"
-              width="100">
+              width="100"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="rate"
               label="税率%"
-              width="80">
+              width="80"
+              align="center">
             </el-table-column>
             <el-table-column
               prop="supplier_name"
               label="供应商"
-              width="150">
+              width="150"
+              align="center">
             </el-table-column>
           </el-table>
         </el-col>

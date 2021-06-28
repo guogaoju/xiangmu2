@@ -176,7 +176,7 @@
   </el-table>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible" @close='closeDialog'>
+  <el-dialog :title="titleMap[dialogTitle]" width="50%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="Pingji"
         status-icon :rules="rules"
@@ -227,64 +227,55 @@
       </el-row>
       <el-row>
          <el-col :span="12">
-           <span>偿债能力</span>
-          <el-form-item label="满分30分" prop="score1" :label-width="formLabelWidth">
+          <el-form-item label="偿债能力:满分30分" prop="score1" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score1"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
-            <span>盈利能力</span>
-          <el-form-item label="满分30分" prop="score2" :label-width="formLabelWidth">
+          <el-form-item label="盈利能力:满分30分" prop="score2" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
-           <span>现金流量</span>
-          <el-form-item label="满分20分" prop="score3" :label-width="formLabelWidth">
+          <el-form-item label="现金流量:满分20分" prop="score3" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score3"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
-            <span>运营能力</span>
-          <el-form-item label="满分20分" prop="score4" :label-width="formLabelWidth">
+          <el-form-item label="运营能力:满分20分" prop="score4" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
-           <span>股东背景</span>
-          <el-form-item label="满分20分" prop="score5" :label-width="formLabelWidth">
+          <el-form-item label="股东背景:满分20分" prop="score5" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score5"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-           <span>重大事件</span>
-          <el-form-item label="满分25分" prop="score6" :label-width="formLabelWidth">
+          <el-form-item label="重大事件:满分25分" prop="score6" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score6"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
-           <span>行业口碑</span>
-          <el-form-item label="满分10分" prop="score7" :label-width="formLabelWidth">
+          <el-form-item label="行业口碑:满分10分" prop="score7" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score7"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-           <span>重大事故</span>
-          <el-form-item label="满分20分" prop="score8" :label-width="formLabelWidth">
+          <el-form-item label="重大事故:满分20分" prop="score8" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score8"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
-           <span>过往经验</span>
-          <el-form-item label="满分25分" prop="score9" :label-width="formLabelWidth">
+          <el-form-item label="过往经验:满分25分" prop="score9" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score9"></el-input>
           </el-form-item>
         </el-col>
@@ -340,7 +331,6 @@
     </el-form>
   </el-dialog>
 </div>
-
 </template>
 
 <script>
@@ -685,7 +675,7 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
       },
         dialogTitle:"",
         TravelType:1,
-        formLabelWidth: "100px",
+        formLabelWidth: "150px",
         rules:{
           qiye_name: [
             { required: true, message: '请输入企业名称', trigger: 'blur' },

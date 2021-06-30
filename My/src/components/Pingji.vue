@@ -213,7 +213,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Pingji.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="Pingji.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -253,6 +253,11 @@ import PingjiStatelog from "../services/PingjiStatelog"
     created () {
           this.tableonload();
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
       //关闭弹框的事件
     closeDialog(){
@@ -318,8 +323,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               pingjiId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -354,6 +358,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
+          this.liucheng=true,
           this.annui=false;
           this.dialogTitle = "addData";
            CailiaogysService.getAll()
@@ -385,8 +390,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         .then(response => {
           this.tableonload();
           var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               pingjiId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.PingjiStateId,
@@ -462,6 +466,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
            this.dialogTitle = "updataData";
             this.annui=false;
            this.validated=false;
+           this.liucheng=true,
            this.selectState();
           this.pa=this.tableData[index].id;
           this.selectlogs();
@@ -562,6 +567,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
         titleMap: {
         addData: "添加数据",

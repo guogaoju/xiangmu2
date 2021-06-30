@@ -39,7 +39,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Kucun.findAll({include : [KucunState]})
+    Kucun.findAll({order: [['id', 'ASC']],include : [KucunState]})
       .then(data => {
         res.send(data);
       })

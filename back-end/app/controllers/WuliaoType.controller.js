@@ -36,7 +36,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    WuliaoType.findAll({ where: condition ,include : [WuliaoTypeState] })
+    WuliaoType.findAll({order: [['id', 'ASC']], where: condition ,include : [WuliaoTypeState] })
       .then(data => {
         res.send(data);
       })

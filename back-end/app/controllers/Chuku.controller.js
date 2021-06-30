@@ -40,7 +40,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Chuku.findAll({include : [ChukuState]})
+    Chuku.findAll({order: [['id', 'ASC']],include : [ChukuState]})
       .then(data => {
         res.send(data);
       })

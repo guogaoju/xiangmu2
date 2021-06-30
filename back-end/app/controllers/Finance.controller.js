@@ -56,7 +56,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Finance.findAll({include : [FinanceState]})
+    Finance.findAll({order: [['id', 'ASC']],include : [FinanceState]})
       .then(data => {
         res.send(data);
       })
@@ -71,7 +71,7 @@ exports.findAll = (req, res) => {
 
 //根据id查找
 exports.findOne = (req, res) => {
-    Finance.findOne({ where: { id: req.params.id },include : [FinanceState] })
+    Finance.findOne({where: { id: req.params.id },include : [FinanceState] })
       .then(data => {
         res.send(data);
       })

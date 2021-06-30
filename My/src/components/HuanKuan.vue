@@ -191,7 +191,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="huankuan.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="huankuan.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -232,6 +232,11 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
     created () {
           this.tableonload();
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
       //关闭弹框的事件
     closeDialog(){
@@ -289,6 +294,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           // console.log(this.activities)
                 this.huankuan=response.data;
                 this.huankuan.nodeName = response.data.HuankuanState.nodeName;
+                this.imageUrl=response.data.huan_stream
                 this.validated=true;
                 this.buttonText = response.data.HuankuanState.nodebutton;
                
@@ -299,8 +305,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               huankuanId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -346,6 +351,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
+          this.liucheng=true,
           this.annui=false;
         this.dialogTitle = "addData";
        },
@@ -364,8 +370,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         .then(response => {
           this.tableonload();
           var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               huankuanId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.HuankuanStateId,
@@ -439,7 +444,8 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
            this.dialogFormVisible=true
            this.dialogTitle = "updataData";
            this.annui=false;
-           this.validated=false; 
+           this.validated=false;
+           this.liucheng=true, 
            this.selectState();
           this.pa=this.tableData[index].id;
           this.selectlogs();
@@ -558,6 +564,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
         titleMap: {
         addData: "添加数据",
@@ -613,7 +620,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
     line-height: 178px;
     text-align: center;
   }
-  .avatar {
+  .huan_stream {
     width: 178px;
     height: 178px;
     display: block;

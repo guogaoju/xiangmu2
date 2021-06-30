@@ -492,7 +492,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="xiangmu.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -576,6 +576,11 @@ import WuliaoService from "../services/WuliaoService";
     created () {
           this.tableonload();
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
       //关闭弹框的事件
     closeDialog(){
@@ -646,8 +651,7 @@ import WuliaoService from "../services/WuliaoService";
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               jianzhuId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -691,6 +695,7 @@ import WuliaoService from "../services/WuliaoService";
           this.dialogFormVisible=true
            this.selectState();
           this.validated=false;
+          this.liucheng=true,
           this.annui=false;
         this.dialogTitle = "addData";
        },
@@ -721,8 +726,7 @@ import WuliaoService from "../services/WuliaoService";
         .then(response => {
           this.tableonload();
           var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               jianzhuId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.JianzhuStateId,
@@ -834,7 +838,8 @@ import WuliaoService from "../services/WuliaoService";
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData"; 
             this.annui=false;
-           this.validated=false; 
+           this.validated=false;
+           this.liucheng=true, 
            this.selectState();
           this.pa=this.tableData[index].id;
           this.selectlogs();
@@ -939,6 +944,7 @@ import WuliaoService from "../services/WuliaoService";
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
         titleMap: {
         addData: "添加数据",

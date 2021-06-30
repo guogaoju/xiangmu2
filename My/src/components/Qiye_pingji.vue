@@ -300,7 +300,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Pingji.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="Pingji.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -342,6 +342,11 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
     created () {
           this.tableonload();
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
        //关闭弹框的事件
     closeDialog(){
@@ -408,8 +413,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               qiyepingjiId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -447,6 +451,7 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
+          this.liucheng=true,
           this.annui=false;
           this.dialogTitle = "addData";
            QiyeService.getAll()
@@ -480,10 +485,8 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
         QiyePingjiService.create(data)
         .then(response => {
           this.tableonload();
-          // console.log(response.data);
           var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               qiyepingjiId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.QiyepingjiStateId,
@@ -558,6 +561,7 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
            this.dialogTitle = "updataData";
            this.annui=false;
            this.validated=false;
+          this.liucheng=true,
            this.selectState();
           this.pa=this.tableData[index].id;
           this.selectlogs();
@@ -666,6 +670,7 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
         titleMap: {
         addData: "添加数据",

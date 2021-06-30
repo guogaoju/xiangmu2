@@ -45,7 +45,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const total_points = req.query.total_points;
     var condition = total_points ? { total_points: { [Op.like]: `%${total_points}%` } } : null;
-    Pingji.findAll({ where: condition ,include : [PingjiState]})
+    Pingji.findAll({ order: [['id', 'ASC']],where: condition ,include : [PingjiState]})
       .then(data => {
         res.send(data);
       })

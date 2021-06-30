@@ -363,7 +363,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="caigou.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -466,6 +466,11 @@ import RongziService from "../services/RongziService";
     created () {
           this.tableonload();
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
       //关闭弹框的事件
     closeDialog(){
@@ -526,6 +531,9 @@ import RongziService from "../services/RongziService";
           // console.log(this.activities)
                 this.caigou=response.data;
                 this.caigou.nodeName = response.data.CaigouState.nodeName;
+                this.imageUrlback[0]=response.data.statement
+                this.imageUrlback[1]=response.data.delivery_note
+                this.imageUrlback[2]=response.data.bill
                 this.validated=true;
                 this.buttonText = response.data.CaigouState.nodebutton;
                
@@ -536,8 +544,7 @@ import RongziService from "../services/RongziService";
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               caigouId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -586,6 +593,7 @@ import RongziService from "../services/RongziService";
           this.dialogTitle = "addData";
           this.selectState();
           this.validated=false;
+          this.liucheng=true,
           this.annui=false;
        },
        addrongzi(){
@@ -634,8 +642,7 @@ this.dialog=false;
           CaiGouService.create(data).then(response => {
           this.tableonload();
           var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               caigouId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.CaigouStateId,
@@ -733,7 +740,8 @@ this.dialog=false;
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";
            this.annui=false;
-           this.validated=false; 
+           this.validated=false;
+           this.liucheng=true, 
            this.selectState();
           this.pa=this.tableData[index].id;
           this.selectlogs();
@@ -876,6 +884,7 @@ this.dialog=false;
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
         titleMap: {
         addData: "添加数据",
@@ -958,7 +967,17 @@ this.dialog=false;
     line-height: 178px;
     text-align: center;
   }
-  .avatar {
+  .statement {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+  .delivery_note {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+  .bill {
     width: 178px;
     height: 178px;
     display: block;

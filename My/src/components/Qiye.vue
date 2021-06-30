@@ -349,7 +349,7 @@
         </el-col>
          <el-col :span="12">
            <el-form-item label="注册资本" prop="register_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="Qiye.register_money"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.register_money"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -373,11 +373,7 @@
         </el-col>
         <el-col :span="12">
            <el-form-item label="营业范围" prop="business_scope" :label-width="formLabelWidth">
-            <el-select :disabled="validated" v-model="Qiye.business_scope" placeholder="请选择" >
-              <el-option label="制造业" value="制造业"></el-option>
-              <el-option label="建筑业" value="建筑业"></el-option>
-              <el-option label="其他" value="其他"></el-option>
-            </el-select> 
+            <el-input :disabled="validated" v-model="Qiye.business_scope"></el-input>
         </el-form-item> 
         </el-col>
       </el-row>
@@ -432,7 +428,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Qiye.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="Qiye.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -476,8 +472,12 @@ import StatelogService from "../services/StatelogService";
   export default {
     created () {
           this.tableonload();
-          
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
       //关闭弹框的事件
     closeDialog(){
@@ -524,8 +524,7 @@ import StatelogService from "../services/StatelogService";
       },
       addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               qiyeId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -576,7 +575,7 @@ import StatelogService from "../services/StatelogService";
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
-
+          this.liucheng=true,
           this.annui=false;
           this.dialogTitle = "addData";
        },
@@ -607,8 +606,7 @@ import StatelogService from "../services/StatelogService";
         .then(response => {
           this.tableonload();
            var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               qiyeId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.qiyeStateId,
@@ -643,9 +641,10 @@ import StatelogService from "../services/StatelogService";
         });
         },
         selectlogs(){
-          console.log(this.pa)
+          // console.log(this.pa)
         let qiyeId=this.pa
           StatelogService.findByLog(qiyeId).then(response => {
+            console.log(response.data)
               for (let j = 0; j < this.activities.length; j++) {
                     let old = this.activities[j].id;
                         for (var i = 0; i < response.data.length; i++) {
@@ -684,6 +683,7 @@ import StatelogService from "../services/StatelogService";
            this.dialogFormVisible=true;
            this.annui=false;
            this.validated=false;
+           this.liucheng=true,
            this.dialogTitle = "updataData";
            this.selectState();
            this.pa=this.tableData[index].id;
@@ -789,6 +789,7 @@ import StatelogService from "../services/StatelogService";
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
         titleMap: {
         addData: "添加数据",

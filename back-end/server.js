@@ -36,10 +36,10 @@ const HuankuanState = db.HuankuanState;
 const JinduState = db.JinduState;
 const RukuState = db.RukuState;
 const ChukuState = db.ChukuState;
-const KucunState = db.ChukuState;
-const WuliaoState = db.ChukuState;
-const WuliaoTypeState = db.ChukuState;
-const DanweiState = db.ChukuState;
+const KucunState = db.KucunState;
+const WuliaoState = db.WuliaoState;
+const WuliaoTypeState = db.WuliaoTypeState;
+const DanweiState = db.DanweiState  ;
 function initial() {
   // Role.create({
   //   id: 1,
@@ -668,7 +668,7 @@ function initial() {
 //   });
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://10.66.0.36:8080"
 };
 app.use('/uploads', express(__dirname + '/uploads'))
 app.use(cors(corsOptions));

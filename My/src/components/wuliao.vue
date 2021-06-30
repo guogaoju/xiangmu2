@@ -181,7 +181,7 @@
                 </el-col>
                 <el-col :span="12">
                     <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-                        <el-input :disabled="validated" v-model="wuliao.nodeName"></el-input>
+                        <el-input :disabled="liucheng" v-model="wuliao.nodeName"></el-input>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -224,6 +224,11 @@ export default {
     created() {
         this.tableonload();
     },
+    computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
         //关闭弹框的事件
     closeDialog(){
@@ -281,6 +286,7 @@ export default {
           // console.log(this.activities)
                 this.wuliao=response.data;
                 this.wuliao.nodeName = response.data.WuliaoState.nodeName;
+                this.imageUrl=response.data.avatar
                 this.validated=true;
                 this.buttonText = response.data.WuliaoState.nodebutton;
                
@@ -291,8 +297,7 @@ export default {
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               wuliaoId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -333,9 +338,10 @@ export default {
         },
         openFrom() {
             this.wuliao={},
-             this.selectState();
-          this.validated=false;
-          this.annui=false;
+            this.selectState();
+            this.validated=false;
+            this.liucheng=true,
+            this.annui=false;
             this.dialogTitle = "addData";
             //新建时候清空url
             this.imageUrl=""
@@ -369,8 +375,7 @@ export default {
                         .then(response => {
                             this.tableonload();
                             var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               wuliaoId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.WuliaoStateId,
@@ -447,7 +452,8 @@ export default {
             this.dialogFormVisible = true;
             this.dialogTitle = "updataData";
             this.annui=false;
-           this.validated=false; 
+           this.validated=false;
+            this.liucheng=true, 
            this.selectState();
             this.pa=this.tableData[index].id;
             this.selectlogs();
@@ -573,6 +579,7 @@ export default {
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
             titleMap: {
         addData: "添加数据",

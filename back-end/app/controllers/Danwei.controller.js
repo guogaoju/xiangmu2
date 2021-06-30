@@ -38,7 +38,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    Danwei.findAll({ where: condition ,include : [DanweiState]})
+    Danwei.findAll({ order: [['id', 'ASC']],where: condition ,include : [DanweiState]})
       .then(data => {
         res.send(data);
       })

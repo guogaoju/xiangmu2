@@ -120,7 +120,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="danwei.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="danwei.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -161,6 +161,11 @@ import DanweiStatelog from "../services/DanweiStatelog";
     created () {
           this.tableonload();
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
       //关闭弹框的事件
     closeDialog(){
@@ -228,8 +233,7 @@ import DanweiStatelog from "../services/DanweiStatelog";
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               danweiId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -273,6 +277,7 @@ import DanweiStatelog from "../services/DanweiStatelog";
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
+          this.liucheng=true,
           this.annui=false;
           this.dialogTitle = "addData";
        },
@@ -289,8 +294,7 @@ import DanweiStatelog from "../services/DanweiStatelog";
         .then(response => {
           this.tableonload();
           var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               danweiId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.DanweiStateId,
@@ -363,7 +367,8 @@ import DanweiStatelog from "../services/DanweiStatelog";
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData"; 
            this.annui=false;
-           this.validated=false; 
+           this.validated=false;
+           this.liucheng=true, 
            this.selectState();
             this.pa=this.tableData[index].id;
             this.selectlogs();
@@ -443,6 +448,7 @@ import DanweiStatelog from "../services/DanweiStatelog";
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
         titleMap: {
         addData: "添加数据",

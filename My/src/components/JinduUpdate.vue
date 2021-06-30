@@ -147,7 +147,7 @@
         </el-col>
          <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="jindu.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="jindu.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -265,6 +265,11 @@ import JinduStatelog from "../services/JinduStatelog"
     created () {
           this.tableonload();
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
       //关闭弹框的事件
     closeDialog(){
@@ -326,6 +331,7 @@ import JinduStatelog from "../services/JinduStatelog"
           // console.log(this.activities)
                 this.jindu=response.data;
                 this.jindu.nodeName = response.data.JinduState.nodeName;
+                this.jindu.nodeName = response.data.JinduState.nodeName;
                 this.validated=true;
                 this.buttonText = response.data.JinduState.nodebutton;
                
@@ -336,8 +342,7 @@ import JinduStatelog from "../services/JinduStatelog"
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               jinduId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -381,6 +386,7 @@ import JinduStatelog from "../services/JinduStatelog"
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
+          this.liucheng=true,
           this.annui=false;
           this.dialogTitle = "addData";
           //新建时候清空url
@@ -430,8 +436,7 @@ import JinduStatelog from "../services/JinduStatelog"
         .then(response => {
           this.tableonload();
           var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               jinduId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.JinduStateId,
@@ -509,7 +514,8 @@ import JinduStatelog from "../services/JinduStatelog"
            this.dialogFormVisible=true
            this.dialogTitle = "updataData"; 
             this.annui=false;
-           this.validated=false; 
+           this.validated=false;
+            this.liucheng=true, 
            this.selectState();
           this.pa=this.tableData[index].id;
           this.selectlogs();
@@ -634,6 +640,7 @@ import JinduStatelog from "../services/JinduStatelog"
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
         titleMap: {
         addData: "添加数据",
@@ -700,7 +707,7 @@ form: {
     line-height: 178px;
     text-align: center;
   }
-  .avatar {
+  .photo {
     width: 178px;
     height: 178px;
     display: block;

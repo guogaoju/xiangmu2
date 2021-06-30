@@ -129,8 +129,11 @@
           </el-form-item>
         </el-col>
          <el-col :span="12">
-           <el-form-item label="是否违约" prop="contract" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="addfangwen.contract"></el-input>
+           <el-form-item label="是否预约" prop="contract" :label-width="formLabelWidth">
+             <el-select :disabled="validated" v-model="addfangwen.contract" clearable placeholder="请选择" >
+              <el-option label="是" value="是"></el-option>
+              <el-option label="否" value="否"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -142,7 +145,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="addfangwen.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="addfangwen.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -183,6 +186,11 @@ import FangwenStatelog from "../services/FangwenStatelog"
     created () {
           this.tableonload();
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
       //关闭弹框的事件
     closeDialog(){
@@ -249,8 +257,7 @@ import FangwenStatelog from "../services/FangwenStatelog"
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               fangwenId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -294,6 +301,7 @@ import FangwenStatelog from "../services/FangwenStatelog"
         this.dialogFormVisible=true
         this.selectState();
           this.validated=false;
+          this.liucheng=true,
           this.annui=false;
         this.dialogTitle = "addData";
         QiyeService.getAll()
@@ -320,8 +328,7 @@ import FangwenStatelog from "../services/FangwenStatelog"
         .then(response => {
           this.tableonload();
           var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               fangwenId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.FangwenStateId,
@@ -395,7 +402,8 @@ import FangwenStatelog from "../services/FangwenStatelog"
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData"; 
             this.annui=false;
-           this.validated=false; 
+           this.validated=false;
+           this.liucheng=true, 
            this.selectState();
           this.pa=this.tableData[index].id;
           this.selectlogs();
@@ -485,6 +493,7 @@ import FangwenStatelog from "../services/FangwenStatelog"
         nextState:'',
         annui:'',
         isshow:true,
+        liucheng:false,
         validated:false,
         activities: [],
          titleMap: {

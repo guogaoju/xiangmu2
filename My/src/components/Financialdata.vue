@@ -254,115 +254,115 @@
       <el-row>
          <el-col :span="12">
           <el-form-item label="净资产" prop="net_assets" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.net_assets"></el-input>
+            <el-input :disabled="validated" v-model="finance.net_assets"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="资产负债率%" prop="Loar" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.Loar"></el-input>
+            <el-input :disabled="validated" v-model="finance.Loar"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="速动比率" prop="quick_ratio" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model.number="finance.quick_ratio"></el-input>
+           <el-input :disabled="validated" v-model="finance.quick_ratio"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="流动比率" prop="current_ratio" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model.number="finance.current_ratio"></el-input>
+           <el-input :disabled="validated" v-model="finance.current_ratio"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="存货周转天数" prop="days_inventory" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model.number="finance.days_inventory"></el-input>
+           <el-input :disabled="validated" v-model="finance.days_inventory"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="流动债务在总负债中占比%" prop="floating_debt" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model.number="finance.floating_debt"></el-input>
+           <el-input :disabled="validated" v-model="finance.floating_debt"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="毛利率" prop="rate_margin" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model.number="finance.rate_margin"></el-input>
+           <el-input :disabled="validated" v-model="finance.rate_margin"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="ROE" prop="ROE" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model.number="finance.ROE"></el-input>
+           <el-input :disabled="validated" v-model="finance.ROE"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="应收账款" prop="accounts_receivable" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model.number="finance.accounts_receivable"></el-input>
+           <el-input :disabled="validated" v-model="finance.accounts_receivable"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="应收账款周转天数" prop="accounts_receivableDay" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model.number="finance.accounts_receivableDay"></el-input>
+           <el-input :disabled="validated" v-model="finance.accounts_receivableDay"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="应付账款" prop="accounts_payable" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.accounts_payable"></el-input>
+            <el-input :disabled="validated" v-model="finance.accounts_payable"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="应付账款周转天数" prop="accounts_payableDay" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.accounts_payableDay"></el-input>
+            <el-input :disabled="validated" v-model="finance.accounts_payableDay"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="营业收入" prop="operating_income" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.operating_income"></el-input>
+            <el-input :disabled="validated" v-model="finance.operating_income"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="营业外收入" prop="nonbusiness_income" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.nonbusiness_income"></el-input>
+            <el-input :disabled="validated" v-model="finance.nonbusiness_income"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="净利润" prop="net_profits" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.net_profits"></el-input>
+            <el-input :disabled="validated" v-model="finance.net_profits"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="经营活动产生的现金流量净额" prop="total_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.total_money"></el-input>
+            <el-input :disabled="validated" v-model="finance.total_money"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="投资活动产生的现金流量净额" prop="total_money1" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.total_money1"></el-input>
+            <el-input :disabled="validated" v-model="finance.total_money1"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="筹资活动产生的现金流量净额" prop="total_money2" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="finance.total_money2"></el-input>
+            <el-input :disabled="validated" v-model="finance.total_money2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="finance.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -406,6 +406,11 @@ import FinanceStatelog from "../services/FinanceStatelog"
     created () {
           this.tableonload();
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
     methods: {
        //关闭弹框的事件
     closeDialog(){
@@ -473,8 +478,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
-              userId:1,
+              userId:this.currentUser.id,
               financeId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
@@ -518,6 +522,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
            this.dialogFormVisible=true
            this.selectState();
           this.validated=false;
+          this.liucheng=true,
           this.annui=false;
            this.dialogTitle = "addData";
            QiyeService.getAll()
@@ -560,8 +565,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
         .then(response => {
           this.tableonload();
           var data = {
-             //userid拿不到，默认1
-              userId:1,
+              userId:this.currentUser.id,
               financeId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.FinanceStateId,
@@ -636,7 +640,8 @@ import FinanceStatelog from "../services/FinanceStatelog"
            this.dialogFormVisible=true
            this.dialogTitle = "updataData";
             this.annui=false;
-           this.validated=false; 
+           this.validated=false;
+           this.liucheng=true, 
            this.selectState();
           this.pa=this.tableData[index].id;
           this.selectlogs();
@@ -735,6 +740,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
         annui:'',
         isshow:true,
         validated:false,
+        liucheng:false,
         activities: [],
         titleMap: {
         addData: "添加数据",

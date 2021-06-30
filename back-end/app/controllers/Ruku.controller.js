@@ -42,7 +42,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Ruku.findAll({include : [RukuState]})
+    Ruku.findAll({order: [['id', 'ASC']],include : [RukuState]})
       .then(data => {
         res.send(data);
       })

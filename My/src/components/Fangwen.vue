@@ -7,9 +7,9 @@
       <el-breadcrumb-item>企业访问记录</el-breadcrumb-item>
     </el-breadcrumb>
   <!-- 客户管理/企业信息管理/企业访问记录 -->
-    <el-row>
+    <el-row style="margin : 8px;">
       <el-col :span="10">
-        <el-button type="primary" @click="openFrom()">添加</el-button>
+        <el-button type="warning" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
   <el-table
@@ -87,9 +87,9 @@
       width="300"
       align="center">
       <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>

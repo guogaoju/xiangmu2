@@ -7,9 +7,9 @@
       <el-breadcrumb-item>企业信息</el-breadcrumb-item>
     </el-breadcrumb>
   <!-- 客户管理/企业信息管理/企业信息 -->
-  <el-row>
+  <el-row style="margin : 8px;">
     <el-col :span="2">
-      <el-button type="primary" @click="openFrom()">新增</el-button>
+      <el-button type="warning" @click="openFrom()">新增</el-button>
     </el-col>
   </el-row>
   <el-table
@@ -296,9 +296,9 @@
       width="250"
       align="center">
       <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -337,7 +337,7 @@
         </el-col>
          <el-col :span="12">
           <el-form-item label="社会信用代码" prop="credit_code" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="Qiye.credit_code"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.credit_code"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -416,7 +416,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="银行卡号" prop="bank_card" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="Qiye.bank_card"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.bank_card"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
@@ -436,7 +436,7 @@
         <el-col :span="11"><el-form-item></el-form-item></el-col>   
         <el-col :span="13">
         <el-form-item>
-          <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Qiye')">{{buttonText}}</el-button>
+          <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" @click="submit('Qiye')">{{buttonText}}</el-button>
           <!-- <el-button type="primary" @click="addsubmit()">隐藏</el-button> -->
         </el-form-item>
          </el-col>

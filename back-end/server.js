@@ -41,29 +41,29 @@ const WuliaoState = db.WuliaoState;
 const WuliaoTypeState = db.WuliaoTypeState;
 const DanweiState = db.DanweiState  ;
 function initial() {
-  // Role.create({
-  //   id: 1,
-  //   name: "user"
-  // });
+  Role.create({
+    id: 1,
+    name: "user"
+  });
  
-  // Role.create({
-  //   id: 2,
-  //   name: "moderator"
-  // });
+  Role.create({
+    id: 2,
+    name: "moderator"
+  });
  
-  // Role.create({
-  //   id: 3,
-  //   name: "admin"
-  // });
+  Role.create({
+    id: 3,
+    name: "admin"
+  });
 
-  // Dept.create({
-  //   id: 1,
-  //   name: "风控部"
-  // });
-  // Dept.create({
-  //   id: 2,
-  //   name: "财务部"
-  // });
+  Dept.create({
+    id: 1,
+    name: "风控部"
+  });
+  Dept.create({
+    id: 2,
+    name: "财务部"
+  });
   // qiyestate_dept.create({
   //   qiyestateId:1,
   //   deptId: "1",

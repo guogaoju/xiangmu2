@@ -6,9 +6,9 @@
       <el-breadcrumb-item>项目管理</el-breadcrumb-item>
       <el-breadcrumb-item>制造业项目管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row>
+    <el-row style="margin : 8px;">
       <el-col :span="10">
-        <el-button type="primary" @click="openFrom()">添加</el-button>
+        <el-button type="warning" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
   <el-table
@@ -202,9 +202,9 @@
       width="250"
       align="center">
       <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>

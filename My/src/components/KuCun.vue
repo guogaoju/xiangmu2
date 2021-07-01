@@ -6,9 +6,9 @@
       <el-breadcrumb-item>仓库管理</el-breadcrumb-item>
       <el-breadcrumb-item>库存信息</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row>
+    <el-row style="margin : 8px;">
       <el-col :span="10">
-        <el-button type="primary" @click="openFrom()">添加</el-button>
+        <el-button type="warning" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
   <el-table
@@ -95,7 +95,7 @@
             <template slot="header" slot-scope="scope">
                 <el-popover placement="bottom" trigger="click">
                     <el-input v-model="filterAfter_stock"> </el-input>
-                    <div slot="reference"> <label> 以供应总量 </label> <i class='el-icon-arrow-down'> </i> </div>
+                    <div slot="reference"> <label> 已供应总量 </label> <i class='el-icon-arrow-down'> </i> </div>
                 </el-popover>
             </template>
             <template slot-scope="scope">
@@ -112,9 +112,9 @@
       width="350"
       align="center">
       <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -155,7 +155,7 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="以供应总量" prop="after_stock" :label-width="formLabelWidth">
+          <el-form-item label="已供应总量" prop="after_stock" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="kucun.after_stock"></el-input>
           </el-form-item>
         </el-col>

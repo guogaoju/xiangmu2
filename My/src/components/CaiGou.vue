@@ -6,9 +6,9 @@
       <el-breadcrumb-item>业务管理</el-breadcrumb-item>
       <el-breadcrumb-item>采购管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row>
+    <el-row style="margin : 8px;">
       <el-col :span="14">
-        <el-button type="primary" @click="openFrom()">添加</el-button>
+        <el-button type="warning" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
   <el-table
@@ -175,9 +175,9 @@
       width="250"
       align="center">
       <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="primary" round size="small">查看</el-button>
-        <el-button type="primary" @click.stop="updateClick(scope.$index,tableData)" round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" round size="small">删除</el-button>
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -371,7 +371,7 @@
         <el-col :span="12"><el-form-item></el-form-item></el-col> 
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" id="submitButton" @submit="submit('caigou')" @click="add('rongzi')">{{buttonText}}</el-button>
+          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" @click="submit('caigou')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
          

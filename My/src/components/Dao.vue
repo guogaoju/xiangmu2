@@ -1,45 +1,17 @@
 <template>
     <div>
-        <div class="big1" style="width:100%;background-color: #636363; height:60px ; overflow: hidden">
-            <span class="demonstration" style="float:left;padding-top:15px;color:white;margin-left:5%">
-                供应链金融管理系统
-            </span>
-                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
-                    <li class="nav-item">
-                        <a style="color:white" class="nav-link" href @click.prevent="logOut">
-                            <font-awesome-icon icon="sign-out-alt" />退出登录
-                        </a>
-                    </li>
-                </span>
-                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
-                    <li  class="nav-item">
-                        <router-link style="color:white" to="/profile" class="nav-link">
-                            <font-awesome-icon icon="user" />
-                            {{ currentUser.username }}
-                        </router-link>
-                    </li>
-                </span>
-                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
-                    <li  class="nav-item">
-                        <router-link style="color:white" to="/Bumen" class="nav-link">
-                            <font-awesome-icon icon="user" />
-                            人员部门管理
-                            <!-- {{ currentUser.username }} -->
-                        </router-link>
-                    </li>
-                </span>
-                
-            <!-- </div> -->
-        </div>
         <div style="margin-top:5px height:100%">
             <el-row :gutter="12">
                 <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                    <!-- <div style="background-color: #0f1126;">
+                        <img src="https://datav.oss-cn-hangzhou.aliyuncs.com/uploads/images/ed6ae7abf84d74402a8df1336be91ecd.png" width="200" height="60" alt="">
+                    </div> -->
                     <div>
                         <el-menu
                         style="height:1000px"
                         default-active="1"
                         class="el-menu-vertical-demo"
-                        background-color="#545c64"
+                        background-color="#0f1126"
                         text-color="#fff"
                         active-text-color="#ffd04b"
                         @select="handleSelect">
@@ -128,13 +100,42 @@
                             </el-breadcrumb>
                         </div>
                     </div> -->
-
-                    <div style="margin-top:10px">
+                    <div class="big1" style="width:100%;background-color: ; height:50px ; overflow: hidden">
+            <span class="demonstration" style="float:left;padding-top:15px;color:black;margin-left:5%">
+                供应链金融管理系统
+            </span>
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
+                    <li class="nav-item">
+                        <a style="color:black" class="nav-link" href @click.prevent="logOut">
+                            <font-awesome-icon icon="sign-out-alt" />退出登录
+                        </a>
+                    </li>
+                </span>
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
+                    <li  class="nav-item">
+                        <router-link style="color:black" to="/profile" class="nav-link">
+                            <font-awesome-icon icon="user" />
+                            {{ currentUser.username }}
+                        </router-link>
+                    </li>
+                </span>
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
+                    <li  class="nav-item">
+                        <router-link style="color:black" to="/Bumen" class="nav-link">
+                            <font-awesome-icon icon="user" />
+                            人员部门管理
+                            <!-- {{ currentUser.username }} -->
+                        </router-link>
+                    </li>
+                </span>
+                    </div>
+                    <div style="margin-top:10px;background-color: #f7f7f7">
                         <router-view></router-view>
                     </div>
                 </el-col>
             </el-row>
         </div>
+         
     </div>
 </template>
 <script type="text/ecmascript-6">

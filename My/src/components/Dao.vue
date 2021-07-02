@@ -101,7 +101,7 @@
                         </div>
                     </div> -->
                     <div class="big1" style="width:100%;background-color: ; height:50px ; overflow: hidden">
-            <span class="demonstration" style="float:left;padding-top:15px;color:black;margin-left:5%">
+            <span class="demonstration" style="float:left;padding-top:15px;color:black;margin-left:1%">
                 供应链金融管理系统
             </span>
                 <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
@@ -124,7 +124,6 @@
                         <router-link style="color:black" to="/Bumen" class="nav-link">
                             <font-awesome-icon icon="user" />
                             人员部门管理
-                            <!-- {{ currentUser.username }} -->
                         </router-link>
                     </li>
                 </span>

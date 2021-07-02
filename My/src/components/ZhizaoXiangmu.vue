@@ -473,7 +473,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         this.selectState();
           let pa=row.id;
           this.paa=pa
-          addWuliaoService.findByLog(row.id).then(response =>{
+           addWuliaoService.findByLog(row.id).then(response =>{
             this.tableData2=response.data
             console.log(response.data )
           })
@@ -497,6 +497,12 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
                 console.log(e);
               });
        },
+        // selectwuliao(){
+        // addWuliaoService.findByLog(this.paa).then(response =>{
+        //     this.tableData2=response.data
+        //     console.log(response.data )
+        //   })
+        //   },
        addStatelog(){
          var data = {
            //userid拿不到，默认2
@@ -574,12 +580,13 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         need:this.form.need,
         Supplied:this.form.Supplied,
         Supplieds:this.form.Supplieds,
-        zhizaoId:4,
+        zhizaoId:1,
         //暂时写死的，
         }
         addWuliaoService.create(data)
         .then(response => {
           this.tableonload();
+          this.selectwuliao();
           console.log(response.data);
         })
         .catch(e => {

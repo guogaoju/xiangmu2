@@ -732,11 +732,23 @@ import WuliaoService from "../services/WuliaoService";
               newstateid:response.data.JianzhuStateId,
               operateId:1,
               }
-              JianzhuStatelog.create(data).then(response => {
+          JianzhuStatelog.create(data).then(response => {
               }).catch(e => {
                 console.log(e);
               });
           console.log(response.data);
+          //在这个地方把tableData2里的数据逐条拿出来，把id填上，提交到后端
+          //如果是修改已有的，那应该先把原先的该企业相关的建筑物料先从数据库里删除，新增不需要。
+          //for each item in tableData2:
+            //tabledata2[i].id=response.data.id
+            //addjianzhuwuliao.create(tabledata2[i])
+            // .then(response => {
+            //   this.tableonload();
+            //   console.log(response.data);
+            // })
+            // .catch(e => {
+            //   console.log(e);
+            // });  
         })
         .catch(e => {
           console.log(e);
@@ -785,17 +797,23 @@ import WuliaoService from "../services/WuliaoService";
         need:this.form.need,
         Supplied:this.form.Supplied,
         Supplieds:this.form.Supplieds,
+        //如果查看或修改已有项目，那这个id是可以拿到的
         jianzhuId:5,
         //暂时写死的，
         }
-        addjianzhuwuliao.create(data)
-        .then(response => {
-          this.tableonload();
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });  
+        //数据先放入tableData2里，这样前端的表格就可以正常显示，因为没有拿到项目id。
+        //这里应该分成两种情况，需要你处理一下：
+        //1.如果是新增项目，那就暂时还没有项目id，就先不提交数据到后端。等母表单提交后，拿到id，在then里面提交数据。
+        //2.如果是已有的项目，查看或修改，那就已经拿到id了，正常提交数据。
+        this.tableData2.push(data);
+        // addjianzhuwuliao.create(data)
+        // .then(response => {
+        //   this.tableonload();
+        //   console.log(response.data);
+        // })
+        // .catch(e => {
+        //   console.log(e);
+        // });  
         },
         selectlogs(){
           //  console.log(this.pa)

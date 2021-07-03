@@ -488,9 +488,10 @@ import StatelogService from "../services/StatelogService";
         this.dialogFormVisible=true
         this.annui=false
         this.dialogTitle = "examine";
-        this.selectState();
+
           let pa=row.id;
           this.paa=pa
+
            QiyeService.get(pa)
          .then(response => {
             if(response.data.qiyeState.lastone===1){
@@ -499,7 +500,6 @@ import StatelogService from "../services/StatelogService";
           this.qiyeid=pa
           this.nextState=response.data.qiyeState.nextStateid
           this.oldStateid=response.data.qiyeState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.Qiye=response.data;
                 this.Qiye.nodeName = response.data.qiyeState.nodeName;
@@ -510,6 +510,9 @@ import StatelogService from "../services/StatelogService";
               .catch(e => {
                 console.log(e);
               });
+
+        this.selectStateAndLogs();
+
        },
 
       async tableonload(){
@@ -537,30 +540,21 @@ import StatelogService from "../services/StatelogService";
           console.log(e);
         });
       },
-      selectlog(){
-        let qiyeId=this.qiyeid
-          StatelogService.findByLog(qiyeId).then(response => {
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       selectState(){
          QiyeStateService.getAll()
         .then(response => {
           this.activities=response.data
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
+      selectStateAndLogs(){
+        QiyeStateService.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
           // console.log(response.data);
         })
         .catch(e => {
@@ -644,7 +638,6 @@ import StatelogService from "../services/StatelogService";
           // console.log(this.pa)
         let qiyeId=this.pa
           StatelogService.findByLog(qiyeId).then(response => {
-            console.log(response.data)
               for (let j = 0; j < this.activities.length; j++) {
                     let old = this.activities[j].id;
                         for (var i = 0; i < response.data.length; i++) {
@@ -655,8 +648,7 @@ import StatelogService from "../services/StatelogService";
                                 }
                             }
                        }
-       
-          // console.log(response.data);
+          this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);
@@ -667,9 +659,8 @@ import StatelogService from "../services/StatelogService";
           this.dialogTitle = "kanData";
           this.annui=true;
           this.validated=true;
-          this.selectState();
           this.pa=this.tableData[index].id;
-           this.selectlogs();
+           this.selectStateAndLogs();
            QiyeService.get(this.pa)
          .then(response => {
                 this.Qiye=response.data;
@@ -685,9 +676,8 @@ import StatelogService from "../services/StatelogService";
            this.validated=false;
            this.liucheng=true,
            this.dialogTitle = "updataData";
-           this.selectState();
            this.pa=this.tableData[index].id;
-           this.selectlogs();
+           this.selectStateAndLogs();
            QiyeService.get(this.pa)
          .then(response => {
                 this.Qiye=response.data;

@@ -17,7 +17,7 @@ app.use(express.static('./resources/static/assets/imgs'));
 const db = require("./app/models");
 const { response } = require("express");
 db.sequelize.sync().then(() =>{
-  //  initial();
+  //initial();
 });
 const Role = db.role;
 const Dept = db.dept;
@@ -663,12 +663,13 @@ function initial() {
     })
   });;
 }
-//清空数据库 db.sequelize.sync({ force: true }).then(() => {
-//     console.log("Drop and re-sync db.");
-//   });
+//清空数据库 
+// db.sequelize.sync({ force: true }).then(() => {
+//       console.log("Drop and re-sync db.");
+//     });
 
 var corsOptions = {
-  origin: "http://10.66.0.36:8080"
+  origin: "http://localhost:8081"
 };
 app.use('/uploads', express(__dirname + '/uploads'))
 app.use(cors(corsOptions));

@@ -228,55 +228,55 @@
       <el-row>
          <el-col :span="12">
           <el-form-item label="偿债能力:满分30分" prop="score1" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score1"></el-input>
+            <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score1" default></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="盈利能力:满分30分" prop="score2" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score2"></el-input>
+            <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="现金流量:满分20分" prop="score3" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score3"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score3"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="运营能力:满分20分" prop="score4" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score4"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="股东背景:满分20分" prop="score5" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score5"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score5"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="重大事件:满分25分" prop="score6" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score6"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score6"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="行业口碑:满分10分" prop="score7" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score7"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score7"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="重大事故:满分20分" prop="score8" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score8"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score8"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="过往经验:满分25分" prop="score9" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test1" v-model.number="Pingji.score9"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score9"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -382,16 +382,16 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         })
         .catch(e => {
           console.log(e);
-        });   
+        }); 
       },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
         this.dialogTitle = "examine";
         this.selectState();
-          let pa=row.id;
-          this.paa=pa
-           QiyePingjiService.get(pa)
+        let pa=row.id;
+        this.paa=pa
+        QiyePingjiService.get(pa)
          .then(response => {
             if(response.data.QiyepingjiState.lastone===1){
                   this.isshow=false;
@@ -410,6 +410,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
               .catch(e => {
                 console.log(e);
               });
+
        },
        addStatelog(){
          var data = {
@@ -429,13 +430,12 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
       getfor(row,column){
             return row.QiyepingjiState.nodeName;
           },
-      test: function () {
-            this.Pingji.quantify_points=this.Pingji.score1+this.Pingji.score2+this.Pingji.score3+this.Pingji.score4
-        },
-        test1: function () {
-            this.Pingji.qualitative_points=this.Pingji.score5+this.Pingji.score6+this.Pingji.score7+this.Pingji.score8+this.Pingji.score9,
-this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_points
-        },
+      updateScore: function() {
+            this.Pingji.quantify_points=this.Pingji.score1+this.Pingji.score2+this.Pingji.score3+this.Pingji.score4;
+            this.Pingji.qualitative_points=this.Pingji.score5+this.Pingji.score6+this.Pingji.score7+this.Pingji.score8+this.Pingji.score9;
+            this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_points;
+            this.$forceUpdate();
+      },
       async tableonload(){
          QiyePingjiService.getAll()
          .then(response => {
@@ -447,7 +447,8 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
         });
       },
        openFrom(){
-          this.Pingji={},
+          //this.Pingji={},
+          //console.log(this.Pingji)
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
@@ -677,7 +678,22 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
         updataData: "修改数据",
         kanData: "查看数据",
         examine: "企业评级信息",
+
       },
+        Pingji: {
+            score1: 0,
+            score2: 0,
+            score3: 0,
+            score4: 0,
+            score5: 0,
+            score6: 0,
+            score7: 0,
+            score8: 0,
+            score9: 0,
+            quantify_points:0,
+            qualitative_points:0,
+            total_points: 0
+        },
         dialogTitle:"",
         TravelType:1,
         formLabelWidth: "150px",
@@ -700,7 +716,6 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
         },
         tableData:[],
         result:[],
-        Pingji:{},
         filterId:'',
         filterQiye_name:'',
         filterYear:'',
@@ -708,6 +723,6 @@ this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_poi
         filterTotal_points:'',
         dialogFormVisible: false,
       }
-    }
+    },
   }
 </script>

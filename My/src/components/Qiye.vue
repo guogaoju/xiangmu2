@@ -489,15 +489,14 @@ import StatelogService from "../services/StatelogService";
         this.annui=false
         this.dialogTitle = "examine";
 
-          let pa=row.id;
-          this.paa=pa
+          this.pa=row.id;
 
-           QiyeService.get(pa)
+           QiyeService.get(this.pa)
          .then(response => {
             if(response.data.qiyeState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.qiyeState.nextStateid
           this.oldStateid=response.data.qiyeState.id
           // console.log(this.activities)
@@ -510,8 +509,8 @@ import StatelogService from "../services/StatelogService";
               .catch(e => {
                 console.log(e);
               });
+          this.selectStateAndLogs();
 
-        this.selectStateAndLogs();
 
        },
 
@@ -691,7 +690,7 @@ import StatelogService from "../services/StatelogService";
         var data = {
            qiyeStateId:this.nextState
           }
-          QiyeService.update(this.paa,data)
+          QiyeService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -816,7 +815,6 @@ import StatelogService from "../services/StatelogService";
             { required: true, message: '请输入选择时间', trigger: 'change' }
           ],
         },
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

@@ -669,7 +669,10 @@ function initial() {
 //     });
 
 var corsOptions = {
+  //local
   origin: "http://localhost:8081"
+  //server
+  //origin: "http://106.15.5.29:8081"
 };
 app.use('/uploads', express(__dirname + '/uploads'))
 app.use(cors(corsOptions));
@@ -752,7 +755,11 @@ require("./app/routes/WuliaoTypeState.routes")(app);
 require("./app/routes/Rongzi.routes")(app);
 require("./app/routes/Addjianzhuwuliao.routes")(app);
 // set port, listen for requests
+//local
 const PORT = process.env.PORT || 8080;
+//server
+//const PORT = process.env.PORT || 8082;
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

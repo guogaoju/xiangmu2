@@ -1,5 +1,5 @@
 module.exports = app => {
-    const dept = require("../controllers/Dept.controller.js");
+    const dept = require("../controllers/dept.controller.js");
     var router = require("express").Router();
   
     //新增

@@ -1,5 +1,5 @@
 module.exports = app => {
-    const bumen = require("../controllers/Bumen.controller.js");
+    const bumen = require("../controllers/bumen.controller.js");
     var router = require("express").Router();
   
     //新增

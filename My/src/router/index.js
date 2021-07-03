@@ -84,7 +84,7 @@ export default new Router({
         },
         {
           path: '/Wuliao',
-          component: () => import('@/components/Wuliao.vue')
+          component: () => import('@/components/wuliao.vue')
         },
         {
           path: '/Jiliangdanwei',
@@ -124,7 +124,7 @@ export default new Router({
         },
         {
           path: '/Kucun',
-          component: () => import('@/components/Kucun.vue')
+          component: () => import('@/components/KuCun.vue')
         },
         {
       path: '/profile',

@@ -335,7 +335,7 @@
 
 <script>
 import QiyeService from "../services/QiyeService"
-import QiyePingjiService from "../services/QiyePingjiService"
+import QiyePingjiService from "../services/QiyepingjiService"
 import QiyepingjiStateService from "../services/QiyepingjiStateService"
 import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
   export default {

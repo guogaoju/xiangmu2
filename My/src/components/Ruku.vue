@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 仓库管理/入库管理 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>仓库管理</el-breadcrumb-item>
       <el-breadcrumb-item>入库管理</el-breadcrumb-item>
@@ -311,44 +311,20 @@ import RukuStatelog from "../services/RukuStatelog"
           // console.log(e);
         });
       },
-      selectlog(){
-        let rukuId=this.qiyeid
-        // console.log(rukuId)
-          RukuStatelog.findByLog(rukuId).then(response => {
-            console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
-           RukuService.get(pa)
+          this.pa=row.id;
+           RukuService.get(this.pa)
          .then(response => {
             if(response.data.RukuState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.RukuState.nextStateid
           this.oldStateid=response.data.RukuState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.ruku=response.data;
                 this.ruku.nodeName = response.data.RukuState.nodeName;
@@ -359,6 +335,7 @@ import RukuStatelog from "../services/RukuStatelog"
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -379,7 +356,7 @@ import RukuStatelog from "../services/RukuStatelog"
         var data = {
            RukuStateId:this.nextState
           }
-          RukuService.update(this.paa,data)
+          RukuService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -388,6 +365,17 @@ import RukuStatelog from "../services/RukuStatelog"
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        RukuState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.RukuState.nodeName;
           },
@@ -484,10 +472,10 @@ import RukuStatelog from "../services/RukuStatelog"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            RukuService.get(this.pa)
          .then(response => {
                 this.ruku=response.data;
@@ -503,9 +491,8 @@ import RukuStatelog from "../services/RukuStatelog"
            this.annui=false;
            this.validated=false;
            this.liucheng=true, 
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            RukuService.get(this.pa)
          .then(response => {
                 this.ruku=response.data;

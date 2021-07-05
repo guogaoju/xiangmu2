@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 业务管理/采购管理 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>业务管理</el-breadcrumb-item>
       <el-breadcrumb-item>采购管理</el-breadcrumb-item>
@@ -487,48 +487,24 @@ import RongziService from "../services/RongziService";
           // console.log(e);
         });
       },
-      selectlog(){
-        let caigouId=this.qiyeid
-          CaigouStatelog.findByLog(caigouId).then(response => {
-            // console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
-          RongziService.findByLog(row.id).then(response =>{
+          this.pa=row.id;
+          RongziService.findByLog(this.pa).then(response =>{
             this.tableData2=response.data
             console.log(response.data )
           })
-           CaiGouService.get(pa)
+           CaiGouService.get(this.pa)
          .then(response => {
             if(response.data.CaigouState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.CaigouState.nextStateid
           this.oldStateid=response.data.CaigouState.id
-          this.selectlog();
-          // console.log(this.activities)
                 this.caigou=response.data;
                 this.caigou.nodeName = response.data.CaigouState.nodeName;
                 this.imageUrlback[0]=response.data.statement
@@ -541,6 +517,7 @@ import RongziService from "../services/RongziService";
               .catch(e => {
                 console.log(e);
               });
+               this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -561,7 +538,7 @@ import RongziService from "../services/RongziService";
         var data = {
            CaigouStateId:this.nextState
           }
-          CaiGouService.update(this.paa,data)
+          CaiGouService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -570,6 +547,17 @@ import RongziService from "../services/RongziService";
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        CaigouState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.CaigouState.nodeName;
           },
@@ -588,6 +576,7 @@ import RongziService from "../services/RongziService";
           this.imageUrlback[1]=""
           this.imageUrlback[2]=""
           this.caigou={},
+          this.tableData2=[],
           this.dialogFormVisible=true
           // RongziService.getAll()
           this.dialogTitle = "addData";
@@ -606,14 +595,15 @@ import RongziService from "../services/RongziService";
               shijitatol:this.rongzi.shijitatol,
               rate:this.rongzi.rate,
               supplier_name:this.rongzi.supplier_name,
-              
+              caigouId:0,
           }
-          RongziService.create(data).then(response =>{
-            this.tableonload();
-            console.log(response.data);
-          }).catch(e => {
-          console.log(e);
-        });   
+          this.tableData2.push(data);
+        //   RongziService.create(data).then(response =>{
+        //     this.tableonload();
+        //     console.log(response.data);
+        //   }).catch(e => {
+        //   console.log(e);
+        // });   
        },
        addsubmit1(rongzi){
           this.$refs[rongzi].validate((valid) => {
@@ -652,7 +642,19 @@ this.dialog=false;
               }).catch(e => {
                 console.log(e);
               });
-          console.log(response.data);
+              for(let i=0;i<this.tableData2.length;i++){
+              // console.log(this.tableData2[i]);
+              this.tableData2[i].caigouId=response.data.id
+              RongziService.create(this.tableData2[i])
+            .then(response => {
+              this.tableonload();
+              console.log(response.data);
+            })
+            .catch(e => {
+              console.log(e);
+            });  
+         } 
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -711,6 +713,7 @@ this.dialog=false;
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);
@@ -720,10 +723,14 @@ this.dialog=false;
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+         this.selectStateAndLogs();
+          RongziService.findByLog(this.pa).then(response =>{
+            this.tableData2=response.data
+            // console.log(response.data )
+          })
            CaiGouService.get(this.pa)
          .then(response => {
                 this.caigou=response.data;
@@ -742,9 +749,12 @@ this.dialog=false;
            this.annui=false;
            this.validated=false;
            this.liucheng=true, 
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
+           RongziService.findByLog(this.pa).then(response =>{
+            this.tableData2=response.data
+            // console.log(response.data )
+          })
            CaiGouService.get(this.pa)
          .then(response => {
                 this.caigou=response.data;
@@ -875,7 +885,6 @@ this.dialog=false;
       return {
        tableData2: [],
         pa:'',
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

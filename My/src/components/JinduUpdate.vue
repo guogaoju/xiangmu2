@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 业务管理/建筑项目进度更新 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>业务管理</el-breadcrumb-item>
       <el-breadcrumb-item>建筑项目进度更新</el-breadcrumb-item>
@@ -286,48 +286,24 @@ import JinduStatelog from "../services/JinduStatelog"
           // console.log(e);
         });
       },
-      selectlog(){
-        let jinduId=this.qiyeid
-        // console.log(jinduId)
-          JinduStatelog.findByLog(jinduId).then(response => {
-            console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
+          this.pa=row.id;
           addjinduwuliao.findByLog(row.id).then(response =>{
             this.tableData2=response.data
             console.log(response.data )
           })
-           JinduService.get(pa)
+           JinduService.get(this.pa)
          .then(response => {
             if(response.data.JinduState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.JinduState.nextStateid
           this.oldStateid=response.data.JinduState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.jindu=response.data;
                 this.jindu.nodeName = response.data.JinduState.nodeName;
@@ -339,6 +315,7 @@ import JinduStatelog from "../services/JinduStatelog"
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -359,7 +336,7 @@ import JinduStatelog from "../services/JinduStatelog"
         var data = {
            JinduStateId:this.nextState
           }
-          JinduService.update(this.paa,data)
+          JinduService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -368,6 +345,17 @@ import JinduStatelog from "../services/JinduStatelog"
           console.log(e);
         });
        },
+        selectStateAndLogs(){
+        JinduState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.JinduState.nodeName;
           },
@@ -410,18 +398,10 @@ import JinduStatelog from "../services/JinduStatelog"
         before_stock : this.form.before_stock ,
         consume:this.form.consume,
         after_stock:this.form.after_stock,
-        jinduId:4,
+        jinduId:0,
         //暂时写死的，
         }
-
-        addjinduwuliao.create(data)
-        .then(response => {
-          this.tableonload();
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });  
+        this.tableData2.push(data);
         },
         addservice(){
                this.dialogFormVisible=false;
@@ -446,7 +426,19 @@ import JinduStatelog from "../services/JinduStatelog"
               }).catch(e => {
                 console.log(e);
               });
-          console.log(response.data);
+            for(let i=0;i<this.tableData2.length;i++){
+              console.log(this.tableData2[i]);
+              this.tableData2[i].jinduId=response.data.id
+              addjinduwuliao.create(this.tableData2[i])
+            .then(response => {
+              this.tableonload();
+              console.log(response.data);
+            })
+            .catch(e => {
+              console.log(e);
+            });  
+         } 
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -496,10 +488,14 @@ import JinduStatelog from "../services/JinduStatelog"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+         this.selectStateAndLogs();
+          addjinduwuliao.findByLog(this.pa).then(response =>{
+            this.tableData2=response.data
+            // console.log(response.data )
+          })
            JinduService.get(this.pa)
          .then(response => {
                 this.jindu=response.data;
@@ -516,9 +512,12 @@ import JinduStatelog from "../services/JinduStatelog"
             this.annui=false;
            this.validated=false;
             this.liucheng=true, 
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
+          addjinduwuliao.findByLog(this.pa).then(response =>{
+            this.tableData2=response.data
+            // console.log(response.data )
+          })
            JinduService.get(this.pa)
          .then(response => {
                 this.jindu=response.data;
@@ -631,7 +630,6 @@ import JinduStatelog from "../services/JinduStatelog"
     data() {
       return {
         pa:'',
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

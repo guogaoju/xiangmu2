@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 客户管理/企业信息管理/建筑企业评级 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>客户管理</el-breadcrumb-item>
         <el-breadcrumb-item>企业信息管理</el-breadcrumb-item>
@@ -363,43 +363,20 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
           // console.log(e);
         });
       },
-      selectlog(){
-        console.log(this.qiyeid)
-        let qiyepingjiId=this.qiyeid
-          QiyepingjiStatelogService.findByLog(qiyepingjiId).then(response => {
-            console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-
-        })
-        .catch(e => {
-          console.log(e);
-        }); 
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-        let pa=row.id;
-        this.paa=pa
-        QiyePingjiService.get(pa)
+        this.pa=row.id;
+        QiyePingjiService.get(this.pa)
          .then(response => {
             if(response.data.QiyepingjiState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.QiyepingjiState.nextStateid
           this.oldStateid=response.data.QiyepingjiState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.Pingji=response.data;
                 this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
@@ -410,6 +387,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
 
        },
        addStatelog(){
@@ -427,13 +405,24 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
           console.log(e);
         });
       },
+      selectStateAndLogs(){
+        QiyepingjiStateService.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.QiyepingjiState.nodeName;
           },
       updateScore: function() {
-            this.Pingji.quantify_points=this.Pingji.score1+this.Pingji.score2+this.Pingji.score3+this.Pingji.score4;
-            this.Pingji.qualitative_points=this.Pingji.score5+this.Pingji.score6+this.Pingji.score7+this.Pingji.score8+this.Pingji.score9;
-            this.Pingji.total_points=this.Pingji.qualitative_points+this.Pingji.quantify_points;
+            this.Pingji.quantify_points=parseInt(this.Pingji.score1)+parseInt(this.Pingji.score2)+parseInt(this.Pingji.score3)+parseInt(this.Pingji.score4);
+            this.Pingji.qualitative_points=parseInt(this.Pingji.score5)+parseInt(this.Pingji.score6)+parseInt(this.Pingji.score7)+parseInt(this.Pingji.score8)+parseInt(this.Pingji.score9);
+            this.Pingji.total_points=parseInt(this.Pingji.qualitative_points)+parseInt(this.Pingji.quantify_points);
             this.$forceUpdate();
       },
       async tableonload(){
@@ -447,8 +436,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         });
       },
        openFrom(){
-          //this.Pingji={},
-          //console.log(this.Pingji)
+          this.Pingji={},
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
@@ -495,7 +483,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
               }
               QiyepingjiStatelogService.create(data).then(response => {
               }).catch(e => {
-                console.log(e);
+                console.log(response.data);
               });
         })
         .catch(e => {
@@ -544,10 +532,10 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
            this.annui=true;
+           this.liucheng=true,
           this.validated=true;
-          this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            QiyePingjiService.get(this.pa)
          .then(response => {
                 this.Pingji=response.data;
@@ -563,9 +551,8 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
            this.annui=false;
            this.validated=false;
           this.liucheng=true,
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            QiyePingjiService.get(this.pa)
          .then(response => {
                 this.Pingji=response.data;
@@ -610,7 +597,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         var data = {
            QiyepingjiStateId:this.nextState
           }
-          QiyePingjiService.update(this.paa,data)
+          QiyePingjiService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -662,7 +649,6 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
     data() {
       return {
         pa:'',
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

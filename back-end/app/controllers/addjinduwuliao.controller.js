@@ -18,6 +18,7 @@ exports.create = (req, res) => {
         before_stock : req.body.before_stock ,
         consume:req.body.consume,
         after_stock:req.body.after_stock,
+        jinduId:req.body.jinduId,
   };
   Addjinduwuliao.create(addjinduwuliao)
     .then(data => {

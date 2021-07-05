@@ -1,6 +1,6 @@
 <template>
 <div>
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>客户管理</el-breadcrumb-item>
       <el-breadcrumb-item>企业信息管理</el-breadcrumb-item>
@@ -487,10 +487,9 @@ import StatelogService from "../services/StatelogService";
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-
           this.pa=row.id;
-
            QiyeService.get(this.pa)
          .then(response => {
             if(response.data.qiyeState.lastone===1){
@@ -510,8 +509,6 @@ import StatelogService from "../services/StatelogService";
                 console.log(e);
               });
           this.selectStateAndLogs();
-
-
        },
 
       async tableonload(){
@@ -657,6 +654,7 @@ import StatelogService from "../services/StatelogService";
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
           this.pa=this.tableData[index].id;
            this.selectStateAndLogs();

@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 业务管理/还款管理 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>业务管理</el-breadcrumb-item>
       <el-breadcrumb-item>还款管理</el-breadcrumb-item>
@@ -196,8 +196,8 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12"><el-form-item></el-form-item></el-col>   
-        <el-col :span="12">
+        <el-col :span="11"><el-form-item></el-form-item></el-col>   
+        <el-col :span="13">
         <el-form-item>
            <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('huankuan')">{{buttonText}}</el-button>
         </el-form-item>
@@ -253,55 +253,31 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           // console.log(e);
         });
       },
-      selectlog(){
-        let huankuanId=this.qiyeid
-        console.log(huankuanId)
-          HuankuanStatelog.findByLog(huankuanId).then(response => {
-            console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
-           HuanKuanService.get(pa)
+          this.pa=row.id;
+           HuanKuanService.get(this.pa)
          .then(response => {
             if(response.data.HuankuanState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.HuankuanState.nextStateid
           this.oldStateid=response.data.HuankuanState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.huankuan=response.data;
                 this.huankuan.nodeName = response.data.HuankuanState.nodeName;
                 this.imageUrl=response.data.huan_stream
                 this.validated=true;
                 this.buttonText = response.data.HuankuanState.nodebutton;
-               
               })
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -322,7 +298,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         var data = {
            HuankuanStateId:this.nextState
           }
-          HuanKuanService.update(this.paa,data)
+          HuanKuanService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -331,6 +307,17 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        HuankuanState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.HuankuanState.nodeName;
           },
@@ -405,8 +392,9 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         },
         selectlogs(){
         let huankuanId=this.pa
+        console.log(this.pa)
           HuankuanStatelog.findByLog(huankuanId).then(response => {
-            console.log(response.data)
+            // console.log(response.data)
               for (let j = 0; j < this.activities.length; j++) {
                     let old = this.activities[j].id;
                         for (var i = 0; i < response.data.length; i++) {
@@ -417,6 +405,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);
@@ -426,10 +415,10 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            HuanKuanService.get(this.pa)
          .then(response => {
                 this.huankuan=response.data;
@@ -446,9 +435,8 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
            this.annui=false;
            this.validated=false;
            this.liucheng=true, 
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            HuanKuanService.get(this.pa)
          .then(response => {
                 this.huankuan=response.data;
@@ -555,7 +543,6 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
     data() {
       return {
         pa:'',
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

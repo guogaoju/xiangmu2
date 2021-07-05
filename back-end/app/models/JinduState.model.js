@@ -17,7 +17,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
       }
       
-    });
-    {timestamps: false}
+    },{timestamps: false});
     return JinduState;
   };

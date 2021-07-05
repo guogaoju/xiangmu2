@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 仓库管理/出库管理 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>仓库管理</el-breadcrumb-item>
       <el-breadcrumb-item>出库管理</el-breadcrumb-item>
@@ -246,44 +246,20 @@ import ChukuStatelog from "../services/ChukuStatelog"
           // console.log(e);
         });
       },
-      selectlog(){
-        let chukuId=this.qiyeid
-        // console.log(rukuId)
-          ChukuStatelog.findByLog(chukuId).then(response => {
-            console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
-           ChukuService.get(pa)
+          this.pa=row.id;
+           ChukuService.get(this.pa)
          .then(response => {
             if(response.data.ChukuState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.ChukuState.nextStateid
           this.oldStateid=response.data.ChukuState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.chuku=response.data;
                 this.chuku.nodeName = response.data.ChukuState.nodeName;
@@ -294,6 +270,7 @@ import ChukuStatelog from "../services/ChukuStatelog"
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -314,7 +291,7 @@ import ChukuStatelog from "../services/ChukuStatelog"
         var data = {
            ChukuStateId:this.nextState
           }
-          ChukuService.update(this.paa,data)
+          ChukuService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -323,6 +300,17 @@ import ChukuStatelog from "../services/ChukuStatelog"
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        ChukuState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.ChukuState.nodeName;
           },
@@ -416,10 +404,10 @@ import ChukuStatelog from "../services/ChukuStatelog"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            ChukuService.get(this.pa)
          .then(response => {
                 this.chuku=response.data;
@@ -435,9 +423,8 @@ import ChukuStatelog from "../services/ChukuStatelog"
           this.annui=false;
            this.validated=false;
            this.liucheng=true, 
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            ChukuService.get(this.pa)
          .then(response => {
                 this.chuku=response.data;
@@ -508,7 +495,6 @@ import ChukuStatelog from "../services/ChukuStatelog"
     data() {
       return {
         pa:'',
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

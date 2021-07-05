@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 客户管理/核心企业管理/核心企业页面 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>客户管理</el-breadcrumb-item>
       <el-breadcrumb-item>核心企业管理</el-breadcrumb-item>
@@ -448,53 +448,30 @@ import HexinStatelog from "../services/HexinStatelog";
           // console.log(e);
         });
       },
-      selectlog(){
-        let core_firmId=this.qiyeid
-          HexinStatelog.findByLog(core_firmId).then(response => {
-            // console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
-           HexinService.get(pa)
+          this.pa=row.id;
+           HexinService.get(this.pa)
          .then(response => {
             if(response.data.corefirmState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.corefirmState.nextStateid
           this.oldStateid=response.data.corefirmState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.Qiye=response.data;
                 this.Qiye.nodeName = response.data.corefirmState.nodeName;
                 this.validated=true;
                 this.buttonText = response.data.corefirmState.nodebutton;
-               
               })
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -515,7 +492,7 @@ import HexinStatelog from "../services/HexinStatelog";
         var data = {
            corefirmStateId:this.nextState
           }
-          HexinService.update(this.paa,data)
+          HexinService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -524,6 +501,17 @@ import HexinStatelog from "../services/HexinStatelog";
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        HexinState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.corefirmState.nodeName;
           },
@@ -628,10 +616,10 @@ import HexinStatelog from "../services/HexinStatelog";
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            HexinService.get(this.pa)
          .then(response => {
                 this.Qiye=response.data;
@@ -647,9 +635,8 @@ import HexinStatelog from "../services/HexinStatelog";
             this.annui=false;
            this.validated=false;
            this.liucheng=true, 
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            HexinService.get(this.pa)
          .then(response => {
                 this.Qiye=response.data;
@@ -734,7 +721,6 @@ import HexinStatelog from "../services/HexinStatelog";
     data() {
       return {
         pa:'',
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

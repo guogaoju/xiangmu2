@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 仓库管理/库存信息 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>仓库管理</el-breadcrumb-item>
       <el-breadcrumb-item>库存信息</el-breadcrumb-item>
@@ -222,44 +222,20 @@ import KucunStatelog from "../services/KucunStatelog"
           // console.log(e);
         });
       },
-      selectlog(){
-        let kucunId=this.qiyeid
-        // console.log(rukuId)
-          KucunStatelog.findByLog(kucunId).then(response => {
-            console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
-           KucunService.get(pa)
+          this.pa=row.id;
+           KucunService.get(this.pa)
          .then(response => {
             if(response.data.KucunState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.KucunState.nextStateid
           this.oldStateid=response.data.KucunState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.kucun=response.data;
                 this.kucun.nodeName = response.data.KucunState.nodeName;
@@ -270,6 +246,7 @@ import KucunStatelog from "../services/KucunStatelog"
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -290,7 +267,7 @@ import KucunStatelog from "../services/KucunStatelog"
         var data = {
            KucunStateId:this.nextState
           }
-          KucunService.update(this.paa,data)
+          KucunService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -299,6 +276,17 @@ import KucunStatelog from "../services/KucunStatelog"
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        KucunState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.KucunState.nodeName;
           },
@@ -391,10 +379,10 @@ import KucunStatelog from "../services/KucunStatelog"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-          this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            KucunService.get(this.pa)
          .then(response => {
                 this.kucun=response.data;
@@ -410,9 +398,8 @@ import KucunStatelog from "../services/KucunStatelog"
            this.annui=false;
            this.validated=false;
            this.liucheng=true, 
-           this.selectState();
             this.pa=this.tableData[index].id;
-            this.selectlogs();
+            this.selectStateAndLogs();
            KucunService.get(this.pa)
          .then(response => {
                 this.kucun=response.data;
@@ -482,7 +469,6 @@ import KucunStatelog from "../services/KucunStatelog"
     data() {
       return {
         pa:'',
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

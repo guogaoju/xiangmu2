@@ -1,6 +1,6 @@
 <template>
 <div>
-   <el-breadcrumb separator-class="el-icon-arrow-right">
+   <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>客户管理</el-breadcrumb-item>
       <el-breadcrumb-item>企业信息管理</el-breadcrumb-item>
@@ -207,43 +207,20 @@ import FangwenStatelog from "../services/FangwenStatelog"
           // console.log(e);
         });
       },
-      selectlog(){
-        let fangwenId=this.qiyeid
-          FangwenStatelog.findByLog(fangwenId).then(response => {
-            // console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
-           FangwenService.get(pa)
+          this.pa=row.id;
+           FangwenService.get(this.pa)
          .then(response => {
             if(response.data.FangwenState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.FangwenState.nextStateid
           this.oldStateid=response.data.FangwenState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.addfangwen=response.data;
                 this.addfangwen.nodeName = response.data.FangwenState.nodeName;
@@ -254,6 +231,7 @@ import FangwenStatelog from "../services/FangwenStatelog"
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -274,7 +252,7 @@ import FangwenStatelog from "../services/FangwenStatelog"
         var data = {
            FangwenStateId:this.nextState
           }
-          FangwenService.update(this.paa,data)
+          FangwenService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -283,6 +261,17 @@ import FangwenStatelog from "../services/FangwenStatelog"
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        FangwenState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.FangwenState.nodeName;
           },
@@ -362,7 +351,6 @@ import FangwenStatelog from "../services/FangwenStatelog"
         });
         },
         selectlogs(){
-           console.log(this.pa)
         let fangwenId=this.pa
           FangwenStatelog.findByLog(fangwenId).then(response => {
             console.log(response.data)
@@ -385,10 +373,10 @@ import FangwenStatelog from "../services/FangwenStatelog"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
         FangwenService.get(this.pa)
          .then(response => {
                 this.addfangwen=response.data;
@@ -404,9 +392,8 @@ import FangwenStatelog from "../services/FangwenStatelog"
             this.annui=false;
            this.validated=false;
            this.liucheng=true, 
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            FangwenService.get(this.pa)
          .then(response => {
                 this.addfangwen=response.data;
@@ -484,8 +471,7 @@ import FangwenStatelog from "../services/FangwenStatelog"
 
     data() {
       return {
-          pa:'',
-        paa:'',
+        pa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

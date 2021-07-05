@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 项目管理/制造业项目管理 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>项目管理</el-breadcrumb-item>
       <el-breadcrumb-item>制造业项目管理</el-breadcrumb-item>
@@ -445,47 +445,24 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
           // console.log(e);
         });
       },
-      selectlog(){
-        let zhizaoId=this.qiyeid
-          ZhizaoStatelog.findByLog(zhizaoId).then(response => {
-            // console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
+          this.pa=row.id;
            addWuliaoService.findByLog(row.id).then(response =>{
             this.tableData2=response.data
             console.log(response.data )
           })
-           ZhizaoService.get(pa)
+           ZhizaoService.get(this.pa)
          .then(response => {
             if(response.data.ZhizaoState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.ZhizaoState.nextStateid
           this.oldStateid=response.data.ZhizaoState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.xiangmu=response.data;
                 this.xiangmu.nodeName = response.data.ZhizaoState.nodeName;
@@ -496,13 +473,8 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
-        // selectwuliao(){
-        // addWuliaoService.findByLog(this.paa).then(response =>{
-        //     this.tableData2=response.data
-        //     console.log(response.data )
-        //   })
-        //   },
        addStatelog(){
          var data = {
            //userid拿不到，默认2
@@ -523,7 +495,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         var data = {
            ZhizaoStateId:this.nextState
           }
-          ZhizaoService.update(this.paa,data)
+          ZhizaoService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -532,6 +504,17 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        ZhizaoState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.ZhizaoState.nodeName;
           },
@@ -580,18 +563,10 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         need:this.form.need,
         Supplied:this.form.Supplied,
         Supplieds:this.form.Supplieds,
-        zhizaoId:1,
+        zhizaoId:0,
         //暂时写死的，
         }
-        addWuliaoService.create(data)
-        .then(response => {
-          this.tableonload();
-          this.selectwuliao();
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });  
+        this.tableData2.push(data);
         },
          addservice(){
                 this.dialogFormVisible=false;
@@ -613,7 +588,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         .then(response => {
           this.tableonload();
           var data = {
-             //userid拿不到，默认1
               userId:this.currentUser.id,
               zhizaoId: response.data.id,
               oldstateid: 1,
@@ -624,11 +598,24 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
               }).catch(e => {
                 console.log(e);
               });
-          console.log(response.data);
+              for(let i=0;i<this.tableData2.length;i++){
+              // console.log(this.tableData2[i]);
+              this.tableData2[i].zhizaoId=response.data.id
+              addWuliaoService.create(this.tableData2[i])
+            .then(response => {
+              this.tableonload();
+              // console.log(response.data);
+            })
+            .catch(e => {
+              console.log(e);
+            });  
+         } 
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
+        
         },
         submit(xiangmu){
           this.$refs[xiangmu].validate((valid) => {
@@ -668,13 +655,18 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         });   
       },
        kanClick(index,row){
+         this.tableData2=[],
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
+           addWuliaoService.findByLog(this.pa).then(response =>{
+            this.tableData2=response.data
+            // console.log(response.data )
+          })
            ZhizaoService.get(this.pa)
          .then(response => {
                 this.xiangmu=response.data;
@@ -685,14 +677,18 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
               });
        },
         updateClick(index,row){
+          this.tableData2=[],
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";
             this.annui=false;
            this.validated=false; 
            this.liucheng=true,
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
+          addWuliaoService.findByLog(this.pa).then(response =>{
+            this.tableData2=response.data
+            // console.log(response.data )
+          })
            ZhizaoService.get(this.pa)
          .then(response => {
                 this.xiangmu=response.data;

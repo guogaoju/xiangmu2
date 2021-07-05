@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 客户管理/材料供应商信息管理/材料供应商资料页面 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>客户管理</el-breadcrumb-item>
       <el-breadcrumb-item>材料供应商信息管理</el-breadcrumb-item>
@@ -476,43 +476,20 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
           // console.log(e);
         });
       },
-      selectlog(){
-        let cailiaogyId=this.qiyeid
-          CailiaoStatelog.findByLog(cailiaogyId).then(response => {
-            // console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
-           CailiaogysService.get(pa)
+          this.pa=row.id;
+           CailiaogysService.get(this.pa)
          .then(response => {
             if(response.data.CailiaoState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.CailiaoState.nextStateid
           this.oldStateid=response.data.CailiaoState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.Ziliao=response.data;
                 this.Ziliao.nodeName = response.data.CailiaoState.nodeName;
@@ -523,6 +500,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -543,7 +521,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         var data = {
            CailiaoStateId:this.nextState
           }
-          CailiaogysService.update(this.paa,data)
+          CailiaogysService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -552,6 +530,17 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        CailiaoState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.CailiaoState.nodeName;
           },
@@ -645,7 +634,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         });
         },
         selectlogs(){
-           console.log(this.pa)
+          //  console.log(this.pa)
         let CailiaoId=this.pa
           CailiaoStatelog.findByLog(CailiaoId).then(response => {
             console.log(response.data)
@@ -668,10 +657,10 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+         this.selectStateAndLogs();
            CailiaogysService.get(this.pa)
          .then(response => {
                 this.Ziliao=response.data;
@@ -687,9 +676,8 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
             this.annui=false;
            this.validated=false;
            this.liucheng=true, 
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            CailiaogysService.get(this.pa)
          .then(response => {
                 this.Ziliao=response.data;
@@ -779,7 +767,6 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
     data() {
       return {
         pa:'',
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

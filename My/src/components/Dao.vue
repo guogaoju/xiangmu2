@@ -100,18 +100,18 @@
                             </el-breadcrumb>
                         </div>
                     </div> -->
-                    <div class="big1" style="width:100%;background-color: ; height:50px ; overflow: hidden">
+                    <div class="big1" style="width:100%;background-color: ; height:40px ; overflow: hidden">
             <span class="demonstration" style="float:left;padding-top:15px;color:black;margin-left:1%">
                 供应链金融管理系统
             </span>
-                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:5px">
                     <li class="nav-item">
                         <a style="color:black" class="nav-link" href @click.prevent="logOut">
                             <font-awesome-icon icon="sign-out-alt" />退出登录
                         </a>
                     </li>
                 </span>
-                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:5px">
                     <li  class="nav-item">
                         <router-link style="color:black" to="/profile" class="nav-link">
                             <font-awesome-icon icon="user" />
@@ -119,7 +119,7 @@
                         </router-link>
                     </li>
                 </span>
-                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:10px">
+                <span class="navbar-nav ml-auto" style="float:right;margin-right:1%;padding-top:5px">
                     <li  class="nav-item">
                         <router-link style="color:black" to="/Bumen" class="nav-link">
                             <font-awesome-icon icon="user" />

@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 项目管理/建筑项目管理 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>项目管理</el-breadcrumb-item>
       <el-breadcrumb-item>建筑项目管理</el-breadcrumb-item>
@@ -597,47 +597,24 @@ import WuliaoService from "../services/WuliaoService";
           // console.log(e);
         });
       },
-      selectlog(){
-        let jianzhuId=this.qiyeid
-          JianzhuStatelog.findByLog(jianzhuId).then(response => {
-            // console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-       
-          // console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
+          this.pa=row.id;
           addjianzhuwuliao.findByLog(row.id).then(response =>{
             this.tableData2=response.data
             console.log(response.data )
           })
-           JianzhuService.get(pa)
+           JianzhuService.get(this.pa)
          .then(response => {
             if(response.data.JianzhuState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.JianzhuState.nextStateid
           this.oldStateid=response.data.JianzhuState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.xiangmu=response.data;
                 this.xiangmu.nodeName = response.data.JianzhuState.nodeName;
@@ -648,6 +625,7 @@ import WuliaoService from "../services/WuliaoService";
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -668,7 +646,7 @@ import WuliaoService from "../services/WuliaoService";
         var data = {
            JianzhuStateId:this.nextState
           }
-          JianzhuService.update(this.paa,data)
+          JianzhuService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -677,6 +655,17 @@ import WuliaoService from "../services/WuliaoService";
           console.log(e);
         });
        },
+       selectStateAndLogs(){
+        JianzhuState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.JianzhuState.nodeName;
           },
@@ -691,6 +680,7 @@ import WuliaoService from "../services/WuliaoService";
         });
       },
        openFrom(){
+         this.tableData2=[],
           this.xiangmu={},
           this.dialogFormVisible=true
            this.selectState();
@@ -736,20 +726,23 @@ import WuliaoService from "../services/WuliaoService";
               }).catch(e => {
                 console.log(e);
               });
-          console.log(response.data);
+              
+          // console.log(response.data);
           //在这个地方把tableData2里的数据逐条拿出来，把id填上，提交到后端
           //如果是修改已有的，那应该先把原先的该企业相关的建筑物料先从数据库里删除，新增不需要。
-          //for each item in tableData2:
-            //tabledata2[i].id=response.data.id
-            //addjianzhuwuliao.create(tabledata2[i])
-            // .then(response => {
-            //   this.tableonload();
-            //   console.log(response.data);
-            // })
-            // .catch(e => {
-            //   console.log(e);
-            // });  
-        })
+         for(let i=0;i<this.tableData2.length;i++){
+              // console.log(this.tableData2[i]);
+              this.tableData2[i].jianzhuId=response.data.id
+              addjianzhuwuliao.create(this.tableData2[i])
+            .then(response => {
+              this.tableonload();
+              console.log(response.data);
+            })
+            .catch(e => {
+              console.log(e);
+            });  
+         } 
+          })
         .catch(e => {
           console.log(e);
         });
@@ -798,7 +791,7 @@ import WuliaoService from "../services/WuliaoService";
         Supplied:this.form.Supplied,
         Supplieds:this.form.Supplieds,
         //如果查看或修改已有项目，那这个id是可以拿到的
-        jianzhuId:5,
+        jianzhuId:0
         //暂时写死的，
         }
         //数据先放入tableData2里，这样前端的表格就可以正常显示，因为没有拿到项目id。
@@ -806,14 +799,6 @@ import WuliaoService from "../services/WuliaoService";
         //1.如果是新增项目，那就暂时还没有项目id，就先不提交数据到后端。等母表单提交后，拿到id，在then里面提交数据。
         //2.如果是已有的项目，查看或修改，那就已经拿到id了，正常提交数据。
         this.tableData2.push(data);
-        // addjianzhuwuliao.create(data)
-        // .then(response => {
-        //   this.tableonload();
-        //   console.log(response.data);
-        // })
-        // .catch(e => {
-        //   console.log(e);
-        // });  
         },
         selectlogs(){
           //  console.log(this.pa)
@@ -839,10 +824,14 @@ import WuliaoService from "../services/WuliaoService";
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
            this.annui=true;
+           this.liucheng=true,
           this.validated=true;
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
+          addjianzhuwuliao.findByLog(this.pa).then(response =>{
+            this.tableData2=response.data
+            // console.log(response.data )
+          })
            JianzhuService.get(this.pa)
          .then(response => {
                 this.xiangmu=response.data;
@@ -853,14 +842,18 @@ import WuliaoService from "../services/WuliaoService";
               });
        },
         updateClick(index,row){
+          this.tableData2=[],
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData"; 
             this.annui=false;
            this.validated=false;
            this.liucheng=true, 
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
+          addjianzhuwuliao.findByLog(this.pa).then(response =>{
+            this.tableData2=response.data
+            // console.log(response.data )
+          })
            JianzhuService.get(this.pa)
          .then(response => {
                 this.xiangmu=response.data;
@@ -905,12 +898,10 @@ import WuliaoService from "../services/WuliaoService";
        },
        delClickconfirm(index,row){
               let pa=this.tableData[index].id;
-              let a = this;
               JianzhuService.delete(pa)
               .then(response => {
-                this.delClickconfirm(index);
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);
@@ -953,7 +944,6 @@ import WuliaoService from "../services/WuliaoService";
     data() {
       return {
         pa:'',
-        paa:'',
         buttonText: '确定',
         qiyeid:'',
         oldstateid:'',

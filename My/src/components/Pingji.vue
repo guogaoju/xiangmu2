@@ -1,7 +1,7 @@
 <template>
 <div>
   <!-- 客户管理/材料供应商信息管理/供应商评级管理 -->
-  <el-breadcrumb separator-class="el-icon-arrow-right">
+  <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>客户管理</el-breadcrumb-item>
       <el-breadcrumb-item>材料供应商信息管理</el-breadcrumb-item>
@@ -138,7 +138,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="定量评分" prop="quantify_points" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model.number="Pingji.quantify_points"></el-input>
+            <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.quantify_points"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -168,13 +168,13 @@
          <el-col :span="12">
            <span>是否与城投公司或南昌县国有平台有过合作</span>
           <el-form-item label="满分5分" prop="score1" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score1"></el-input>
+            <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score1"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>在江西省内履约、产品质量、口碑情况</span>
           <el-form-item label="满分10分" prop="score2" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score2"></el-input>
+            <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -182,13 +182,13 @@
          <el-col :span="12">
            <span>总体征信情况</span>
           <el-form-item label="满分5分" prop="score3" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score3"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score3"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
             <span>经营管理情况（生产管理、财务管理、销售管理）</span>
           <el-form-item label="满分5分" prop="score4" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score4"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -196,7 +196,7 @@
          <el-col :span="12">
            <span>行业地位</span>
           <el-form-item label="满分5分" prop="score5" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-on:change="test" v-model.number="Pingji.score5"></el-input>
+           <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score5"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
@@ -274,42 +274,20 @@ import PingjiStatelog from "../services/PingjiStatelog"
           // console.log(e);
         });
       },
-      selectlog(){
-        console.log(this.qiyeid)
-        let pingjiId=this.qiyeid
-          PingjiStatelog.findByLog(pingjiId).then(response => {
-            console.log(response.data)
-              for (let j = 0; j < this.activities.length; j++) {
-                    let old = this.activities[j].id;
-                        for (var i = 0; i < response.data.length; i++) {
-                            let pre = response.data[i].newstateid;
-                                if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
-                                }
-                            }
-                       }
-        })
-        .catch(e => {
-          console.log(e);
-        });   
-      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.liucheng=true,
         this.dialogTitle = "examine";
-        this.selectState();
-          let pa=row.id;
-          this.paa=pa
-           PingjiService.get(pa)
+          this.pa=row.id;
+           PingjiService.get(this.pa)
          .then(response => {
             if(response.data.PingjiState.lastone===1){
                   this.isshow=false;
                 }
-          this.qiyeid=pa
+          this.qiyeid=this.pa
           this.nextState=response.data.PingjiState.nextStateid
           this.oldStateid=response.data.PingjiState.id
-          this.selectlog();
           // console.log(this.activities)
                 this.Pingji=response.data;
                 this.Pingji.nodeName = response.data.PingjiState.nodeName;
@@ -320,6 +298,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
               .catch(e => {
                 console.log(e);
               });
+              this.selectStateAndLogs();
        },
        addStatelog(){
          var data = {
@@ -336,13 +315,25 @@ import PingjiStatelog from "../services/PingjiStatelog"
           console.log(e);
         });
       },
+      selectStateAndLogs(){
+        PingjiState.getAll()
+        .then(response => {
+          this.activities=response.data
+          this.selectlogs();
+          // console.log(response.data);
+        })
+        .catch(e => {
+          // console.log(e);
+        });
+      },
       getfor(row,column){
             return row.PingjiState.nodeName;
           },
-     test: function () {
-            this.Pingji.qualitative_points=this.Pingji.score1+this.Pingji.score2+this.Pingji.score3+this.Pingji.score4+this.Pingji.score5
-            this.Pingji.total_points=this.Pingji.quantify_points+this.Pingji.qualitative_points
-        },
+          updateScore: function() { 
+            this.Pingji.qualitative_points=parseInt(this.Pingji.score1)+parseInt(this.Pingji.score2)+parseInt(this.Pingji.score3)+parseInt(this.Pingji.score4)+parseInt(this.Pingji.score5);
+            this.Pingji.total_points=parseInt(this.Pingji.qualitative_points)+parseInt(this.Pingji.quantify_points);
+            this.$forceUpdate();
+      },
       async tableonload(){
          PingjiService.getAll()
         .then(response => {
@@ -448,10 +439,10 @@ import PingjiStatelog from "../services/PingjiStatelog"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
          this.annui=true;
+         this.liucheng=true,
           this.validated=true;
-          this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            PingjiService.get(this.pa)
          .then(response => {
                 this.Pingji=response.data;
@@ -467,9 +458,8 @@ import PingjiStatelog from "../services/PingjiStatelog"
             this.annui=false;
            this.validated=false;
            this.liucheng=true,
-           this.selectState();
           this.pa=this.tableData[index].id;
-          this.selectlogs();
+          this.selectStateAndLogs();
            PingjiService.get(this.pa)
          .then(response => {
                 this.Pingji=response.data;
@@ -509,7 +499,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         var data = {
            PingjiStateId:this.nextState
           }
-          PingjiService.update(this.paa,data)
+          PingjiService.update(this.pa,data)
         .then(response => {
           this.tableonload();
           // console.log(response.data);
@@ -575,9 +565,19 @@ import PingjiStatelog from "../services/PingjiStatelog"
         kanData: "查看数据",
         examine: "评级信息",
       },
+      Pingji: {
+            score1: 0,
+            score2: 0,
+            score3: 0,
+            score4: 0,
+            score5: 0,
+            quantify_points:0,
+            qualitative_points:0,
+            total_points: 0
+        },
         dialogTitle:"",
         TravelType:1,
-        formLabelWidth: "100px",
+        formLabelWidth: "150px",
         rules:{
           supplier_name: [
             { required: true, message: '请输入企业名称', trigger: 'blur' },
@@ -594,7 +594,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         },
         tableData:[],
         result:[],
-        Pingji:{},
+        // Pingji:{},
         filterId:'',
         filterSupplier_name:'',
         filterYear:'',

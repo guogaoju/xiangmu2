@@ -345,7 +345,19 @@ import PingjiStatelog from "../services/PingjiStatelog"
         });
       },
        openFrom(){
-          this.Pingji={},
+          this.Pingji={
+            supplier_name:'',
+            year:'',
+            quarter:'',
+             score1: 0,
+            score2: 0,
+            score3: 0,
+            score4: 0,
+            score5: 0,
+            quantify_points:0,
+            qualitative_points:0,
+            total_points: 0
+          },
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
@@ -429,7 +441,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
                             }
                        }
        
-          // console.log(response.data);
+          this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

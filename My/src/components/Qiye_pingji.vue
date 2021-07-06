@@ -436,7 +436,24 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         });
       },
        openFrom(){
-          this.Pingji={},
+          this.Pingji={
+            qiye_name:'',
+            trade:'',
+            year:'',
+            quarter:'',
+             score1: 0,
+            score2: 0,
+            score3: 0,
+            score4: 0,
+            score5: 0,
+            score6: 0,
+            score7: 0,
+            score8: 0,
+            score9: 0,
+            quantify_points:0,
+            qualitative_points:0,
+            total_points: 0
+          },
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
@@ -522,11 +539,12 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
                             }
                        }
        
-          // console.log(response.data);
+          this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);
-        });   
+        });
+
       },
        kanClick(index,row){
           this.dialogFormVisible=true
@@ -539,13 +557,15 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
            QiyePingjiService.get(this.pa)
          .then(response => {
                 this.Pingji=response.data;
-                this.Pingji.nodeName = response.data.QiyepingjiState.nodeName; 
+                this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
+                this.tableonload(); 
               })
               .catch(e => {
                 console.log(e);
               });
        },
         updateClick(index,row){
+          this.Pingji={},
            this.dialogFormVisible=true
            this.dialogTitle = "updataData";
            this.annui=false;

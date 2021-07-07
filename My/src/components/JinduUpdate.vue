@@ -479,6 +479,7 @@ import JinduStatelog from "../services/JinduStatelog"
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);
@@ -530,7 +531,21 @@ import JinduStatelog from "../services/JinduStatelog"
                 console.log(e);
               });
        },
+       updateaddwuliao(){
+          var data = {
+        name: this.form.name,
+        wname:this.form.wname,
+        before_stock : this.form.before_stock ,
+        consume:this.form.consume,
+        after_stock:this.form.after_stock,
+        jinduId:this.pa,
+        }
+        addjinduwuliao.create(data).then(response =>{
+          // console.log(response.data +"111111111")
+        })
+       },
         updateservice(){
+          this.updateaddwuliao();
              this.dialogFormVisible=false;
             var data = {
             id:this.jindu.id,

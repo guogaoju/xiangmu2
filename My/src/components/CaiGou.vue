@@ -769,7 +769,24 @@ this.dialog=false;
                 console.log(e);
               });
        },
+       updateaddwuliao(){
+          var data = {
+        wuliaotype: this.rongzi.wuliaotype,
+              danwei:this.rongzi.danwei,
+              shenqing: this.rongzi.shenqing,
+              price : this.rongzi.price ,
+              yugutatol:this.rongzi.yugutatol,
+              shijitatol:this.rongzi.shijitatol,
+              rate:this.rongzi.rate,
+              supplier_name:this.rongzi.supplier_name,
+              caigouId:this.pa,
+        }
+        RongziService.create(data).then(response =>{
+          // console.log(response.data +"111111111")
+        })
+       },
        updateservice(){
+         this.updateaddwuliao();
               this.dialogFormVisible=false;
           var data = {
             id:this.caigou.id,

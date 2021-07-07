@@ -649,6 +649,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);
@@ -676,6 +677,21 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
                 console.log(e);
               });
        },
+       updateaddwuliao(){
+          var data = {
+        supplier_name:this.form.supplier_name,
+        item_name:this.form.item_name,
+        wuliaoname:this.form.wuliaoname,
+        danwei: this.form.danwei ,
+        need:this.form.need,
+        Supplied:this.form.Supplied,
+        Supplieds:this.form.Supplieds,
+        zhizaoId:this.pa,
+        }
+        addWuliaoService.create(data).then(response =>{
+          // console.log(response.data +"111111111")
+        })
+       },
         updateClick(index,row){
           this.tableData2=[],
            this.dialogFormVisible=true;
@@ -699,6 +715,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
               });
        },
        updateservice(){
+         this.updateaddwuliao();
             this.dialogFormVisible=false;
           var data = {
             id:this.xiangmu.id,

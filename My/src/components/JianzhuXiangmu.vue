@@ -427,7 +427,7 @@
             <el-form-item></el-form-item>
             </el-col>
            <el-col :span="4">
-             <el-button type="warning" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button> 
+             <el-button type="warning" :disabled="annui1" v-show="isshow" @click="addform()">添加物料</el-button> 
              </el-col>
          </el-row>
       <el-row>
@@ -599,6 +599,7 @@ import WuliaoService from "../services/WuliaoService";
       },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
+        this.annui1=true;
         this.annui=false
         this.liucheng=true,
         this.dialogTitle = "examine";
@@ -967,6 +968,7 @@ import WuliaoService from "../services/WuliaoService";
         oldStateid:'',
         nextState:'',
         annui:'',
+        annui1:'',
         isshow:true,
         validated:false,
         liucheng:false,

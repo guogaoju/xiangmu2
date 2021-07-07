@@ -273,7 +273,7 @@
             <el-form-item></el-form-item>
             </el-col>
            <el-col :span="4">
-             <el-button type="warning" :disabled="annui" v-show="isshow" @click="addform()">添加物料</el-button> 
+             <el-button type="warning" :disabled="annui1" v-show="isshow" @click="addform()">添加物料</el-button> 
              </el-col>
          </el-row>
       <el-row>
@@ -448,6 +448,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.annui1=true;
         this.liucheng=true,
         this.dialogTitle = "examine";
           this.pa=row.id;
@@ -794,6 +795,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         oldStateid:'',
         nextState:'',
         annui:'',
+        annui1:'',
         isshow:true,
         validated:false,
         liucheng:false,

@@ -96,31 +96,31 @@ function initial() {
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  QiyeState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  QiyeState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // QiyeState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // QiyeState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
   QiyepingjiState.create({
     id:1,
     nodeName: "提交",
@@ -133,113 +133,113 @@ function initial() {
   });
   QiyepingjiState.create({
     id:2,
-    nodeName: "审核",
+    nodeName: "风控审核",
     nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
+    // nextStateid: 3,
+    lastone:1
   }).then(data=>{
     data.setDepts([1,2]).then(()=>{
     })
   });
-  QiyepingjiState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // QiyepingjiState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   FinanceState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  FinanceState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  FinanceState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // FinanceState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // FinanceState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   FangwenState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  FangwenState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  FangwenState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // FangwenState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // FangwenState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   CailiaoState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  CailiaoState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  CailiaoState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // CailiaoState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // CailiaoState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   PingjiState.create({
     id:1,
@@ -253,23 +253,23 @@ function initial() {
   });
   PingjiState.create({
     id:2,
-    nodeName: "审核",
+    nodeName: "风控审核",
     nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
+    // nextStateid: 3,
+    lastone:1
   }).then(data=>{
     data.setDepts([1,2]).then(()=>{
     })
   });
-  PingjiState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // PingjiState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   corefirmState.create({
     id:1,
@@ -313,23 +313,23 @@ function initial() {
   });
   JianzhuState.create({
     id:2,
-    nodeName: "审核",
+    nodeName: "信融审核",
     nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  JianzhuState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
+    // nextStateid: 3,
     lastone:1
   }).then(data=>{
     data.setDepts([2]).then(()=>{
     })
-  });;
+  });
+  // JianzhuState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   ZhizaoState.create({
     id:1,
@@ -343,23 +343,23 @@ function initial() {
   });
   ZhizaoState.create({
     id:2,
-    nodeName: "审核",
+    nodeName: "信融审核",
     nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  ZhizaoState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
+    // nextStateid: 3,
     lastone:1
   }).then(data=>{
     data.setDepts([2]).then(()=>{
     })
-  });;
+  });
+  // ZhizaoState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   CaigouState.create({
     id:1,
@@ -433,17 +433,17 @@ function initial() {
   });
   HuankuanState.create({
     id:2,
-    nodeName: "审核",
+    nodeName: "财务审核",
     nodebutton: "审核",
     nextStateid: 3,
     lastone:0
   }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
+    data.setDepts([2]).then(()=>{
     })
   });
   HuankuanState.create({
     id:3,
-    nodeName: "审批",
+    nodeName: "风控审批",
     nodebutton: "审批",
     lastone:1
   }).then(data=>{
@@ -455,213 +455,213 @@ function initial() {
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  JinduState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  JinduState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // JinduState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // JinduState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   ChukuState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  ChukuState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  ChukuState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // ChukuState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // ChukuState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   RukuState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  RukuState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  RukuState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // RukuState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // RukuState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
 
   KucunState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  KucunState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  KucunState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // KucunState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // KucunState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
 
   WuliaoState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  WuliaoState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  WuliaoState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // WuliaoState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // WuliaoState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   DanweiState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  DanweiState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  DanweiState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // DanweiState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // DanweiState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 
   WuliaoTypeState.create({
     id:1,
     nodeName: "提交",
     nodebutton: "提交",
-    nextStateid: 2,
+    // nextStateid: 2,
     lastone:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
   });
-  WuliaoTypeState.create({
-    id:2,
-    nodeName: "审核",
-    nodebutton: "审核",
-    nextStateid: 3,
-    lastone:0
-  }).then(data=>{
-    data.setDepts([1,2]).then(()=>{
-    })
-  });
-  WuliaoTypeState.create({
-    id:3,
-    nodeName: "审批",
-    nodebutton: "审批",
-    lastone:1
-  }).then(data=>{
-    data.setDepts([2]).then(()=>{
-    })
-  });;
+  // WuliaoTypeState.create({
+  //   id:2,
+  //   nodeName: "审核",
+  //   nodebutton: "审核",
+  //   nextStateid: 3,
+  //   lastone:0
+  // }).then(data=>{
+  //   data.setDepts([1,2]).then(()=>{
+  //   })
+  // });
+  // WuliaoTypeState.create({
+  //   id:3,
+  //   nodeName: "审批",
+  //   nodebutton: "审批",
+  //   lastone:1
+  // }).then(data=>{
+  //   data.setDepts([2]).then(()=>{
+  //   })
+  // });;
 }
 //清空数据库 
 // db.sequelize.sync({ force: true }).then(() => {

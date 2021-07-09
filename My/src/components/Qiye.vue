@@ -217,7 +217,7 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column min-width='100' align="center">
+    <el-table-column min-width='150' align="center">
              <!-- eslint-disable-next-line -->
             <template slot="header" slot-scope="scope">
                 <el-popover placement="bottom" trigger="click">
@@ -288,7 +288,7 @@
             </template>
     </el-table-column>
     <!-- :filters="[{text:'通过', value:'通过'},{text:'拒绝', value:'拒绝'},{text:'审核中', value:'审核中'}]" :filter-method="filterCurrent" -->
-    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+    <el-table-column prop="nodeName" label="当前流程" width="100" align="center" :formatter="getfor">
     </el-table-column>
     <el-table-column
       fixed="right"
@@ -404,7 +404,10 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="账户类型" prop="account_type" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Qiye.account_type"></el-input>
+            <el-select :disabled="validated" v-model="Qiye.account_type" clearable placeholder="请选择" >
+              <el-option label="基本账户" value="基本账户"></el-option>
+              <el-option label="一般结业户" value="一般结业户"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -492,9 +495,9 @@ import StatelogService from "../services/StatelogService";
           this.pa=row.id;
            QiyeService.get(this.pa)
          .then(response => {
-            if(response.data.qiyeState.lastone===1){
+            // if(response.data.qiyeState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.qiyeState.nextStateid
           this.oldStateid=response.data.qiyeState.id

@@ -230,9 +230,9 @@ import KucunStatelog from "../services/KucunStatelog"
           this.pa=row.id;
            KucunService.get(this.pa)
          .then(response => {
-            if(response.data.KucunState.lastone===1){
+            // if(response.data.KucunState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.KucunState.nextStateid
           this.oldStateid=response.data.KucunState.id
@@ -370,6 +370,7 @@ import KucunStatelog from "../services/KucunStatelog"
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

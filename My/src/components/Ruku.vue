@@ -319,9 +319,9 @@ import RukuStatelog from "../services/RukuStatelog"
           this.pa=row.id;
            RukuService.get(this.pa)
          .then(response => {
-            if(response.data.RukuState.lastone===1){
+            // if(response.data.RukuState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.RukuState.nextStateid
           this.oldStateid=response.data.RukuState.id
@@ -463,6 +463,7 @@ import RukuStatelog from "../services/RukuStatelog"
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

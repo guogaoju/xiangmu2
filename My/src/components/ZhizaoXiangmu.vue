@@ -537,8 +537,10 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
           this.validated=false;
           this.liucheng=true,
           this.annui=false;
+          this.annui1=false;
        },
        addform(){
+            this.form={},
             this.dialog=true;
             DanweiService.getAll()
                 .then(response => {
@@ -657,6 +659,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         });   
       },
        kanClick(index,row){
+         this.annui1=true;
          this.tableData2=[],
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
@@ -694,6 +697,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         })
        },
         updateClick(index,row){
+          this.annui1=false;
           this.tableData2=[],
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";

@@ -289,6 +289,7 @@ import JinduStatelog from "../services/JinduStatelog"
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.isshow=false;
          this.annui1=true;
         this.liucheng=true,
         this.dialogTitle = "examine";
@@ -299,9 +300,9 @@ import JinduStatelog from "../services/JinduStatelog"
           })
            JinduService.get(this.pa)
          .then(response => {
-            if(response.data.JinduState.lastone===1){
+            // if(response.data.JinduState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.JinduState.nextStateid
           this.oldStateid=response.data.JinduState.id
@@ -377,11 +378,13 @@ import JinduStatelog from "../services/JinduStatelog"
           this.validated=false;
           this.liucheng=true,
           this.annui=false;
+          this.annui1=false;
           this.dialogTitle = "addData";
           //新建时候清空url
           this.imageUrl=""
        },
        addform(){
+            this.form={},
             this.dialog=true;
             WuliaoService.getAll()
         .then(response => {
@@ -490,6 +493,7 @@ import JinduStatelog from "../services/JinduStatelog"
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.annui1=true;
           this.liucheng=true,
           this.validated=true;
           this.pa=this.tableData[index].id;
@@ -512,6 +516,7 @@ import JinduStatelog from "../services/JinduStatelog"
            this.dialogFormVisible=true
            this.dialogTitle = "updataData"; 
             this.annui=false;
+            this.annui1=false;
            this.validated=false;
             this.liucheng=true, 
           this.pa=this.tableData[index].id;

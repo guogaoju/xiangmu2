@@ -362,7 +362,10 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="账户类型" prop="account_type" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Qiye.account_type"></el-input>
+            <el-select :disabled="validated" v-model="Qiye.account_type" clearable placeholder="请选择" >
+              <el-option label="基本账户" value="基本账户"></el-option>
+              <el-option label="一般结业户" value="一般结业户"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -456,9 +459,9 @@ import HexinStatelog from "../services/HexinStatelog";
           this.pa=row.id;
            HexinService.get(this.pa)
          .then(response => {
-            if(response.data.corefirmState.lastone===1){
+            // if(response.data.corefirmState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.corefirmState.nextStateid
           this.oldStateid=response.data.corefirmState.id
@@ -607,6 +610,7 @@ import HexinStatelog from "../services/HexinStatelog";
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

@@ -254,9 +254,9 @@ import ChukuStatelog from "../services/ChukuStatelog"
           this.pa=row.id;
            ChukuService.get(this.pa)
          .then(response => {
-            if(response.data.ChukuState.lastone===1){
+            // if(response.data.ChukuState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.ChukuState.nextStateid
           this.oldStateid=response.data.ChukuState.id
@@ -395,6 +395,7 @@ import ChukuStatelog from "../services/ChukuStatelog"
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

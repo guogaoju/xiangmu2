@@ -585,6 +585,7 @@ import RongziService from "../services/RongziService";
           this.validated=false;
           this.liucheng=true,
           this.annui=false;
+          this.annui1=false;
        },
        addrongzi(){
           var data = {
@@ -684,6 +685,7 @@ this.dialog=false;
         },
         
         addform(){
+          this.rongzi={},
             this.dialog=true;
             DanweiService.getAll()
                 .then(response => {
@@ -724,6 +726,7 @@ this.dialog=false;
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
           this.annui=true;
+          this.annui1=true;
           this.liucheng=true,
           this.validated=true;
           this.pa=this.tableData[index].id;
@@ -748,6 +751,7 @@ this.dialog=false;
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData";
            this.annui=false;
+           this.annui1=false;
            this.validated=false;
            this.liucheng=true, 
           this.pa=this.tableData[index].id;

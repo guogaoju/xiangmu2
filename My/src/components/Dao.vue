@@ -8,7 +8,7 @@
                     </div> -->
                     <div>
                         <el-menu
-                        style="height:1000px"
+                        style="height:1000px;"
                         default-active="1"
                         class="el-menu-vertical-demo"
                         background-color="#0f1126"

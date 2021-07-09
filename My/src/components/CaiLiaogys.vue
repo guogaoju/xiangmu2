@@ -422,7 +422,7 @@
         <el-col :span="12"><el-form-item></el-form-item></el-col>   
         <el-col :span="12">
         <el-form-item>
-          <el-button type="primary"  v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Ziliao')">{{buttonText}}</el-button>
+          <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Ziliao')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>  
       </el-row>
@@ -484,9 +484,9 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
           this.pa=row.id;
            CailiaogysService.get(this.pa)
          .then(response => {
-            if(response.data.CailiaoState.lastone===1){
+            // if(response.data.CailiaoState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.CailiaoState.nextStateid
           this.oldStateid=response.data.CailiaoState.id
@@ -648,6 +648,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

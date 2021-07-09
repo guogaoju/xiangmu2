@@ -190,9 +190,9 @@ import DanweiStatelog from "../services/DanweiStatelog";
           this.pa=row.id;
            DanweiService.get(this.pa)
          .then(response => {
-            if(response.data.DanweiState.lastone===1){
+            // if(response.data.DanweiState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.DanweiState.nextStateid
           this.oldStateid=response.data.DanweiState.id
@@ -329,6 +329,7 @@ import DanweiStatelog from "../services/DanweiStatelog";
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

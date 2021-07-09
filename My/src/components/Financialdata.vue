@@ -435,9 +435,9 @@ import FinanceStatelog from "../services/FinanceStatelog"
           this.pa=row.id;
            FinancialdataService.get(this.pa)
          .then(response => {
-            if(response.data.FinanceState.lastone===1){
+            // if(response.data.FinanceState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.FinanceState.nextStateid
           this.oldStateid=response.data.FinanceState.id
@@ -586,7 +586,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
         });
         },
          selectlogs(){
-           console.log(this.pa)
+          //  console.log(this.pa)
         let financeId=this.pa
           FinanceStatelog.findByLog(financeId).then(response => {
             console.log(response.data)
@@ -601,7 +601,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
                             }
                        }
        
-          // console.log(response.data);
+         this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

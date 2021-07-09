@@ -189,9 +189,9 @@ import WuliaoTypeStatelog from "../services/WuliaoTypeStatelog";
           this.pa=row.id;
            WuliaoTypeService.get(this.pa)
          .then(response => {
-            if(response.data.WuliaoTypeState.lastone===1){
+            // if(response.data.WuliaoTypeState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.WuliaoTypeState.nextStateid
           this.oldStateid=response.data.WuliaoTypeState.id
@@ -328,6 +328,7 @@ import WuliaoTypeStatelog from "../services/WuliaoTypeStatelog";
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

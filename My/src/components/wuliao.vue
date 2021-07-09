@@ -253,9 +253,9 @@ export default {
           this.pa=row.id;
            WuliaoService.get(this.pa)
          .then(response => {
-            if(response.data.WuliaoState.lastone===1){
+            // if(response.data.WuliaoState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.WuliaoState.nextStateid
           this.oldStateid=response.data.WuliaoState.id
@@ -413,6 +413,7 @@ export default {
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

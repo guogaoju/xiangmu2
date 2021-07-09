@@ -215,9 +215,9 @@ import FangwenStatelog from "../services/FangwenStatelog"
           this.pa=row.id;
            FangwenService.get(this.pa)
          .then(response => {
-            if(response.data.FangwenState.lastone===1){
+            // if(response.data.FangwenState.lastone===1){
                   this.isshow=false;
-                }
+                // }
           this.qiyeid=this.pa
           this.nextState=response.data.FangwenState.nextStateid
           this.oldStateid=response.data.FangwenState.id
@@ -364,6 +364,7 @@ import FangwenStatelog from "../services/FangwenStatelog"
                                 }
                             }
                        }
+                       this.$forceUpdate();
         })
         .catch(e => {
           console.log(e);

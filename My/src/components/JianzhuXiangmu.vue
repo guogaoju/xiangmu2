@@ -687,6 +687,7 @@ import WuliaoService from "../services/WuliaoService";
            this.selectState();
           this.validated=false;
           this.liucheng=true,
+          this.annui1=false;
           this.annui=false;
         this.dialogTitle = "addData";
        },
@@ -766,6 +767,7 @@ import WuliaoService from "../services/WuliaoService";
         });
         },
         addform(){
+          this.form={},
             this.dialog=true;
             DanweiService.getAll()
                 .then(response => {
@@ -826,6 +828,7 @@ import WuliaoService from "../services/WuliaoService";
           this.dialogFormVisible=true
           this.dialogTitle = "kanData";
            this.annui=true;
+           this.annui1=true;
            this.liucheng=true,
           this.validated=true;
           this.pa=this.tableData[index].id;
@@ -863,6 +866,7 @@ import WuliaoService from "../services/WuliaoService";
            this.dialogFormVisible=true;
            this.dialogTitle = "updataData"; 
             this.annui=false;
+            this.annui1=false;
            this.validated=false;
            this.liucheng=true, 
           this.pa=this.tableData[index].id;

@@ -459,9 +459,9 @@ import HexinStatelog from "../services/HexinStatelog";
           this.pa=row.id;
            HexinService.get(this.pa)
          .then(response => {
-            // if(response.data.corefirmState.lastone===1){
+            if(response.data.corefirmState.lastone===1){
                   this.isshow=false;
-                // }
+                }
           this.qiyeid=this.pa
           this.nextState=response.data.corefirmState.nextStateid
           this.oldStateid=response.data.corefirmState.id

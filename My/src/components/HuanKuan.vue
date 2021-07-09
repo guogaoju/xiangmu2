@@ -105,7 +105,7 @@
                 </div>
             </template>
     </el-table-column>
-    <el-table-column min-width="55"  prop="huan_stream" label="还款流水" align="center">
+    <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
             <template slot-scope="scope">
                 <el-image style="width: 100px; height: 100px" :src="scope.row.huan_stream" :preview-src-list="[scope.row.huan_stream]">
                 </el-image>
@@ -174,7 +174,7 @@
         <el-col>
                 <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
                     <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
-                    action="http://106.15.5.29:8082/api/HuanKuan/upload" 
+                    action="http://localhost:8080/api/HuanKuan/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
                     :data="huankuan" 

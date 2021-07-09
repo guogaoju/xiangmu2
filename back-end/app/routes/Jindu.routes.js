@@ -10,6 +10,8 @@ module.exports = app => {
     router.post("/upload", upload.single("file"), (req,res) => {
       // 需要返回图片的访问地址    域名+文件名
       const url = "http://localhost:8080/" +req.file.filename
+       //服务器
+      // const url = "http://106.15.5.29:8082/" +req.file.filename
       res.json({url})
     });
     //查找所有

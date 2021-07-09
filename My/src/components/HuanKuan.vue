@@ -174,7 +174,7 @@
         <el-col>
                 <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
                     <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
-                    action="http://localhost:8080/api/HuanKuan/upload" 
+                    action="http://106.15.5.29:8082/api/HuanKuan/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
                     :data="huankuan" 

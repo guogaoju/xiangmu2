@@ -9,7 +9,7 @@
   <!-- 客户管理/企业信息管理/企业财务数据 -->
     <el-row style="margin : 8px;">
       <el-col :span="10">
-        <el-button type="warning" @click="openFrom()">添加</el-button>
+        <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
   <el-table
@@ -398,6 +398,7 @@
 </template>
 
 <script>
+import authservice from "../services/auth.service"
 import FinancialdataService from "../services/FinancialdataService"
 import QiyeService from "../services/QiyeService"
 import FinanceState from "../services/FinanceState"
@@ -426,6 +427,26 @@ import FinanceStatelog from "../services/FinanceStatelog"
         .catch(e => {
           // console.log(e);
         });
+      },
+      selectdept(){
+           authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          for (let j = 0; j < this.deptId.length; j++) {
+                    let old = this.deptId[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.adddept.length; i++) {
+                            let pre = this.adddept[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.isshow1=true;
+                                    // console.log("显示")
+                                }
+                            }
+                       }  
+        })
       },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
@@ -499,6 +520,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
          FinancialdataService.getAll()
         .then(response => {
           this.tableData = response.data;
+          this.selectdept();
           // console.log(response.data);
         })
         .catch(e => {
@@ -608,38 +630,86 @@ import FinanceStatelog from "../services/FinanceStatelog"
         });   
       },
        kanClick(index,row){
-          this.dialogFormVisible=true
-          this.dialogTitle = "kanData";
-           this.annui=true;
-           this.liucheng=true,
-          this.validated=true;
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-           FinancialdataService.get(this.pa)
-         .then(response => {
-                this.finance=response.data;
-                this.finance.nodeName = response.data.FinanceState.nodeName; 
-              })
-              .catch(e => {
-                console.log(e);
-              });
+         authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.kandept.length; j++) {
+                    let old = this.kandept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.dialogFormVisible=true
+                                    this.dialogTitle = "kanData";
+                                    this.annui=true;
+                                    this.liucheng=true,
+                                    this.validated=true;
+                                    this.pa=this.tableData[index].id;
+                                    this.selectStateAndLogs();
+                                    FinancialdataService.get(this.pa)
+                                  .then(response => {
+                                          this.finance=response.data;
+                                          this.finance.nodeName = response.data.FinanceState.nodeName; 
+                                        })
+                                        .catch(e => {
+                                          console.log(e);
+                                        });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
         updateClick(index,row){
-           this.dialogFormVisible=true
-           this.dialogTitle = "updataData";
-            this.annui=false;
-           this.validated=false;
-           this.liucheng=true, 
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-           FinancialdataService.get(this.pa)
-         .then(response => {
-                 this.finance=response.data;
-                this.finance.nodeName = response.data.FinanceState.nodeName;
-              })
-              .catch(e => {
-                console.log(e);
-              });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.updatedept.length; j++) {
+                    let old = this.updatedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                      this.dialogFormVisible=true
+                                      this.dialogTitle = "updataData";
+                                      this.annui=false;
+                                      this.validated=false;
+                                      this.liucheng=true, 
+                                      this.pa=this.tableData[index].id;
+                                      this.selectStateAndLogs();
+                                      FinancialdataService.get(this.pa)
+                                    .then(response => {
+                                            this.finance=response.data;
+                                            this.finance.nodeName = response.data.FinanceState.nodeName;
+                                          })
+                                          .catch(e => {
+                                            console.log(e);
+                                          });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
        updateservice(){
             this.dialogFormVisible=false;
@@ -690,22 +760,46 @@ import FinanceStatelog from "../services/FinanceStatelog"
               });
        },
         delClick(index,row){     
-          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.delClickconfirm(index)
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.deletedept.length; j++) {
+                    let old = this.deletedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                                    confirmButtonText: '确定',
+                                    cancelButtonText: '取消',
+                                    type: 'warning'
+                                    }).then(() => {
+                                    this.delClickconfirm(index);
+                                    this.$message({
+                                      type: 'success',
+                                      message: '删除成功!'
+                                    });
+                                    }).catch(() => {
+                                    this.$message({
+                                      type: 'info',
+                                      message: '已取消删除'
+                                    });          
+                                  });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
       handleClick(row) {
         console.log(row);
@@ -717,6 +811,12 @@ import FinanceStatelog from "../services/FinanceStatelog"
 
     data() {
       return {
+        deletedept:[2],
+        updatedept:[2],
+        kandept:[1],
+        isshow1:false,
+        adddept:[1,2],
+        deptId:[],
         pa:'',
         buttonText: '确定',
         qiyeid:'',

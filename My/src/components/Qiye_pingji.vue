@@ -9,7 +9,7 @@
       </el-breadcrumb>
   <el-row style="margin : 8px;">
     <el-col :span="6">
-          <el-button type="warning" @click="openFrom()">添加</el-button>
+          <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
         </el-col>
   </el-row>
   <el-table
@@ -334,6 +334,7 @@
 </template>
 
 <script>
+import authservice from "../services/auth.service"
 import QiyeService from "../services/QiyeService"
 import QiyePingjiService from "../services/QiyepingjiService"
 import QiyepingjiStateService from "../services/QiyepingjiStateService"
@@ -351,7 +352,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
        //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"
-      this.isshow=true;
+      this.isshow=false;
     },
       selectState(){
          QiyepingjiStateService.getAll()
@@ -363,17 +364,62 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
           // console.log(e);
         });
       },
+      selectdept(){
+           authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          for (let j = 0; j < this.deptId.length; j++) {
+                    let old = this.deptId[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.adddept.length; i++) {
+                            let pre = this.adddept[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.isshow1=true;
+                                    // console.log("显示")
+                                }
+                            }
+                       }  
+        })
+      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
         this.liucheng=true,
         this.dialogTitle = "examine";
         this.pa=row.id;
+         this.selectdept();
         QiyePingjiService.get(this.pa)
          .then(response => {
-            if(response.data.QiyepingjiState.lastone===1){
-                  this.isshow=false;
-                }
+           this.lastone=response.data.QiyepingjiState.lastone;
+          QiyepingjiStateService.get(response.data.QiyepingjiState.id).then(response =>{
+                   this.statedeptId = [];
+                for (var i = 0; i < response.data.depts.length; i++) {
+                      this.statedeptId.push(response.data.depts[i].id); 
+                    }
+          for (let j = 0; j < this.deptId.length; j++) {
+                    let old = this.deptId[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.statedeptId.length; i++) {
+                            let pre = this.statedeptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.isshow=true;
+                                    console.log("显示")
+                                }else{
+                                   this.isshow=false;
+                                  //  console.log("消失")
+                                };
+                                if(this.lastone===1){
+                                  this.isshow=false;
+                                   console.log("消失")
+                                }
+                            }
+                       }
+          // console.log(this.statedeptId)
+               })
           this.qiyeid=this.pa
           this.nextState=response.data.QiyepingjiState.nextStateid
           this.oldStateid=response.data.QiyepingjiState.id
@@ -429,6 +475,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
          QiyePingjiService.getAll()
          .then(response => {
           this.tableData = response.data;
+          this.selectdept();
           // console.log(response.data);
         })
         .catch(e => {
@@ -436,6 +483,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         });
       },
        openFrom(){
+         this.isshow=true;
           this.Pingji={
             qiye_name:'',
             trade:'',
@@ -547,40 +595,89 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
 
       },
        kanClick(index,row){
-          this.dialogFormVisible=true
-          this.dialogTitle = "kanData";
-           this.annui=true;
-           this.liucheng=true,
-          this.validated=true;
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-           QiyePingjiService.get(this.pa)
-         .then(response => {
-                this.Pingji=response.data;
-                this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
-                this.tableonload(); 
-              })
-              .catch(e => {
-                console.log(e);
-              });
+         authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.kandept.length; j++) {
+                    let old = this.kandept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.dialogFormVisible=true
+                                    this.dialogTitle = "kanData";
+                                    this.annui=true;
+                                    this.liucheng=true,
+                                    this.validated=true;
+                                    this.pa=this.tableData[index].id;
+                                    this.selectStateAndLogs();
+                                    QiyePingjiService.get(this.pa)
+                                    .then(response => {
+                                          this.Pingji=response.data;
+                                          this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
+                                          this.tableonload(); 
+                                        })
+                                        .catch(e => {
+                                          console.log(e);
+                                        });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
         updateClick(index,row){
-          this.Pingji={},
-           this.dialogFormVisible=true
-           this.dialogTitle = "updataData";
-           this.annui=false;
-           this.validated=false;
-          this.liucheng=true,
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-           QiyePingjiService.get(this.pa)
-         .then(response => {
-                this.Pingji=response.data;
-                this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
-              })
-              .catch(e => {
-                console.log(e);
-              });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.updatedept.length; j++) {
+                    let old = this.updatedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.isshow=true;
+                                    this.Pingji={},
+                                    this.dialogFormVisible=true
+                                    this.dialogTitle = "updataData";
+                                    this.annui=false;
+                                    this.validated=false;
+                                    this.liucheng=true,
+                                    this.pa=this.tableData[index].id;
+                                    this.selectStateAndLogs();
+                                    QiyePingjiService.get(this.pa)
+                                    .then(response => {
+                                          this.Pingji=response.data;
+                                          this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
+                                        })
+                                        .catch(e => {
+                                          console.log(e);
+                                        });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
        updateservice(){
               this.dialogFormVisible=false;
@@ -638,22 +735,46 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
               });
        },
         delClick(index,row){     
-          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.delClickconfirm(index);
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.deletedept.length; j++) {
+                    let old = this.deletedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                                    confirmButtonText: '确定',
+                                    cancelButtonText: '取消',
+                                    type: 'warning'
+                                    }).then(() => {
+                                    this.delClickconfirm(index);
+                                    this.$message({
+                                      type: 'success',
+                                      message: '删除成功!'
+                                    });
+                                    }).catch(() => {
+                                    this.$message({
+                                      type: 'info',
+                                      message: '已取消删除'
+                                    });          
+                                  });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
       handleClick(row) {
         console.log(row);
@@ -668,6 +789,14 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
 
     data() {
       return {
+        deletedept:[2],
+        updatedept:[2],
+        kandept:[1],
+        isshow1:false,
+        adddept:[1,2],
+        lastone:"",
+        deptId:[],
+        statedeptId:[],
         pa:'',
         buttonText: '确定',
         qiyeid:'',
@@ -675,7 +804,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         oldStateid:'',
         nextState:'',
         annui:'',
-        isshow:true,
+        isshow:false,
         validated:false,
         liucheng:false,
         activities: [],

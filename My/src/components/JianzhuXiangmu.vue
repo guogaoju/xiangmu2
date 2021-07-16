@@ -8,7 +8,7 @@
     </el-breadcrumb>
     <el-row style="margin : 8px;">
       <el-col :span="10">
-        <el-button type="warning" @click="openFrom()">添加</el-button>
+        <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
   <el-table
@@ -566,6 +566,7 @@
 </template>
 
 <script>
+import authservice from "../services/auth.service"
 import DanweiService from "../services/DanweiService";
 import addjianzhuwuliao from "../services/Addjianzhuwuliao";
 import JianzhuService from "../services/JianzhuService";
@@ -585,7 +586,7 @@ import WuliaoService from "../services/WuliaoService";
       //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"
-      this.isshow=true;
+      this.isshow=false;
     },
       selectState(){
          JianzhuState.getAll()
@@ -597,6 +598,26 @@ import WuliaoService from "../services/WuliaoService";
           // console.log(e);
         });
       },
+      selectdept(){
+           authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          for (let j = 0; j < this.deptId.length; j++) {
+                    let old = this.deptId[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.adddept.length; i++) {
+                            let pre = this.adddept[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.isshow1=true;
+                                    // console.log("显示")
+                                }
+                            }
+                       }  
+        })
+      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui1=true;
@@ -604,15 +625,40 @@ import WuliaoService from "../services/WuliaoService";
         this.liucheng=true,
         this.dialogTitle = "examine";
           this.pa=row.id;
+          this.selectdept();
           addjianzhuwuliao.findByLog(row.id).then(response =>{
             this.tableData2=response.data
-            console.log(response.data )
+            // console.log(response.data )
           })
            JianzhuService.get(this.pa)
          .then(response => {
-            if(response.data.JianzhuState.lastone===1){
-                  this.isshow=false;
-                }
+            this.lastone=response.data.JianzhuState.lastone;
+          JianzhuState.get(response.data.JianzhuState.id).then(response =>{
+                   this.statedeptId = [];
+                for (var i = 0; i < response.data.depts.length; i++) {
+                      this.statedeptId.push(response.data.depts[i].id); 
+                    }
+          for (let j = 0; j < this.deptId.length; j++) {
+                    let old = this.deptId[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.statedeptId.length; i++) {
+                            let pre = this.statedeptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.isshow=true;
+                                    // console.log("显示")
+                                }else{
+                                   this.isshow=false;
+                                  //  console.log("消失")
+                                };
+                                if(this.lastone===1){
+                                  this.isshow=false;
+                                  //  console.log("消失")
+                                }
+                            }
+                       }
+          // console.log(this.statedeptId)
+               })
           this.qiyeid=this.pa
           this.nextState=response.data.JianzhuState.nextStateid
           this.oldStateid=response.data.JianzhuState.id
@@ -674,6 +720,7 @@ import WuliaoService from "../services/WuliaoService";
         JianzhuService.getAll()
         .then(response => {
           this.tableData = response.data;
+          this.selectdept();
           // console.log(response.data);
         })
         .catch(e => {
@@ -681,6 +728,7 @@ import WuliaoService from "../services/WuliaoService";
         });
       },
        openFrom(){
+         this.isshow=true;
          this.tableData2=[],
           this.xiangmu={},
           this.dialogFormVisible=true
@@ -825,26 +873,50 @@ import WuliaoService from "../services/WuliaoService";
         });   
       },
        kanClick(index,row){
-          this.dialogFormVisible=true
-          this.dialogTitle = "kanData";
-           this.annui=true;
-           this.annui1=true;
-           this.liucheng=true,
-          this.validated=true;
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-          addjianzhuwuliao.findByLog(this.pa).then(response =>{
-            this.tableData2=response.data
-            // console.log(response.data )
-          })
-           JianzhuService.get(this.pa)
-         .then(response => {
-                this.xiangmu=response.data;
-                this.xiangmu.nodeName = response.data.JianzhuState.nodeName;
-              })
-              .catch(e => {
-                console.log(e);
-              });
+         authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.kandept.length; j++) {
+                    let old = this.kandept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.dialogFormVisible=true
+                                    this.dialogTitle = "kanData";
+                                    this.annui=true;
+                                    this.annui1=true;
+                                    this.liucheng=true,
+                                    this.validated=true;
+                                    this.pa=this.tableData[index].id;
+                                    this.selectStateAndLogs();
+                                    addjianzhuwuliao.findByLog(this.pa).then(response =>{
+                                      this.tableData2=response.data
+                                      // console.log(response.data )
+                                    })
+                                    JianzhuService.get(this.pa)
+                                  .then(response => {
+                                          this.xiangmu=response.data;
+                                          this.xiangmu.nodeName = response.data.JianzhuState.nodeName;
+                                        })
+                                        .catch(e => {
+                                          console.log(e);
+                                        });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
        updateaddwuliao(){
           var data = {
@@ -862,27 +934,52 @@ import WuliaoService from "../services/WuliaoService";
         })
        },
         updateClick(index,row){
-          this.tableData2=[],
-           this.dialogFormVisible=true;
-           this.dialogTitle = "updataData"; 
-            this.annui=false;
-            this.annui1=false;
-           this.validated=false;
-           this.liucheng=true, 
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-          addjianzhuwuliao.findByLog(this.pa).then(response =>{
-            this.tableData2=response.data
-            // console.log(response.data )
-          })
-           JianzhuService.get(this.pa)
-         .then(response => {
-                this.xiangmu=response.data;
-                this.xiangmu.nodeName = response.data.JianzhuState.nodeName;
-              })
-              .catch(e => {
-                console.log(e);
-              });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.updatedept.length; j++) {
+                    let old = this.updatedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.isshow=true;
+                                    this.tableData2=[],
+                                    this.dialogFormVisible=true;
+                                    this.dialogTitle = "updataData"; 
+                                    this.annui=false;
+                                    this.annui1=false;
+                                    this.validated=false;
+                                    this.liucheng=true, 
+                                    this.pa=this.tableData[index].id;
+                                    this.selectStateAndLogs();
+                                    addjianzhuwuliao.findByLog(this.pa).then(response =>{
+                                      this.tableData2=response.data
+                                      // console.log(response.data )
+                                    })
+                                    JianzhuService.get(this.pa)
+                                  .then(response => {
+                                          this.xiangmu=response.data;
+                                          this.xiangmu.nodeName = response.data.JianzhuState.nodeName;
+                                        })
+                                        .catch(e => {
+                                          console.log(e);
+                                        });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
        updateservice(){
           this.updateaddwuliao();
@@ -930,22 +1027,46 @@ import WuliaoService from "../services/WuliaoService";
               });
        },
        delClick(index,row){   
-          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.delClickconfirm(index)
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.deletedept.length; j++) {
+                    let old = this.deletedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                                    confirmButtonText: '确定',
+                                    cancelButtonText: '取消',
+                                    type: 'warning'
+                                    }).then(() => {
+                                    this.delClickconfirm(index);
+                                    this.$message({
+                                      type: 'success',
+                                      message: '删除成功!'
+                                    });
+                                    }).catch(() => {
+                                    this.$message({
+                                      type: 'info',
+                                      message: '已取消删除'
+                                    });          
+                                  });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
       handleClick(row) {
         console.log(row);
@@ -965,6 +1086,14 @@ import WuliaoService from "../services/WuliaoService";
 
     data() {
       return {
+        deletedept:[2],
+        updatedept:[2],
+        kandept:[1],
+        isshow1:false,
+        adddept:[1,2],
+        lastone:"",
+        deptId:[],
+        statedeptId:[],
         pa:'',
         buttonText: '确定',
         qiyeid:'',
@@ -973,7 +1102,7 @@ import WuliaoService from "../services/WuliaoService";
         nextState:'',
         annui:'',
         annui1:'',
-        isshow:true,
+        isshow:false,
         validated:false,
         liucheng:false,
         activities: [],

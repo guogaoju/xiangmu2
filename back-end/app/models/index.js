@@ -172,7 +172,7 @@ db.QiyepingjiStatelog.belongsTo(db.qiyepingji);
 db.QiyepingjiState.hasMany(db.QiyepingjiStatelog, {
   foreignKey: "oldstateid"
 });
-db.QiyeState.hasMany(db.QiyepingjiStatelog, {
+db.QiyepingjiState.hasMany(db.QiyepingjiStatelog, {
   foreignKey: "newstateid"
 });
 //记录表和操作类型表
@@ -786,6 +786,8 @@ db.jindu.hasMany(db.addjinduwuliao, {
 db.jianzhu.hasMany(db.Addjianzhuwuliao, {
   foreignKey: "jianzhuId",
 });
+
+
 //这是为了在中间件里面验证user的role是否存在，这样写是不对的，应该根据数据库里的内容验证，而不是根据这个提前定义好的静态数组
 //db.ROLES = ["user", "admin", "moderator"];
 module.exports = db;

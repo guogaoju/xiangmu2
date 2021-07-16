@@ -8,7 +8,7 @@
     </el-breadcrumb>
     <el-row style="margin : 8px;">
       <el-col :span="10">
-        <el-button type="warning" @click="openFrom()">添加</el-button>
+        <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
   <el-table
@@ -225,6 +225,8 @@
 </template>
 
 <script>
+
+import authservice from "../services/auth.service"
 import HuanKuanService from "../services/HuanKuanService"
 import HuankuanState from "../services/HuankuanState"
 import HuankuanStatelog from "../services/HuankuanStatelog"
@@ -241,8 +243,9 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
       //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"
-      this.isshow=true;
+      this.isshow=false;
     },
+
       selectState(){
          HuankuanState.getAll()
         .then(response => {
@@ -253,17 +256,64 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           // console.log(e);
         });
       },
+      
+      selectdept(){
+           authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          for (let j = 0; j < this.deptId.length; j++) {
+                    let old = this.deptId[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.adddept.length; i++) {
+                            let pre = this.adddept[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.isshow1=true;
+                                    // console.log("显示")
+                                }
+                            }
+                       }  
+        })
+      },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
         this.liucheng=true,
         this.dialogTitle = "examine";
           this.pa=row.id;
+            this.selectdept();
            HuanKuanService.get(this.pa)
-         .then(response => {
-            if(response.data.HuankuanState.lastone===1){
-                  this.isshow=false;
-                }
+          .then(response => {
+           this.lastone=response.data.HuankuanState.lastone;
+          HuankuanState.get(response.data.HuankuanState.id).then(response =>{
+                   this.statedeptId = [];
+                for (var i = 0; i < response.data.depts.length; i++) {
+                      this.statedeptId.push(response.data.depts[i].id); 
+                    }
+                    //  console.log(this.statedeptId+"状态部门")
+          for (let j = 0; j < this.deptId.length; j++) {
+                    let old = this.deptId[j];
+                    console.log(old+"bumen1")
+                        for (var i = 0; i < this.statedeptId.length; i++) {
+                            let pre = this.statedeptId[i];
+                            console.log(pre+"bumen2")
+                                if (pre === old) {
+                                    this.isshow=true;
+                                    // console.log("显示")
+                                }else{
+                                   this.isshow=false;
+                                  //  console.log("消失")
+                                };
+                                if(this.lastone===1){
+                                  this.isshow=false;
+                                   console.log("消失")
+                                }
+                            }
+                       }
+         
+               })
           this.qiyeid=this.pa
           this.nextState=response.data.HuankuanState.nextStateid
           this.oldStateid=response.data.HuankuanState.id
@@ -273,6 +323,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                 this.imageUrl=response.data.huan_stream
                 this.validated=true;
                 this.buttonText = response.data.HuankuanState.nodebutton;
+                
               })
               .catch(e => {
                 console.log(e);
@@ -325,7 +376,8 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
          HuanKuanService.getAll()
         .then(response => {
           this.tableData = response.data;
-          console.log(response.data);
+          this.selectdept();
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -333,6 +385,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
       },
        openFrom(){
          //新建时候清空url
+         this.isshow=true;
           this.imageUrl=""
           this.huankuan={},
           this.dialogFormVisible=true
@@ -392,9 +445,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         },
         selectlogs(){
         let huankuanId=this.pa
-        console.log(this.pa)
           HuankuanStatelog.findByLog(huankuanId).then(response => {
-            // console.log(response.data)
               for (let j = 0; j < this.activities.length; j++) {
                     let old = this.activities[j].id;
                         for (var i = 0; i < response.data.length; i++) {
@@ -412,45 +463,94 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         });   
       },
        kanClick(index,row){
-          this.dialogFormVisible=true
-          this.dialogTitle = "kanData";
-          this.annui=true;
-          this.liucheng=true,
-          this.validated=true;
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-           HuanKuanService.get(this.pa)
-         .then(response => {
-                this.huankuan=response.data;
-                this.huankuan.nodeName = response.data.FangwenState.nodeName; 
-                this.imageUrl=response.data.huan_stream
-              })
-              .catch(e => {
-                console.log(e);
-              });
+           authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.kandept.length; j++) {
+                    let old = this.kandept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.dialogFormVisible=true
+                                    this.dialogTitle = "kanData";
+                                    this.annui=true;
+                                    this.liucheng=true,
+                                    this.validated=true;
+                                    this.pa=this.tableData[index].id;
+                                    this.selectStateAndLogs();
+                                    HuanKuanService.get(this.pa)
+                                    .then(response => {
+                                          this.huankuan=response.data;
+                                          this.huankuan.nodeName = response.data.FangwenState.nodeName; 
+                                          this.imageUrl=response.data.huan_stream
+                                        })
+                                        .catch(e => {
+                                          console.log(e);
+                                        });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
         updateClick(index,row){
-           this.dialogFormVisible=true
-           this.dialogTitle = "updataData";
-           this.annui=false;
-           this.validated=false;
-           this.liucheng=true, 
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-           HuanKuanService.get(this.pa)
-         .then(response => {
-                this.huankuan=response.data;
-                this.huankuan.nodeName = response.data.FangwenState.nodeName; 
-                 this.imageUrl=response.data.huan_stream;
-                    //旧图片url另存一份,将来imageUrl会被覆盖
-                    this.oldUrl = this.imageUrl;
-              })
-              .catch(e => {
-                console.log(e);
-              });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.updatedept.length; j++) {
+                    let old = this.updatedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.dialogFormVisible=true
+                                    this.dialogTitle = "updataData";
+                                    this.annui=false;
+                                    this.isshow=true
+                                    this.validated=false;
+                                    this.liucheng=true, 
+                                    this.pa=this.tableData[index].id;
+                                    this.selectStateAndLogs();
+                                    HuanKuanService.get(this.pa)
+                                    .then(response => {
+                                        this.huankuan=response.data;
+                                        this.huankuan.nodeName = response.data.FangwenState.nodeName; 
+                                        this.imageUrl=response.data.huan_stream;
+                                            //旧图片url另存一份,将来imageUrl会被覆盖
+                                            this.oldUrl = this.imageUrl;
+                                      })
+                                      .catch(e => {
+                                        console.log(e);
+                                      });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
        updateservice(){
-              this.dialogFormVisible=false;
+            this.dialogFormVisible=false;
             var data = {
             id:this.huankuan.id,
             item_name: this.huankuan.item_name,
@@ -463,11 +563,11 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         }
           HuanKuanService.update(data.id,data)
         .then(response => {
-          this.tableonload();
+            this.tableonload();
           //删除旧图片
-              http.delete('/general/deletefile',{data:{filename:this.oldUrl}});
-              this.oldUrl=""
-          console.log(response.data);
+            http.delete('/general/deletefile',{data:{filename:this.oldUrl}});
+            this.oldUrl=""
+            console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -485,22 +585,46 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
               });
        },
         delClick(index,row){   
-          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.delClickconfirm(index);
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.deletedept.length; j++) {
+                    let old = this.deletedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                                    confirmButtonText: '确定',
+                                    cancelButtonText: '取消',
+                                    type: 'warning'
+                                    }).then(() => {
+                                    this.delClickconfirm(index);
+                                    this.$message({
+                                      type: 'success',
+                                      message: '删除成功!'
+                                    });
+                                    }).catch(() => {
+                                    this.$message({
+                                      type: 'info',
+                                      message: '已取消删除'
+                                    });          
+                                  });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
       handleClick(row) {
         console.log(row);
@@ -542,6 +666,14 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
 
     data() {
       return {
+        deletedept:[2],
+        updatedept:[2],
+        kandept:[1],
+        isshow1:false,
+        adddept:[1,2],
+        lastone:"",
+        deptId:[],
+        statedeptId:[],
         pa:'',
         buttonText: '确定',
         qiyeid:'',
@@ -549,7 +681,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         oldStateid:'',
         nextState:'',
         annui:'',
-        isshow:true,
+        isshow:false,
         validated:false,
         liucheng:false,
         activities: [],

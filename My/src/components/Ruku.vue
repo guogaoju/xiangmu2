@@ -8,7 +8,7 @@
     </el-breadcrumb>
     <el-row style="margin : 8px;">
       <el-col :span="10">
-        <el-button type="warning" @click="openFrom()">添加</el-button>
+        <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
   <el-table
@@ -208,12 +208,16 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="商品名" prop="goods_name" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model="ruku.goods_name"></el-input>
+           <el-select :disabled="validated" filterable v-model="ruku.goods_name" placeholder="请选择商品">
+              <el-option v-for="item in wuliao" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="商品单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="ruku.goods_danwei"></el-input>
+            <el-select :disabled="validated" filterable v-model="ruku.goods_danwei" placeholder="请选择单位">
+              <el-option v-for="item in result" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -283,12 +287,17 @@
 </template>
 
 <script>
+import authservice from "../services/auth.service"
+import DanweiService from "../services/DanweiService";
+import WuliaoService from "../services/WuliaoService";
 import RukuService from "../services/RukuService"
 import RukuState from "../services/RukuState"
 import RukuStatelog from "../services/RukuStatelog"
   export default {
     created () {
           this.tableonload();
+          this.selectDanwei(),
+          this.selectwuliao();
       },
     computed: {
     currentUser() {
@@ -310,6 +319,26 @@ import RukuStatelog from "../services/RukuStatelog"
         .catch(e => {
           // console.log(e);
         });
+      },
+      selectdept(){
+           authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          for (let j = 0; j < this.deptId.length; j++) {
+                    let old = this.deptId[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.adddept.length; i++) {
+                            let pre = this.adddept[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.isshow1=true;
+                                    // console.log("显示")
+                                }
+                            }
+                       }  
+        })
       },
       handdle(row, event, column) { 
         this.dialogFormVisible=true
@@ -379,10 +408,25 @@ import RukuStatelog from "../services/RukuStatelog"
       getfor(row,column){
             return row.RukuState.nodeName;
           },
+          selectwuliao(){
+              WuliaoService.getAll().then(response =>{
+                this.wuliao=response.data;
+              })
+          },
+          selectDanwei(){
+             DanweiService.getAll()
+                .then(response => {
+                    this.result = response.data;
+                }).catch(e => {
+                    console.log(e);
+                });
+          },
+          
       async tableonload(){
          RukuService.getAll()
         .then(response => {
           this.tableData = response.data;
+          this.selectdept();
           console.log(response.data);
         })
         .catch(e => {
@@ -470,38 +514,86 @@ import RukuStatelog from "../services/RukuStatelog"
         });   
       },
        kanClick(index,row){
-          this.dialogFormVisible=true
-          this.dialogTitle = "kanData";
-          this.annui=true;
-          this.liucheng=true,
-          this.validated=true;
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-           RukuService.get(this.pa)
-         .then(response => {
-                this.ruku=response.data;
-                this.ruku.nodeName = response.data.RukuState.nodeName; 
-              })
-              .catch(e => {
-                console.log(e);
-              });
+         authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.kandept.length; j++) {
+                    let old = this.kandept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.dialogFormVisible=true
+                                    this.dialogTitle = "kanData";
+                                    this.annui=true;
+                                    this.liucheng=true,
+                                    this.validated=true;
+                                    this.pa=this.tableData[index].id;
+                                    this.selectStateAndLogs();
+                                    RukuService.get(this.pa)
+                                  .then(response => {
+                                          this.ruku=response.data;
+                                          this.ruku.nodeName = response.data.RukuState.nodeName; 
+                                        })
+                                        .catch(e => {
+                                          console.log(e);
+                                        });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
         updateClick(index,row){
-           this.dialogFormVisible=true
-           this.dialogTitle = "updataData";
-           this.annui=false;
-           this.validated=false;
-           this.liucheng=true, 
-          this.pa=this.tableData[index].id;
-          this.selectStateAndLogs();
-           RukuService.get(this.pa)
-         .then(response => {
-                this.ruku=response.data;
-                this.ruku.nodeName = response.data.RukuState.nodeName;
-              })
-              .catch(e => {
-                console.log(e);
-              });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.updatedept.length; j++) {
+                    let old = this.updatedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.dialogFormVisible=true
+                                    this.dialogTitle = "updataData";
+                                    this.annui=false;
+                                    this.validated=false;
+                                    this.liucheng=true, 
+                                    this.pa=this.tableData[index].id;
+                                    this.selectStateAndLogs();
+                                    RukuService.get(this.pa)
+                                  .then(response => {
+                                          this.ruku=response.data;
+                                          this.ruku.nodeName = response.data.RukuState.nodeName;
+                                        })
+                                        .catch(e => {
+                                          console.log(e);
+                                        });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
        updateservice(){
               this.dialogFormVisible=false;
@@ -539,22 +631,46 @@ import RukuStatelog from "../services/RukuStatelog"
               });
        },
         delClick(index,row){   
-          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.delClickconfirm(index);
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
-        });
+          authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(this.deptId)
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          // console.log(dept)
+          for (let j = 0; j < this.deletedept.length; j++) {
+                    let old = this.deletedept[j];
+                    // console.log(old)
+                        for (var i = 0; i < this.deptId.length; i++) {
+                            let pre = this.deptId[i];
+                            // console.log(pre)
+                                if (pre === old) {
+                                    this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                                    confirmButtonText: '确定',
+                                    cancelButtonText: '取消',
+                                    type: 'warning'
+                                    }).then(() => {
+                                    this.delClickconfirm(index);
+                                    this.$message({
+                                      type: 'success',
+                                      message: '删除成功!'
+                                    });
+                                    }).catch(() => {
+                                    this.$message({
+                                      type: 'info',
+                                      message: '已取消删除'
+                                    });          
+                                  });
+                                    // console.log("显示")
+                                }else{
+                                  alert("你所在的部门没有权限进行该操作")
+                                    }
+                            }
+                       }  
+        })
        },
       handleClick(row) {
         console.log(row);
@@ -566,6 +682,13 @@ import RukuStatelog from "../services/RukuStatelog"
 
     data() {
       return {
+        deletedept:[2],
+        updatedept:[2],
+        kandept:[1],
+        isshow1:false,
+        adddept:[1,2],
+        deptId:[],
+        wuliao:[],
         pa:'',
         paa:'',
         buttonText: '确定',

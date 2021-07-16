@@ -4,9 +4,9 @@
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item></el-breadcrumb-item>
     </el-breadcrumb>
-        <el-row :gutter="20">
-            <el-col :span="8">
-                <el-card shadow="hover" class="mgb20" style="height:252px;">
+    <el-row>
+        <el-col :span="8">
+            <el-card shadow="hover" class="mgb20" style="height:252px;">
                    <div slot="header" class="clearfix">
                         <span>待办事项</span>
                         <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>
@@ -33,72 +33,93 @@
                         </el-table-column>
                     </el-table>
                 </el-card>
-                <el-card shadow="hover" style="height:252px;">
+                <el-card class="mgb20" shadow="hover" style="height:192px;">
                     <div slot="header" class="clearfix">
-                        <span>项目进度</span>
-                    </div>桃心大道
-                    <el-progress :percentage="51.3" color="#42b983"></el-progress>体育场
-                    <el-progress :percentage="24.1" color="#f1e05a"></el-progress>地铁
-                    <el-progress :percentage="43.7"></el-progress>人民广场
-                    <el-progress :percentage="35.9" color="#f56c6c"></el-progress>
+                        <span>加权平均α比例</span>
+                    </div>加权平均α比例
+                    <el-progress :percentage="59.7" color="#42b983"></el-progress>
                 </el-card>
-            </el-col>
-            <el-col :span="16">
-                <el-row :gutter="20" class="mgb20">
-                    <el-col :span="8">
+                <el-card class="mgb20" shadow="hover">
+                    <div class="schart-box">
+                    <div class="content-title"></div>
+                        <schart class="schart" canvasId="pie" :options="options3"></schart>
+                    </div>
+                </el-card>
+        </el-col>
+        <el-col :span="16">
+           <el-row :gutter="20" class="mgb20">
+                    <el-col :span="6">
                         <el-card shadow="hover" :body-style="{padding: '0px'}">
                             <div class="grid-content grid-con-1">
                                 <i class="el-icon-lx-people grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">9</div>
-                                    <div>待审批项目</div>
+                                    <div class="grid-num">290,638,300</div>
+                                    <div style="font-size:18px">营业收入</div>
                                 </div>
                             </div>
                         </el-card>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="6">
                         <el-card shadow="hover" :body-style="{padding: '0px'}">
                             <div class="grid-content grid-con-2">
                                 <i class="el-icon-lx-notice grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">3</div>
-                                    <div>已通过项目</div>
+                                    <div class="grid-num">231,122,700</div>
+                                    <div style="font-size:18px">贷款余额</div>
                                 </div>
                             </div>
                         </el-card>
                     </el-col>
-                    <el-col :span="8">
+                    <el-col :span="6">
                         <el-card shadow="hover" :body-style="{padding: '0px'}">
                             <div class="grid-content grid-con-3">
                                 <i class="el-icon-lx-goods grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">5</div>
-                                    <div>已拒绝项目</div>
+                                    <div class="grid-num">59,515,600</div>
+                                    <div style="font-size:18px">累计回款</div>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-card shadow="hover" :body-style="{padding: '0px'}">
+                            <div class="grid-content grid-con-3">
+                                <i class="el-icon-lx-goods grid-con-icon"></i>
+                                <div class="grid-cont-right">
+                                    <div class="grid-num">18,635,300</div>
+                                    <div style="font-size:18px">营业利润</div>
                                 </div>
                             </div>
                         </el-card>
                     </el-col>
                 </el-row>
-                <el-card shadow="hover" style="height:403px;">
-                  <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart> 
-                </el-card>
-            </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="10">
-              <el-card shadow="hover">
-                <div class="schart-box">
-                  <div class="content-title"></div>
-                    <schart class="schart" canvasId="pie" :options="options3"></schart>
-                </div>
-              </el-card>
-            </el-col>
-            <el-col :span="12">
-                <el-card shadow="hover">
-                    <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
-                </el-card>
-            </el-col>
-        </el-row>
+                <el-row  class="mgb20">
+                    <el-col :span="12">
+                        <el-card  shadow="hover">
+                            <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-card  shadow="hover">
+                            <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart> 
+                        </el-card>
+                    </el-col>
+                   
+                </el-row>
+                <el-row  class="mgb20">
+                    <el-col :span="12">
+                        <el-card  shadow="hover">
+                            <schart ref="line" class="schart" canvasId="line1" :options="options4"></schart>
+                        </el-card>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-card  shadow="hover">
+                            <schart ref="line" class="schart" canvasId="line2" :options="options5"></schart>
+                        </el-card> 
+                    </el-col>
+                </el-row>   
+        </el-col>
+    </el-row>
     </div>
 </template>
 
@@ -113,16 +134,17 @@ export default {
             options3: {
                 type: 'pie',
                 title: {
-                    text: '物料种类出库饼状图(吨)'
+                    text: '项目融资余额占比(%)'
                 },
+                
                 legend: {
                     position: 'left'
                 },
                 bgColor: '#fbfbfb',
-                labels: ['水泥', '钢筋', '沙子', '混凝土', '螺纹钢', '钣金', '钢管'],
+                labels: ['桃心大道', '文化中心', '塔田安置房', '唐村安置房一期', '邓埠安置房',],
                 datasets: [
                     {
-                        data: [334, 278, 190, 235, 260, 200, 141]
+                        data: [40, 15, 20, 15, 10,]
                     }
                 ]
             },
@@ -152,6 +174,24 @@ export default {
                 //     status: true
                 // }
             ],
+            // todoList: [
+            //     {
+            //         title: '营业收入：￥290,638,300',
+            //         // status: false
+            //     },
+            //     {
+            //         title: '贷款余额：￥231,122,700',
+            //         // status: false
+            //     },
+            //     {
+            //         title: '累计回款：￥59,515,600',
+            //         // status: false
+            //     },
+            //     {
+            //         title: '营业利润：￥18,635,300',
+            //         // status: false
+            //     },
+            // ],
             data: [
                 {
                     name: '2018/09/04',
@@ -185,52 +225,89 @@ export default {
             options: {
                 type: 'bar',
                 title: {
-                    text: '最近一年各项目融资情况(万)'
+                    text: '建筑项目融资余额(万)'
                 },
-                xRorate: 25,
-                labels: ['第一季度', '第二季度', '第三季度', '第四季度'],
+                xRorate: 50,
+                labels: ['2020/8', '2020/9', '2020/10', '2020/11', '2020/12','2021/1', '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7'],
                 datasets: [
                     {
-                        label: '地铁',
-                        data: [234, 278, 270, 190, 230]
+                        label: '塔田安置房',
+                        data: [3385, 3385, 3385, 3385,3385, 3385, 3385, 3385,3385, 3385, 3385, 3385,]
                     },
                     {
                         label: '桃心大道',
-                        data: [164, 178, 190, 135, 160]
+                        data: [6536, 6536, 6536, 6536, 10778,8060,8372,9997,12876,18362,17362,19342,]
                     },
                     {
-                        label: '体育场',
-                        data: [144, 198, 150, 235, 120]
+                        label: '南昌县文化中心',
+                        data: [1533, 1652, 1652, 1704, 1718,1718,1718,1718,1718,1718,1718,1718,1718,]
                     },
-                    {
-                        label: '人民广场',
-                        data: [144, 198, 150, 235, 120]
-                    }
                 ]
             },
             options2: {
                 type: 'line',
                 title: {
-                    text: '最近几个月主要物料出库趋势图'
+                    text: '建筑企业信用评分'
                 },
-                labels: ['6月', '7月', '8月', '9月', '10月'],
+                xRorate: 50,
+                labels: ['2020/8', '2020/9', '2020/10', '2020/11', '2020/12','2021/1', '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7'],
                 datasets: [
                     {
-                        label: '水泥',
-                        data: [234, 278, 270, 190, 230]
+                        label: '北京城建',
+                        data: [86, 86, 89, 90, 90,92,92,91,92,92,91,90]
                     },
                     {
-                        label: '钢筋',
-                        data: [164, 188, 150, 135, 160]
+                        label: '江西诺金',
+                        data: [88, 86, 88, 88, 86,88,90,90,92,92,92,93]
                     },
                     {
-                        label: '沙子',
-                        data: [74, 118, 200, 235, 190]
+                        label: '江西圳发',
+                        data: [85,88,85,85,86,85,86,85,88,89,86,85]
+                    },
+                ]
+            },
+            options4: {
+                type: 'line',
+                title: {
+                    text: '建筑项目α风险值%'
+                },
+                xRorate: 50,
+                labels: ['2020/8', '2020/9', '2020/10', '2020/11', '2020/12','2021/1', '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7'],
+                datasets: [
+                    {
+                        label: '桃心大道',
+                        data: [46, 46, 39, 39, 62,60,60,56,58,56,57,57]
                     },
                     {
-                        label: '混凝土',
-                        data: [100, 154, 121, 150, 200]
-                    }
+                        label: '塔田安置房',
+                        data: [63, 62, 63, 62, 63, 62,63, 62,63, 62,63, 62,]
+                    },
+                    {
+                        label: '文化中心',
+                        data: [56, 56, 55, 53, 52,52,52,52,52,52,52,52]
+                    },
+                ]
+            },
+            options5: {
+                type: 'line',
+                title: {
+                    text: '建筑企业β风险值%'
+                },
+                xRorate: 50,
+                labels: ['2020/8', '2020/9', '2020/10', '2020/11', '2020/12','2021/1', '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7'],
+                datasets: [
+                    {
+                        label: '北京城建',
+                        data: [24, 38, 39, 44, 46,30,22,24,23,24,25,24]
+                    },
+                    {
+                        label: '江西诺金',
+                        data: [33, 32, 32, 32, 32, 32,33, 32,31, 32,32, 34,]
+                    },
+                    {
+                        label: '江西圳发',
+                        data: [41, 40, 39, 38, 37,36,35,34,35,34,32,30]
+                    },
                 ]
             }
         };
@@ -300,13 +377,13 @@ export default {
 }
 
 .grid-num {
-    font-size: 30px;
+    font-size: 20px;
     font-weight: bold;
 }
 
 .grid-con-icon {
     font-size: 50px;
-    width: 100px;
+    width: 65px;
     height: 100px;
     text-align: center;
     line-height: 100px;
@@ -374,7 +451,7 @@ export default {
 }
 
 .mgb20 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .todo-item {

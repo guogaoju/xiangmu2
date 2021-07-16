@@ -264,11 +264,6 @@ computed: {
         },
     }
 </script>
-<style scoped>
-.el-menu--collapse .el-menu .el-submenu, .el-menu--popup {
-
-min-width: 260px;
-}
 </style>
 
 

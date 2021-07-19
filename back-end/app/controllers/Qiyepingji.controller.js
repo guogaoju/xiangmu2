@@ -50,7 +50,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    QiyePingji.findAll({include : [QiyepingjiState]})
+    QiyePingji.findAll({order: [['id', 'ASC']],include : [QiyepingjiState]})
       .then(data => {
         res.send(data);
       })

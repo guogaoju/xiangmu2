@@ -468,18 +468,20 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          // console.log(this.deptId)
           if(this.deptId.length===0){
             alert("当前用户没有权限进行该操作")
           }
-          // console.log(dept)
+          let xunhuan=false;
           for (let j = 0; j < this.kandept.length; j++) {
                     let old = this.kandept[j];
-                    // console.log(old)
                         for (var i = 0; i < this.deptId.length; i++) {
                             let pre = this.deptId[i];
-                            // console.log(pre)
                                 if (pre === old) {
+                                    xunhuan=true
+                                }
+                            }
+                       }
+                       if(xunhuan==true){
                                     this.dialogFormVisible=true
                                     this.dialogTitle = "kanData";
                                     this.annui=true;
@@ -496,12 +498,10 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                                         .catch(e => {
                                           console.log(e);
                                         });
-                                    // console.log("显示")
-                                }else{
-                                  alert("你所在的部门没有权限进行该操作")
-                                    }
-                            }
-                       }  
+                       }
+                       else{
+                              alert("你所在的部门没有权限进行该操作")
+                                    }                    
         })
        },
         updateClick(index,row){
@@ -510,11 +510,10 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          // console.log(this.deptId)
           if(this.deptId.length===0){
             alert("当前用户没有权限进行该操作")
           }
-          // console.log(dept)
+         let xunhuan=false;
           for (let j = 0; j < this.updatedept.length; j++) {
                     let old = this.updatedept[j];
                     // console.log(old)
@@ -522,6 +521,11 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                             let pre = this.deptId[i];
                             // console.log(pre)
                                 if (pre === old) {
+                                    xunhuan=true
+                                }
+                            }
+                       }
+                       if(xunhuan==true){
                                     this.dialogFormVisible=true
                                     this.dialogTitle = "updataData";
                                     this.annui=false;
@@ -541,12 +545,10 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                                       .catch(e => {
                                         console.log(e);
                                       });
-                                    // console.log("显示")
-                                }else{
-                                  alert("你所在的部门没有权限进行该操作")
-                                    }
-                            }
-                       }  
+                       }
+                       else{
+                              alert("你所在的部门没有权限进行该操作")
+                                    }         
         })
        },
        updateservice(){
@@ -590,18 +592,20 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          // console.log(this.deptId)
           if(this.deptId.length===0){
             alert("当前用户没有权限进行该操作")
           }
-          // console.log(dept)
+          let xunhuan=false;
           for (let j = 0; j < this.deletedept.length; j++) {
                     let old = this.deletedept[j];
-                    // console.log(old)
                         for (var i = 0; i < this.deptId.length; i++) {
                             let pre = this.deptId[i];
-                            // console.log(pre)
                                 if (pre === old) {
+                                    xunhuan=true
+                                }
+                            }
+                       }
+          if(xunhuan==true){
                                     this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                                     confirmButtonText: '确定',
                                     cancelButtonText: '取消',
@@ -618,12 +622,10 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                                       message: '已取消删除'
                                     });          
                                   });
-                                    // console.log("显示")
-                                }else{
-                                  alert("你所在的部门没有权限进行该操作")
-                                    }
-                            }
-                       }  
+                       }
+                       else{
+                              alert("你所在的部门没有权限进行该操作")
+                                    }                        
         })
        },
       handleClick(row) {

@@ -292,27 +292,23 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                 for (var i = 0; i < response.data.depts.length; i++) {
                       this.statedeptId.push(response.data.depts[i].id); 
                     }
-                    //  console.log(this.statedeptId+"状态部门")
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
-                    console.log(old+"bumen1")
                         for (var i = 0; i < this.statedeptId.length; i++) {
                             let pre = this.statedeptId[i];
-                            console.log(pre+"bumen2")
                                 if (pre === old) {
                                     this.isshow=true;
-                                    // console.log("显示")
-                                }else{
-                                   this.isshow=false;
-                                  //  console.log("消失")
-                                };
-                                if(this.lastone===1){
-                                  this.isshow=false;
-                                   console.log("消失")
                                 }
                             }
                        }
-         
+                      if(this.isshow=true){
+                        // console.log("显示")
+                       }else{
+                         this.isshow=false;
+                       }
+                       if(this.lastone===1){
+                         this.isshow=false;
+                       }
                })
           this.qiyeid=this.pa
           this.nextState=response.data.HuankuanState.nextStateid

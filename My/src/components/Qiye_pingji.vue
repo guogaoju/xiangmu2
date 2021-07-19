@@ -399,31 +399,27 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
                 for (var i = 0; i < response.data.depts.length; i++) {
                       this.statedeptId.push(response.data.depts[i].id); 
                     }
-          for (let j = 0; j < this.deptId.length; j++) {
+                for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
-                    // console.log(old)
                         for (var i = 0; i < this.statedeptId.length; i++) {
                             let pre = this.statedeptId[i];
-                            // console.log(pre)
                                 if (pre === old) {
                                     this.isshow=true;
-                                    console.log("显示")
-                                }else{
-                                   this.isshow=false;
-                                  //  console.log("消失")
-                                };
-                                if(this.lastone===1){
-                                  this.isshow=false;
-                                   console.log("消失")
                                 }
                             }
                        }
-          // console.log(this.statedeptId)
+                       if(this.isshow=true){
+                        // console.log("显示")
+                       }else{
+                         this.isshow=false;
+                       }
+                       if(this.lastone===1){
+                         this.isshow=false;
+                       }
                })
           this.qiyeid=this.pa
           this.nextState=response.data.QiyepingjiState.nextStateid
           this.oldStateid=response.data.QiyepingjiState.id
-          // console.log(this.activities)
                 this.Pingji=response.data;
                 this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
                 this.validated=true;

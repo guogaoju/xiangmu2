@@ -495,15 +495,16 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
                                 if (pre === old) {
                                     this.isshow=true;
                                     // console.log("显示")
-                                }else{
-                                   this.isshow=false;
-                                  //  console.log("消失")
-                                };
-                                if(this.lastone===1){
-                                  this.isshow=false;
-                                  //  console.log("消失")
                                 }
                             }
+                       }
+                       if(this.isshow=true){
+                        // console.log("显示")
+                       }else{
+                         this.isshow=false;
+                       }
+                       if(this.lastone===1){
+                         this.isshow=false;
                        }
           // console.log(this.statedeptId)
                })

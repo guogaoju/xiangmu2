@@ -7,11 +7,12 @@
       <el-breadcrumb-item>出库管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin : 8px;">
-      <el-col :span="10">
+      <el-col :span="1.5">
         <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
-    </el-row>
-  <el-table
+  <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+    <el-tab-pane label="全部数据" name="first">
+      <el-table
   @row-click="handdle"
     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
       &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
@@ -133,6 +134,29 @@
       </template>
     </el-table-column>
   </el-table>
+    </el-tab-pane>
+      <el-tab-pane label="待办事项" name="second">
+      <el-table
+      :data="tableData1"
+      style="width: 100%">
+      <el-table-column
+        prop="date"
+        label="日期"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="180">
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="地址">
+      </el-table-column>
+    </el-table>
+    </el-tab-pane>
+  </el-tabs>
+    </el-row>
 
   <!-- 弹出层 -->
   <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible" @close='closeDialog'>
@@ -601,8 +625,11 @@ import ChukuStatelog from "../services/ChukuStatelog"
                                     }    
         })
        },
+       handleClick(tab, event) {
+        // console.log(tab, event);
+      },
       handleClick(row) {
-        console.log(row);
+        // console.log(row);
       },
       filterCurrent(value, row){
             return row.current_process === value;
@@ -611,6 +638,24 @@ import ChukuStatelog from "../services/ChukuStatelog"
 
     data() {
       return {
+        tableData1: [{
+            date: '2016-05-02',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-04',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1517 弄'
+          }, {
+            date: '2016-05-01',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1519 弄'
+          }, {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '上海市普陀区金沙江路 1516 弄'
+          }],
+        activeName: 'first',
         deletedept:[2],
         updatedept:[2],
         kandept:[1],

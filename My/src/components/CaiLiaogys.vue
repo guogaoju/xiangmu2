@@ -503,11 +503,33 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         this.liucheng=true,
         this.dialogTitle = "examine";
           this.pa=row.id;
+          this.selectdept();
            CailiaogysService.get(this.pa)
          .then(response => {
-            // if(response.data.CailiaoState.lastone===1){
-                  this.isshow=false;
-                // }
+           this.lastone=response.data.CailiaoState.lastone;
+          CailiaoState.get(response.data.CailiaoState.id).then(response =>{
+                   this.statedeptId = [];
+                for (var i = 0; i < response.data.depts.length; i++) {
+                      this.statedeptId.push(response.data.depts[i].id); 
+                    }
+                for (let j = 0; j < this.deptId.length; j++) {
+                    let old = this.deptId[j];
+                        for (var i = 0; i < this.statedeptId.length; i++) {
+                            let pre = this.statedeptId[i];
+                                if (pre === old) {
+                                    this.isshow=true;
+                                }
+                            }
+                       }
+                       if(this.isshow=true){
+                        // console.log("显示")
+                       }else{
+                         this.isshow=false;
+                       }
+                       if(this.lastone===1){
+                         this.isshow=false;
+                       }
+               })
           this.qiyeid=this.pa
           this.nextState=response.data.CailiaoState.nextStateid
           this.oldStateid=response.data.CailiaoState.id

@@ -644,7 +644,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
                         for (var i = 0; i < this.deptId.length; i++) {
                             let pre = this.deptId[i];
                                 if (pre === old) {
-                                    xunhuan==true
+                                    xunhuan=true
                                 }
                             }
                        }

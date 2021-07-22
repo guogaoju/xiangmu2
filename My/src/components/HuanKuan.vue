@@ -10,6 +10,8 @@
       <el-col :span="1.5">
         <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
+    </el-row>
+    <el-row style="margin : 8px;">
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
     <el-tab-pane label="全部数据" name="first">
       <el-table
@@ -129,23 +131,119 @@
     </el-tab-pane>
     <el-tab-pane label="待办事项" name="second">
       <el-table
-      :data="tableData1"
-      style="width: 100%">
-      <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址">
-      </el-table-column>
-    </el-table>
+  @row-click="handdle"
+     :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+      &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+      &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
+      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+      &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
+      &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
+      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+      )" border style="width: 100%">
+    <el-table-column min-width='50' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterId"> </el-input>
+                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.id}}
+                </div>
+            </template>
+    </el-table-column>
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterItem_name"> </el-input>
+                    <div slot="reference"> <label> 还款项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.item_name}}
+                </div>
+            </template>
+    </el-table-column>
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterTotal_quota"> </el-input>
+                    <div slot="reference"> <label> 授信总额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.total_quota}}
+                </div>
+            </template>
+    </el-table-column>
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterMoney"> </el-input>
+                    <div slot="reference"> <label> 已用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.money}}
+                </div>
+            </template>
+    </el-table-column>
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterHuan_money"> </el-input>
+                    <div slot="reference"> <label> 还款金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.huan_money}}
+                </div>
+            </template>
+    </el-table-column>
+    <el-table-column min-width='150' align="center">
+             <!-- eslint-disable-next-line -->
+            <template slot="header" slot-scope="scope">
+                <el-popover placement="bottom" trigger="click">
+                    <el-input v-model="filterHuan_money1"> </el-input>
+                    <div slot="reference"> <label> 还款后使用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                </el-popover>
+            </template>
+            <template slot-scope="scope">
+                <div>
+                    {{scope.row.huan_money1}}
+                </div>
+            </template>
+    </el-table-column>
+    <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
+            <template slot-scope="scope">
+                <el-image style="width: 100px; height: 100px" :src="scope.row.huan_stream" :preview-src-list="[scope.row.huan_stream]">
+                </el-image>
+            </template>
+    </el-table-column>
+    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+    </el-table-column>
+    <el-table-column
+      fixed="right"
+      label="操作"
+      width="300"
+      align="center">
+      <template slot-scope="scope">
+        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
     </el-tab-pane>
     
   </el-tabs>
@@ -257,6 +355,7 @@ import HuankuanState from "../services/HuankuanState"
 import HuankuanStatelog from "../services/HuankuanStatelog"
   export default {
     created () {
+      // this.selectdept1();
           this.tableonload();
       },
       computed: {
@@ -281,7 +380,68 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           // console.log(e);
         });
       },
+      selectdept1(){
+         var deptId1 = [];
+         var deptId2 = [];
+         var deptId3 = [];
+           authservice.get(this.currentUser.id).then(response =>{
+             this.deptId = [];
+          for (var i = 0; i < response.data.depts.length; i++) {
+            this.deptId.push(response.data.depts[i].id);
+          }
+          // console.log(response.data.depts)
+        })
+         HuanKuanService.getAll()
+        .then(response1 => {
+          console.log(response1.data)
+         for(var p=0;p<response1.data.length;p++){
+          // console.log("把所有记录的状态id存到deptId1里面")
+              deptId1.push(response1.data[p].HuankuanStateId);
+              //  console.log(deptId1.length)
+         }
+          
+        for(var i=0;i<deptId1.length;i++){
+          console.log(deptId1.length)
+         
+          // console.log("根据deptId1存的所有记录状态的id查到每个记录状态对应的部门")
+            HuankuanState.get(deptId1[i]).then(response =>{
+              for(var j=0;j<response.data.depts.length;j++){
+                // console.log("把所有记录状态对应的部门查出来，把部门的id放在deptId2里面")
+                  deptId2.push(response.data.depts[j].id);
+                  //  console.log(deptId2) 
+              };
+              //下面两个循环用户的部门id:deptId,和所有记录流程对应的部门id,
+              for (let k = 0; k < this.deptId.length; k++) {
+                    let old = this.deptId[k];
+                    // console.log(old+"old")
+                        for (var l = 0; l < deptId2.length; l++) {
+                            let pre = deptId2[l];
+                            // console.log(pre+"pre")
+                                if (pre === old) {
+                                      this.flag=true
+                                     
+                                }else{
+                                  console.log("没有")
+                                }
+                            }
+                     }
+        
+        if(this.flag==true){
+          console.log(i)
+            //  this.tableData1.push(response1.data[i])
+                                      // console.log(this.tableData1)
+        }else{
+           console.log("99999999999")
+        }
+            }) 
+        };
       
+        })
+        .catch(e => {
+          console.log(e);
+        });
+          
+      },
       selectdept(){
            authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
@@ -405,6 +565,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         });
       },
        openFrom(){
+         this.selectdept1(),
          //新建时候清空url
          this.isshow=true;
           this.imageUrl=""
@@ -649,7 +810,13 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                                     }                        
         })
        },
-      handleClick(row) {
+      handleClick(tab, event) {
+        if(tab.name == 'second'){
+        	this.selectdept1();
+        }else{
+        	// 触发‘用户管理’事件
+        console.log("else")
+        }
         // console.log(row);
       },
       filterCurrent(value, row){
@@ -689,27 +856,13 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
 
     data() {
       return {
-        tableData1: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }],
+        flag:false,
+        tableData1: [],
           activeName: 'first',
         deletedept:[2],
         updatedept:[2],
         kandept:[1],
+        isshow2:false,
         isshow1:false,
         adddept:[1,2],
         lastone:"",

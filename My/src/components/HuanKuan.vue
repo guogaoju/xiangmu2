@@ -381,66 +381,31 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         });
       },
       selectdept1(){
-         var deptId1 = [];
-         var deptId2 = [];
-         var deptId3 = [];
-           authservice.get(this.currentUser.id).then(response =>{
-             this.deptId = [];
-          for (var i = 0; i < response.data.depts.length; i++) {
-            this.deptId.push(response.data.depts[i].id);
-          }
-          // console.log(response.data.depts)
-        })
-         HuanKuanService.getAll()
-        .then(response1 => {
-          console.log(response1.data)
-         for(var p=0;p<response1.data.length;p++){
-          // console.log("把所有记录的状态id存到deptId1里面")
-              deptId1.push(response1.data[p].HuankuanStateId);
-              //  console.log(deptId1.length)
-         }
-          
-        for(var i=0;i<deptId1.length;i++){
-          console.log(deptId1.length)
-         
-          // console.log("根据deptId1存的所有记录状态的id查到每个记录状态对应的部门")
-            HuankuanState.get(deptId1[i]).then(response =>{
-              for(var j=0;j<response.data.depts.length;j++){
-                // console.log("把所有记录状态对应的部门查出来，把部门的id放在deptId2里面")
-                  deptId2.push(response.data.depts[j].id);
-                  //  console.log(deptId2) 
-              };
-              //下面两个循环用户的部门id:deptId,和所有记录流程对应的部门id,
-              for (let k = 0; k < this.deptId.length; k++) {
-                    let old = this.deptId[k];
-                    // console.log(old+"old")
-                        for (var l = 0; l < deptId2.length; l++) {
-                            let pre = deptId2[l];
-                            // console.log(pre+"pre")
-                                if (pre === old) {
-                                      this.flag=true
-                                     
-                                }else{
-                                  console.log("没有")
-                                }
-                            }
-                     }
-        
-        if(this.flag==true){
-          console.log(i)
-            //  this.tableData1.push(response1.data[i])
-                                      // console.log(this.tableData1)
-        }else{
-           console.log("99999999999")
-        }
-            }) 
-        };
-      
-        })
-        .catch(e => {
+        authservice.get(this.currentUser.id).then(resUser =>{
+          HuanKuanService.getAll().then(async resAllHuanKuan =>  {          
+            for(var i=0;i<resAllHuanKuan.data.length;i++){
+              await HuankuanState.get(resAllHuanKuan.data[i].HuankuanStateId).then(resHuanKuanState =>{
+                var ifKeep=false;
+                for (let k = 0; k < resUser.data.depts.length; k++){
+                  for (var l = 0; l < resHuanKuanState.data.depts.length; l++){
+                    if (resUser.data.depts[k].id === resHuanKuanState.data.depts[l].id){
+                      ifKeep=true;
+                    }
+                  }
+                }
+                if(ifKeep){
+                  this.tableData1.push(resAllHuanKuan.data[i])
+                }
+              }).catch(e => {
+                console.log(e);
+              }); 
+            }
+          }).catch(e => {
+            console.log(e);
+          });
+        }).catch(e => {
           console.log(e);
         });
-          
       },
       selectdept(){
            authservice.get(this.currentUser.id).then(response =>{

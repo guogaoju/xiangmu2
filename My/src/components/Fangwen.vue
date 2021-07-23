@@ -7,92 +7,181 @@
       <el-breadcrumb-item>企业访问记录</el-breadcrumb-item>
     </el-breadcrumb>
   <!-- 客户管理/企业信息管理/企业访问记录 -->
-    <el-row style="margin : 8px;">
-      <el-col :span="10">
+   <el-row style="margin : 8px;">
+      <el-col :span="1.5">
         <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
-  <el-table
-  @row-click="handdle"
-    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
-      &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
-      &(!filterVisit_time || data.visit_time.toLowerCase().includes(filterVisit_time.toString().toLowerCase()))
-      &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
-      )" border style="width: 100%">
-    <el-table-column min-width='70' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterId"> </el-input>
-                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.id}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='70' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterQiye_name"> </el-input>
-                    <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.qiye_name}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column prop="visit_type" label="拜访方式" width="120" align="center" :filters="[{text:'上门', value:'上门'},{text:'电话', value:'电话'}]" :filter-method="filtervisit_type">
-    </el-table-column>
-    <el-table-column min-width='70' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterVisit_time"> </el-input>
-                    <div slot="reference"> <label> 拜访时间 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.visit_time}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column prop="contract" label="是否预约" width="120" align="center" :filters="[{text:'是', value:'是'},{text:'否', value:'否'}]" :filter-method="filtercontract">
-    </el-table-column>
-    <el-table-column min-width='70' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterRemarks"> </el-input>
-                    <div slot="reference"> <label> 备注 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.remarks}}
-                </div>
-            </template>
-    </el-table-column>
-     <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
-    </el-table-column>
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="300"
-      align="center">
-      <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
-        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+    <el-row style="margin : 8px;">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="全部数据" name="first">
+            <el-table
+            @row-click="handdle"
+              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
+                &(!filterVisit_time || data.visit_time.toLowerCase().includes(filterVisit_time.toString().toLowerCase()))
+                &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQiye_name"> </el-input>
+                              <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.qiye_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="visit_type" label="拜访方式" width="120" align="center" :filters="[{text:'上门', value:'上门'},{text:'电话', value:'电话'}]" :filter-method="filtervisit_type">
+              </el-table-column>
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterVisit_time"> </el-input>
+                              <div slot="reference"> <label> 拜访时间 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.visit_time}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="contract" label="是否预约" width="120" align="center" :filters="[{text:'是', value:'是'},{text:'否', value:'否'}]" :filter-method="filtercontract">
+              </el-table-column>
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterRemarks"> </el-input>
+                              <div slot="reference"> <label> 备注 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.remarks}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="300"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="待办事项" name="second">
+          <el-table
+            @row-click="handdle"
+              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
+                &(!filterVisit_time || data.visit_time.toLowerCase().includes(filterVisit_time.toString().toLowerCase()))
+                &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQiye_name"> </el-input>
+                              <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.qiye_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="visit_type" label="拜访方式" width="120" align="center" :filters="[{text:'上门', value:'上门'},{text:'电话', value:'电话'}]" :filter-method="filtervisit_type">
+              </el-table-column>
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterVisit_time"> </el-input>
+                              <div slot="reference"> <label> 拜访时间 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.visit_time}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="contract" label="是否预约" width="120" align="center" :filters="[{text:'是', value:'是'},{text:'否', value:'否'}]" :filter-method="filtercontract">
+              </el-table-column>
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterRemarks"> </el-input>
+                              <div slot="reference"> <label> 备注 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.remarks}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="300"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+      </el-tabs>
+    </el-row>
 
   <!-- 添加弹出层 -->
   <el-dialog :title="titleMap[dialogTitle]" :visible.sync="dialogFormVisible" @close='closeDialog'>
@@ -202,10 +291,9 @@ import FangwenStatelog from "../services/FangwenStatelog"
          FangwenState.getAll()
         .then(response => {
           this.activities=response.data
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
+          console.log(e);
         });
       },
       selectdept(){
@@ -216,13 +304,10 @@ import FangwenStatelog from "../services/FangwenStatelog"
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
-                    // console.log(old)
                         for (var i = 0; i < this.adddept.length; i++) {
                             let pre = this.adddept[i];
-                            // console.log(pre)
                                 if (pre === old) {
                                     this.isshow1=true;
-                                    // console.log("显示")
                                 }
                             }
                        }  
@@ -231,18 +316,15 @@ import FangwenStatelog from "../services/FangwenStatelog"
       handdle(row, event, column) { 
         this.dialogFormVisible=true
         this.annui=false
+        this.isshow=false;
         this.liucheng=true,
         this.dialogTitle = "examine";
           this.pa=row.id;
            FangwenService.get(this.pa)
          .then(response => {
-            // if(response.data.FangwenState.lastone===1){
-                  this.isshow=false;
-                // }
           this.qiyeid=this.pa
           this.nextState=response.data.FangwenState.nextStateid
           this.oldStateid=response.data.FangwenState.id
-          // console.log(this.activities)
                 this.addfangwen=response.data;
                 this.addfangwen.nodeName = response.data.FangwenState.nodeName;
                 this.validated=true;
@@ -263,7 +345,6 @@ import FangwenStatelog from "../services/FangwenStatelog"
               operateId:4
               }
               FangwenStatelog.create(data).then(response => {
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -276,7 +357,6 @@ import FangwenStatelog from "../services/FangwenStatelog"
           FangwenService.update(this.pa,data)
         .then(response => {
           this.tableonload();
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -287,10 +367,8 @@ import FangwenStatelog from "../services/FangwenStatelog"
         .then(response => {
           this.activities=response.data
           this.selectlogs();
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
         });
       },
       getfor(row,column){
@@ -318,7 +396,6 @@ import FangwenStatelog from "../services/FangwenStatelog"
         QiyeService.getAll()
         .then(response => {
           this.result = response.data;
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -349,7 +426,6 @@ import FangwenStatelog from "../services/FangwenStatelog"
               }).catch(e => {
                 console.log(e);
               });
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -398,9 +474,6 @@ import FangwenStatelog from "../services/FangwenStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
           let xunhuan=false;
           for (let j = 0; j < this.kandept.length; j++) {
                     let old = this.kandept[j];
@@ -438,9 +511,6 @@ import FangwenStatelog from "../services/FangwenStatelog"
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
-          }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
           }
           let xunhuan=false;
           for (let j = 0; j < this.updatedept.length; j++) {
@@ -511,9 +581,6 @@ import FangwenStatelog from "../services/FangwenStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
           let xunhuan=false;
           for (let j = 0; j < this.deletedept.length; j++) {
                     let old = this.deletedept[j];
@@ -548,7 +615,6 @@ import FangwenStatelog from "../services/FangwenStatelog"
         })
        },
       handleClick(row) {
-        console.log(row);
       },
       filterCurrent(value, row){
             return row.current_process === value;
@@ -563,6 +629,8 @@ import FangwenStatelog from "../services/FangwenStatelog"
 
     data() {
       return {
+        tableData1:[],
+        activeName: 'first',
         deletedept:[2],
         updatedept:[2],
         kandept:[1],

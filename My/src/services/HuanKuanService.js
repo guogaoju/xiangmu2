@@ -18,8 +18,8 @@ class HuanKuanService {
 //   deleteAll() {
 //     return http.delete(`/tutorials`);
 //   }
-//   findByTitle(title) {
-//     return http.get(`/tutorials?title=${title}`);
-//   }
+  findByTitle(HuankuanStateId) {
+    return http.get(`/HuanKuan?HuankuanStateId=${HuankuanStateId}`);
+  }
 }
 export default new HuanKuanService();

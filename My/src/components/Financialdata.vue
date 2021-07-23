@@ -8,201 +8,400 @@
     </el-breadcrumb>
   <!-- 客户管理/企业信息管理/企业财务数据 -->
     <el-row style="margin : 8px;">
-      <el-col :span="10">
+      <el-col :span="1.5">
         <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
-  <el-table
-  @row-click="handdle"
-    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
-      &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
-      &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
-      &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
-      )" border style="width: 100%">
-    <el-table-column min-width='70' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterId"> </el-input>
-                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.id}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='120' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterQiye_name"> </el-input>
-                    <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.qiye_name}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='120' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterYear"> </el-input>
-                    <div slot="reference"> <label> 年度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.year}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='120' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterQuarter"> </el-input>
-                    <div slot="reference"> <label> 季度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.quarter}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column
-      prop="total_assets"
-      label="总资产"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="net_assets"
-      label="净资产"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="Loar"
-      label="资产负债率%"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="quick_ratio"
-      label="速动比率"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="current_ratio"
-      label="流动比率"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="days_inventory"
-      label="存货周转天数"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="floating_debt"
-      label="流动债务在总负债中占比%"
-      width="120"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="rate_margin"
-      label="毛利率%"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="ROE"
-      label="ROE"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="accounts_receivable"
-      label="应收账款"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="accounts_receivableDay"
-      label="应收账款周转天数"
-      width="100"
-      align="center">
-    </el-table-column>
-     <el-table-column
-      prop="accounts_payable"
-      label="应付账款"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="accounts_payableDay"
-      label="应付账款周转天数"
-      width="100"
-      align="center">
-    </el-table-column>
-     <el-table-column
-      prop="operating_income"
-      label="营业收入"
-      width="100"
-      align="center">
-    </el-table-column>
-     <el-table-column
-      prop="nonbusiness_income"
-      label="营业外收入"
-      width="100"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="net_profits"
-      label="净利润"
-      width="100"
-      align="center">
-    </el-table-column>
-     <el-table-column
-      prop="total_money"
-      label="经营活动产生的现金流量净额"
-      width="150"
-      align="center">
-    </el-table-column>
-    <el-table-column
-      prop="total_money1"
-      label="投资活动产生的现金流量净额"
-      width="150"
-      align="center">
-    </el-table-column>
-     <el-table-column
-      prop="total_money2"
-      label="筹资活动产生的现金流量净额"
-      width="150"
-      align="center">
-    </el-table-column>
-   <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
-    </el-table-column>
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="250"
-      align="center">
-      <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
-        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+    <el-row style="margin : 8px;">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="全部数据" name="first">
+          <el-table
+            @row-click="handdle"
+              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
+                &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
+                &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQiye_name"> </el-input>
+                              <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.qiye_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterYear"> </el-input>
+                              <div slot="reference"> <label> 年度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.year}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQuarter"> </el-input>
+                              <div slot="reference"> <label> 季度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.quarter}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column
+                prop="total_assets"
+                label="总资产"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="net_assets"
+                label="净资产"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="Loar"
+                label="资产负债率%"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="quick_ratio"
+                label="速动比率"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="current_ratio"
+                label="流动比率"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="days_inventory"
+                label="存货周转天数"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="floating_debt"
+                label="流动债务在总负债中占比%"
+                width="120"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="rate_margin"
+                label="毛利率%"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="ROE"
+                label="ROE"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="accounts_receivable"
+                label="应收账款"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="accounts_receivableDay"
+                label="应收账款周转天数"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="accounts_payable"
+                label="应付账款"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="accounts_payableDay"
+                label="应付账款周转天数"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="operating_income"
+                label="营业收入"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="nonbusiness_income"
+                label="营业外收入"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="net_profits"
+                label="净利润"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="total_money"
+                label="经营活动产生的现金流量净额"
+                width="150"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="total_money1"
+                label="投资活动产生的现金流量净额"
+                width="150"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="total_money2"
+                label="筹资活动产生的现金流量净额"
+                width="150"
+                align="center">
+              </el-table-column>
+            <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="250"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="待办事项" name="second">
+          <el-table
+            @row-click="handdle"
+              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
+                &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
+                &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='70' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQiye_name"> </el-input>
+                              <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.qiye_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterYear"> </el-input>
+                              <div slot="reference"> <label> 年度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.year}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQuarter"> </el-input>
+                              <div slot="reference"> <label> 季度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.quarter}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column
+                prop="total_assets"
+                label="总资产"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="net_assets"
+                label="净资产"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="Loar"
+                label="资产负债率%"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="quick_ratio"
+                label="速动比率"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="current_ratio"
+                label="流动比率"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="days_inventory"
+                label="存货周转天数"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="floating_debt"
+                label="流动债务在总负债中占比%"
+                width="120"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="rate_margin"
+                label="毛利率%"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="ROE"
+                label="ROE"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="accounts_receivable"
+                label="应收账款"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="accounts_receivableDay"
+                label="应收账款周转天数"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="accounts_payable"
+                label="应付账款"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="accounts_payableDay"
+                label="应付账款周转天数"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="operating_income"
+                label="营业收入"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="nonbusiness_income"
+                label="营业外收入"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="net_profits"
+                label="净利润"
+                width="100"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="total_money"
+                label="经营活动产生的现金流量净额"
+                width="150"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="total_money1"
+                label="投资活动产生的现金流量净额"
+                width="150"
+                align="center">
+              </el-table-column>
+              <el-table-column
+                prop="total_money2"
+                label="筹资活动产生的现金流量净额"
+                width="150"
+                align="center">
+              </el-table-column>
+            <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="250"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+      </el-tabs>
+    </el-row>
 
   <!-- 弹出层 -->
   <el-dialog :title="titleMap[dialogTitle]" width="65%" :visible.sync="dialogFormVisible" @close='closeDialog'>
@@ -391,8 +590,6 @@
       </el-row>
     </el-form>
   </el-dialog>
-
- 
 </div>
 
 </template>
@@ -422,10 +619,9 @@ import FinanceStatelog from "../services/FinanceStatelog"
          FinanceState.getAll()
         .then(response => {
           this.activities=response.data
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
+          console.log(e);
         });
       },
       selectdept(){
@@ -436,13 +632,10 @@ import FinanceStatelog from "../services/FinanceStatelog"
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
-                    // console.log(old)
                         for (var i = 0; i < this.adddept.length; i++) {
                             let pre = this.adddept[i];
-                            // console.log(pre)
                                 if (pre === old) {
                                     this.isshow1=true;
-                                    // console.log("显示")
                                 }
                             }
                        }  
@@ -456,13 +649,10 @@ import FinanceStatelog from "../services/FinanceStatelog"
           this.pa=row.id;
            FinancialdataService.get(this.pa)
          .then(response => {
-            // if(response.data.FinanceState.lastone===1){
-                  this.isshow=false;
-                // }
-          this.qiyeid=this.pa
-          this.nextState=response.data.FinanceState.nextStateid
-          this.oldStateid=response.data.FinanceState.id
-          // console.log(this.activities)
+                this.isshow=false;
+                this.qiyeid=this.pa
+                this.nextState=response.data.FinanceState.nextStateid
+                this.oldStateid=response.data.FinanceState.id
                 this.finance=response.data;
                 this.finance.nodeName = response.data.FinanceState.nodeName;
                 this.validated=true;
@@ -483,7 +673,6 @@ import FinanceStatelog from "../services/FinanceStatelog"
               operateId:4
               }
               FinanceStatelog.create(data).then(response => {
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -496,7 +685,6 @@ import FinanceStatelog from "../services/FinanceStatelog"
           FinancialdataService.update(this.pa,data)
         .then(response => {
           this.tableonload();
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -507,10 +695,9 @@ import FinanceStatelog from "../services/FinanceStatelog"
         .then(response => {
           this.activities=response.data
           this.selectlogs();
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
+          console.log(e);
         });
       },
       getfor(row,column){
@@ -521,7 +708,6 @@ import FinanceStatelog from "../services/FinanceStatelog"
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -608,7 +794,6 @@ import FinanceStatelog from "../services/FinanceStatelog"
         });
         },
          selectlogs(){
-          //  console.log(this.pa)
         let financeId=this.pa
           FinanceStatelog.findByLog(financeId).then(response => {
             console.log(response.data)
@@ -634,9 +819,6 @@ import FinanceStatelog from "../services/FinanceStatelog"
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
-          }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
           }
           let xunhuan=false;
           for (let j = 0; j < this.kandept.length; j++) {
@@ -675,9 +857,6 @@ import FinanceStatelog from "../services/FinanceStatelog"
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
-          }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
           }
           let xunhuan=false;
           for (let j = 0; j < this.updatedept.length; j++) {
@@ -765,9 +944,6 @@ import FinanceStatelog from "../services/FinanceStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
           let xunhuan=false;
           for (let j = 0; j < this.deletedept.length; j++) {
                     let old = this.deletedept[j];
@@ -803,7 +979,6 @@ import FinanceStatelog from "../services/FinanceStatelog"
         })
        },
       handleClick(row) {
-        console.log(row);
       },
       filterCurrent(value, row){
             return row.current_process === value;
@@ -812,6 +987,8 @@ import FinanceStatelog from "../services/FinanceStatelog"
 
     data() {
       return {
+        tableData1: [],
+        activeName: 'first',
         deletedept:[2],
         updatedept:[2],
         kandept:[1],

@@ -6,208 +6,413 @@
       <el-breadcrumb-item>项目管理</el-breadcrumb-item>
       <el-breadcrumb-item>制造业项目管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row style="margin : 8px;">
-      <el-col :span="10">
+   <el-row style="margin : 8px;">
+      <el-col :span="1.5">
         <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
-  <el-table
-  @row-click="handdle"
-    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
-      &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
-      &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
-      &(!filterTime || data.time.toLowerCase().includes(filterTime.toString().toLowerCase()))
-      &(!filterJindu || data.jindu.toLowerCase().includes(filterJindu.toString().toLowerCase()))
-      &(!filterItem_money || data.item_money.toLowerCase().includes(filterItem_money.toString().toLowerCase()))
-      &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
-      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
-      &(!filterInterest || data.interest.toLowerCase().includes(filterInterest.toString().toLowerCase()))
-      &(!filterReturn || data.Return.toLowerCase().includes(filterReturn.toString().toLowerCase()))
-      &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
-      &(!filterfax || data.fax.toLowerCase().includes(filterfax.toString().toLowerCase()))
-      )" border style="width: 100%">
-    <el-table-column min-width='80' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterId"> </el-input>
-                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.id}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterQiye_name"> </el-input>
-                    <div slot="reference"> <label> 企业信息 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.qiye_name}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='200' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterItem_name"> </el-input>
-                    <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.item_name}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='120' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterTime"> </el-input>
-                    <div slot="reference"> <label> 截至日期 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.time}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='100' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterJindu"> </el-input>
-                    <div slot="reference"> <label> 工程进度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.jindu}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterItem_money"> </el-input>
-                    <div slot="reference"> <label> 项目总金额 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.item_money}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterTotal_quota"> </el-input>
-                    <div slot="reference"> <label> 供应链合同金额 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.total_quota}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterMoney"> </el-input>
-                    <div slot="reference"> <label> 已贷金额 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.money}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='80' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterInterest"> </el-input>
-                    <div slot="reference"> <label> 利息% </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.interest}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='100' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterReturn"> </el-input>
-                    <div slot="reference"> <label> 回款率% </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.Return}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='120' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterHuan_money"> </el-input>
-                    <div slot="reference"> <label> 本月待还款 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.huan_money}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='100' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterfax"> </el-input>
-                    <div slot="reference"> <label> 有无欠款 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.fax}}
-                </div>
-            </template>
-    </el-table-column>
-     <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
-    </el-table-column>
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="250"
-      align="center">
-      <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
-        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+    <el-row style="margin : 8px;">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="全部数据" name="first">
+          <el-table
+            @row-click="handdle"
+              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
+                &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+                &(!filterTime || data.time.toLowerCase().includes(filterTime.toString().toLowerCase()))
+                &(!filterJindu || data.jindu.toLowerCase().includes(filterJindu.toString().toLowerCase()))
+                &(!filterItem_money || data.item_money.toLowerCase().includes(filterItem_money.toString().toLowerCase()))
+                &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
+                &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+                &(!filterInterest || data.interest.toLowerCase().includes(filterInterest.toString().toLowerCase()))
+                &(!filterReturn || data.Return.toLowerCase().includes(filterReturn.toString().toLowerCase()))
+                &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
+                &(!filterfax || data.fax.toLowerCase().includes(filterfax.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='80' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQiye_name"> </el-input>
+                              <div slot="reference"> <label> 企业信息 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.qiye_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='200' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterItem_name"> </el-input>
+                              <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.item_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterTime"> </el-input>
+                              <div slot="reference"> <label> 截至日期 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.time}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterJindu"> </el-input>
+                              <div slot="reference"> <label> 工程进度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.jindu}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterItem_money"> </el-input>
+                              <div slot="reference"> <label> 项目总金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.item_money}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterTotal_quota"> </el-input>
+                              <div slot="reference"> <label> 供应链合同金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.total_quota}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney"> </el-input>
+                              <div slot="reference"> <label> 已贷金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='80' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterInterest"> </el-input>
+                              <div slot="reference"> <label> 利息% </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.interest}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterReturn"> </el-input>
+                              <div slot="reference"> <label> 回款率% </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.Return}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterHuan_money"> </el-input>
+                              <div slot="reference"> <label> 本月待还款 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.huan_money}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterfax"> </el-input>
+                              <div slot="reference"> <label> 有无欠款 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.fax}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="250"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="待办事项" name="second">
+          <el-table
+            @row-click="handdle"
+              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
+                &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+                &(!filterTime || data.time.toLowerCase().includes(filterTime.toString().toLowerCase()))
+                &(!filterJindu || data.jindu.toLowerCase().includes(filterJindu.toString().toLowerCase()))
+                &(!filterItem_money || data.item_money.toLowerCase().includes(filterItem_money.toString().toLowerCase()))
+                &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
+                &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+                &(!filterInterest || data.interest.toLowerCase().includes(filterInterest.toString().toLowerCase()))
+                &(!filterReturn || data.Return.toLowerCase().includes(filterReturn.toString().toLowerCase()))
+                &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
+                &(!filterfax || data.fax.toLowerCase().includes(filterfax.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='80' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQiye_name"> </el-input>
+                              <div slot="reference"> <label> 企业信息 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.qiye_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='200' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterItem_name"> </el-input>
+                              <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.item_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterTime"> </el-input>
+                              <div slot="reference"> <label> 截至日期 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.time}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterJindu"> </el-input>
+                              <div slot="reference"> <label> 工程进度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.jindu}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterItem_money"> </el-input>
+                              <div slot="reference"> <label> 项目总金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.item_money}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterTotal_quota"> </el-input>
+                              <div slot="reference"> <label> 供应链合同金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.total_quota}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney"> </el-input>
+                              <div slot="reference"> <label> 已贷金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='80' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterInterest"> </el-input>
+                              <div slot="reference"> <label> 利息% </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.interest}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterReturn"> </el-input>
+                              <div slot="reference"> <label> 回款率% </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.Return}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterHuan_money"> </el-input>
+                              <div slot="reference"> <label> 本月待还款 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.huan_money}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterfax"> </el-input>
+                              <div slot="reference"> <label> 有无欠款 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.fax}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="250"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+      </el-tabs>
+    </el-row>
 
   <!-- 添加弹出层 -->
   <el-dialog :title="titleMap[dialogTitle]" width="60%" :visible.sync="dialogFormVisible" @close='closeDialog'>
@@ -440,10 +645,37 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
          ZhizaoState.getAll()
         .then(response => {
           this.activities=response.data
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
+          console.log(e);
+        });
+      },
+      selectdept1(){
+        this.tableData1=[]
+        authservice.get(this.currentUser.id).then(resUser =>{
+          ZhizaoService.getAll().then(async resAllZhizao =>  {          
+            for(var i=0;i<resAllZhizao.data.length;i++){
+              await ZhizaoState.get(resAllZhizao.data[i].ZhizaoStateId).then(resZhizaoState =>{
+                var ifKeep=false;
+                for (let k = 0; k < resUser.data.depts.length; k++){
+                  for (var l = 0; l < resZhizaoState.data.depts.length; l++){
+                    if (resUser.data.depts[k].id === resZhizaoState.data.depts[l].id){
+                      ifKeep=true;
+                    }
+                  }
+                }
+                if(ifKeep){
+                  this.tableData1.push(resAllZhizao.data[i])
+                }
+              }).catch(e => {
+                console.log(e);
+              }); 
+            }
+          }).catch(e => {
+            console.log(e);
+          });
+        }).catch(e => {
+          console.log(e);
         });
       },
       selectdept(){
@@ -454,13 +686,10 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
-                    // console.log(old)
                         for (var i = 0; i < this.adddept.length; i++) {
                             let pre = this.adddept[i];
-                            // console.log(pre)
                                 if (pre === old) {
                                     this.isshow1=true;
-                                    // console.log("显示")
                                 }
                             }
                        }  
@@ -488,30 +717,24 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
                     }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
-                    // console.log(old)
                         for (var i = 0; i < this.statedeptId.length; i++) {
                             let pre = this.statedeptId[i];
-                            // console.log(pre)
                                 if (pre === old) {
                                     this.isshow=true;
-                                    // console.log("显示")
                                 }
                             }
                        }
-                       if(this.isshow=true){
-                        // console.log("显示")
+                       if(this.isshow===true){
                        }else{
                          this.isshow=false;
                        }
                        if(this.lastone===1){
                          this.isshow=false;
                        }
-          // console.log(this.statedeptId)
                })
           this.qiyeid=this.pa
           this.nextState=response.data.ZhizaoState.nextStateid
           this.oldStateid=response.data.ZhizaoState.id
-          // console.log(this.activities)
                 this.xiangmu=response.data;
                 this.xiangmu.nodeName = response.data.ZhizaoState.nodeName;
                 this.validated=true;
@@ -525,7 +748,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
        },
        addStatelog(){
          var data = {
-           //userid拿不到，默认2
               userId:this.currentUser.id,
               zhizaoId: this.qiyeid,
               oldstateid: this.oldStateid,
@@ -533,7 +755,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
               operateId:4
               }
               ZhizaoStatelog.create(data).then(response => {
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -546,7 +767,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
           ZhizaoService.update(this.pa,data)
         .then(response => {
           this.tableonload();
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -557,10 +777,9 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         .then(response => {
           this.activities=response.data
           this.selectlogs();
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
+          console.log(e);
         });
       },
       getfor(row,column){
@@ -651,18 +870,15 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
                 console.log(e);
               });
               for(let i=0;i<this.tableData2.length;i++){
-              // console.log(this.tableData2[i]);
               this.tableData2[i].zhizaoId=response.data.id
               addWuliaoService.create(this.tableData2[i])
             .then(response => {
               this.tableonload();
-              // console.log(response.data);
             })
             .catch(e => {
               console.log(e);
             });  
          } 
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -687,7 +903,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         });
         },
         selectlogs(){
-          //  console.log(this.pa)
         let zhizaoId=this.pa
           ZhizaoStatelog.findByLog(zhizaoId).then(response => {
             console.log(response.data)
@@ -713,9 +928,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
           let xunhuan=false;
           for (let j = 0; j < this.kandept.length; j++) {
                     let old = this.kandept[j];
@@ -738,7 +950,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
                                     this.selectStateAndLogs();
                                     addWuliaoService.findByLog(this.pa).then(response =>{
                                       this.tableData2=response.data
-                                      // console.log(response.data )
+
                                     })
                                     ZhizaoService.get(this.pa)
                                   .then(response => {
@@ -766,7 +978,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         zhizaoId:this.pa,
         }
         addWuliaoService.create(data).then(response =>{
-          // console.log(response.data +"111111111")
         })
        },
         updateClick(index,row){
@@ -774,9 +985,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
-          }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
           }
           let xunhuan=false;
           for (let j = 0; j < this.updatedept.length; j++) {
@@ -801,7 +1009,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
                                     this.selectStateAndLogs();
                                     addWuliaoService.findByLog(this.pa).then(response =>{
                                       this.tableData2=response.data
-                                      // console.log(response.data )
                                     })
                                     ZhizaoService.get(this.pa)
                                   .then(response => {
@@ -862,9 +1069,6 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
           let xunhuan=false;
           for (let j = 0; j < this.deletedept.length; j++) {
                     let old = this.deletedept[j];
@@ -898,8 +1102,13 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
                                     }                                         
         })
        },
-      handleClick(row) {
-        console.log(row);
+      handleClick(tab, event) {
+        // 触发‘待办事项’事件
+        if(tab.name == 'second'){
+        	this.selectdept1();
+        }else{
+        	// 触发‘其他’事件
+        }
       },
       cancelForm() {
       this.loading = false;
@@ -913,6 +1122,8 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
 
     data() {
       return {
+        tableData1: [],
+        activeName: 'first',
         deletedept:[2],
         updatedept:[2],
         kandept:[1],

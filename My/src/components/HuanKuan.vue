@@ -15,237 +15,236 @@
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
     <el-tab-pane label="全部数据" name="first">
       <el-table
-  @row-click="handdle"
-     :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
-      &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
-      &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
-      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
-      &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
-      &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
-      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
-      )" border style="width: 100%">
-    <el-table-column min-width='50' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterId"> </el-input>
-                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
+        @row-click="handdle"
+          :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+            &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+            &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
+            &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+            &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
+            &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
+            &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+            )" border style="width: 100%">
+          <el-table-column min-width='50' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterId"> </el-input>
+                          <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.id}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterItem_name"> </el-input>
+                          <div slot="reference"> <label> 还款项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.item_name}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterTotal_quota"> </el-input>
+                          <div slot="reference"> <label> 授信总额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.total_quota}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterMoney"> </el-input>
+                          <div slot="reference"> <label> 已用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.money}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterHuan_money"> </el-input>
+                          <div slot="reference"> <label> 还款金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.huan_money}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterHuan_money1"> </el-input>
+                          <div slot="reference"> <label> 还款后使用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.huan_money1}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
+                  <template slot-scope="scope">
+                      <el-image style="width: 100px; height: 100px" :src="scope.row.huan_stream" :preview-src-list="[scope.row.huan_stream]">
+                      </el-image>
+                  </template>
+          </el-table-column>
+          <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            width="300"
+            align="center">
             <template slot-scope="scope">
-                <div>
-                    {{scope.row.id}}
-                </div>
+              <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+              <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+              <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
             </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterItem_name"> </el-input>
-                    <div slot="reference"> <label> 还款项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.item_name}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterTotal_quota"> </el-input>
-                    <div slot="reference"> <label> 授信总额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.total_quota}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterMoney"> </el-input>
-                    <div slot="reference"> <label> 已用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.money}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterHuan_money"> </el-input>
-                    <div slot="reference"> <label> 还款金额 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.huan_money}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterHuan_money1"> </el-input>
-                    <div slot="reference"> <label> 还款后使用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.huan_money1}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
-            <template slot-scope="scope">
-                <el-image style="width: 100px; height: 100px" :src="scope.row.huan_stream" :preview-src-list="[scope.row.huan_stream]">
-                </el-image>
-            </template>
-    </el-table-column>
-    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
-    </el-table-column>
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="300"
-      align="center">
-      <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
-        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+          </el-table-column>
+        </el-table>
     </el-tab-pane>
     <el-tab-pane label="待办事项" name="second">
       <el-table
-  @row-click="handdle"
-     :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
-      &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
-      &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
-      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
-      &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
-      &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
-      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
-      )" border style="width: 100%">
-    <el-table-column min-width='50' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterId"> </el-input>
-                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
+        @row-click="handdle"
+          :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+            &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+            &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
+            &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+            &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
+            &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
+            &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+            )" border style="width: 100%">
+          <el-table-column min-width='50' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterId"> </el-input>
+                          <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.id}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterItem_name"> </el-input>
+                          <div slot="reference"> <label> 还款项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.item_name}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterTotal_quota"> </el-input>
+                          <div slot="reference"> <label> 授信总额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.total_quota}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterMoney"> </el-input>
+                          <div slot="reference"> <label> 已用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.money}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterHuan_money"> </el-input>
+                          <div slot="reference"> <label> 还款金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.huan_money}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='150' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filterHuan_money1"> </el-input>
+                          <div slot="reference"> <label> 还款后使用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.huan_money1}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
+                  <template slot-scope="scope">
+                      <el-image style="width: 100px; height: 100px" :src="scope.row.huan_stream" :preview-src-list="[scope.row.huan_stream]">
+                      </el-image>
+                  </template>
+          </el-table-column>
+          <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            width="300"
+            align="center">
             <template slot-scope="scope">
-                <div>
-                    {{scope.row.id}}
-                </div>
+              <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+              <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+              <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
             </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterItem_name"> </el-input>
-                    <div slot="reference"> <label> 还款项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.item_name}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterTotal_quota"> </el-input>
-                    <div slot="reference"> <label> 授信总额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.total_quota}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterMoney"> </el-input>
-                    <div slot="reference"> <label> 已用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.money}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterHuan_money"> </el-input>
-                    <div slot="reference"> <label> 还款金额 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.huan_money}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterHuan_money1"> </el-input>
-                    <div slot="reference"> <label> 还款后使用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.huan_money1}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
-            <template slot-scope="scope">
-                <el-image style="width: 100px; height: 100px" :src="scope.row.huan_stream" :preview-src-list="[scope.row.huan_stream]">
-                </el-image>
-            </template>
-    </el-table-column>
-    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
-    </el-table-column>
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="300"
-      align="center">
-      <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
-        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+          </el-table-column>
+        </el-table>
     </el-tab-pane>
-    
   </el-tabs>
 </el-row>
 
@@ -381,6 +380,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         });
       },
       selectdept1(){
+        this.tableData1=[]
         authservice.get(this.currentUser.id).then(resUser =>{
           HuanKuanService.getAll().then(async resAllHuanKuan =>  {          
             for(var i=0;i<resAllHuanKuan.data.length;i++){
@@ -433,7 +433,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         this.liucheng=true,
         this.dialogTitle = "examine";
           this.pa=row.id;
-            this.selectdept();
+          // this.selectdept();
            HuanKuanService.get(this.pa)
           .then(response => {
            this.lastone=response.data.HuankuanState.lastone;
@@ -448,18 +448,22 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                             let pre = this.statedeptId[i];
                                 if (pre === old) {
                                     this.isshow=true;
+                                    // console.log("显示")
                                 }
                             }
                        }
-                      if(this.isshow=true){
+                      if(this.isshow===true){
                         // console.log("显示")
                        }else{
                          this.isshow=false;
+                        //  console.log("消失")
                        }
                        if(this.lastone===1){
                          this.isshow=false;
                        }
                })
+               
+                      //  console.log(this.isshow)
           this.qiyeid=this.pa
           this.nextState=response.data.HuankuanState.nextStateid
           this.oldStateid=response.data.HuankuanState.id
@@ -530,7 +534,6 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         });
       },
        openFrom(){
-         this.selectdept1(),
          //新建时候清空url
          this.isshow=true;
           this.imageUrl=""
@@ -615,9 +618,9 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
+          // if(this.deptId.length===0){
+          //   alert("当前用户没有权限进行该操作")
+          // }
           let xunhuan=false;
           for (let j = 0; j < this.kandept.length; j++) {
                     let old = this.kandept[j];
@@ -639,7 +642,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                                     HuanKuanService.get(this.pa)
                                     .then(response => {
                                           this.huankuan=response.data;
-                                          this.huankuan.nodeName = response.data.FangwenState.nodeName; 
+                                          this.huankuan.nodeName = response.data.HuankuanState.nodeName; 
                                           this.imageUrl=response.data.huan_stream
                                         })
                                         .catch(e => {
@@ -657,9 +660,9 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
+          // if(this.deptId.length===0){
+          //   alert("当前用户没有权限进行该操作")
+          // }
          let xunhuan=false;
           for (let j = 0; j < this.updatedept.length; j++) {
                     let old = this.updatedept[j];
@@ -684,7 +687,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                                     HuanKuanService.get(this.pa)
                                     .then(response => {
                                         this.huankuan=response.data;
-                                        this.huankuan.nodeName = response.data.FangwenState.nodeName; 
+                                        this.huankuan.nodeName = response.data.HuankuanState.nodeName; 
                                         this.imageUrl=response.data.huan_stream;
                                             //旧图片url另存一份,将来imageUrl会被覆盖
                                             this.oldUrl = this.imageUrl;
@@ -776,13 +779,13 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         })
        },
       handleClick(tab, event) {
+        // 触发‘用户管理’事件
         if(tab.name == 'second'){
         	this.selectdept1();
         }else{
         	// 触发‘用户管理’事件
-        console.log("else")
+        // console.log("else")
         }
-        // console.log(row);
       },
       filterCurrent(value, row){
             return row.current_process === value;
@@ -821,9 +824,8 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
 
     data() {
       return {
-        flag:false,
         tableData1: [],
-          activeName: 'first',
+        activeName: 'first',
         deletedept:[2],
         updatedept:[2],
         kandept:[1],

@@ -7,94 +7,185 @@
       <el-breadcrumb-item>建筑项目进度更新</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin : 8px;">
-      <el-col :span="10">
+      <el-col :span="1.5">
         <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
-  <el-table
-  @row-click="handdle"
-    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
-      &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
-      &(!filterBefore_jindu || data.before_jindu.toLowerCase().includes(filterBefore_jindu.toString().toLowerCase()))
-      &(!filterAfter_jindu || data.after_jindu.toLowerCase().includes(filterAfter_jindu.toString().toLowerCase()))
-      )" border style="width: 100%">
-    <el-table-column min-width='50' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterId"> </el-input>
-                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.id}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='100' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterItem_name"> </el-input>
-                    <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.item_name}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='100' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterBefore_jindu"> </el-input>
-                    <div slot="reference"> <label> 当前进度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.before_jindu}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='100' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterAfter_jindu"> </el-input>
-                    <div slot="reference"> <label> 更新后进度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.after_jindu}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
-            <template slot-scope="scope">
-                <el-image style="width: 100px; height: 100px" :src="scope.row.photo" :preview-src-list="[scope.row.photo]">
-                </el-image>
-            </template>
-    </el-table-column>
-    <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
-    </el-table-column>
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="300"
-      align="center">
-      <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
-        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-
+    <el-row style="margin : 8px;">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="全部数据" name="first">
+          <el-table
+            @row-click="handdle"
+              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+                &(!filterBefore_jindu || data.before_jindu.toLowerCase().includes(filterBefore_jindu.toString().toLowerCase()))
+                &(!filterAfter_jindu || data.after_jindu.toLowerCase().includes(filterAfter_jindu.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='50' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterItem_name"> </el-input>
+                              <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.item_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterBefore_jindu"> </el-input>
+                              <div slot="reference"> <label> 当前进度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.before_jindu}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterAfter_jindu"> </el-input>
+                              <div slot="reference"> <label> 更新后进度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.after_jindu}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
+                      <template slot-scope="scope">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.photo" :preview-src-list="[scope.row.photo]">
+                          </el-image>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="300"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="待办事项" name="second">
+          <el-table
+            @row-click="handdle"
+              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+                &(!filterBefore_jindu || data.before_jindu.toLowerCase().includes(filterBefore_jindu.toString().toLowerCase()))
+                &(!filterAfter_jindu || data.after_jindu.toLowerCase().includes(filterAfter_jindu.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='50' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterItem_name"> </el-input>
+                              <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.item_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterBefore_jindu"> </el-input>
+                              <div slot="reference"> <label> 当前进度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.before_jindu}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='100' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterAfter_jindu"> </el-input>
+                              <div slot="reference"> <label> 更新后进度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.after_jindu}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
+                      <template slot-scope="scope">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.photo" :preview-src-list="[scope.row.photo]">
+                          </el-image>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="300"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+      </el-tabs>
+    </el-row>
+  
   <!-- 添加弹出层 -->
   <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
@@ -281,10 +372,9 @@ import JinduStatelog from "../services/JinduStatelog"
          JinduState.getAll()
         .then(response => {
           this.activities=response.data
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
+          console.log(e);
         });
       },
       selectdept(){
@@ -295,13 +385,10 @@ import JinduStatelog from "../services/JinduStatelog"
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
-                    // console.log(old)
                         for (var i = 0; i < this.adddept.length; i++) {
                             let pre = this.adddept[i];
-                            // console.log(pre)
                                 if (pre === old) {
                                     this.isshow1=true;
-                                    // console.log("显示")
                                 }
                             }
                        }  
@@ -321,13 +408,10 @@ import JinduStatelog from "../services/JinduStatelog"
           })
            JinduService.get(this.pa)
          .then(response => {
-            // if(response.data.JinduState.lastone===1){
-                  this.isshow=false;
-                // }
-          this.qiyeid=this.pa
-          this.nextState=response.data.JinduState.nextStateid
-          this.oldStateid=response.data.JinduState.id
-          // console.log(this.activities)
+                this.isshow=false;
+                this.qiyeid=this.pa
+                this.nextState=response.data.JinduState.nextStateid
+                this.oldStateid=response.data.JinduState.id
                 this.jindu=response.data;
                 this.jindu.nodeName = response.data.JinduState.nodeName;
                 this.jindu.nodeName = response.data.JinduState.nodeName;
@@ -349,7 +433,6 @@ import JinduStatelog from "../services/JinduStatelog"
               operateId:4
               }
               JinduStatelog.create(data).then(response => {
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -362,7 +445,6 @@ import JinduStatelog from "../services/JinduStatelog"
           JinduService.update(this.pa,data)
         .then(response => {
           this.tableonload();
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -373,10 +455,9 @@ import JinduStatelog from "../services/JinduStatelog"
         .then(response => {
           this.activities=response.data
           this.selectlogs();
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
+          console.log(e);
         });
       },
       getfor(row,column){
@@ -464,7 +545,6 @@ import JinduStatelog from "../services/JinduStatelog"
               console.log(e);
             });  
          } 
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -517,9 +597,6 @@ import JinduStatelog from "../services/JinduStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
           let xunhuan=false;
           for (let j = 0; j < this.kandept.length; j++) {
                     let old = this.kandept[j];
@@ -541,7 +618,6 @@ import JinduStatelog from "../services/JinduStatelog"
                                     this.selectStateAndLogs();
                                     addjinduwuliao.findByLog(this.pa).then(response =>{
                                       this.tableData2=response.data
-                                      // console.log(response.data )
                                     })
                                     JinduService.get(this.pa)
                                   .then(response => {
@@ -564,9 +640,6 @@ import JinduStatelog from "../services/JinduStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
           let xunhuan=false;
           for (let j = 0; j < this.updatedept.length; j++) {
                     let old = this.updatedept[j];
@@ -588,7 +661,6 @@ import JinduStatelog from "../services/JinduStatelog"
                                     this.selectStateAndLogs();
                                     addjinduwuliao.findByLog(this.pa).then(response =>{
                                     this.tableData2=response.data
-                                      // console.log(response.data )
                                     })
                                     JinduService.get(this.pa)
                                   .then(response => {
@@ -617,7 +689,6 @@ import JinduStatelog from "../services/JinduStatelog"
         jinduId:this.pa,
         }
         addjinduwuliao.create(data).then(response =>{
-          // console.log(response.data +"111111111")
         })
        },
         updateservice(){
@@ -662,9 +733,6 @@ import JinduStatelog from "../services/JinduStatelog"
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
-          }
           let xunhuan=false;
           for (let j = 0; j < this.deletedept.length; j++) {
                     let old = this.deletedept[j];
@@ -699,7 +767,6 @@ import JinduStatelog from "../services/JinduStatelog"
         })
        },
       handleClick(row) {
-        console.log(row);
       },
       filterCurrent(value, row){
             return row.current_process === value;
@@ -744,6 +811,8 @@ import JinduStatelog from "../services/JinduStatelog"
 
     data() {
       return {
+        tableData1: [],
+        activeName: 'first',
         deletedept:[2],
         updatedept:[2],
         kandept:[1],

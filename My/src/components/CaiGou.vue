@@ -7,181 +7,358 @@
       <el-breadcrumb-item>采购管理</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin : 8px;">
-      <el-col :span="14">
+      <el-col :span="1.5">
         <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
     </el-row>
-  <el-table
-  @row-click="handdle"
-    :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
-      &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
-      &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
-      &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
-      &(!filterTotalmoney || data.totalmoney.toLowerCase().includes(filterTotalmoney.toString().toLowerCase()))
-      &(!filterMoney1 || data.money1.toLowerCase().includes(filterMoney1.toString().toLowerCase()))
-      &(!filterMoney2 || data.money2.toLowerCase().includes(filterMoney2.toString().toLowerCase()))
-      &(!filterMoney3 || data.money3.toLowerCase().includes(filterMoney3.toString().toLowerCase()))
-      &(!filterMoney4 || data.money4.toLowerCase().includes(filterMoney4.toString().toLowerCase()))
-      )" border style="width: 100%">
-    <el-table-column min-width='80' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterId"> </el-input>
-                    <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.id}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterQiye_name"> </el-input>
-                    <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.qiye_name}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterItem_name"> </el-input>
-                    <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.item_name}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='150' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterMoney"> </el-input>
-                    <div slot="reference"> <label> 已使用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.money}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='120' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterTotalmoney"> </el-input>
-                    <div slot="reference"> <label> 总授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.totalmoney}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width="120"  prop="statement" label="结算单" align="center">
-            <template slot-scope="scope">
-                <el-image style="width: 100px; height: 100px" :src="scope.row.statement" :preview-src-list="[scope.row.statement]">
-                </el-image>
-            </template>
-    </el-table-column>
-    <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
-            <template slot-scope="scope">
-                <el-image style="width: 100px; height: 100px" :src="scope.row.delivery_note" :preview-src-list="[scope.row.delivery_note]">
-                </el-image>
-            </template>
-    </el-table-column>
-    <el-table-column min-width="120"  prop="bill" label="发票" align="center">
-            <template slot-scope="scope">
-                <el-image style="width: 100px; height: 100px" :src="scope.row.bill" :preview-src-list="[scope.row.bill]">
-                </el-image>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='120' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterMoney1"> </el-input>
-                    <div slot="reference"> <label> 融资总预算 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.money1}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='130' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterMoney2"> </el-input>
-                    <div slot="reference"> <label> 实际融资金额 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.money2}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='170' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterMoney3"> </el-input>
-                    <div slot="reference"> <label> 项目已使用融资额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.money3}}
-                </div>
-            </template>
-    </el-table-column>
-    <el-table-column min-width='180' align="center">
-             <!-- eslint-disable-next-line -->
-            <template slot="header" slot-scope="scope">
-                <el-popover placement="bottom" trigger="click">
-                    <el-input v-model="filterMoney4"> </el-input>
-                    <div slot="reference"> <label> 更新后已使用融资额度 </label> <i class='el-icon-arrow-down'> </i> </div>
-                </el-popover>
-            </template>
-            <template slot-scope="scope">
-                <div>
-                    {{scope.row.money4}}
-                </div>
-            </template>
-    </el-table-column>
-     <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
-    </el-table-column>
-    <el-table-column
-      fixed="right"
-      label="操作"
-      width="250"
-      align="center">
-      <template slot-scope="scope">
-        <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
-        <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
-        <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
-
+    <el-row style="margin : 8px;">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="全部数据" name="first">
+          <el-table
+            @row-click="handdle"
+              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
+                &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+                &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+                &(!filterTotalmoney || data.totalmoney.toLowerCase().includes(filterTotalmoney.toString().toLowerCase()))
+                &(!filterMoney1 || data.money1.toLowerCase().includes(filterMoney1.toString().toLowerCase()))
+                &(!filterMoney2 || data.money2.toLowerCase().includes(filterMoney2.toString().toLowerCase()))
+                &(!filterMoney3 || data.money3.toLowerCase().includes(filterMoney3.toString().toLowerCase()))
+                &(!filterMoney4 || data.money4.toLowerCase().includes(filterMoney4.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='80' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQiye_name"> </el-input>
+                              <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.qiye_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterItem_name"> </el-input>
+                              <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.item_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney"> </el-input>
+                              <div slot="reference"> <label> 已使用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterTotalmoney"> </el-input>
+                              <div slot="reference"> <label> 总授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.totalmoney}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width="120"  prop="statement" label="结算单" align="center">
+                      <template slot-scope="scope">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.statement" :preview-src-list="[scope.row.statement]">
+                          </el-image>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
+                      <template slot-scope="scope">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.delivery_note" :preview-src-list="[scope.row.delivery_note]">
+                          </el-image>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width="120"  prop="bill" label="发票" align="center">
+                      <template slot-scope="scope">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.bill" :preview-src-list="[scope.row.bill]">
+                          </el-image>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney1"> </el-input>
+                              <div slot="reference"> <label> 融资总预算 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money1}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='130' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney2"> </el-input>
+                              <div slot="reference"> <label> 实际融资金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money2}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='170' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney3"> </el-input>
+                              <div slot="reference"> <label> 项目已使用融资额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money3}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='180' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney4"> </el-input>
+                              <div slot="reference"> <label> 更新后已使用融资额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money4}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="250"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+        <el-tab-pane label="待办事项" name="second">
+          <el-table
+            @row-click="handdle"
+              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
+                &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
+                &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
+                &(!filterTotalmoney || data.totalmoney.toLowerCase().includes(filterTotalmoney.toString().toLowerCase()))
+                &(!filterMoney1 || data.money1.toLowerCase().includes(filterMoney1.toString().toLowerCase()))
+                &(!filterMoney2 || data.money2.toLowerCase().includes(filterMoney2.toString().toLowerCase()))
+                &(!filterMoney3 || data.money3.toLowerCase().includes(filterMoney3.toString().toLowerCase()))
+                &(!filterMoney4 || data.money4.toLowerCase().includes(filterMoney4.toString().toLowerCase()))
+                )" border style="width: 100%">
+              <el-table-column min-width='80' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterId"> </el-input>
+                              <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.id}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterQiye_name"> </el-input>
+                              <div slot="reference"> <label> 企业名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.qiye_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterItem_name"> </el-input>
+                              <div slot="reference"> <label> 项目名称 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.item_name}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='150' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney"> </el-input>
+                              <div slot="reference"> <label> 已使用授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterTotalmoney"> </el-input>
+                              <div slot="reference"> <label> 总授信额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.totalmoney}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width="120"  prop="statement" label="结算单" align="center">
+                      <template slot-scope="scope">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.statement" :preview-src-list="[scope.row.statement]">
+                          </el-image>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
+                      <template slot-scope="scope">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.delivery_note" :preview-src-list="[scope.row.delivery_note]">
+                          </el-image>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width="120"  prop="bill" label="发票" align="center">
+                      <template slot-scope="scope">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.bill" :preview-src-list="[scope.row.bill]">
+                          </el-image>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney1"> </el-input>
+                              <div slot="reference"> <label> 融资总预算 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money1}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='130' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney2"> </el-input>
+                              <div slot="reference"> <label> 实际融资金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money2}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='170' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney3"> </el-input>
+                              <div slot="reference"> <label> 项目已使用融资额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money3}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column min-width='180' align="center">
+                      <!-- eslint-disable-next-line -->
+                      <template slot="header" slot-scope="scope">
+                          <el-popover placement="bottom" trigger="click">
+                              <el-input v-model="filterMoney4"> </el-input>
+                              <div slot="reference"> <label> 更新后已使用融资额度 </label> <i class='el-icon-arrow-down'> </i> </div>
+                          </el-popover>
+                      </template>
+                      <template slot-scope="scope">
+                          <div>
+                              {{scope.row.money4}}
+                          </div>
+                      </template>
+              </el-table-column>
+              <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="250"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
+                  <el-button type="success" @click.stop="updateClick(scope.$index,tableData)" plain round size="small">修改</el-button>
+                  <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-tab-pane>
+      </el-tabs>
+    </el-row>
   <!-- 弹出层 -->
   <el-dialog :title="titleMap[dialogTitle]" width="60%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
@@ -482,10 +659,37 @@ import RongziService from "../services/RongziService";
          CaigouState.getAll()
         .then(response => {
           this.activities=response.data
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
+          console.log(e);
+        });
+      },
+      selectdept1(){
+        this.tableData1=[]
+        authservice.get(this.currentUser.id).then(resUser =>{
+          CaiGouService.getAll().then(async resAllCaiGou =>  {          
+            for(var i=0;i<resAllCaiGou.data.length;i++){
+              await CaigouState.get(resAllCaiGou.data[i].CaigouStateId).then(resCaigouState =>{
+                var ifKeep=false;
+                for (let k = 0; k < resUser.data.depts.length; k++){
+                  for (var l = 0; l < resCaigouState.data.depts.length; l++){
+                    if (resUser.data.depts[k].id === resCaigouState.data.depts[l].id){
+                      ifKeep=true;
+                    }
+                  }
+                }
+                if(ifKeep){
+                  this.tableData1.push(resAllCaiGou.data[i])
+                }
+              }).catch(e => {
+                console.log(e);
+              }); 
+            }
+          }).catch(e => {
+            console.log(e);
+          });
+        }).catch(e => {
+          console.log(e);
         });
       },
       selectdept(){
@@ -496,13 +700,10 @@ import RongziService from "../services/RongziService";
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
-                    // console.log(old)
                         for (var i = 0; i < this.adddept.length; i++) {
                             let pre = this.adddept[i];
-                            // console.log(pre)
                                 if (pre === old) {
                                     this.isshow1=true;
-                                    // console.log("显示")
                                 }
                             }
                        }  
@@ -537,7 +738,7 @@ import RongziService from "../services/RongziService";
                                 }
                             }
                        }
-                       if(this.isshow=true){
+                       if(this.isshow===true){
                        }else{
                          this.isshow=false;
                        }
@@ -571,7 +772,6 @@ import RongziService from "../services/RongziService";
               operateId:4
               }
               CaigouStatelog.create(data).then(response => {
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -584,7 +784,6 @@ import RongziService from "../services/RongziService";
           CaiGouService.update(this.pa,data)
         .then(response => {
           this.tableonload();
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -595,10 +794,8 @@ import RongziService from "../services/RongziService";
         .then(response => {
           this.activities=response.data
           this.selectlogs();
-          // console.log(response.data);
         })
         .catch(e => {
-          // console.log(e);
         });
       },
       getfor(row,column){
@@ -623,7 +820,6 @@ import RongziService from "../services/RongziService";
           this.caigou={},
           this.tableData2=[],
           this.dialogFormVisible=true
-          // RongziService.getAll()
           this.dialogTitle = "addData";
           this.selectState();
           this.validated=false;
@@ -644,12 +840,6 @@ import RongziService from "../services/RongziService";
               caigouId:0,
           }
           this.tableData2.push(data);
-        //   RongziService.create(data).then(response =>{
-        //     this.tableonload();
-        //     console.log(response.data);
-        //   }).catch(e => {
-        //   console.log(e);
-        // });   
        },
        addsubmit1(rongzi){
           this.$refs[rongzi].validate((valid) => {
@@ -689,7 +879,6 @@ this.dialog=false;
                 console.log(e);
               });
               for(let i=0;i<this.tableData2.length;i++){
-              // console.log(this.tableData2[i]);
               this.tableData2[i].caigouId=response.data.id
               RongziService.create(this.tableData2[i])
             .then(response => {
@@ -700,7 +889,6 @@ this.dialog=false;
               console.log(e);
             });  
          } 
-          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -728,7 +916,7 @@ this.dialog=false;
         this.tmpUrl=""
         },
         
-        addform(){
+      addform(){
           this.rongzi={},
             this.dialog=true;
             DanweiService.getAll()
@@ -745,8 +933,7 @@ this.dialog=false;
           console.log(e);
         });
         },
-         selectlogs(){
-          //  console.log(this.pa)
+      selectlogs(){
         let caigouId=this.pa
           CaigouStatelog.findByLog(caigouId).then(response => {
             console.log(response.data)
@@ -766,14 +953,11 @@ this.dialog=false;
           console.log(e);
         });   
       },
-       kanClick(index,row){
+      kanClick(index,row){
          authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
-          }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
           }
           let xunhuan=false;
           for (let j = 0; j < this.kandept.length; j++) {
@@ -820,9 +1004,6 @@ this.dialog=false;
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
-          }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
           }
           let xunhuan=false;
           for (let j = 0; j < this.updatedept.length; j++) {
@@ -879,7 +1060,6 @@ this.dialog=false;
               caigouId:this.pa,
         }
         RongziService.create(data).then(response =>{
-          // console.log(response.data +"111111111")
         })
        },
        updateservice(){
@@ -908,7 +1088,6 @@ this.dialog=false;
            //删除旧图片
                             http.delete('/general/deletefile',{data:{filename:this.oldUrl}});
                             this.oldUrl=""
-          console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -931,9 +1110,6 @@ this.dialog=false;
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
-          }
-          if(this.deptId.length===0){
-            alert("当前用户没有权限进行该操作")
           }
             let xunhuan=false;
           for (let j = 0; j < this.deletedept.length; j++) {
@@ -968,15 +1144,20 @@ this.dialog=false;
                             }      
         })
        },
-      handleClick(row) {
-        console.log(row);
+      handleClick(tab, event) {
+        // 触发‘待办事项’事件
+        if(tab.name == 'second'){
+        	this.selectdept1();
+        }else{
+        	// 触发‘其他’事件
+        }
       },
       filterCurrent(value, row){
             return row.current_process === value;
         },
     handleAvatarChange(file,fileList,index) {
-           //this.imageUrlfront[index] = URL.createObjectURL(file.raw);
-            if (file.status !== 'ready'){
+
+          if (file.status !== 'ready'){
               return;
             }
            if (index===0)
@@ -1021,6 +1202,8 @@ this.dialog=false;
 
     data() {
       return {
+        tableData1: [],
+        activeName: 'first',
         deletedept:[2],
         updatedept:[2],
         kandept:[1,2],
@@ -1073,7 +1256,6 @@ this.dialog=false;
         rules:{
           qiye_name: [
             { required: true, message: '请输入企业信息', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
           item_name: [
             { required: true, message: '请选择项目', trigger: 'change' }

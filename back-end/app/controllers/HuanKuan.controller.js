@@ -2,7 +2,7 @@ const db = require("../models");
 const HuanKuan = db.huankuan;
 const HuanKuanState = db.HuankuanState;
 const Op = db.Sequelize.Op;
-
+const Dept = db.dept;
 // 新建controller层
 exports.create = (req, res) => {
   // Validate request
@@ -38,9 +38,11 @@ exports.create = (req, res) => {
 
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
-    // const title = req.query.title;
-    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    HuanKuan.findAll({order: [['id', 'ASC']],include : [HuanKuanState]})
+ 
+  
+  const HuankuanStateId = req.query.HuankuanStateId;
+  var condition = HuankuanStateId ? { HuankuanStateId: HuankuanStateId}  : null;
+    HuanKuan.findAll({order: [['id', 'ASC']],where: condition ,include : [HuanKuanState]})
       .then(data => {
         res.send(data);
       })
@@ -52,6 +54,29 @@ exports.findAll = (req, res) => {
       });
 };
 
+// exports.findAlls = (req, res) => {
+//   console.log(req.body.deptId+"6666666666")
+//     HuanKuan.findAll({order: [['id', 'ASC']],include : [HuanKuanState]})
+//       .then(data => {
+//           for(var i=0;i<data.length;i++){
+//             console.log(data[i].HuankuanStateId+"77777")
+//             HuanKuanState.getDepts([data[i].HuankuanStateId]).then(data1 =>{
+//               console.log(data1+"99999999")
+//           //     if(data1.depts[i].id===req.body.deptId){
+//           //       // res.send(data);
+//           //  }
+//              })
+            
+//           }
+//         })
+//         // res.send(data);
+//       .catch(err => {
+//         res.status(500).send({
+//           message:
+//             err.message || "Some error occurred while retrieving HuanKuan."
+//         });
+//       });
+// };
 //根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;

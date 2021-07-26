@@ -17,7 +17,7 @@ app.use(express.static('./resources/static/assets/imgs'));
 const db = require("./app/models");
 const { response } = require("express");
 db.sequelize.sync().then(() =>{
-  //initial();
+  // initial();
 });
 const Role = db.role;
 const Dept = db.dept;
@@ -754,6 +754,7 @@ require("./app/routes/WuliaoTypeStatelog.routes")(app);
 require("./app/routes/WuliaoTypeState.routes")(app);
 require("./app/routes/Rongzi.routes")(app);
 require("./app/routes/Addjianzhuwuliao.routes")(app);
+require("./app/routes/Daiban.routes")(app);
 // set port, listen for requests
 //local
 const PORT = process.env.PORT || 8080;

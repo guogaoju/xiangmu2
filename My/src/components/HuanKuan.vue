@@ -347,7 +347,7 @@
 </template>
 
 <script>
-
+import DaibanService from "../services/DaibanService"
 import authservice from "../services/auth.service"
 import HuanKuanService from "../services/HuanKuanService"
 import HuankuanState from "../services/HuankuanState"
@@ -368,7 +368,11 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
       this.buttonText="确定"
       this.isshow=false;
     },
-
+      daiban(){
+          DaibanService.get(2,"还款管理").then(response =>{
+            // console.log(response.data)
+          })
+      },
       selectState(){
          HuankuanState.getAll()
         .then(response => {
@@ -473,12 +477,40 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                 this.imageUrl=response.data.huan_stream
                 this.validated=true;
                 this.buttonText = response.data.HuankuanState.nodebutton;
-                
+                 HuankuanState.get(response.data.HuankuanState.nextStateid).then(response=>{
+                   this.nextStateid=response.data.depts[0].id
+                        // console.log(this.nextStateid)
+                    })
+                    //  if(this.lastone===1){
+                    //      this.isshow=false;
+                    //    }
+                  HuankuanState.get(response.data.HuankuanState.nextStateid+1).then(response=>{
+                   this.jiannextStateid=response.data.depts[0].id
+                        // console.log()
+                    })
               })
               .catch(e => {
                 console.log(e);
               });
               this.selectStateAndLogs();
+              
+       },
+       selectJian(){
+          DaibanService.getJian(this.nextStateid,"还款管理").then(response =>{
+                })
+       },
+       selectdaiban(){
+          DaibanService.get(this.jiannextStateid,"还款管理").then(response =>{
+                })
+       },
+       selectdaibanstate(){
+            HuankuanState.get(2).then(response=>{
+              var id=0;
+              id=response.data.depts[0].id
+              console.log(id)
+              DaibanService.get(id,"还款管理").then(response =>{
+                })
+            })
        },
        addStatelog(){
          var data = {
@@ -495,6 +527,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           console.log(e);
         });
       },
+
       updateState(index,row){
         var data = {
            HuankuanStateId:this.nextState
@@ -580,6 +613,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
           this.$refs[huankuan].validate((valid) => {
           if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
+         this.selectdaibanstate();
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
@@ -588,6 +622,8 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         this.dialogFormVisible=false;
         this.updateState();
         this.addStatelog();
+        this.selectdaiban();
+        this.selectJian();
       }else{
         return false
       }
@@ -824,6 +860,9 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
 
     data() {
       return {
+        jiannextStateid:'',
+        nextStateid:'',
+        nextDaiban:'',
         tableData1: [],
         activeName: 'first',
         deletedept:[2],

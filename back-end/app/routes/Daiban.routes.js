@@ -10,8 +10,8 @@ module.exports = app => {
     router.get("/", Daiban.findAll);
   
     //根据id查询
-    router.get("/:id", Daiban.findOne);
-  
+    router.get("/:deptId:name", Daiban.findDaiban);
+    router.get("/jian/:deptId:name", Daiban.findDaiban1);
     //修改
     router.put("/:id", Daiban.update);
   

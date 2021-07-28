@@ -1,3 +1,4 @@
+
 const db = require("../models");
 const Daiban = db.Daiban;
 const Op = db.Sequelize.Op;
@@ -51,20 +52,36 @@ exports.findAll = (req, res) => {
       });
 };
 
-//根据id查找
-exports.findOne = (req, res) => {
-    const id = req.params.id;
-    Danwei.findOne({ where: { id: req.params.id } })
+//sum增加1
+exports.findDaiban = (req, res) => {
+    Daiban.findOne({ where: { deptId: req.params.deptId, name:req.params.name} })
       .then(data => {
-        res.send(data);
+        data.increment(['sum']).then(data =>{
+          // res.send(data1);
+      })
+      res.send(data);
       })
       .catch(err => {
         res.status(500).send({
-          message: "Error retrieving Daiban with id=" + id
+          message: "Error retrieving Daiban with id=" 
         });
       });
 };
-
+//sum减少1
+exports.findDaiban1 = (req, res) => {
+  Daiban.findOne({ where: { deptId: req.params.deptId, name:req.params.name} })
+    .then(data => {
+      data.decrement(['sum']).then(data =>{
+        // res.send(data1);
+    })
+    res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving Daiban with id=" 
+      });
+    });
+};
 //修改
 exports.update = (req, res) => {
     const id = req.params.id;

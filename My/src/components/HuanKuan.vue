@@ -500,7 +500,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
                 })
        },
        selectdaiban(){
-          DaibanService.get(this.jiannextStateid,"还款管理").then(response =>{
+          DaibanService.getJia(this.jiannextStateid,"还款管理").then(response =>{
                 })
        },
        selectdaibanstate(){

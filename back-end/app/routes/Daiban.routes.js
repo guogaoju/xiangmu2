@@ -10,7 +10,10 @@ module.exports = app => {
     router.get("/", Daiban.findAll);
   
     //根据id查询
-    router.get("/:deptId:name", Daiban.findDaiban);
+    router.get("/:id", Daiban.findOne);
+    //sum加
+    router.get("/jia:deptId:name", Daiban.findDaiban);
+    //sum减
     router.get("/jian/:deptId:name", Daiban.findDaiban1);
     //修改
     router.put("/:id", Daiban.update);

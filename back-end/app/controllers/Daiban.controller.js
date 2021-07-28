@@ -51,7 +51,19 @@ exports.findAll = (req, res) => {
         });
       });
 };
-
+//根据id查找
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+  Daiban.findOne({ where: { id: req.params.id }})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving Danwei with id=" + id
+      });
+    });
+};
 //sum增加1
 exports.findDaiban = (req, res) => {
     Daiban.findOne({ where: { deptId: req.params.deptId, name:req.params.name} })

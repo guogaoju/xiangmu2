@@ -6,8 +6,11 @@ class DaibanService {
 //   findByLog(chukuId) {
 //     return http.get(`/ChukuStatelog?chukuId=${chukuId}`);
 //   }
-  get(deptId,name) {
-    return http.get(`/Daiban/${deptId}${name}`);
+  get(id) {
+    return http.get(`/Daiban/${id}`);
+  }
+  getJia(deptId,name) {
+    return http.get(`/Daiban/jia/${deptId}${name}`);
   }
   getJian(deptId,name) {
     return http.get(`/Daiban/jian/${deptId}${name}`);

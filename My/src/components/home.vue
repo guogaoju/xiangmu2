@@ -9,26 +9,29 @@
             <el-card shadow="hover" class="mgb20" style="height:252px;">
                    <div slot="header" class="clearfix">
                         <span>待办事项</span>
-                        <el-button style="float: right; padding: 3px 0" type="text">添加</el-button>
+                        <!-- <el-button style="float: right; padding: 3px 0" type="text">添加</el-button> -->
                     </div>
-                    <el-table :show-header="false" :data="todoList" style="width:100%;">
-                        <el-table-column width="40">
-                            <template slot-scope="scope">
-                                <el-checkbox v-model="scope.row.status"></el-checkbox>
-                            </template>
+                    <el-table
+                    @row-click="handdle"
+                    :data="tableData"
+                    max-height="150"
+                    style="width: 100%">
+                        <el-table-column
+                            prop="name"
+                            label="待办所在页面"
+                            width="120"
+                            align="center">
                         </el-table-column>
-                        <el-table-column>
-                            <template slot-scope="scope">
-                                <div
-                                    class="todo-item"
-                                    :class="{'todo-item-del': scope.row.status}"
-                                >{{scope.row.title}}</div>
-                            </template>
+                        <el-table-column
+                            prop="sum"
+                            label="待办项目数量"
+                            width="120"
+                            align="center">
                         </el-table-column>
-                        <el-table-column width="60">
+                        <el-table-column width="150">
                             <template>
-                                <i class="el-icon-edit"></i>
-                                <i class="el-icon-delete"></i>
+                                <i class="el-icon-right"></i>
+                                <i class="el-icon-s-promotion"></i>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -124,12 +127,16 @@
 </template>
 
 <script>
+import authservice from "../services/auth.service"
+import DaibanService from "../services/DaibanService"
 import Schart from 'vue-schart';
 import bus from '../router/bus';
 export default {
     name: 'dashboard',
     data() {
         return {
+            tableData:[],
+            result:[],
             name: localStorage.getItem('ms_username'),
             options3: {
                 type: 'pie',
@@ -148,50 +155,6 @@ export default {
                     }
                 ]
             },
-            todoList: [
-                {
-                    title: '您有2个建筑项目待审批.',
-                    status: false
-                },
-                {
-                    title: '您有5个制造项目待审批',
-                    status: false
-                },
-                {
-                    title: '您有2个其他待审批',
-                    status: false
-                },
-                // {
-                //     title: '今天要修复100个bug',
-                //     status: false
-                // },
-                // {
-                //     title: '今天要修复100个bug',
-                //     status: true
-                // },
-                // {
-                //     title: '今天要写100行代码加几个bug吧',
-                //     status: true
-                // }
-            ],
-            // todoList: [
-            //     {
-            //         title: '营业收入：￥290,638,300',
-            //         // status: false
-            //     },
-            //     {
-            //         title: '贷款余额：￥231,122,700',
-            //         // status: false
-            //     },
-            //     {
-            //         title: '累计回款：￥59,515,600',
-            //         // status: false
-            //     },
-            //     {
-            //         title: '营业利润：￥18,635,300',
-            //         // status: false
-            //     },
-            // ],
             data: [
                 {
                     name: '2018/09/04',
@@ -318,20 +281,42 @@ export default {
     computed: {
         role() {
             return this.name === 'admin' ? '超级管理员' : '普通用户';
-        }
+        },
+         currentUser() {
+      return this.$store.state.auth.user;
+    }
     },
-    // created() {
-    //     this.handleListener();
-    //     this.changeDate();
-    // },
-    // activated() {
-    //     this.handleListener();
-    // },
-    // deactivated() {
-    //     window.removeEventListener('resize', this.renderChart);
-    //     bus.$off('collapse', this.handleBus);
-    // },
+    created () {
+          this.selectDaiban();
+      },
     methods: {
+        handdle(row, event, column) { 
+       DaibanService.get(row.id)
+                    .then(response => {
+                            this.$router.push(response.data.link);
+                        }).catch(e => {
+                            console.log(e);
+                                });
+              
+       },
+        // kanClick(index,row){     
+        //             DaibanService.get(this.tableData[index].id)
+        //             .then(response => {
+        //                     this.$router.push(response.data.link);
+        //                 }).catch(e => {
+        //                     console.log(e);
+        //                         });
+        // },
+        selectDaiban(){
+            authservice.get(this.currentUser.id).then(resUser =>{
+                for (var i = 0; i < resUser.data.depts.length; i++) {
+                        DaibanService.findByLog(resUser.data.depts[i].id).then(response=>{
+                        // console.log(response.data)
+                        this.tableData=response.data
+                    })
+                }
+             })    
+        },
         changeDate() {
             const now = new Date().getTime();
             this.data.forEach((item, index) => {
@@ -339,20 +324,6 @@ export default {
                 item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
             });
         }
-        // handleListener() {
-        //     bus.$on('collapse', this.handleBus);
-        //     // 调用renderChart方法对图表进行重新渲染
-        //     window.addEventListener('resize', this.renderChart);
-        // },
-        // handleBus(msg) {
-        //     setTimeout(() => {
-        //         this.renderChart();
-        //     }, 200);
-        // },
-        // renderChart() {
-        //     this.$refs.bar.renderChart();
-        //     this.$refs.line.renderChart();
-        // }
     }
 };
 </script>

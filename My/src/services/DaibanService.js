@@ -3,9 +3,9 @@ class DaibanService {
   getAll() {
     return http.get("/Daiban");
   }
-//   findByLog(chukuId) {
-//     return http.get(`/ChukuStatelog?chukuId=${chukuId}`);
-//   }
+  findByLog(deptId) {
+    return http.get(`/Daiban?deptId=${deptId}`);
+  }
   get(id) {
     return http.get(`/Daiban/${id}`);
   }

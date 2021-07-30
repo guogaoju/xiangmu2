@@ -38,9 +38,9 @@ Daiban.create(daiban)
 
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
-    // const name = req.query.name;
-    // var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    Daiban.findAll({ order: [['id', 'ASC']]})
+    const deptId = req.query.deptId;
+    var condition = deptId ? { deptId: deptId}  : null;
+    Daiban.findAll({where:condition,order: [['id', 'ASC']]})
       .then(data => {
         res.send(data);
       })

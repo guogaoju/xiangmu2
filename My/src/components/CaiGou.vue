@@ -632,6 +632,7 @@
 </template>
 
 <script>
+import DaibanService from "../services/DaibanService"
 import authservice from "../services/auth.service"
 import DanweiService from "../services/DanweiService";
 import CaiGouwuliaoService from "../services/CaiGouwuliaoService";
@@ -762,6 +763,47 @@ import RongziService from "../services/RongziService";
                 console.log(e);
               });
                this.selectStateAndLogs();
+       },
+       updateDaiban(){
+          CaigouState.get(this.nextState).then(response1=>{
+            this.currentStateDept=response1.data.depts
+            CaigouState.get(response1.data.nextStateid).then(response=>{
+              this.nextStateDept=response.data.depts;
+              //当前状态的部门减一
+              for (let i = 0; i < this.currentStateDept.length; i++) 
+                DaibanService.getJian(this.currentStateDept[i].id,"采购管理")
+              //如果下一个状态如果不是最后一个,则所有部门加一
+              if (response1.data.lastone!=1){
+                     console.log(response.data.lastone)
+                for (let i = 0; i < this.nextStateDept.length; i++){
+                    DaibanService.getJia(this.nextStateDept[i].id,"采购管理").then(response =>{
+
+                    })
+                }
+              }else{
+                  console.log("99999")
+              }  
+            })
+          })
+       },
+       addDaiban(){
+          //新增,所以查状态表第一条就行
+          CaigouState.get(1).then(response=>{
+            //如果状态表不是只有一个添加,则所有部门加一
+            if (!response.data.lastone){
+              CaigouState.get(response.data.nextStateid).then(response=>{
+                this.nextStateDept=response.data.depts;
+                // console.log(this.nextStateDept);
+                 for (let i = 0; i < this.nextStateDept.length; i++){
+                    DaibanService.getJia(this.nextStateDept[i].id,"采购管理").then(response =>{
+
+                  })
+              } 
+            })
+            }
+              
+                  
+          })
        },
        addStatelog(){
          var data = {
@@ -898,6 +940,7 @@ this.dialog=false;
           this.$refs[caigou].validate((valid) => {
           if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
+        this.addDaiban();
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
@@ -906,6 +949,7 @@ this.dialog=false;
         this.dialogFormVisible=false;
         this.updateState();
         this.addStatelog();
+        this.updateDaiban()
       }else{
         return false
       }
@@ -1202,6 +1246,8 @@ this.dialog=false;
 
     data() {
       return {
+        nextStateDept:[],
+        currentStateDept:[],
         tableData1: [],
         activeName: 'first',
         deletedept:[2],

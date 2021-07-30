@@ -357,6 +357,7 @@
 </template>
 
 <script>
+import DaibanService from "../services/DaibanService"
 import authservice from "../services/auth.service"
 import PingjiService from "../services/PingjiService"
 import CailiaogysService from "../services/CailiaogysService"
@@ -478,6 +479,47 @@ import PingjiStatelog from "../services/PingjiStatelog"
               });
               this.selectStateAndLogs();
        },
+       updateDaiban(){
+          PingjiState.get(this.nextState).then(response1=>{
+            this.currentStateDept=response1.data.depts
+            PingjiState.get(response1.data.nextStateid).then(response=>{
+              this.nextStateDept=response.data.depts;
+              //当前状态的部门减一
+              for (let i = 0; i < this.currentStateDept.length; i++) 
+                DaibanService.getJian(this.currentStateDept[i].id,"供应商评级")
+              //如果下一个状态如果不是最后一个,则所有部门加一
+              if (response1.data.lastone!=1){
+                     console.log(response.data.lastone)
+                for (let i = 0; i < this.nextStateDept.length; i++){
+                    DaibanService.getJia(this.nextStateDept[i].id,"供应商评级").then(response =>{
+
+                    })
+                }
+              }else{
+                  console.log("99999")
+              }  
+            })
+          })
+       },
+       addDaiban(){
+          //新增,所以查状态表第一条就行
+          PingjiState.get(1).then(response=>{
+            //如果状态表不是只有一个添加,则所有部门加一
+            if (!response.data.lastone){
+              PingjiState.get(response.data.nextStateid).then(response=>{
+                this.nextStateDept=response.data.depts;
+                // console.log(this.nextStateDept);
+                 for (let i = 0; i < this.nextStateDept.length; i++){
+                    DaibanService.getJia(this.nextStateDept[i].id,"供应商评级").then(response =>{
+
+                  })
+              } 
+            })
+            }
+              
+                  
+          })
+       },
        addStatelog(){
          var data = {
               userId:this.currentUser.id,
@@ -590,6 +632,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
           this.$refs[Pingji].validate((valid) => {
           if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
+        this.addDaiban()
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
@@ -598,6 +641,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         this.dialogFormVisible=false;
         this.updateState();
         this.addStatelog();
+        this.updateDaiban()
       }else{
         return false
       }
@@ -807,6 +851,8 @@ import PingjiStatelog from "../services/PingjiStatelog"
 
     data() {
       return {
+        nextStateDept:[],
+        currentStateDept:[],
         tableData1: [],
         activeName: 'first',
         deletedept:[2],

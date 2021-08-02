@@ -436,7 +436,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
            HuanKuanService.get(this.pa)
           .then(response => {
            this.lastone=response.data.HuankuanState.lastone;
-          HuankuanState.get(response.data.HuankuanState.id).then(response =>{
+          HuankuanState.get(response.data.HuankuanState.nextStateid).then(response =>{
                    this.statedeptId = [];
                 for (var i = 0; i < response.data.depts.length; i++) {
                       this.statedeptId.push(response.data.depts[i].id); 

@@ -967,7 +967,7 @@ import WuliaoService from "../services/WuliaoService";
            JianzhuService.get(this.pa)
          .then(response => {
             this.lastone=response.data.JianzhuState.lastone;
-          JianzhuState.get(response.data.JianzhuState.id).then(response =>{
+          JianzhuState.get(response.data.JianzhuState.nextStateid).then(response =>{
                    this.statedeptId = [];
                 for (var i = 0; i < response.data.depts.length; i++) {
                       this.statedeptId.push(response.data.depts[i].id); 

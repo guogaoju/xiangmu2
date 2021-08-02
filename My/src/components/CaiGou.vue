@@ -725,7 +725,7 @@ import RongziService from "../services/RongziService";
            CaiGouService.get(this.pa)
          .then(response => {
             this.lastone=response.data.CaigouState.lastone;
-          CaigouState.get(response.data.CaigouState.id).then(response =>{
+          CaigouState.get(response.data.CaigouState.nextStateid).then(response =>{
                    this.statedeptId = [];
                 for (var i = 0; i < response.data.depts.length; i++) {
                       this.statedeptId.push(response.data.depts[i].id); 

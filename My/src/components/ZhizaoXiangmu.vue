@@ -711,15 +711,17 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
            ZhizaoService.get(this.pa)
          .then(response => {
             this.lastone=response.data.ZhizaoState.lastone;
-          ZhizaoState.get(response.data.ZhizaoState.id).then(response =>{
+          ZhizaoState.get(response.data.ZhizaoState.nextStateid).then(response =>{
                    this.statedeptId = [];
                 for (var i = 0; i < response.data.depts.length; i++) {
                       this.statedeptId.push(response.data.depts[i].id); 
                     }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
+                    console.log(old)
                         for (var i = 0; i < this.statedeptId.length; i++) {
                             let pre = this.statedeptId[i];
+                            console.log(pre)
                                 if (pre === old) {
                                     this.isshow=true;
                                 }
@@ -1174,7 +1176,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         updatedept:[2],
         kandept:[1],
         isshow1:false,
-        adddept:[1,2],
+        adddept:[8],
         lastone:"",
         deptId:[],
         statedeptId:[],

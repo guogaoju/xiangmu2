@@ -24,7 +24,7 @@
             &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
             )" border style="width: 100%">
-          <el-table-column min-width='50' align="center">
+          <el-table-column min-width='80' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
@@ -38,7 +38,7 @@
                       </div>
                   </template>
           </el-table-column>
-          <el-table-column min-width='150' align="center">
+          <el-table-column min-width='130' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
@@ -52,7 +52,7 @@
                       </div>
                   </template>
           </el-table-column>
-          <el-table-column min-width='150' align="center">
+          <el-table-column min-width='130' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
@@ -66,7 +66,7 @@
                       </div>
                   </template>
           </el-table-column>
-          <el-table-column min-width='150' align="center">
+          <el-table-column min-width='130' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
@@ -80,7 +80,7 @@
                       </div>
                   </template>
           </el-table-column>
-          <el-table-column min-width='150' align="center">
+          <el-table-column min-width='130' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
@@ -140,7 +140,7 @@
             &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
             )" border style="width: 100%">
-          <el-table-column min-width='50' align="center">
+          <el-table-column min-width='80' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
@@ -154,7 +154,7 @@
                       </div>
                   </template>
           </el-table-column>
-          <el-table-column min-width='150' align="center">
+          <el-table-column min-width='130' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
@@ -168,7 +168,7 @@
                       </div>
                   </template>
           </el-table-column>
-          <el-table-column min-width='150' align="center">
+          <el-table-column min-width='130' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
@@ -182,7 +182,7 @@
                       </div>
                   </template>
           </el-table-column>
-          <el-table-column min-width='150' align="center">
+          <el-table-column min-width='130' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
@@ -196,7 +196,7 @@
                       </div>
                   </template>
           </el-table-column>
-          <el-table-column min-width='150' align="center">
+          <el-table-column min-width='130' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">

@@ -2,12 +2,12 @@
   <div>
     <el-row>
       <el-col :span="6" style="float: right">
-        <el-button type="warning" round size="small" @click="openFrom()"
+        <el-button type="warning" :disabled="annui" round size="small" @click="openFrom()"
           >添加成员</el-button
         >
       </el-col>
       <el-col :span="18" style="float: right">
-        <el-button type="warning" round size="small" @click="openFrom1()"
+        <el-button type="warning" :disabled="annui" round size="small" @click="openFrom1()"
           >添加部门</el-button
         >
       </el-col>
@@ -48,14 +48,14 @@
           <el-table-column label="操作" width="250" align="center">
             <template slot-scope="scope">
               <el-button
-                type="warning"
+                type="warning" :disabled="annui"
                 @click="updateClick(scope.$index, tableData)"
                 round
                 size="small"
                 >修改</el-button
               >
               <el-button
-                type="danger"
+                type="danger" :disabled="annui"
                 @click="delClick(scope.$index, tableData)"
                 round
                 size="small"
@@ -140,6 +140,7 @@ import AuthService from "../services/auth.service";
 export default {
   created() {
     this.tableonload();
+    this.selectUser();
     this.dialog = true;
     DeptService.getAll()
       .then((response) => {
@@ -150,9 +151,22 @@ export default {
         console.log(e);
       });
   },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
   methods: {
     All() {
       this.tableonload();
+    },
+    selectUser(){
+          if(this.currentUser.username==="admin"){
+            this.annui=false
+            console.log("1111111111");
+          }else{
+            console.log("222222");
+          }
     },
     rowClicked(row, event, column) {
       let deptid = row.id;
@@ -337,6 +351,7 @@ export default {
   },
   data() {
     return {
+      annui:'',
       getNewList: [],
       result: "",
       result1: "",

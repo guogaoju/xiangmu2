@@ -69,7 +69,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterIntroduction"> </el-input>
-                              <div slot="reference"> <label> 企业简介 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 企业简称 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -281,7 +281,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterBank_card"> </el-input>
-                              <div slot="reference"> <label> 银行卡号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 银行账号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -361,7 +361,7 @@
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
                                 <el-input v-model="filterIntroduction"> </el-input>
-                                <div slot="reference"> <label> 企业简介 </label> <i class='el-icon-arrow-down'> </i> </div>
+                                <div slot="reference"> <label> 企业简称 </label> <i class='el-icon-arrow-down'> </i> </div>
                             </el-popover>
                         </template>
                         <template slot-scope="scope">
@@ -573,7 +573,7 @@
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
                                 <el-input v-model="filterBank_card"> </el-input>
-                                <div slot="reference"> <label> 银行卡号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                                <div slot="reference"> <label> 银行账号 </label> <i class='el-icon-arrow-down'> </i> </div>
                             </el-popover>
                         </template>
                         <template slot-scope="scope">
@@ -619,7 +619,7 @@
           </el-form-item>
         </el-col>
          <el-col :span="12">
-          <el-form-item label="企业简介" prop="introduction" :label-width="formLabelWidth">
+          <el-form-item label="企业简称" prop="introduction" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="Qiye.introduction"></el-input>
           </el-form-item>
         </el-col>
@@ -654,7 +654,9 @@
       <el-row>
           <el-col :span="12">
            <el-form-item label="核心企业" prop="hexinqiye" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Qiye.hexinqiye"></el-input>
+              <el-select :disabled="validated" filterable v-model="Qiye.hexinqiye" placeholder="请选择核心企业">
+                <el-option v-for="item in hexin" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
+              </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -716,7 +718,7 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="银行卡号" prop="bank_card" :label-width="formLabelWidth">
+          <el-form-item label="银行账号" prop="bank_card" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="Qiye.bank_card"></el-input>
           </el-form-item>
         </el-col>
@@ -757,8 +759,6 @@
       </el-timeline>
         </el-col>
       </el-row>
-      
-      
     </el-form>
   </el-dialog>
 </div>
@@ -767,6 +767,7 @@
 
 <script>
 import moment from 'moment'
+import HexinService from "../services/HexinService";
 import authservice from "../services/auth.service"
 import QiyeService from "../services/QiyeService";
 import QiyeStateService from "../services/QiyeStateService";
@@ -785,6 +786,11 @@ import StatelogService from "../services/StatelogService";
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+    },
+    selectHexin(){
+      HexinService.getAll().then( response=>{
+        this.hexin=response.data
+      })
     },
     selectdept(){
            authservice.get(this.currentUser.id).then(response =>{
@@ -874,6 +880,7 @@ import StatelogService from "../services/StatelogService";
        openFrom(){
            this.Qiye={},
           this.dialogFormVisible=true
+          this.selectHexin();
           this.selectState();
           this.validated=false;
           this.liucheng=true,
@@ -997,6 +1004,7 @@ import StatelogService from "../services/StatelogService";
         })
        },
         updateClick(index,row){
+          this.selectHexin();
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -1139,13 +1147,14 @@ import StatelogService from "../services/StatelogService";
 
     data() {
       return {
+        hexin:[],
         tableData1: [],
         activeName: 'first',
-        deletedept:[2],
-        updatedept:[2],
-        kandept:[1],
+        deletedept:[1,3,8],
+        updatedept:[1,3,8],
+        kandept:[1,3,8],
         isshow1:false,
-        adddept:[1,2],
+        adddept:[1,3,8],
         deptId:[],
         pa:'',
         annui:'',

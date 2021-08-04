@@ -119,7 +119,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterMoney1"> </el-input>
-                              <div slot="reference"> <label> 融资总预算 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 采购预算金额 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -133,7 +133,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterMoney2"> </el-input>
-                              <div slot="reference"> <label> 实际融资金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 出售金额 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -291,7 +291,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterMoney1"> </el-input>
-                              <div slot="reference"> <label> 融资总预算 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 采购预算金额 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -305,7 +305,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterMoney2"> </el-input>
-                              <div slot="reference"> <label> 实际融资金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 出售金额 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -373,12 +373,16 @@
         <el-row>
         <el-col :span="12">
           <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.qiye_name"></el-input>
+            <el-select :disabled="validated" filterable v-model="caigou.qiye_name" placeholder="请选择企业">
+                <el-option v-for="item in qiye" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.item_name"></el-input>
+            <el-select :disabled="validated" filterable v-model="caigou.item_name" placeholder="请选择项目">
+                <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -451,7 +455,6 @@
            <el-col :span="4">
              <el-button type="warning" :disabled="annui1" v-show="isshow" @click="addform()">添加物料</el-button> 
              </el-col>
-            
          </el-row>
       <el-row>
         <el-col :span="4">
@@ -510,17 +513,26 @@
               width="150"
               align="center">
             </el-table-column>
+            <el-table-column
+                fixed="right"
+                label="操作"
+                width="150"
+                align="center">
+                <template slot-scope="scope">
+                  <el-button type="danger" @click.stop="delClick1(scope.$index,tableData2)" plain round size="small">删除</el-button>
+                </template>
+              </el-table-column>
           </el-table>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="融资总预算" prop="money1" :label-width="formLabelWidth">
+          <el-form-item label="采购预算金额" prop="money1" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="caigou.money1"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="实际融资金额" prop="money2" :label-width="formLabelWidth">
+          <el-form-item label="出售金额" prop="money2" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="caigou.money2"></el-input>
           </el-form-item>
         </el-col>
@@ -598,32 +610,23 @@
           <el-form-item label="申请数量" prop="shenqing" :label-width="formLabelWidth">
             <el-input v-model="rongzi.shenqing"></el-input>
           </el-form-item>
-       
-       
           <el-form-item label="单价" prop="price" :label-width="formLabelWidth">
             <el-input  v-model="rongzi.price"></el-input>
           </el-form-item>
-       
-        
           <el-form-item label="预估总额" prop="yugutatol" :label-width="formLabelWidth">
             <el-input  v-model="rongzi.yugutatol"></el-input>
           </el-form-item>
-       
           <el-form-item label="实际总额" prop="shijitatol" :label-width="formLabelWidth">
             <el-input v-model="rongzi.shijitatol"></el-input>
           </el-form-item>
-     
-        
-       
           <el-form-item label="税率" prop="rate" :label-width="formLabelWidth">
             <el-input  v-model="rongzi.rate"></el-input>
           </el-form-item>
-      
-       
           <el-form-item label="供应商" prop="supplier_name" :label-width="formLabelWidth">
-            <el-input v-model="rongzi.supplier_name"></el-input>
+            <el-select :disabled="validated" filterable v-model="rongzi.supplier_name" placeholder="请选择供应商">
+              <el-option v-for="item in gys" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
+            </el-select>
           </el-form-item>
-      
        <el-button type="primary" @click="addsubmit1('rongzi')">立即添加</el-button>
       </el-form>   
 </el-drawer>
@@ -632,6 +635,9 @@
 </template>
 
 <script>
+import CailiaogysService from "../services/CailiaogysService";
+import JianzhuService from "../services/JianzhuService";
+import QiyeService from "../services/QiyeService";
 import DaibanService from "../services/DaibanService"
 import authservice from "../services/auth.service"
 import DanweiService from "../services/DanweiService";
@@ -655,6 +661,21 @@ import RongziService from "../services/RongziService";
     closeDialog(){
       this.buttonText="确定"
       this.isshow=false;
+    },
+    selectgys(){
+      CailiaogysService.getAll().then(response=>{
+        this.gys=response.data
+      })
+    },
+    selectQiye(){
+      QiyeService.getAll().then(response=>{
+        this.qiye=response.data
+      })
+    },
+    selectJianzhu(){
+      JianzhuService.getAll().then(response=>{
+        this.jianzhu=response.data
+      })
     },
       selectState(){
          CaigouState.getAll()
@@ -855,6 +876,8 @@ import RongziService from "../services/RongziService";
         });
       },
        openFrom(){
+         this.selectJianzhu()
+         this.selectQiye()
          this.isshow=true;
           this.imageUrlback[0]=""
           this.imageUrlback[1]=""
@@ -961,6 +984,7 @@ this.dialog=false;
         },
         
       addform(){
+        this.selectgys()
           this.rongzi={},
             this.dialog=true;
             DanweiService.getAll()
@@ -1044,6 +1068,8 @@ this.dialog=false;
         })
        },
         updateClick(index,row){
+          this.selectJianzhu()
+          this.selectQiye()
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -1149,6 +1175,9 @@ this.dialog=false;
                 console.log(e);
               });
        },
+       delClick1(index,row){
+          this.tableData2=[]
+        },
        delClick(index,row){  
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
@@ -1246,12 +1275,15 @@ this.dialog=false;
 
     data() {
       return {
+        gys:[],
+        qiye:[],
+        jianzhu:[],
         nextStateDept:[],
         currentStateDept:[],
         tableData1: [],
         activeName: 'first',
-        deletedept:[2],
-        updatedept:[2],
+        deletedept:[3],
+        updatedept:[3],
         kandept:[1,2],
         isshow1:false,
         adddept:[1,2],

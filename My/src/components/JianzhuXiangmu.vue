@@ -191,8 +191,8 @@
                           </div>
                       </template>
               </el-table-column>
-              <el-table-column min-width='120' align="center">
-                      <!-- eslint-disable-next-line -->
+              <!-- <el-table-column min-width='120' align="center">
+                      eslint-disable-next-line
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterInterest1"> </el-input>
@@ -204,7 +204,7 @@
                               {{scope.row.interest1}}
                           </div>
                       </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column min-width='100' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
@@ -496,8 +496,8 @@
                           </div>
                       </template>
               </el-table-column>
-              <el-table-column min-width='120' align="center">
-                      <!-- eslint-disable-next-line -->
+              <!-- <el-table-column min-width='120' align="center">
+                      eslint-disable-next-line
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterInterest1"> </el-input>
@@ -509,7 +509,7 @@
                               {{scope.row.interest1}}
                           </div>
                       </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column min-width='100' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
@@ -637,10 +637,12 @@
       >
       <el-row>
         <el-col :span="18">
-        <el-row>
+        <el-row>        
         <el-col :span="12">
           <el-form-item label="建筑商" prop="builder" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.builder"></el-input>
+            <el-select :disabled="validated" filterable v-model="xiangmu.builder" placeholder="请选择核心企业">
+                <el-option v-for="item in qiye" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
+              </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -715,11 +717,11 @@
             <el-input :disabled="validated" v-model="xiangmu.interest"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <!-- <el-col :span="12">
           <el-form-item label="利息收入" prop="interest1" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="xiangmu.interest1"></el-input>
           </el-form-item>
-        </el-col>
+        </el-col> -->
       </el-row>
       <el-row>
         <el-col :span="12">
@@ -843,7 +845,9 @@
   >
     <el-form :model="form">
       <el-form-item label="供应商名称" :label-width="formLabelWidth">
-        <el-input v-model="form.supplier_name" autocomplete="off"></el-input>
+         <el-select v-model="form.supplier_name" placeholder="请选择">
+            <el-option v-for="item in gys" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="项目名称" :label-width="formLabelWidth">
         <el-input v-model="form.item_name" autocomplete="off"></el-input>
@@ -877,6 +881,8 @@
 </template>
 
 <script>
+import CailiaogysService from "../services/CailiaogysService";
+import QiyeService from "../services/QiyeService";
 import DaibanService from "../services/DaibanService"
 import authservice from "../services/auth.service"
 import DanweiService from "../services/DanweiService";
@@ -899,6 +905,16 @@ import WuliaoService from "../services/WuliaoService";
     closeDialog(){
       this.buttonText="确定"
       this.isshow=false;
+    },
+    selectgys(){
+      CailiaogysService.getAll().then(response=>{
+        this.gys=response.data
+      })
+    },
+    selectQiye(){
+      QiyeService.getAll().then(response=>{
+        this.qiye=response.data
+      })
     },
       selectState(){
          JianzhuState.getAll()
@@ -1098,15 +1114,16 @@ import WuliaoService from "../services/WuliaoService";
         });
       },
        openFrom(){
-         this.isshow=true;
-         this.tableData2=[],
-          this.xiangmu={},
-          this.dialogFormVisible=true
-           this.selectState();
-          this.validated=false;
-          this.liucheng=true,
-          this.annui1=false;
-          this.annui=false;
+        this.selectQiye()
+        this.isshow=true;
+        this.tableData2=[],
+        this.xiangmu={},
+        this.dialogFormVisible=true
+        this.selectState();
+        this.validated=false;
+        this.liucheng=true,
+        this.annui1=false;
+        this.annui=false;
         this.dialogTitle = "addData";
        },
        addservice(){
@@ -1184,6 +1201,7 @@ import WuliaoService from "../services/WuliaoService";
         });
         },
         addform(){
+          this.selectgys()
           this.form={},
             this.dialog=true;
             DanweiService.getAll()
@@ -1296,6 +1314,7 @@ import WuliaoService from "../services/WuliaoService";
         })
        },
         updateClick(index,row){
+          this.selectQiye()
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -1444,12 +1463,14 @@ import WuliaoService from "../services/WuliaoService";
 
     data() {
       return {
+        gys:[],
+        qiye:[],
         nextStateDept:[],
         currentStateDept:[],
         tableData1: [],
         activeName: 'first',
         deletedept:[2],
-        updatedept:[2],
+        updatedept:[3],
         kandept:[1],
         isshow1:false,
         adddept:[1,2],

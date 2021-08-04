@@ -814,7 +814,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         CailiaogysService.get(this.pa)
          .then(response => {
            this.lastone=response.data.CailiaoState.lastone;
-          CailiaoState.get(response.data.CailiaoState.id).then(response =>{
+          CailiaoState.get(response.data.CailiaoState.nextStateid).then(response =>{
                    this.statedeptId = [];
                 for (var i = 0; i < response.data.depts.length; i++) {
                       this.statedeptId.push(response.data.depts[i].id); 

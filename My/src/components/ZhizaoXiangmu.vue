@@ -428,7 +428,9 @@
           <el-row>
         <el-col :span="12">
           <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.qiye_name"></el-input>
+            <el-select :disabled="validated" filterable v-model="xiangmu.qiye_name" placeholder="请选择企业">
+                <el-option v-for="item in qiye" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -585,7 +587,9 @@
   >
     <el-form :model="form">
       <el-form-item label="供应商名称" :label-width="formLabelWidth">
-        <el-input v-model="form.supplier_name" autocomplete="off"></el-input>
+        <el-select v-model="form.supplier_name" placeholder="请选择">
+            <el-option v-for="item in gys" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="项目名称" :label-width="formLabelWidth">
         <el-input v-model="form.item_name" autocomplete="off"></el-input>
@@ -619,6 +623,8 @@
 </template>
 
 <script>
+import CailiaogysService from "../services/CailiaogysService";
+import QiyeService from "../services/QiyeService";
 import DaibanService from "../services/DaibanService"
 import authservice from "../services/auth.service"
 import DanweiService from "../services/DanweiService";
@@ -641,6 +647,16 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
     closeDialog(){
       this.buttonText="确定"
       this.isshow=false;
+    },
+    selectgys(){
+      CailiaogysService.getAll().then(response=>{
+        this.gys=response.data
+      })
+    },
+    selectQiye(){
+      QiyeService.getAll().then(response=>{
+        this.qiye=response.data
+      })
     },
       selectState(){
          ZhizaoState.getAll()
@@ -841,6 +857,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         });
       },
        openFrom(){
+         this.selectQiye();
          this.isshow=true;
            this.xiangmu={},
           this.dialogFormVisible=true
@@ -852,6 +869,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
           this.annui1=false;
        },
        addform(){
+            this.selectgys()
             this.form={},
             this.dialog=true;
             DanweiService.getAll()
@@ -1027,6 +1045,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         })
        },
         updateClick(index,row){
+          this.selectQiye();
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -1168,6 +1187,8 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
 
     data() {
       return {
+        gys:[],
+        qiye:[],
         nextStateDept:[],
         currentStateDept:[],
         tableData1: [],

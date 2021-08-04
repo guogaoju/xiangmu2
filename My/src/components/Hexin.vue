@@ -941,8 +941,10 @@ import HexinStatelog from "../services/HexinStatelog";
               let xunhuan=false;
           for (let j = 0; j < this.updatedept.length; j++) {
                     let old = this.updatedept[j];
+                    console.log(old)
                         for (var i = 0; i < this.deptId.length; i++) {
                             let pre = this.deptId[i];
+                            console.log(pre)
                                 if (pre === old) {
                                     xunhuan=true
                                 }
@@ -1020,19 +1022,22 @@ import HexinStatelog from "../services/HexinStatelog";
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
           }
-           let xunhuan=false;
+          if(this.deptId.length===0){
+            alert("当前用户没有权限进行该操作")
+          }
+          let xunhuan=false;
+          
           for (let j = 0; j < this.deletedept.length; j++) {
                     let old = this.deletedept[j];
+                    console.log
                         for (var i = 0; i < this.deptId.length; i++) {
                             let pre = this.deptId[i];
                                 if (pre === old) {
                                     xunhuan=true
-                                }else{
-                                  alert("你所在的部门没有权限进行该操作")
-                                    }
+                                }
                             }
                        }
-                       if(xunhuan==true){
+          if(xunhuan==true){
                                     this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                                     confirmButtonText: '确定',
                                     cancelButtonText: '取消',
@@ -1052,7 +1057,7 @@ import HexinStatelog from "../services/HexinStatelog";
                        }
                        else{
                               alert("你所在的部门没有权限进行该操作")
-                                    }                    
+                                    }                        
         })
        },
       handleClick(row) {
@@ -1069,11 +1074,11 @@ import HexinStatelog from "../services/HexinStatelog";
       return {
         tableData1: [],
         activeName: 'first',
-        deletedept:[2],
-        updatedept:[2],
-        kandept:[1],
+        deletedept:[1,3,8],
+        updatedept:[1,3,8],
+        kandept:[1,3,8],
         isshow1:false,
-        adddept:[1,2],
+        adddept:[1,3,8],
         deptId:[],
         pa:'',
         buttonText: '确定',

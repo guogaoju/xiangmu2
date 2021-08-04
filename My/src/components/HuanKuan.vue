@@ -262,10 +262,9 @@
           <el-row>
          <el-col :span="12">
           <el-form-item label="还款项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input :disabled="validated" v-model="huankuan.item_name"></el-input>
+            <el-select filterable v-model="huankuan.item_name" placeholder="请选择">
+              <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -347,6 +346,7 @@
 </template>
 
 <script>
+import JianzhuService from "../services/JianzhuService";
 import DaibanService from "../services/DaibanService"
 import authservice from "../services/auth.service"
 import HuanKuanService from "../services/HuanKuanService"
@@ -367,6 +367,11 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
     closeDialog(){
       this.buttonText="确定"
       this.isshow=false;
+    },
+    selectJianzhu(){
+      JianzhuService.getAll().then(response=>{
+        this.jianzhu=response.data
+      })
     },
       selectState(){
          HuankuanState.getAll()
@@ -572,6 +577,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         });
       },
        openFrom(){
+         this.selectJianzhu();
          //新建时候清空url
          this.isshow=true;
           this.imageUrl=""
@@ -695,6 +701,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         })
        },
         updateClick(index,row){
+          this.selectJianzhu();
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -786,8 +793,10 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
             alert("当前用户没有权限进行该操作")
           }
           let xunhuan=false;
+          
           for (let j = 0; j < this.deletedept.length; j++) {
                     let old = this.deletedept[j];
+                    console.log
                         for (var i = 0; i < this.deptId.length; i++) {
                             let pre = this.deptId[i];
                                 if (pre === old) {
@@ -864,11 +873,12 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
 
     data() {
       return {
+        jianzhu:[],
         nextStateDept:[],
         currentStateDept:[],
         tableData1: [],
         activeName: 'first',
-        deletedept:[2],
+        deletedept:[1,3,8],
         updatedept:[2],
         kandept:[1],
         isshow2:false,

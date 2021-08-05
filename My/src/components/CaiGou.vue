@@ -453,7 +453,7 @@
             <el-form-item></el-form-item>
             </el-col>
            <el-col :span="4">
-             <el-button type="warning" :disabled="annui1" v-show="isshow" @click="addform()">添加物料</el-button> 
+             <el-button type="warning" v-show="isshow2" @click="addform()">添加物料</el-button> 
              </el-col>
          </el-row>
       <el-row>
@@ -562,7 +562,12 @@
         <el-form-item>
           <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" @click="submit('caigou')">{{buttonText}}</el-button>
         </el-form-item>
-         </el-col>  
+         </el-col>
+         <!-- <el-col :span="8">
+        <el-form-item>
+          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" @click="submit('caigou')">驳回</el-button>
+        </el-form-item>
+         </el-col>     -->
          
       </el-row>
          </el-col>  
@@ -719,6 +724,9 @@ import RongziService from "../services/RongziService";
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
+            // if(response.data.depts[i].name==="风控部"){
+            //   this.isshow2=true
+            // }
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
@@ -1165,11 +1173,21 @@ this.dialog=false;
        },
        delClickconfirm(index,row){
               let pa=this.tableData[index].id;
-              let a = this;
               CaiGouService.delete(pa)
               .then(response => {
+                var data = {
+              userId:this.currentUser.id,
+              caigouId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              CaigouStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);
@@ -1275,6 +1293,7 @@ this.dialog=false;
 
     data() {
       return {
+        isshow2:false,
         gys:[],
         qiye:[],
         jianzhu:[],

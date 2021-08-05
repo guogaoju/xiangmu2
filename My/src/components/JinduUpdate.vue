@@ -720,8 +720,19 @@ import JinduStatelog from "../services/JinduStatelog"
               let pa=this.tableData[index].id;
               JinduService.delete(pa)
               .then(response => {
+                var data = {
+              userId:this.currentUser.id,
+              jinduId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              JinduStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);

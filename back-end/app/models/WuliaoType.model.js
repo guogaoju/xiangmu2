@@ -12,7 +12,12 @@ module.exports = (sequelize, Sequelize) => {
           current_process: {
             type: Sequelize.STRING
           },
-        },
+        },{
+          sequelize,
+          paranoid: true,
+          // If you want to give a custom name to the deletedAt column
+          deletedAt: 'destroyTime'
+        }
         // {
         //   timestamps: false,  //去除createAt updateAt
         //   // freezeTableName: true,  使用自定义表名

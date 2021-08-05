@@ -1090,6 +1090,17 @@ import StatelogService from "../services/StatelogService";
               let pa=this.tableData[index].id;
               QiyeService.delete(pa)
               .then(response => {
+                 var data = {
+              userId:this.currentUser.id,
+              qiyeId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              StatelogService.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
               })
               .catch(e => {

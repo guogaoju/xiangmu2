@@ -21,6 +21,7 @@ module.exports = (sequelize, Sequelize) => {
           Supplieds: {
             type: Sequelize.INTEGER
           },
-        });
+        }
+        );
     return Addjianzhuwuliao;
   };

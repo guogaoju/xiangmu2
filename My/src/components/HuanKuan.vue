@@ -776,8 +776,19 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
               let pa=this.tableData[index].id;
               HuanKuanService.delete(pa)
               .then(response => {
+                var data = {
+              userId:this.currentUser.id,
+              huankuanId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              HuankuanStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);

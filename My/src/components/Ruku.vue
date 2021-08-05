@@ -782,8 +782,19 @@ import RukuStatelog from "../services/RukuStatelog"
               let pa=this.tableData[index].id;
               RukuService.delete(pa)
               .then(response => {
+                var data = {
+              userId:this.currentUser.id,
+              rukuId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              RukuStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);

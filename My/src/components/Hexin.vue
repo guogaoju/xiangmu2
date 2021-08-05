@@ -251,7 +251,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterBank_card"> </el-input>
-                              <div slot="reference"> <label> 银行卡号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 银行账号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -512,7 +512,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterBank_card"> </el-input>
-                              <div slot="reference"> <label> 银行卡号 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 银行账号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -643,7 +643,7 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="银行卡号" prop="bank_card" :label-width="formLabelWidth">
+          <el-form-item label="银行账号" prop="bank_card" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="Qiye.bank_card"></el-input>
           </el-form-item>
         </el-col>
@@ -1006,9 +1006,19 @@ import HexinStatelog from "../services/HexinStatelog";
        },
        delClickconfirm(index,row){
               let pa=this.tableData[index].id;
-              let a = this;
               HexinService.delete(pa)
               .then(response => {
+            var data = {
+              userId:this.currentUser.id,
+              core_firmId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              HexinStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
                 console.log(response.pa);
               })

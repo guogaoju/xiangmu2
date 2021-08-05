@@ -1121,8 +1121,19 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
               let a = this;
               ZhizaoService.delete(pa)
               .then(response => {
+                var data = {
+              userId:this.currentUser.id,
+              zhizaoId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              ZhizaoStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);

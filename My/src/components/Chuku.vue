@@ -682,8 +682,19 @@ import ChukuStatelog from "../services/ChukuStatelog"
               let pa=this.tableData[index].id;
               ChukuService.delete(pa)
               .then(response => {
+                 var data = {
+              userId:this.currentUser.id,
+              chukuId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              ChukuStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);

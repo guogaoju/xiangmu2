@@ -790,8 +790,19 @@ import PingjiStatelog from "../services/PingjiStatelog"
               let pa=this.tableData[index].id;
               PingjiService.delete(pa)
               .then(response => {
+                var data = {
+              userId:this.currentUser.id,
+              pingjiId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              PingjiStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);

@@ -1395,6 +1395,17 @@ import WuliaoService from "../services/WuliaoService";
               let pa=this.tableData[index].id;
               JianzhuService.delete(pa)
               .then(response => {
+                var data = {
+              userId:this.currentUser.id,
+              jianzhuId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              JianzhuStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
               })
               .catch(e => {

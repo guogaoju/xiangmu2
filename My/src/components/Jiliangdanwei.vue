@@ -529,8 +529,19 @@ import DanweiStatelog from "../services/DanweiStatelog";
               let pa=this.tableData[index].id;
               DanweiService.delete(pa)
               .then(response => {
+                var data = {
+              userId:this.currentUser.id,
+              danweiId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              DanweiStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
                 this.tableonload();
-                console.log(response.pa);
+                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);

@@ -568,8 +568,18 @@ import FangwenStatelog from "../services/FangwenStatelog"
          let pa=this.tableData[index].id;
               FangwenService.delete(pa)
               .then(response => {
-                this.tableonload();
-                console.log(response.pa);
+               var data = {
+              userId:this.currentUser.id,
+              fangwenId: pa,
+              oldstateid: 1,
+              newstateid:1,
+              operateId:3,
+              }
+              FangwenStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
+              this.tableonload();
               })
               .catch(e => {
                 console.log(e);

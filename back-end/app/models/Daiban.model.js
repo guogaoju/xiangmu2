@@ -1,6 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
     const Daiban = sequelize.define("Daiban", {
-    deptId: {
+      id: {
+        type: Sequelize.INTEGER,
+        primaryKey: true
+      },
+      deptId: {
             type: Sequelize.INTEGER
           },
       name: {

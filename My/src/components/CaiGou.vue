@@ -557,18 +557,17 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12"><el-form-item></el-form-item></el-col> 
-        <el-col :span="12">
+        <el-col :span="8"><el-form-item></el-form-item></el-col> 
+        <el-col :span="8">
         <el-form-item>
           <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" @click="submit('caigou')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>
-         <!-- <el-col :span="8">
+         <el-col :span="8">
         <el-form-item>
-          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" @click="submit('caigou')">驳回</el-button>
+          <el-button type="primary" :disabled="annui"  v-show="isshow2" @click="no()">驳回</el-button>
         </el-form-item>
-         </el-col>     -->
-         
+         </el-col>    
       </el-row>
          </el-col>  
          <el-col :span="4">
@@ -667,6 +666,10 @@ import RongziService from "../services/RongziService";
       this.buttonText="确定"
       this.isshow=false;
     },
+    no(){
+      this.dialogFormVisible=false
+      
+    },
     selectgys(){
       CailiaogysService.getAll().then(response=>{
         this.gys=response.data
@@ -685,7 +688,12 @@ import RongziService from "../services/RongziService";
       selectState(){
          CaigouState.getAll()
         .then(response => {
-          this.activities=response.data
+          console.log(response.data)
+          for(var i=0;i<response.data.length;i++){
+               if(response.data[i].display===0){
+                 this.activities.push(response.data[i])
+               }
+          }
         })
         .catch(e => {
           console.log(e);
@@ -724,9 +732,9 @@ import RongziService from "../services/RongziService";
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
-            // if(response.data.depts[i].name==="风控部"){
-            //   this.isshow2=true
-            // }
+            if(response.data.depts[i].name==="风控部"){
+              this.isshow2=true
+            }
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
@@ -1305,7 +1313,7 @@ this.dialog=false;
         updatedept:[3],
         kandept:[1,2],
         isshow1:false,
-        adddept:[1,2],
+        adddept:[1,3,8],
         lastone:"",
         deptId:[],
         statedeptId:[],

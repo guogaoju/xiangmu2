@@ -15,6 +15,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       lastone:{
         type: Sequelize.INTEGER,
+      },
+      display:{
+        type: Sequelize.INTEGER,
       }
       
     },{timestamps: false});

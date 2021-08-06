@@ -17,7 +17,7 @@ app.use(express.static('./resources/static/assets/imgs'));
 const db = require("./app/models");
 const { response } = require("express");
 db.sequelize.sync().then(() =>{
-  // initial();
+  initial();
 });
 const Role = db.role;
 const Dept = db.dept;

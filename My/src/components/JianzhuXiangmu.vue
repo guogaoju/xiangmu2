@@ -1484,7 +1484,7 @@ import WuliaoService from "../services/WuliaoService";
         updatedept:[3],
         kandept:[1],
         isshow1:false,
-        adddept:[1,2],
+        adddept:[1,3,8],
         lastone:"",
         deptId:[],
         statedeptId:[],

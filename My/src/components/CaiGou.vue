@@ -1202,7 +1202,9 @@ this.dialog=false;
               });
        },
        delClick1(index,row){
-          this.tableData2=[]
+          //从数组中index的位置删除1个元素
+          this.tableData2.splice(index,1);
+          //this.tableData2=[]
         },
        delClick(index,row){  
           authservice.get(this.currentUser.id).then(response =>{

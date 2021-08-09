@@ -135,9 +135,10 @@ exports.update = (req, res) => {
         });
       });
     } else {
+      res.send({ message: "用户可以为空！" });
       // user role = 1
-      user.setRoles([1]).then(() => {
-      });
+      // user.setRoles([1]).then(() => {
+      // });
     };
     //修改部门信息
     if (req.body.depts) {
@@ -154,7 +155,7 @@ exports.update = (req, res) => {
       });
     } else {
       // 部门可以为空
-      res.send({ message: "用户修改成功！" });
+      res.send({ message: "用户可以为空！" });
     }
   })
   .catch(err => {

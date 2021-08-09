@@ -1,19 +1,19 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="6" style="float: right">
+      <el-col :span="22" style="float: right">
         <el-button type="warning" :disabled="annui" round size="small" @click="openFrom()"
           >添加成员</el-button
         >
       </el-col>
-      <el-col :span="18" style="float: right">
+      <el-col :span="2" style="float: right">
         <el-button type="warning" :disabled="annui" round size="small" @click="openFrom1()"
           >添加部门</el-button
         >
       </el-col>
     </el-row>
-    <el-row :gutter="12">
-      <el-col :xs="4" :sm="4" :md="4" :lg="4">
+    <el-row>
+      <el-col :span="4">
         <el-button
           style="margin-top: 10px"
           type="warning"
@@ -31,21 +31,29 @@
           <el-table-column prop="name" label="全部部门"> </el-table-column>
         </el-table>
       </el-col>
-
-      <el-col :xs="16" :sm="16" :md="16" :lg="16">
+      <el-col :span="20">
         <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark">
           <el-table-column prop="name" label="姓名" width="120">
           </el-table-column>
           <el-table-column prop="username" label="账号" width="120">
           </el-table-column>
           <el-table-column
+            prop="roles"
+            label="角色"
+            width="180"
+            :formatter="getfor1"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
             prop="depts"
             label="部门"
+            width="378"
             :formatter="getfor"
             show-overflow-tooltip
           >
           </el-table-column>
-          <el-table-column label="操作" width="250" align="center">
+          <el-table-column label="操作" width="350" align="center">
             <template slot-scope="scope">
               <el-button
                 type="warning" :disabled="annui"
@@ -92,21 +100,42 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item
-          label="部门权限"
-          prop="depts"
-          :label-width="formLabelWidth"
-        >
-          <el-select v-model="form.depts" multiple placeholder="请选择">
-            <el-option
-              v-for="item in result1"
-              :key="item.id"
-              :label="item.name"
-              :value="item.name"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item
+                label="角色"
+                prop="roles"
+                :label-width="formLabelWidth"
+              >
+                <el-select v-model="form.roles" multiple placeholder="请选择">
+                  <el-option
+                    v-for="item in result2"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.name"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+          </el-col>
+          <el-col :span="12">
+              <el-form-item
+                  label="部门权限"
+                  prop="depts"
+                  :label-width="formLabelWidth"
+                >
+                  <el-select v-model="form.depts" multiple placeholder="请选择">
+                    <el-option
+                      v-for="item in result1"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.name"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item>
           <el-button type="warning" @click="submit('form')">确定</el-button>
         </el-form-item>
@@ -135,13 +164,16 @@
 </template>
 <script>
 import DeptService from "../services/DeptService";
-import BumenService from "../services/BumenService";
+import RoleService from "../services/Role";
 import AuthService from "../services/auth.service";
 export default {
   created() {
     this.tableonload();
     this.selectUser();
     this.dialog = true;
+    RoleService.getAll().then((response)=>{
+      this.result2 = response.data;
+    })
     DeptService.getAll()
       .then((response) => {
         this.tableData1 = response.data;
@@ -161,12 +193,11 @@ export default {
       this.tableonload();
     },
     selectUser(){
-          if(this.currentUser.username==="admin"){
+      AuthService.get(this.currentUser.id).then((response)=>{
+        if(response.data.roles[0].name==="admin"){
             this.annui=false
-            console.log("1111111111");
-          }else{
-            console.log("222222");
           }
+      })
     },
     rowClicked(row, event, column) {
       let deptid = row.id;
@@ -185,6 +216,13 @@ export default {
         deptName.push(row.depts[i].name);
       }
       return deptName.join();
+    },
+    getfor1(row, column) {
+      var roleName = [];
+      for (var i = 0; i < row.roles.length; i++) {
+        roleName.push(row.roles[i].name);
+      }
+      return roleName.join();
     },
     async tableonload() {
       AuthService.getAll()
@@ -276,10 +314,15 @@ export default {
         .then((response) => {
           this.form = response.data;
           var deptName = [];
+          var roleName = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             deptName.push(response.data.depts[i].name);
           }
+          for (var i = 0; i < response.data.roles.length; i++) {
+            roleName.push(response.data.roles[i].name);
+          }
           this.form.depts = deptName;
+          this.form.roles = roleName;
         })
         .catch((e) => {
           console.log(e);
@@ -293,6 +336,7 @@ export default {
         username: this.form.username,
         password: this.form.password,
         email: this.form.email,
+        roles:this.form.roles,
         depts: this.form.depts,
       };
       AuthService.update(data.userid, data)
@@ -355,6 +399,7 @@ export default {
       getNewList: [],
       result: "",
       result1: "",
+      result2: "",
       titleMap: {
         addData: "添加数据",
         updataData: "修改数据",

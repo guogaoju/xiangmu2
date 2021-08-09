@@ -43,9 +43,9 @@
             <span>登录</span>
           </button>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
           <button class="btn btn-primary btn-lg disabled btn-block" @click="zhuce()">注册</button>
-        </div>
+        </div> -->
         <div class="form-group">
           <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
         </div>

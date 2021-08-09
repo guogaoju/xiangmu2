@@ -17,8 +17,9 @@ app.use(express.static('./resources/static/assets/imgs'));
 const db = require("./app/models");
 const { response } = require("express");
 db.sequelize.sync().then(() =>{
-  initial();
+  // initial();
 });
+const User = db.User;
 const Role = db.role;
 const Dept = db.dept;
 const QiyeState = db.QiyeState;
@@ -42,6 +43,13 @@ const WuliaoTypeState = db.WuliaoTypeState;
 const DanweiState = db.DanweiState  ;
 const Daiban = db.Daiban  ;
 function initial() {
+  User.create({
+    id: 1,
+    name: "超级管理员",
+    username:"admin",
+    email:"15036954258@qq.com",
+    password:"123456",
+  })
   Role.create({
     id: 1,
     name: "user"

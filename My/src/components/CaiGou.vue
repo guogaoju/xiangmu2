@@ -565,7 +565,7 @@
          </el-col>
          <el-col :span="8">
         <el-form-item>
-          <el-button type="primary" :disabled="annui"  v-show="isshow2" @click="no()">驳回</el-button>
+          <el-button type="primary" v-show="isshow2" @click="no()">驳回</el-button>
         </el-form-item>
          </el-col>    
       </el-row>
@@ -665,10 +665,31 @@ import RongziService from "../services/RongziService";
     closeDialog(){
       this.buttonText="确定"
       this.isshow=false;
+      this.isshow2=false;
     },
     no(){
-      this.dialogFormVisible=false
-      
+      this.dialogFormVisible=false;
+      var data = {
+           CaigouStateId:7
+          }
+          CaiGouService.update(this.pa,data)
+        .then(response => {
+          var data = {
+              userId:this.currentUser.id,
+              caigouId: this.pa,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:5,
+              }
+              CaigouStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
+          this.tableonload();
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
     selectgys(){
       CailiaogysService.getAll().then(response=>{
@@ -685,10 +706,10 @@ import RongziService from "../services/RongziService";
         this.jianzhu=response.data
       })
     },
-      selectState(){
+    selectState(){
          CaigouState.getAll()
         .then(response => {
-          console.log(response.data)
+          // console.log(response.data)
           for(var i=0;i<response.data.length;i++){
                if(response.data[i].display===0){
                  this.activities.push(response.data[i])
@@ -698,6 +719,7 @@ import RongziService from "../services/RongziService";
         .catch(e => {
           console.log(e);
         });
+        
       },
       selectdept1(){
         this.tableData1=[]
@@ -747,7 +769,8 @@ import RongziService from "../services/RongziService";
                        }  
         })
       },
-      handdle(row, event, column) { 
+      handdle(row, event, column) {
+        this.activities=[] 
         this.dialogFormVisible=true
         this.annui=false
         this.annui1=true;
@@ -757,11 +780,12 @@ import RongziService from "../services/RongziService";
           this.selectdept();
           RongziService.findByLog(this.pa).then(response =>{
             this.tableData2=response.data
-            console.log(response.data )
+            // console.log(response.data )
           })
            CaiGouService.get(this.pa)
          .then(response => {
             this.lastone=response.data.CaigouState.lastone;
+            console.log(response.data)
           CaigouState.get(response.data.CaigouState.nextStateid).then(response =>{
                    this.statedeptId = [];
                 for (var i = 0; i < response.data.depts.length; i++) {
@@ -773,15 +797,20 @@ import RongziService from "../services/RongziService";
                             let pre = this.statedeptId[i];
                                 if (pre === old) {
                                     this.isshow=true;
+                                    
                                 }
                             }
                        }
                        if(this.isshow===true){
+                         
                        }else{
                          this.isshow=false;
+                        //  console.log("6666666")
+                         
                        }
                        if(this.lastone===1){
                          this.isshow=false;
+                         
                        }
                })
           this.qiyeid=this.pa
@@ -811,7 +840,7 @@ import RongziService from "../services/RongziService";
                 DaibanService.getJian(this.currentStateDept[i].id,"采购管理")
               //如果下一个状态如果不是最后一个,则所有部门加一
               if (response1.data.lastone!=1){
-                     console.log(response.data.lastone)
+                    //  console.log(response.data.lastone)
                 for (let i = 0; i < this.nextStateDept.length; i++){
                     DaibanService.getJia(this.nextStateDept[i].id,"采购管理").then(response =>{
 
@@ -871,7 +900,11 @@ import RongziService from "../services/RongziService";
        selectStateAndLogs(){
         CaigouState.getAll()
         .then(response => {
-          this.activities=response.data
+          for(var i=0;i<response.data.length;i++){
+               if(response.data[i].display===0){
+                 this.activities.push(response.data[i]) 
+               }
+          }
           this.selectlogs();
         })
         .catch(e => {
@@ -885,16 +918,18 @@ import RongziService from "../services/RongziService";
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
-          console.log(this.tableData);
+          // console.log(this.tableData);
         })
         .catch(e => {
           console.log(e);
         });
       },
        openFrom(){
+         this.activities=[]
          this.selectJianzhu()
          this.selectQiye()
          this.isshow=true;
+         this.isshow2=false;
           this.imageUrlback[0]=""
           this.imageUrlback[1]=""
           this.imageUrlback[2]=""
@@ -953,7 +988,7 @@ this.dialog=false;
               caigouId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.CaigouStateId,
-              operateId:1,
+              operateId:4,
               }
               CaigouStatelog.create(data).then(response => {
               }).catch(e => {
@@ -1020,14 +1055,21 @@ this.dialog=false;
       selectlogs(){
         let caigouId=this.pa
           CaigouStatelog.findByLog(caigouId).then(response => {
-            console.log(response.data)
               for (let j = 0; j < this.activities.length; j++) {
                     let old = this.activities[j].id;
                         for (var i = 0; i < response.data.length; i++) {
                             let pre = response.data[i].newstateid;
                                 if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                  if(response.data[i].operateId===5){
+                                     this.activities[j].color='#ff0000'
+                                     this.activities[j].createdAt=response.data[j].createdAt
+                                     this.activities[j].nodeName=this.activities[j].nodeName+" - 已拒绝"  
+                                  }else if(response.data[i].operateId===4){
+                                      this.activities[j].color='#0bbd87'
+                                      this.activities[j].createdAt=response.data[j].createdAt  
+                                  }else{
+                                  }
+                                    
                                 }
                             }
                        }
@@ -1038,6 +1080,7 @@ this.dialog=false;
         });   
       },
       kanClick(index,row){
+        this.activities=[]
          authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -1054,9 +1097,9 @@ this.dialog=false;
                             }
                        }
           if(xunhuan==true){
-                    this.dialogFormVisible=true
+                                    this.dialogFormVisible=true
                                     this.dialogTitle = "kanData";
-                                    this.annui=true;
+                                    this.isshow2=false;
                                     this.annui1=true;
                                     this.liucheng=true,
                                     this.validated=true;
@@ -1084,6 +1127,7 @@ this.dialog=false;
         })
        },
         updateClick(index,row){
+          this.activities=[]
           this.selectJianzhu()
           this.selectQiye()
           authservice.get(this.currentUser.id).then(response =>{
@@ -1103,6 +1147,7 @@ this.dialog=false;
                        }
           if(xunhuan==true){
                                     this.isshow=true;
+                                    this.isshow2=false;
                                     this.dialogFormVisible=true;
                                     this.dialogTitle = "updataData";
                                     this.annui=false;
@@ -1311,9 +1356,9 @@ this.dialog=false;
         currentStateDept:[],
         tableData1: [],
         activeName: 'first',
-        deletedept:[3],
-        updatedept:[3],
-        kandept:[1,2],
+        deletedept:[1,3,8],
+        updatedept:[1,3,8],
+        kandept:[1,3,8],
         isshow1:false,
         adddept:[1,3,8],
         lastone:"",

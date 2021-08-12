@@ -475,12 +475,17 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12"><el-form-item></el-form-item></el-col> 
-        <el-col :span="12">
+        <el-col :span="8"><el-form-item></el-form-item></el-col> 
+        <el-col :span="8">
         <el-form-item>
           <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Pingji')">{{buttonText}}</el-button>
         </el-form-item>
-         </el-col>  
+         </el-col>
+         <el-col :span="8">
+        <el-form-item>
+          <el-button type="primary" v-show="isshow2" @click="no()">驳回</el-button>
+        </el-form-item>
+         </el-col>       
       </el-row>
           </el-col>
           <el-col :span="6">
@@ -522,12 +527,41 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
        //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"
+      this.isshow2=false;
       this.isshow=false;
+    },
+    no(){
+      this.dialogFormVisible=false;
+      var data = {
+           QiyepingjiStateId:3
+          }
+          QiyePingjiService.update(this.pa,data)
+        .then(response => {
+          var data = {
+              userId:this.currentUser.id,
+              qiyepingjiId: this.pa,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:5,
+              }
+              QiyepingjiStatelogService.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
+          this.tableonload();
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
       selectState(){
          QiyepingjiStateService.getAll()
         .then(response => {
-          this.activities=response.data
+          for(var i=0;i<response.data.length;i++){
+               if(response.data[i].display===0){
+                 this.activities.push(response.data[i])
+               }
+          }
         })
         .catch(e => {
           console.log(e);
@@ -566,6 +600,9 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
+            if(response.data.depts[i].name==="风控部"){
+              this.isshow2=true
+            }
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
@@ -578,7 +615,8 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
                        }  
         })
       },
-      handdle(row, event, column) { 
+      handdle(row, event, column) {
+        this.activities=[] 
         this.dialogFormVisible=true
         this.annui=false
         this.liucheng=true,
@@ -682,7 +720,11 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
       selectStateAndLogs(){
         QiyepingjiStateService.getAll()
         .then(response => {
-          this.activities=response.data
+          for(var i=0;i<response.data.length;i++){
+               if(response.data[i].display===0){
+                 this.activities.push(response.data[i]) 
+               }
+          }
           this.selectlogs();
         })
         .catch(e => {
@@ -709,7 +751,9 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         });
       },
        openFrom(){
+         this.activities=[]
          this.isshow=true;
+         this.isshow2=false;
           this.Pingji={
             qiye_name:'',
             trade:'',
@@ -770,7 +814,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
               qiyepingjiId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.QiyepingjiStateId,
-              operateId:1,
+              operateId:4,
               }
               QiyepingjiStatelogService.create(data).then(response => {
               }).catch(e => {
@@ -803,14 +847,21 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         selectlogs(){
         let qiyepingjiId=this.pa
           QiyepingjiStatelogService.findByLog(qiyepingjiId).then(response => {
-            console.log(response.data)
+            // console.log(response.data)
               for (let j = 0; j < this.activities.length; j++) {
                     let old = this.activities[j].id;
                         for (var i = 0; i < response.data.length; i++) {
                             let pre = response.data[i].newstateid;
                                 if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                   if(response.data[i].operateId===5){
+                                     this.activities[j].color='#ff0000'
+                                     this.activities[j].createdAt=response.data[j].createdAt
+                                     this.activities[j].nodeName=this.activities[j].nodeName+" - 已拒绝"  
+                                  }else if(response.data[i].operateId===4){
+                                      this.activities[j].color='#0bbd87'
+                                      this.activities[j].createdAt=response.data[j].createdAt  
+                                  }else{
+                                  }
                                 }
                             }
                        }
@@ -823,6 +874,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
 
       },
        kanClick(index,row){
+         this.activities=[]
          authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -843,6 +895,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
                     this.dialogFormVisible=true
                     this.dialogTitle = "kanData";
                     this.annui=true;
+                    this.isshow2=false;
                     this.liucheng=true,
                     this.validated=true;
                     this.pa=this.tableData[index].id;
@@ -851,7 +904,6 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
                                     .then(response => {
                                           this.Pingji=response.data;
                                           this.Pingji.nodeName = response.data.QiyepingjiState.nodeName;
-                                          this.tableonload(); 
                                         })
                                         .catch(e => {
                                           console.log(e);
@@ -863,6 +915,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         })
        },
         updateClick(index,row){
+          this.activities=[]
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -880,6 +933,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
                        }
           if(xunhuan==true){
                                     this.isshow=true;
+                                    this.isshow2=false;
                                     this.Pingji={},
                                     this.dialogFormVisible=true
                                     this.dialogTitle = "updataData";
@@ -1031,6 +1085,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
 
     data() {
       return {
+        isshow2:false,
         nextStateDept:[],
         currentStateDept:[],
         tableData1: [],

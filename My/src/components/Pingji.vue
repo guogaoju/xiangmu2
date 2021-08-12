@@ -330,12 +330,17 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12"><el-form-item></el-form-item></el-col>   
-        <el-col :span="12">
+        <el-col :span="8"><el-form-item></el-form-item></el-col>   
+        <el-col :span="8">
         <el-form-item>
           <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Pingji')">{{buttonText}}</el-button>
         </el-form-item>
-         </el-col>  
+         </el-col> 
+         <el-col :span="8">
+        <el-form-item>
+          <el-button type="primary" v-show="isshow2" @click="no()">驳回</el-button>
+        </el-form-item>
+         </el-col>     
       </el-row>
           </el-col>  
         <el-col :span="6">
@@ -376,12 +381,41 @@ import PingjiStatelog from "../services/PingjiStatelog"
       //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"
+      this.isshow2=false;
       this.isshow=false;
+    },
+    no(){
+      this.dialogFormVisible=false;
+      var data = {
+           PingjiStateId:3
+          }
+          PingjiService.update(this.pa,data)
+        .then(response => {
+          var data = {
+              userId:this.currentUser.id,
+              pingjiId: this.pa,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:5,
+              }
+              PingjiStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
+          this.tableonload();
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
       selectState(){
          PingjiState.getAll()
         .then(response => {
-          this.activities=response.data
+          for(var i=0;i<response.data.length;i++){
+               if(response.data[i].display===0){
+                 this.activities.push(response.data[i])
+               }
+          }
         })
         .catch(e => {
           console.log(e);
@@ -420,6 +454,9 @@ import PingjiStatelog from "../services/PingjiStatelog"
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
+            if(response.data.depts[i].name==="风控部"){
+              this.isshow2=true
+            }
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
@@ -433,6 +470,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         })
       },
       handdle(row, event, column) { 
+        this.activities=[] 
         this.dialogFormVisible=true
         this.annui=false
         this.liucheng=true,
@@ -537,7 +575,11 @@ import PingjiStatelog from "../services/PingjiStatelog"
       selectStateAndLogs(){
         PingjiState.getAll()
         .then(response => {
-          this.activities=response.data
+         for(var i=0;i<response.data.length;i++){
+               if(response.data[i].display===0){
+                 this.activities.push(response.data[i]) 
+               }
+          }
           this.selectlogs();
         })
         .catch(e => {
@@ -563,7 +605,9 @@ import PingjiStatelog from "../services/PingjiStatelog"
         });
       },
        openFrom(){
+         this.activities=[]
          this.isshow=true;
+         this.isshow2=false;
           this.Pingji={
             supplier_name:'',
             year:'',
@@ -616,7 +660,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
               pingjiId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.PingjiStateId,
-              operateId:1,
+              operateId:4,
               }
               PingjiStatelog.create(data).then(response => {
               }).catch(e => {
@@ -656,8 +700,15 @@ import PingjiStatelog from "../services/PingjiStatelog"
                         for (var i = 0; i < response.data.length; i++) {
                             let pre = response.data[i].newstateid;
                                 if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                    if(response.data[i].operateId===5){
+                                     this.activities[j].color='#ff0000'
+                                     this.activities[j].createdAt=response.data[j].createdAt
+                                     this.activities[j].nodeName=this.activities[j].nodeName+" - 已拒绝"  
+                                  }else if(response.data[i].operateId===4){
+                                      this.activities[j].color='#0bbd87'
+                                      this.activities[j].createdAt=response.data[j].createdAt  
+                                  }else{
+                                  }
                                 }
                             }
                        }
@@ -669,6 +720,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         });   
       },
        kanClick(index,row){
+         this.activities=[]
          authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -688,6 +740,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
                                     this.dialogFormVisible=true
                                     this.dialogTitle = "kanData";
                                     this.annui=true;
+                                    this.isshow2=false
                                     this.liucheng=true,
                                     this.validated=true;
                                     this.pa=this.tableData[index].id;
@@ -707,6 +760,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         })
        },
         updateClick(index,row){
+          this.activities=[]
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -726,6 +780,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
                                     this.dialogFormVisible=true
                                     this.dialogTitle = "updataData";
                                     this.annui=false;
+                                    this.isshow2=false
                                     this.isshow=true
                                     this.validated=false;
                                     this.liucheng=true, 
@@ -870,6 +925,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         updatedept:[1,3,8],
         kandept:[1,3,8],
         isshow1:false,
+        isshow2:false,
         adddept:[1,3,8],
         lastone:"",
         deptId:[],

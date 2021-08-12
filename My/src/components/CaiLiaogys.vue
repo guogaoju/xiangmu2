@@ -703,12 +703,17 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12"><el-form-item></el-form-item></el-col>   
-        <el-col :span="12">
+        <el-col :span="8"><el-form-item></el-form-item></el-col>   
+        <el-col :span="8">
         <el-form-item>
           <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Ziliao')">{{buttonText}}</el-button>
         </el-form-item>
-         </el-col>  
+         </el-col>
+         <el-col :span="8">
+        <el-form-item>
+          <el-button type="primary" v-show="isshow2" @click="no()">驳回</el-button>
+        </el-form-item>
+         </el-col>      
       </el-row>
           </el-col>  
         <el-col :span="6">
@@ -749,12 +754,41 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
       //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"
-      this.isshow=true;
+      this.isshow=false;
+      this.isshow2=false
+    },
+    no(){
+      this.dialogFormVisible=false;
+      var data = {
+           CailiaoStateId:4
+          }
+          CailiaogysService.update(this.pa,data)
+        .then(response => {
+          var data = {
+              userId:this.currentUser.id,
+              cailiaogyId: this.pa,
+              oldstateid: this.oldStateid,
+              newstateid:this.nextState,
+              operateId:5,
+              }
+              CailiaoStatelog.create(data).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
+          this.tableonload();
+        })
+        .catch(e => {
+          console.log(e);
+        });
     },
       selectState(){
          CailiaoState.getAll()
         .then(response => {
-          this.activities=response.data
+          for(var i=0;i<response.data.length;i++){
+               if(response.data[i].display===0){
+                 this.activities.push(response.data[i])
+               }
+          }
         })
         .catch(e => {
           console.log(e);
@@ -793,6 +827,9 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
             this.deptId.push(response.data.depts[i].id);
+            if(response.data.depts[i].name==="风控部"){
+              this.isshow2=true
+            }
           }
           for (let j = 0; j < this.deptId.length; j++) {
                     let old = this.deptId[j];
@@ -806,6 +843,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         })
       },
       handdle(row, event, column) { 
+        this.activities=[]
         this.dialogFormVisible=true
         this.annui=false
         this.liucheng=true,
@@ -879,7 +917,11 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
        selectStateAndLogs(){
         CailiaoState.getAll()
         .then(response => {
-          this.activities=response.data
+          for(var i=0;i<response.data.length;i++){
+               if(response.data[i].display===0){
+                 this.activities.push(response.data[i]) 
+               }
+          }
           this.selectlogs();
         })
         .catch(e => {
@@ -893,13 +935,16 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
       },
        openFrom(){
+         this.isshow2=false;
+         this.isshow=true;
+         this.activities=[]
           this.Ziliao={},
           this.dialogFormVisible=true
          this.selectState();
@@ -949,7 +994,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
               cailiaogyId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.CailiaoStateId,
-              operateId:1,
+              operateId:4,
               }
               CailiaoStatelog.create(data).then(response => {
               }).catch(e => {
@@ -987,8 +1032,15 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
                         for (var i = 0; i < response.data.length; i++) {
                             let pre = response.data[i].newstateid;
                                 if (pre === old) {
-                                    this.activities[j].color='#0bbd87'
-                                     this.activities[j].createdAt=response.data[j].createdAt  
+                                   if(response.data[i].operateId===5){
+                                     this.activities[j].color='#ff0000'
+                                     this.activities[j].createdAt=response.data[j].createdAt
+                                     this.activities[j].nodeName=this.activities[j].nodeName+" - 已拒绝"  
+                                  }else if(response.data[i].operateId===4){
+                                      this.activities[j].color='#0bbd87'
+                                      this.activities[j].createdAt=response.data[j].createdAt  
+                                  }else{
+                                  }
                                 }
                             }
                        }
@@ -999,6 +1051,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         });   
       },
        kanClick(index,row){
+         this.activities=[]
          authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -1018,6 +1071,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
                                     this.dialogFormVisible=true
                                     this.dialogTitle = "kanData";
                                     this.annui=true;
+                                    this.isshow2=false;
                                     this.liucheng=true,
                                     this.validated=true;
                                     this.pa=this.tableData[index].id;
@@ -1037,6 +1091,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         })
        },
         updateClick(index,row){
+          this.activities=[]
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -1056,6 +1111,8 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
                                     this.dialogFormVisible=true
                                     this.dialogTitle = "updataData";
                                     this.annui=false;
+                                    this.isshow2=false;
+                                    this.isshow=true;
                                     this.validated=false;
                                     this.liucheng=true, 
                                     this.pa=this.tableData[index].id;
@@ -1190,6 +1247,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
 
     data() {
       return {
+        isshow2:false,
         tableData1: [],
         activeName: 'first',
         deletedept:[1,3,8],
@@ -1205,7 +1263,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         oldStateid:'',
         nextState:'',
         annui:'',
-        isshow:true,
+        isshow:false,
         validated:false,
         liucheng:false,
         activities: [],

@@ -109,6 +109,10 @@ function initial() {
     id:4,
     operate_name: "审批流程",
   });
+  operate.create({
+    id:5,
+    operate_name: "审批拒绝",
+  });
   QiyeState.create({
     id:1,
     nodeName: "提交",
@@ -139,6 +143,16 @@ function initial() {
     data.setDepts([1]).then(()=>{
     })
   });
+  QiyepingjiState.create({
+    id:3,
+    nodeName: "已拒绝",
+    nodebutton: "驳回",
+    // nextStateid: 3,
+    display:1
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
   FinanceState.create({
     id:1,
     nodeName: "提交",
@@ -164,7 +178,8 @@ function initial() {
     nodeName: "集采发起",
     nodebutton: "审核",
     // nextStateid: 2,
-    lastone:0
+    lastone:0,
+    display:0
   }).then(data=>{
     data.setDepts([3]).then(()=>{
     })
@@ -174,7 +189,8 @@ function initial() {
     nodeName: "风控审核",
     nodebutton: "已核对",
     nextStateid: 3,
-    lastone:0
+    lastone:0,
+    display:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
@@ -183,9 +199,19 @@ function initial() {
     id:3,
     nodeName: "项目负责人核对",
     nodebutton: "完成",
-    lastone:1
+    lastone:1,
+    display:0
   }).then(data=>{
     data.setDepts([8]).then(()=>{
+    })
+  });;
+  CailiaoState.create({
+    id:4,
+    nodeName: "已拒绝",
+    nodebutton: "驳回",
+    display:1
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
     })
   });;
   PingjiState.create({
@@ -204,6 +230,16 @@ function initial() {
     nodebutton: "完成",
     // nextStateid: 3,
     lastone:1
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  PingjiState.create({
+    id:3,
+    nodeName: "已拒绝",
+    nodebutton: "驳回",
+    // nextStateid: 3,
+    display:1
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })

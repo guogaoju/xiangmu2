@@ -85,6 +85,7 @@ db.WuliaoTypeStatelog = require("./WuliaoTypeStatelog.model.js")(sequelize, Sequ
 db.Rongzi = require("./Rongzi.model.js")(sequelize, Sequelize);
 db.Addjianzhuwuliao = require("./Addjianzhuwuliao.model.js")(sequelize, Sequelize);
 db.Daiban = require("./Daiban.model.js")(sequelize, Sequelize);
+db.Code = require("./code.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",

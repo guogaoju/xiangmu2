@@ -42,14 +42,15 @@ const WuliaoState = db.WuliaoState;
 const WuliaoTypeState = db.WuliaoTypeState;
 const DanweiState = db.DanweiState  ;
 const Daiban = db.Daiban  ;
+const Code = db.Code  ;
 function initial() {
-  User.create({
-    id: 1,
-    name: "超级管理员",
-    username:"admin",
-    email:"15036954258@qq.com",
-    password:"123456",
-  })
+  // User.create({
+  //   id: 1,
+  //   name: "超级管理员",
+  //   username:"admin",
+  //   email:"15036954258@qq.com",
+  //   password:"123456",
+  // })
   Role.create({
     id: 1,
     name: "user"
@@ -128,7 +129,8 @@ function initial() {
     nodeName: "提交",
     nodebutton: "审核",
     nextStateid: 2,
-    lastone:0
+    lastone:0,
+    display:1
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
@@ -138,7 +140,8 @@ function initial() {
     nodeName: "风控审核",
     nodebutton: "完成",
     // nextStateid: 3,
-    lastone:1
+    lastone:1,
+    display:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
@@ -177,7 +180,7 @@ function initial() {
     id:1,
     nodeName: "集采发起",
     nodebutton: "审核",
-    // nextStateid: 2,
+    nextStateid: 2,
     lastone:0,
     display:0
   }).then(data=>{
@@ -219,7 +222,8 @@ function initial() {
     nodeName: "提交",
     nodebutton: "审核",
     nextStateid: 2,
-    lastone:0
+    lastone:0,
+    display:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
@@ -229,7 +233,8 @@ function initial() {
     nodeName: "风控审核",
     nodebutton: "完成",
     // nextStateid: 3,
-    lastone:1
+    lastone:1,
+    display:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
@@ -316,7 +321,8 @@ function initial() {
     nodeName: "采购申请",
     nodebutton: "审核",
     nextStateid: 2,
-    lastone:0
+    lastone:0,
+    display:0
   }).then(data=>{
     data.setDepts([3]).then(()=>{
     })
@@ -326,7 +332,8 @@ function initial() {
     nodeName: "风控审核",
     nodebutton: "通过",
     nextStateid: 3,
-    lastone:0
+    lastone:0,
+    display:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
@@ -336,7 +343,8 @@ function initial() {
     nodeName: "项目负责人确认",
     nodebutton: "确人",
     nextStateid: 4,
-    lastone:0
+    lastone:0,
+    display:0
   }).then(data=>{
     data.setDepts([8]).then(()=>{
     })
@@ -346,7 +354,8 @@ function initial() {
     nodeName: "付款申请",
     nodebutton: "审核",
     nextStateid: 5,
-    lastone:0
+    lastone:0,
+    display:0
   }).then(data=>{
     data.setDepts([3]).then(()=>{
     })
@@ -356,7 +365,8 @@ function initial() {
     nodeName: "风控付款审核",
     nodebutton: "同意",
     nextStateid: 6,
-    lastone:0
+    lastone:0,
+    display:0
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
@@ -365,7 +375,8 @@ function initial() {
     id:6,
     nodeName: "项目负责人同意付款",
     nodebutton: "完成",
-    lastone:1
+    lastone:1,
+    display:0
   }).then(data=>{
     data.setDepts([8]).then(()=>{
     })
@@ -374,6 +385,7 @@ function initial() {
     id:7,
     nodeName: "已拒绝",
     nodebutton: "驳回",
+    display:1
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
@@ -384,7 +396,7 @@ function initial() {
     nodeName: "信融发起",
     nodebutton: "已知晓",
     nextStateid: 2,
-    lastone:0
+    lastone:0,
   }).then(data=>{
     data.setDepts([8]).then(()=>{
     })
@@ -394,7 +406,7 @@ function initial() {
     nodeName: "风控知晓",
     nodebutton: "已知晓",
     nextStateid: 3,
-    lastone:0
+    lastone:0,
   }).then(data=>{
     data.setDepts([1]).then(()=>{
     })
@@ -404,7 +416,7 @@ function initial() {
     nodeName: "项目负责人知晓",
     nodebutton: "确认",
     nextStateid: 4,
-    lastone:0
+    lastone:0,
   }).then(data=>{
     data.setDepts([8]).then(()=>{
     })
@@ -413,7 +425,7 @@ function initial() {
     id:4,
     nodeName: "财务收款",
     nodebutton: "完成",
-    lastone:0
+    lastone:1,
   }).then(data=>{
     data.setDepts([2]).then(()=>{
     })
@@ -644,11 +656,29 @@ require("./app/routes/WuliaoTypeState.routes")(app);
 require("./app/routes/Rongzi.routes")(app);
 require("./app/routes/Addjianzhuwuliao.routes")(app);
 require("./app/routes/Daiban.routes")(app);
+require("./app/routes/Code.routes")(app);
 // set port, listen for requests
 //local
 const PORT = process.env.PORT || 8080;
 //server
 //const PORT = process.env.PORT || 8082;
+const schedule = require('node-schedule');
+
+// 定义规则
+let rule = new schedule.RecurrenceRule();
+rule.hour =0;
+rule.minute =0;
+rule.second =0; //每天0点更新
+
+// 启动任务
+let job = schedule.scheduleJob(rule, () => {
+  console.log(new Date());
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 1 }
+  })
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

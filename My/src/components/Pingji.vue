@@ -230,7 +230,7 @@
     </el-row>
 
   <!-- 添加弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible" @close='closeDialog'>
+  <el-dialog :title="titleMap[dialogTitle]" width="65%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="Pingji"
         status-icon :rules="rules"
@@ -249,7 +249,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="定量评分" prop="quantify_points" :label-width="formLabelWidth">
+          <el-form-item label="定量评分：满分50分" prop="quantify_points" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.quantify_points"></el-input>
           </el-form-item>
         </el-col>
@@ -278,36 +278,31 @@
       </el-row>
       <el-row>
          <el-col :span="12">
-           <span>是否与城投公司或南昌县国有平台有过合作</span>
-          <el-form-item label="满分5分" prop="score1" :label-width="formLabelWidth">
+          <el-form-item label="是否与城投公司或南昌县国有平台有过合作:满分10分" prop="score1" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score1"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
-            <span>在江西省内履约、产品质量、口碑情况</span>
-          <el-form-item label="满分10分" prop="score2" :label-width="formLabelWidth">
+          <el-form-item label="在江西省内履约、产品质量、口碑情况:满分10分" prop="score2" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score2"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
-           <span>总体征信情况</span>
-          <el-form-item label="满分5分" prop="score3" :label-width="formLabelWidth">
+          <el-form-item label="总体征信情况:满分10分" prop="score3" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score3"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
-            <span>经营管理情况（生产管理、财务管理、销售管理）</span>
-          <el-form-item label="满分5分" prop="score4" :label-width="formLabelWidth">
+          <el-form-item label="经营管理情况:生产管理、财务管理、销售管理:满分10分" prop="score4" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score4"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
-           <span>行业地位</span>
-          <el-form-item label="满分5分" prop="score5" :label-width="formLabelWidth">
+          <el-form-item label="行业地位:满分10分" prop="score5" :label-width="formLabelWidth">
            <el-input :disabled="validated" v-on:change="updateScore" v-model.number="Pingji.score5"></el-input>
           </el-form-item>
         </el-col>
@@ -330,15 +325,15 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="8"><el-form-item></el-form-item></el-col>   
-        <el-col :span="8">
+        <el-col :span="11"><el-form-item></el-form-item></el-col>   
+        <el-col :span="5">
         <el-form-item>
           <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Pingji')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col> 
          <el-col :span="8">
         <el-form-item>
-          <el-button type="primary" v-show="isshow2" @click="no()">驳回</el-button>
+          <el-button type="danger" v-show="isshow2" @click="no()">驳回</el-button>
         </el-form-item>
          </el-col>     
       </el-row>
@@ -960,7 +955,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         },
         dialogTitle:"",
         TravelType:1,
-        formLabelWidth: "150px",
+        formLabelWidth: "360px",
         rules:{
           supplier_name: [
             { required: true, message: '请输入企业名称', trigger: 'blur' },

@@ -475,15 +475,15 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="8"><el-form-item></el-form-item></el-col> 
-        <el-col :span="8">
+        <el-col :span="11"><el-form-item></el-form-item></el-col> 
+        <el-col :span="5">
         <el-form-item>
           <el-button type="primary" :disabled="annui" v-show="isshow" ref="buttonname" id="submitButton" @click="submit('Pingji')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>
          <el-col :span="8">
         <el-form-item>
-          <el-button type="primary" v-show="isshow2" @click="no()">驳回</el-button>
+          <el-button type="danger" v-show="isshow2" @click="no()">驳回</el-button>
         </el-form-item>
          </el-col>       
       </el-row>
@@ -622,6 +622,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         this.liucheng=true,
         this.dialogTitle = "examine";
         this.pa=row.id;
+        this.selectdept();
         QiyePingjiService.get(this.pa)
          .then(response => {
            this.lastone=response.data.QiyepingjiState.lastone;
@@ -890,7 +891,6 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
                                 }
                             }
                        }
-
           if(xunhuan==true){
                     this.dialogFormVisible=true
                     this.dialogTitle = "kanData";

@@ -262,14 +262,14 @@
           <el-row>
          <el-col :span="12">
           <el-form-item label="还款项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-select filterable v-model="huankuan.item_name" placeholder="请选择">
+            <el-select filterable v-model="huankuan.item_name" @change="selectOption" placeholder="请选择">
               <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="huankuan.total_quota"></el-input>
+            <el-input :disabled="true" v-model="huankuan.total_quota"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -367,6 +367,10 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
     closeDialog(){
       this.buttonText="确定"
       this.isshow=false;
+    },
+    selectOption(){
+      const item = this.jianzhu.find(item1=> item1.item_name === this.huankuan.item_name)
+      this.huankuan.total_quota = item.total_quota
     },
     selectJianzhu(){
       JianzhuService.getAll().then(response=>{
@@ -890,11 +894,11 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         tableData1: [],
         activeName: 'first',
         deletedept:[1,3,8],
-        updatedept:[2],
-        kandept:[1],
+        updatedept:[1,3,8],
+        kandept:[1,3,8],
         isshow2:false,
         isshow1:false,
-        adddept:[1,2],
+        adddept:[1,3,8],
         lastone:"",
         deptId:[],
         statedeptId:[],

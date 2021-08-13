@@ -16,7 +16,7 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
             @row-click="handdle"
-              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
                 &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                 &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
@@ -26,17 +26,17 @@
                 &(!filterMoney3 || data.money3.toLowerCase().includes(filterMoney3.toString().toLowerCase()))
                 &(!filterMoney4 || data.money4.toLowerCase().includes(filterMoney4.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='80' align="center">
+              <el-table-column min-width='120' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -188,7 +188,7 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
             @row-click="handdle"
-              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
                 &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                 &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
@@ -198,17 +198,17 @@
                 &(!filterMoney3 || data.money3.toLowerCase().includes(filterMoney3.toString().toLowerCase()))
                 &(!filterMoney4 || data.money4.toLowerCase().includes(filterMoney4.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='80' align="center">
+              <el-table-column min-width='120' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -380,7 +380,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-select :disabled="validated" filterable v-model="caigou.item_name" placeholder="请选择项目">
+            <el-select :disabled="validated" filterable v-model="caigou.item_name" @change="selectOption" placeholder="请选择项目">
                 <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
             </el-select>
           </el-form-item>
@@ -394,7 +394,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="总授信额度" prop="totalmoney" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.totalmoney"></el-input>
+            <el-input :disabled="true" v-model="caigou.totalmoney"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -453,7 +453,7 @@
             <el-form-item></el-form-item>
             </el-col>
            <el-col :span="4">
-             <el-button type="warning" v-show="isshow2" @click="addform()">添加物料</el-button> 
+             <el-button type="warning" v-show="isshow" @click="addform()">添加物料</el-button> 
              </el-col>
          </el-row>
       <el-row>
@@ -557,15 +557,15 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="8"><el-form-item></el-form-item></el-col> 
-        <el-col :span="8">
+        <el-col :span="11"><el-form-item></el-form-item></el-col> 
+        <el-col :span="5">
         <el-form-item>
           <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" @click="submit('caigou')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>
          <el-col :span="8">
         <el-form-item>
-          <el-button type="primary" v-show="isshow2" @click="no()">驳回</el-button>
+          <el-button type="danger" v-show="isshow2" @click="no()">驳回</el-button>
         </el-form-item>
          </el-col>    
       </el-row>
@@ -651,6 +651,7 @@ import CaigouState from "../services/CaigouState";
 import CaigouStatelog from "../services/CaigouStatelog";
 import WuliaoService from "../services/WuliaoService";
 import RongziService from "../services/RongziService";
+import CodeService from "../services/CodeService";
   export default {
     created () {
           this.tableonload();
@@ -666,6 +667,22 @@ import RongziService from "../services/RongziService";
       this.buttonText="确定"
       this.isshow=false;
       this.isshow2=false;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("采购管理").then(response=>{
+          console.log(response.data)
+            this.code=response.data[0].code_name+"-"+time+"-"+response.data[0].sum.toString().padStart(5,'0')
+            console.log(this.codename)
+        })
+    },
+    selectOption(){
+      const item = this.jianzhu.find(item1=> item1.item_name === this.caigou.item_name)
+      this.caigou.totalmoney = item.total_quota
     },
     no(){
       this.dialogFormVisible=false;
@@ -925,6 +942,7 @@ import RongziService from "../services/RongziService";
         });
       },
        openFrom(){
+         
          this.activities=[]
          this.selectJianzhu()
          this.selectQiye()
@@ -965,8 +983,10 @@ this.dialog=false;
           
        },
        addservice(){
+         this.selectCode();
               this.dialogFormVisible=false;
             var data = {
+              code:this.code,
               qiye_name: this.caigou.qiye_name,
               item_name:this.caigou.item_name,
               money: this.caigou.money,
@@ -1348,6 +1368,7 @@ this.dialog=false;
 
     data() {
       return {
+        code:"",
         isshow2:false,
         gys:[],
         qiye:[],
@@ -1424,7 +1445,7 @@ this.dialog=false;
         result1:[],
         caigou:{},
         rongzi:{},
-        filterId:'',
+        filterCode:'',
         filterQiye_name:'',
         filterItem_name:'',
         filterMoney:'',

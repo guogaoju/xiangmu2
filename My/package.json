@@ -20,6 +20,7 @@
     "moment": "^2.29.1",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
+    "node-schedule": "^2.0.0",
     "popper.js": "^1.16.1",
     "vee-validate": "^2.2.15",
     "vue": "^2.5.2",

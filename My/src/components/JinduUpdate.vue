@@ -200,10 +200,9 @@
           <el-row>
          <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input :disabled="validated" v-model="jindu.item_name"></el-input>
+           <el-select :disabled="validated" filterable v-model="jindu.item_name" placeholder="请选择项目">
+                <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -215,7 +214,7 @@
       <el-row>
         <el-col :span="24">
              <el-form-item label="现场照片" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
-                    <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
+                    <!-- <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Jindu/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -223,10 +222,20 @@
                     :on-change="handleAvatarChange" 
                     :on-success="handleAvatarSuccess"
                     :before-upload="beforeAvatarUpload"
-                    :file-list="fileList">
+                    :file-list="fileList"
+                    >
                         <img v-if="imageUrl" :src="imageUrl" class="photo">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
+                    </el-upload> -->
+                    <el-upload :disabled="validated" ref="upload" class="avatar-uploader"
+                        action="http://localhost:8080/api/Jindu/upload"
+                        :on-preview="handlePreview"
+                        :on-remove="handleRemove"
+                        :file-list="fileList"
+                        list-type="picture">
+                        <el-button size="small" type="primary">点击上传</el-button>
+                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                      </el-upload>
                 </el-form-item>
         </el-col>
       </el-row>
@@ -320,7 +329,9 @@
   >
     <el-form :model="form">
       <el-form-item label="项目名称" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-select :disabled="validated" filterable v-model="form.name" placeholder="请选择项目">
+                <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
+            </el-select>
       </el-form-item>
       <el-form-item label="物料名称" :label-width="formLabelWidth">
           <el-select filterable v-model="form.wname" placeholder="请选择">
@@ -347,6 +358,7 @@
 </template>
 
 <script>
+import JianzhuService from "../services/JianzhuService";
 import authservice from "../services/auth.service"
 import addjinduwuliao from "../services/addjinduwuliao";
 import WuliaoService from "../services/WuliaoService";
@@ -367,6 +379,11 @@ import JinduStatelog from "../services/JinduStatelog"
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+    },
+    selectJianzhu(){
+      JianzhuService.getAll().then(response=>{
+        this.jianzhu=response.data
+      })
     },
       selectState(){
          JinduState.getAll()
@@ -475,6 +492,7 @@ import JinduStatelog from "../services/JinduStatelog"
         });
       },
        openFrom(){
+         this.selectJianzhu(),
           this.jindu={},
           this.dialogFormVisible=true
           this.selectState();
@@ -635,6 +653,7 @@ import JinduStatelog from "../services/JinduStatelog"
         })
        },
         updateClick(index,row){
+          this.selectJianzhu(),
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -777,6 +796,13 @@ import JinduStatelog from "../services/JinduStatelog"
                                     }          
         })
        },
+       handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+    
       handleClick(row) {
       },
       filterCurrent(value, row){
@@ -822,13 +848,14 @@ import JinduStatelog from "../services/JinduStatelog"
 
     data() {
       return {
+        jianzhu:[],
         tableData1: [],
         activeName: 'first',
-        deletedept:[1,3,8],
-        updatedept:[1,3,8],
+        deletedept:[1],
+        updatedept:[1],
         kandept:[1,3,8],
         isshow1:false,
-        adddept:[1,3,8],
+        adddept:[1],
         deptId:[],
         pa:'',
         buttonText: '确定',

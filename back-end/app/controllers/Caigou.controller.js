@@ -14,6 +14,7 @@ exports.create = (req, res) => {
   }
 // 新增
   const caigou = {
+        code:req.body.code,
         qiye_name:req.body.qiye_name,
         item_name:req.body.item_name,
         money: req.body.money,

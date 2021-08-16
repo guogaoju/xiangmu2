@@ -1,12 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
     const Qiye = sequelize.define("qiye", {
-      register_name: {
+          code: {
             type: Sequelize.STRING
           },
-        //   nodeId: {
-        //     type: Sequelize.INTEGER,
-        //     field: 'node_id',
-        // },
+          register_name: {
+            type: Sequelize.STRING
+          },
           introduction: {
             type: Sequelize.STRING
           },

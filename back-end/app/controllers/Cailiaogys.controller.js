@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const cailiaogys = {
+    code:req.body.code,
     supplier_name:req.body.supplier_name,
     trade:req.body.trade,
     address:req.body.address,

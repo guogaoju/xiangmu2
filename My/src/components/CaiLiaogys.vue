@@ -17,7 +17,7 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
             @row-click="handdle"
-              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterSupplier_name || data.supplier_name.toLowerCase().includes(filterSupplier_name.toString().toLowerCase()))
                 &(!filterAddress || data.address.toLowerCase().includes(filterAddress.toString().toLowerCase()))
                 &(!filterContact_person || data.contact_person.toLowerCase().includes(filterContact_person.toString().toLowerCase()))
@@ -35,17 +35,17 @@
                 &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
                 &(!filterGrade || data.grade.toLowerCase().includes(filterGrade.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='70' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -295,7 +295,7 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
             @row-click="handdle"
-              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterSupplier_name || data.supplier_name.toLowerCase().includes(filterSupplier_name.toString().toLowerCase()))
                 &(!filterAddress || data.address.toLowerCase().includes(filterAddress.toString().toLowerCase()))
                 &(!filterContact_person || data.contact_person.toLowerCase().includes(filterContact_person.toString().toLowerCase()))
@@ -313,17 +313,17 @@
                 &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
                 &(!filterGrade || data.grade.toLowerCase().includes(filterGrade.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='70' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -741,6 +741,7 @@ import CailiaogysService from "../services/CailiaogysService";
 import PingjiService from "../services/PingjiService";
 import CailiaoState from "../services/CailiaoState"
 import CailiaoStatelog from "../services/CailiaoStatelog"
+import CodeService from "../services/CodeService";
   export default {
     created () {
           this.tableonload();
@@ -756,6 +757,16 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
       this.buttonText="确定"
       this.isshow=false;
       this.isshow2=false
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("材料供应商").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
     },
     no(){
       this.dialogFormVisible=false;
@@ -936,6 +947,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
+           this.selectCode();
           // console.log(response.data);
         })
         .catch(e => {
@@ -965,6 +977,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
        async addservice(){
               this.dialogFormVisible=false;
           var data = {
+            code:this.code,
         supplier_name: this.Ziliao.supplier_name,
         trade: this.Ziliao.trade,
         address: this.Ziliao.address,
@@ -1248,6 +1261,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
 
     data() {
       return {
+        code:"",
         isshow2:false,
         tableData1: [],
         activeName: 'first',
@@ -1304,7 +1318,7 @@ import CailiaoStatelog from "../services/CailiaoStatelog"
           ],
         },
         Ziliao:{},
-        filterId:'',
+        filterCode:'',
         filterSupplier_name:'',
         filterAddress:'',
         filterContact_person:'',

@@ -563,6 +563,46 @@ function initial() {
     link: "/Pingji",
     sum:0
   });
+  Code.create({
+    name: "采购管理",
+    code_name: "CGGL",
+    sum:0
+  });
+  Code.create({
+    name: "企业信息",
+    code_name: "QYXX",
+    sum:0
+  });
+  Code.create({
+    name: "企业评级",
+    code_name: "QYPJ",
+    sum:0
+  });
+  Code.create({
+    name: "材料供应商",
+    code_name: "CLGYS",
+    sum:0
+  });
+  Code.create({
+    name: "供应商评级",
+    code_name: "GYSPJ",
+    sum:0
+  });
+  Code.create({
+    name: "核心企业",
+    code_name: "HXQY",
+    sum:0
+  });
+  Code.create({
+    name: "建筑项目",
+    code_name: "JZXM",
+    sum:0
+  });
+  Code.create({
+    name: "还款管理",
+    code_name: "HKGL",
+    sum:0
+  });
 }
 //清空数据库 
 // db.sequelize.sync({ force: true }).then(() => {

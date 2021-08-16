@@ -16,7 +16,7 @@
     <el-tab-pane label="全部数据" name="first">
       <el-table
         @row-click="handdle"
-          :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+          :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
             &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
             &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
@@ -24,17 +24,17 @@
             &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
             )" border style="width: 100%">
-          <el-table-column min-width='80' align="center">
+          <el-table-column min-width='170' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
-                          <el-input v-model="filterId"> </el-input>
+                          <el-input v-model="filterCode"> </el-input>
                           <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                       </el-popover>
                   </template>
                   <template slot-scope="scope">
                       <div>
-                          {{scope.row.id}}
+                          {{scope.row.code}}
                       </div>
                   </template>
           </el-table-column>
@@ -132,7 +132,7 @@
     <el-tab-pane label="待办事项" name="second">
       <el-table
         @row-click="handdle"
-          :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+          :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
             &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
             &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
@@ -140,17 +140,17 @@
             &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
             )" border style="width: 100%">
-          <el-table-column min-width='80' align="center">
+          <el-table-column min-width='170' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
-                          <el-input v-model="filterId"> </el-input>
+                          <el-input v-model="filterCode"> </el-input>
                           <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                       </el-popover>
                   </template>
                   <template slot-scope="scope">
                       <div>
-                          {{scope.row.id}}
+                          {{scope.row.code}}
                       </div>
                   </template>
           </el-table-column>
@@ -352,6 +352,7 @@ import authservice from "../services/auth.service"
 import HuanKuanService from "../services/HuanKuanService"
 import HuankuanState from "../services/HuankuanState"
 import HuankuanStatelog from "../services/HuankuanStatelog"
+import CodeService from "../services/CodeService";
   export default {
     created () {
       // this.selectdept1();
@@ -367,6 +368,16 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
     closeDialog(){
       this.buttonText="确定"
       this.isshow=false;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("还款管理").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
     },
     selectOption(){
       const item = this.jianzhu.find(item1=> item1.item_name === this.huankuan.item_name)
@@ -575,6 +586,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
+          this.selectCode();
         })
         .catch(e => {
           console.log(e);
@@ -596,6 +608,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
        addservice(){
               this.dialogFormVisible=false;
           var data = {
+            code:this.code,
             item_name: this.huankuan.item_name,
             total_quota: this.huankuan.total_quota,
             money: this.huankuan.money,
@@ -888,6 +901,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
 
     data() {
       return {
+        code:"",
         jianzhu:[],
         nextStateDept:[],
         currentStateDept:[],
@@ -937,7 +951,7 @@ import HuankuanStatelog from "../services/HuankuanStatelog"
         tableData:[],
         result:[],
         huankuan:{},
-        filterId:'',
+        filterCode:'',
         filterItem_name:'',
         filterTotal_quota:'',
         filterMoney:'',

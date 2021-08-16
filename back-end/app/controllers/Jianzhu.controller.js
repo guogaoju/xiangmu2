@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const jianzhu = {
+        code:req.body.code,
         builder:req.body.builder,
         item_name:req.body.item_name,
         time: req.body.time,

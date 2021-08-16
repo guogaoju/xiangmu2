@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const huankuan = {
+        code:req.body.code,
         item_name:req.body.item_name,
         total_quota: req.body.total_quota,
         money: req.body.money ,

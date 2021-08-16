@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const core_firm = {
+    code:req.body.code,
     register_name: req.body.register_name,
     credit_code:req.body.credit_code,
     trade: req.body.trade,

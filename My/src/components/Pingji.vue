@@ -17,23 +17,23 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
             @row-click="handdle"
-              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterSupplier_name || data.supplier_name.toLowerCase().includes(filterSupplier_name.toString().toLowerCase()))
                 &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
                 &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
                 &(!filterTotal_points || data.total_points.toLowerCase().includes(filterTotal_points.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='70' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -123,23 +123,23 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
             @row-click="handdle"
-              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterSupplier_name || data.supplier_name.toLowerCase().includes(filterSupplier_name.toString().toLowerCase()))
                 &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
                 &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
                 &(!filterTotal_points || data.total_points.toLowerCase().includes(filterTotal_points.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='70' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -363,6 +363,7 @@ import PingjiService from "../services/PingjiService"
 import CailiaogysService from "../services/CailiaogysService"
 import PingjiState from "../services/PingjiState"
 import PingjiStatelog from "../services/PingjiStatelog"
+import CodeService from "../services/CodeService";
   export default {
     created () {
           this.tableonload();
@@ -378,6 +379,16 @@ import PingjiStatelog from "../services/PingjiStatelog"
       this.buttonText="确定"
       this.isshow2=false;
       this.isshow=false;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("供应商评级").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
     },
     no(){
       this.dialogFormVisible=false;
@@ -593,7 +604,8 @@ import PingjiStatelog from "../services/PingjiStatelog"
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
-          console.log(response.data);
+          this.selectCode();
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -634,6 +646,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
        addservice(){
               this.dialogFormVisible=false;
           var data = {
+            code:this.code,
         supplier_name: this.Pingji.supplier_name,
         year: this.Pingji.year,
         quarter: this.Pingji.quarter,
@@ -912,6 +925,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
 
     data() {
       return {
+        code:"",
         nextStateDept:[],
         currentStateDept:[],
         tableData1: [],
@@ -973,7 +987,7 @@ import PingjiStatelog from "../services/PingjiStatelog"
         tableData:[],
         result:[],
         // Pingji:{},
-        filterId:'',
+        filterCode:'',
         filterSupplier_name:'',
         filterYear:'',
         filterQuarter:'',

@@ -15,6 +15,7 @@ exports.create = (req, res) => {
   
   //新增
   const qiyepingji = {
+    code:req.body.code,
     qiye_name:req.body.qiye_name,
     trade:req.body.trade,
     year:req.body.year,

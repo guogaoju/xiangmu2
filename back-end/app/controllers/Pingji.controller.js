@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const pingji = {
+    code:req.body.code,
     supplier_name:req.body.supplier_name,
     year:req.body.year,
     score1:req.body.score1,

@@ -1,6 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
     const Core_firm = sequelize.define("core_firm", {
-      register_name: {
+          code: {
+            type: Sequelize.STRING
+          },
+          register_name: {
             type: Sequelize.STRING
           },
           credit_code: {

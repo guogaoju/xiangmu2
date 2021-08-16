@@ -17,7 +17,7 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
             @row-click="handdle"
-              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterRegister_name || data.register_name.toLowerCase().includes(filterRegister_name.toString().toLowerCase()))
                 &(!filterIntroduction || data.introduction.toLowerCase().includes(filterIntroduction.toString().toLowerCase()))
                 &(!filterCredit_code || data.credit_code.toLowerCase().includes(filterCredit_code.toString().toLowerCase()))
@@ -36,17 +36,17 @@
                 &(!filterBank_name || data.bank_name.toLowerCase().includes(filterBank_name.toString().toLowerCase()))
                 &(!filterBank_card || data.bank_card.toLowerCase().includes(filterBank_card.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='70' align="center">
+              <el-table-column min-width='165' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -309,7 +309,7 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
               @row-click="handdle"
-                :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                   &(!filterRegister_name || data.register_name.toLowerCase().includes(filterRegister_name.toString().toLowerCase()))
                   &(!filterIntroduction || data.introduction.toLowerCase().includes(filterIntroduction.toString().toLowerCase()))
                   &(!filterCredit_code || data.credit_code.toLowerCase().includes(filterCredit_code.toString().toLowerCase()))
@@ -328,17 +328,17 @@
                   &(!filterBank_name || data.bank_name.toLowerCase().includes(filterBank_name.toString().toLowerCase()))
                   &(!filterBank_card || data.bank_card.toLowerCase().includes(filterBank_card.toString().toLowerCase()))
                   )" border style="width: 100%">
-                <el-table-column min-width='70' align="center">
+                <el-table-column min-width='165' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
-                                <el-input v-model="filterId"> </el-input>
+                                <el-input v-model="filterCode"> </el-input>
                                 <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                             </el-popover>
                         </template>
                         <template slot-scope="scope">
                             <div>
-                                {{scope.row.id}}
+                                {{scope.row.code}}
                             </div>
                         </template>
                 </el-table-column>
@@ -772,6 +772,7 @@ import authservice from "../services/auth.service"
 import QiyeService from "../services/QiyeService";
 import QiyeStateService from "../services/QiyeStateService";
 import StatelogService from "../services/StatelogService";
+import CodeService from "../services/CodeService";
   export default {
     created () {
           this.tableonload();
@@ -786,6 +787,16 @@ import StatelogService from "../services/StatelogService";
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("企业信息").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
     },
     selectHexin(){
       HexinService.getAll().then( response=>{
@@ -838,6 +849,7 @@ import StatelogService from "../services/StatelogService";
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
+          this.selectCode();
         })
         .catch(e => {
           console.log(e);
@@ -890,6 +902,7 @@ import StatelogService from "../services/StatelogService";
        addservice(){
           this.dialogFormVisible=false;
           var data = {
+            code:this.code,
             register_name: this.Qiye.register_name,
             introduction:this.Qiye.introduction,
             credit_code:this.Qiye.credit_code,
@@ -1158,6 +1171,7 @@ import StatelogService from "../services/StatelogService";
 
     data() {
       return {
+        code:"",
         hexin:[],
         tableData1: [],
         activeName: 'first',
@@ -1215,7 +1229,7 @@ import StatelogService from "../services/StatelogService";
         nextState:'',
         tableData:[],
         Qiye:{},
-        filterId:'',
+        filterCode:'',
         filterRegister_name:'',
         filterIntroduction:'',
         filterCredit_code:'',

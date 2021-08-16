@@ -14,7 +14,7 @@ exports.create = (req, res) => {
     return;
   }
   const qiye = {
-    
+    code:req.body.code,
     register_name: req.body.register_name,
     introduction:req.body.introduction,
     trade: req.body.trade,

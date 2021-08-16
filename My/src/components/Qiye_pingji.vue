@@ -17,23 +17,23 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
             @row-click="handdle"
-              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
                 &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
                 &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
                 &(!filterTotal_points || data.total_points.toLowerCase().includes(filterTotal_points.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='70' align="center">
+              <el-table-column min-width='165' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -181,23 +181,23 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
             @row-click="handdle"
-              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
                 &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
                 &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
                 &(!filterTotal_points || data.total_points.toLowerCase().includes(filterTotal_points.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='70' align="center">
+              <el-table-column min-width='165' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -514,6 +514,7 @@ import QiyeService from "../services/QiyeService"
 import QiyePingjiService from "../services/QiyepingjiService"
 import QiyepingjiStateService from "../services/QiyepingjiStateService"
 import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
+import CodeService from "../services/CodeService";
   export default {
     created () {
           this.tableonload();
@@ -529,6 +530,16 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
       this.buttonText="确定"
       this.isshow2=false;
       this.isshow=false;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("企业评级").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
     },
     no(){
       this.dialogFormVisible=false;
@@ -746,6 +757,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
          .then(response => {
           this.tableData = response.data;
           this.selectdept();
+          this.selectCode();
         })
         .catch(e => {
           console.log(e);
@@ -789,6 +801,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
        addservice(){
             this.dialogFormVisible=false;
           var data = {
+            code:this.code,
         qiye_name: this.Pingji.qiye_name,
         trade:this.Pingji.trade,
         year: this.Pingji.year,
@@ -1011,12 +1024,11 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
               newstateid:1,
               operateId:3,
               }
-              QiyePingjiStatelog.create(data).then(response => {
+              QiyepingjiStatelogService.create(data).then(response => {
               }).catch(e => {
                 console.log(e);
               });
                 this.tableonload();
-                // console.log(response.pa);
               })
               .catch(e => {
                 console.log(e);
@@ -1085,6 +1097,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
 
     data() {
       return {
+        code:"",
         isshow2:false,
         nextStateDept:[],
         currentStateDept:[],
@@ -1152,7 +1165,7 @@ import QiyepingjiStatelogService from "../services/QiyepingjiStatelogService"
         },
         tableData:[],
         result:[],
-        filterId:'',
+        filterCode:'',
         filterQiye_name:'',
         filterYear:'',
         filterQuarter:'',

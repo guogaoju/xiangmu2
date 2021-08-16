@@ -26,7 +26,7 @@
                 &(!filterMoney3 || data.money3.toLowerCase().includes(filterMoney3.toString().toLowerCase()))
                 &(!filterMoney4 || data.money4.toLowerCase().includes(filterMoney4.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='120' align="center">
+              <el-table-column min-width='165' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
@@ -114,7 +114,7 @@
                           </el-image>
                       </template>
               </el-table-column>
-              <el-table-column min-width='120' align="center">
+              <el-table-column min-width='130' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
@@ -198,7 +198,7 @@
                 &(!filterMoney3 || data.money3.toLowerCase().includes(filterMoney3.toString().toLowerCase()))
                 &(!filterMoney4 || data.money4.toLowerCase().includes(filterMoney4.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='120' align="center">
+              <el-table-column min-width='165' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
@@ -286,7 +286,7 @@
                           </el-image>
                       </template>
               </el-table-column>
-              <el-table-column min-width='120' align="center">
+              <el-table-column min-width='130' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
@@ -654,7 +654,7 @@ import RongziService from "../services/RongziService";
 import CodeService from "../services/CodeService";
   export default {
     created () {
-          this.tableonload();
+          this.tableonload(); 
       },
       computed: {
     currentUser() {
@@ -675,9 +675,7 @@ import CodeService from "../services/CodeService";
         let day = date.getDate(); // 日
         let time=`${year}${month}${day}`;
         CodeService.findByLog("采购管理").then(response=>{
-          console.log(response.data)
-            this.code=response.data[0].code_name+"-"+time+"-"+response.data[0].sum.toString().padStart(5,'0')
-            console.log(this.codename)
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
         })
     },
     selectOption(){
@@ -726,7 +724,6 @@ import CodeService from "../services/CodeService";
     selectState(){
          CaigouState.getAll()
         .then(response => {
-          // console.log(response.data)
           for(var i=0;i<response.data.length;i++){
                if(response.data[i].display===0){
                  this.activities.push(response.data[i])
@@ -797,12 +794,11 @@ import CodeService from "../services/CodeService";
           this.selectdept();
           RongziService.findByLog(this.pa).then(response =>{
             this.tableData2=response.data
-            // console.log(response.data )
           })
            CaiGouService.get(this.pa)
          .then(response => {
             this.lastone=response.data.CaigouState.lastone;
-            console.log(response.data)
+            // console.log(response.data)
           CaigouState.get(response.data.CaigouState.nextStateid).then(response =>{
                    this.statedeptId = [];
                 for (var i = 0; i < response.data.depts.length; i++) {
@@ -814,20 +810,15 @@ import CodeService from "../services/CodeService";
                             let pre = this.statedeptId[i];
                                 if (pre === old) {
                                     this.isshow=true;
-                                    
                                 }
                             }
                        }
                        if(this.isshow===true){
-                         
                        }else{
                          this.isshow=false;
-                        //  console.log("6666666")
-                         
                        }
                        if(this.lastone===1){
-                         this.isshow=false;
-                         
+                         this.isshow=false; 
                        }
                })
           this.qiyeid=this.pa
@@ -935,6 +926,7 @@ import CodeService from "../services/CodeService";
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
+          this.selectCode();
           // console.log(this.tableData);
         })
         .catch(e => {
@@ -942,7 +934,6 @@ import CodeService from "../services/CodeService";
         });
       },
        openFrom(){
-         
          this.activities=[]
          this.selectJianzhu()
          this.selectQiye()
@@ -977,13 +968,12 @@ import CodeService from "../services/CodeService";
        },
        addsubmit1(rongzi){
           this.$refs[rongzi].validate((valid) => {
-this.addrongzi();
-this.dialog=false;
+          this.addrongzi();
+          this.dialog=false;
           })
           
        },
        addservice(){
-         this.selectCode();
               this.dialogFormVisible=false;
             var data = {
               code:this.code,
@@ -999,7 +989,7 @@ this.dialog=false;
               money2:this.caigou.money2,
               money3:this.caigou.money3,
               money4:this.caigou.money4,
-              nodeName:this.caigou.nodeName
+              nodeName:this.caigou.nodeName,
           } 
           CaiGouService.create(data).then(response => {
           this.tableonload();
@@ -1032,7 +1022,7 @@ this.dialog=false;
        },
        submit(caigou){
           this.$refs[caigou].validate((valid) => {
-          if (this.dialogTitle ==  "addData"&&valid ) {
+      if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
         this.addDaiban();
       } else if(this.dialogTitle ==  "updataData") {
@@ -1053,7 +1043,6 @@ this.dialog=false;
         this.imageUrlback[2]=""
         this.tmpUrl=""
         },
-        
       addform(){
         this.selectgys()
           this.rongzi={},
@@ -1200,10 +1189,10 @@ this.dialog=false;
        },
        updateaddwuliao(){
           var data = {
-        wuliaotype: this.rongzi.wuliaotype,
+              wuliaotype: this.rongzi.wuliaotype,
               danwei:this.rongzi.danwei,
               shenqing: this.rongzi.shenqing,
-              price : this.rongzi.price ,
+              price : this.rongzi.price,
               yugutatol:this.rongzi.yugutatol,
               shijitatol:this.rongzi.shijitatol,
               rate:this.rongzi.rate,
@@ -1214,8 +1203,8 @@ this.dialog=false;
         })
        },
        updateservice(){
-         this.updateaddwuliao();
-              this.dialogFormVisible=false;
+            this.updateaddwuliao();
+            this.dialogFormVisible=false;
           var data = {
             id:this.caigou.id,
             qiye_name: this.caigou.qiye_name,
@@ -1322,16 +1311,15 @@ this.dialog=false;
             return row.current_process === value;
         },
     handleAvatarChange(file,fileList,index) {
-
           if (file.status !== 'ready'){
               return;
             }
            if (index===0)
               this.$refs.upload.submit();
            if (index===1)
-             this.$refs.upload1.submit();
+              this.$refs.upload1.submit();
            if (index===2)
-             this.$refs.upload2.submit();
+              this.$refs.upload2.submit();
         },
        handleAvatarSuccess(response,file,fileList,index) {
          if (this.tmpUrl){
@@ -1356,16 +1344,13 @@ this.dialog=false;
         filterCurrent(value, row){
             return row.current_process === value;
         },
-
     // 
     cancelForm() {
       this.loading = false;
       this.dialog = false;
       clearTimeout(this.timer);
     }
-  
     },
-
     data() {
       return {
         code:"",

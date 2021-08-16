@@ -42,7 +42,7 @@ exports.findAll = (req, res) => {
     Code.findAll({where:condition})
       .then(data => {
           data[0].increment(['sum']).then(data1 =>{
-            res.send(data1);
+            // res.send(data1);
         })
         res.send(data[0]);
       })

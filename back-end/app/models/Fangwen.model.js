@@ -1,6 +1,9 @@
 module.exports = (sequelize, Sequelize,) => {
     const Fangwen = sequelize.define("fangwen", {
-      qiye_name: {
+          code: {
+            type: Sequelize.STRING
+          },
+          qiye_name: {
             type: Sequelize.STRING
           },
           visit_type: {

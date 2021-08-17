@@ -16,6 +16,7 @@ exports.create = (req, res) => {
     }
     //新增
     const wuliao = {
+      code:req.body.code,
       name: req.body.name,
       Specification:req.body.Specification,
       wuliaotype: req.body.wuliaotype,

@@ -19,6 +19,7 @@ exports.create = (req, res) => {
         money: req.body.money ,
         huan_money:req.body.huan_money,
         huan_money1:req.body.huan_money1,
+        time:req.body.time,
         huan_stream:req.body.huan_stream,
         // current_process:req.body.current_process
   };

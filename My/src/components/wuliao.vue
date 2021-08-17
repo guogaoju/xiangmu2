@@ -19,23 +19,23 @@
             @row-click="handdle"
             :data="tableData.filter(data => (!filteredName || data.name.toLowerCase().includes(filteredName.toString().toLowerCase()))
                 &(!filterDanwei || data.danwei.toLowerCase().includes(filterDanwei.toString().toLowerCase()))
-                &(!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                &(!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterSpecification || data.Specification.toLowerCase().includes(filterSpecification.toString().toLowerCase()))
                 &(!filterWuliaotype || data.wuliaotype.toLowerCase().includes(filterWuliaotype.toString().toLowerCase()))
                 &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
                 )" border style="width: 100%">
 
-                <el-table-column min-width='50' align="center">
+                <el-table-column min-width='90' align="center">
                     <!-- eslint-disable-next-line -->
                     <template slot="header" slot-scope="scope">
                         <el-popover placement="bottom" trigger="click">
-                            <el-input v-model="filterId"> </el-input>
+                            <el-input v-model="filterCode"> </el-input>
                             <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                         </el-popover>
                     </template>
                     <template slot-scope="scope">
                         <div>
-                            {{scope.row.id}}
+                            {{scope.row.code}}
                         </div>
                     </template>
                 </el-table-column>
@@ -131,23 +131,23 @@
                 @row-click="handdle"
                 :data="tableData1.filter(data => (!filteredName || data.name.toLowerCase().includes(filteredName.toString().toLowerCase()))
                     &(!filterDanwei || data.danwei.toLowerCase().includes(filterDanwei.toString().toLowerCase()))
-                    &(!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                    &(!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                     &(!filterSpecification || data.Specification.toLowerCase().includes(filterSpecification.toString().toLowerCase()))
                     &(!filterWuliaotype || data.wuliaotype.toLowerCase().includes(filterWuliaotype.toString().toLowerCase()))
                     &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
                     )" border style="width: 100%">
 
-                    <el-table-column min-width='50' align="center">
+                    <el-table-column min-width='90' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
-                                <el-input v-model="filterId"> </el-input>
+                                <el-input v-model="filterCode"> </el-input>
                                 <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                             </el-popover>
                         </template>
                         <template slot-scope="scope">
                             <div>
-                                {{scope.row.id}}
+                                {{scope.row.code}}
                             </div>
                         </template>
                     </el-table-column>
@@ -338,6 +338,7 @@ import WuliaoService from "../services/WuliaoService";
 import WuliaoState from "../services/WuliaoState";
 import WuliaoStatelog from "../services/WuliaoStatelog";
 import WuliaoTypeService from "../services/WuliaoTypeService";
+import CodeService from "../services/CodeService";
 import http from "../http-common";
 export default {
     created() {
@@ -353,6 +354,16 @@ export default {
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("物料资料").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
     },
       selectState(){
          WuliaoState.getAll()
@@ -448,6 +459,7 @@ export default {
                 .then(response => {
                     this.tableData = response.data;
                     this.selectdept();
+                    this.selectCode();
                 })
                 .catch(e => {
                     console.log(e);
@@ -479,6 +491,7 @@ export default {
         addservice(){
          this.dialogFormVisible = false;
                     var data = {
+                        code:this.code,
                         name: this.wuliao.name,
                         Specification: this.wuliao.Specification,
                         wuliaotype: this.wuliao.wuliaotype,
@@ -759,6 +772,7 @@ export default {
 
     data() {
         return {
+            code:"",
         tableData1: [],
         activeName: 'first',
         deletedept:[1,3,8],
@@ -801,7 +815,7 @@ export default {
             filteredName: '',
             filterDanwei: '',
             avatar:'',
-            filterId:'',
+            filterCode:'',
             filterWuliaotype:'',
             filterRemarks:'',
             filterSpecification:'',

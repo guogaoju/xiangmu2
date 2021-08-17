@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const jindu = {
+        code:req.body.code,
         item_name:req.body.item_name,
         before_jindu: req.body.before_jindu,
         after_jindu: req.body.after_jindu ,

@@ -31,8 +31,6 @@
                 &(!filterVat || data.vat.toLowerCase().includes(filterVat.toString().toLowerCase()))
                 &(!filterDiscount || data.discount.toLowerCase().includes(filterDiscount.toString().toLowerCase()))
                 &(!filterRegistered_trademark || data.registered_trademark.toLowerCase().includes(filterRegistered_trademark.toString().toLowerCase()))
-                &(!filterBusiness_license || data.business_license.toLowerCase().includes(filterBusiness_license.toString().toLowerCase()))
-                &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
                 &(!filterGrade || data.grade.toLowerCase().includes(filterGrade.toString().toLowerCase()))
                 )" border style="width: 100%">
               <el-table-column min-width='170' align="center">
@@ -226,26 +224,12 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterRegistered_trademark"> </el-input>
-                              <div slot="reference"> <label> 注册商标 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 品牌 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
                               {{scope.row.registered_trademark}}
-                          </div>
-                      </template>
-              </el-table-column>
-              <el-table-column min-width='180' align="center">
-                      <!-- eslint-disable-next-line -->
-                      <template slot="header" slot-scope="scope">
-                          <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterBusiness_license"> </el-input>
-                              <div slot="reference"> <label> 营业执照 </label> <i class='el-icon-arrow-down'> </i> </div>
-                          </el-popover>
-                      </template>
-                      <template slot-scope="scope">
-                          <div>
-                              {{scope.row.business_license}}
                           </div>
                       </template>
               </el-table-column>
@@ -309,7 +293,6 @@
                 &(!filterVat || data.vat.toLowerCase().includes(filterVat.toString().toLowerCase()))
                 &(!filterDiscount || data.discount.toLowerCase().includes(filterDiscount.toString().toLowerCase()))
                 &(!filterRegistered_trademark || data.registered_trademark.toLowerCase().includes(filterRegistered_trademark.toString().toLowerCase()))
-                &(!filterBusiness_license || data.business_license.toLowerCase().includes(filterBusiness_license.toString().toLowerCase()))
                 &(!filterRemarks || data.remarks.toLowerCase().includes(filterRemarks.toString().toLowerCase()))
                 &(!filterGrade || data.grade.toLowerCase().includes(filterGrade.toString().toLowerCase()))
                 )" border style="width: 100%">
@@ -504,26 +487,12 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterRegistered_trademark"> </el-input>
-                              <div slot="reference"> <label> 注册商标 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 品牌 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
                               {{scope.row.registered_trademark}}
-                          </div>
-                      </template>
-              </el-table-column>
-              <el-table-column min-width='180' align="center">
-                      <!-- eslint-disable-next-line -->
-                      <template slot="header" slot-scope="scope">
-                          <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterBusiness_license"> </el-input>
-                              <div slot="reference"> <label> 营业执照 </label> <i class='el-icon-arrow-down'> </i> </div>
-                          </el-popover>
-                      </template>
-                      <template slot-scope="scope">
-                          <div>
-                              {{scope.row.business_license}}
                           </div>
                       </template>
               </el-table-column>
@@ -673,20 +642,8 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="注册商标" prop="registered_trademark" :label-width="formLabelWidth">
+          <el-form-item label="品牌" prop="registered_trademark" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="Ziliao.registered_trademark"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="营业执照" prop="business_license" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Ziliao.business_license"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Ziliao.remarks"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -696,6 +653,11 @@
         </el-col>
       </el-row>
       <el-row>
+        <el-col :span="12">
+          <el-form-item label="备注" prop="remarks" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="Ziliao.remarks"></el-input>
+          </el-form-item>
+        </el-col>
         <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
             <el-input :disabled="liucheng" v-model="Ziliao.nodeName"></el-input>
@@ -994,7 +956,6 @@ import CodeService from "../services/CodeService";
         supplier_type:this.Ziliao.supplier_type,
         discount:this.Ziliao.discount,
         registered_trademark:this.Ziliao.registered_trademark,
-        business_license:this.Ziliao.business_license,
         remarks:this.Ziliao.remarks,
         grade:this.Ziliao.grade,
         nodeName:this.Ziliao.nodeName
@@ -1165,7 +1126,6 @@ import CodeService from "../services/CodeService";
         supplier_type:this.Ziliao.supplier_type,
         discount:this.Ziliao.discount,
         registered_trademark:this.Ziliao.registered_trademark,
-        business_license:this.Ziliao.business_license,
         remarks:this.Ziliao.remarks,
         grade:this.Ziliao.grade,
         nodeName:this.Ziliao.nodeName
@@ -1310,12 +1270,6 @@ import CodeService from "../services/CodeService";
           juridical_person: [
             { required: true, message: '请输入法人', trigger: 'change' }
           ],
-          registered_trademark: [
-            { required: true, message: '请输入注册商标', trigger: 'change' }
-          ],
-          business_license: [
-            { required: true, message: '请输入营业执照', trigger: 'change' }
-          ],
         },
         Ziliao:{},
         filterCode:'',
@@ -1332,7 +1286,6 @@ import CodeService from "../services/CodeService";
         filterVat:'',
         filterDiscount:'',
         filterRegistered_trademark:'',
-        filterBusiness_license:'',
         filterRemarks:'',
         filterGrade:'',
         dialogFormVisible: false,

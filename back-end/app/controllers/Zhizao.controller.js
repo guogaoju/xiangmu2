@@ -15,6 +15,7 @@ exports.create = (req, res) => {
 
   //添加
   const zhizao = {
+        code:req.body.code,
         qiye_name:req.body.qiye_name,
         item_name:req.body.item_name,
         time: req.body.time,

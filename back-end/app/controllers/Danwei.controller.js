@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const danwei = {
+    code:req.body.code,
     name: req.body.name,
     type: req.body.type,
     remarks:req.body.remarks,

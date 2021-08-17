@@ -21,6 +21,7 @@
             &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
             &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
+            &(!filtertime || data.time.toLowerCase().includes(filtertime.toString().toLowerCase()))
             &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
             )" border style="width: 100%">
@@ -91,6 +92,20 @@
                   <template slot-scope="scope">
                       <div>
                           {{scope.row.huan_money}}
+                      </div>
+                  </template>
+          </el-table-column>
+          <el-table-column min-width='130' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filtertime"> </el-input>
+                          <div slot="reference"> <label> 还款时间 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.time}}
                       </div>
                   </template>
           </el-table-column>
@@ -137,6 +152,7 @@
             &(!filterTotal_quota || data.total_quota.toLowerCase().includes(filterTotal_quota.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
             &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
+            &(!filtertime || data.time.toLowerCase().includes(filtertime.toString().toLowerCase()))
             &(!filterHuan_money1 || data.huan_money1.toLowerCase().includes(filterHuan_money1.toString().toLowerCase()))
             &(!filterMoney || data.money.toLowerCase().includes(filterMoney.toString().toLowerCase()))
             )" border style="width: 100%">
@@ -210,6 +226,20 @@
                       </div>
                   </template>
           </el-table-column>
+          <el-table-column min-width='130' align="center">
+                  <!-- eslint-disable-next-line -->
+                  <template slot="header" slot-scope="scope">
+                      <el-popover placement="bottom" trigger="click">
+                          <el-input v-model="filtertime"> </el-input>
+                          <div slot="reference"> <label> 还款金额 </label> <i class='el-icon-arrow-down'> </i> </div>
+                      </el-popover>
+                  </template>
+                  <template slot-scope="scope">
+                      <div>
+                          {{scope.row.time}}
+                      </div>
+                  </template>
+          </el-table-column>
           <el-table-column min-width='150' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
@@ -249,7 +279,7 @@
 </el-row>
 
   <!-- 弹出层 -->
-  <el-dialog :title="titleMap[dialogTitle]" width="45%" :visible.sync="dialogFormVisible" @close='closeDialog'>
+  <el-dialog :title="titleMap[dialogTitle]" width="50%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
         :model="huankuan"
         status-icon :rules="rules"
@@ -280,21 +310,25 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="还款金额" prop="huan_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="huankuan.huan_money"></el-input>
+          <el-form-item label="还款后使用授信额度" prop="huan_money1" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="huankuan.huan_money1"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
-             <span>还款后使用授信额度</span>
-          <el-form-item label="" prop="huan_money1" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="huankuan.huan_money1"></el-input>
+          <el-form-item label="还款金额" prop="huan_money" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="huankuan.huan_money"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="还款时间" prop="time" :label-width="formLabelWidth">
+             <el-date-picker :disabled="validated" v-model="huankuan.time" type="date" placeholder="选择日期"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col>
                 <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
-                    <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
+                    <el-upload :disabled="validated1" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/HuanKuan/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -491,6 +525,7 @@ import CodeService from "../services/CodeService";
                 this.huankuan.nodeName = response.data.HuankuanState.nodeName;
                 this.imageUrl=response.data.huan_stream
                 this.validated=true;
+                this.validated1=false;
                 this.buttonText = response.data.HuankuanState.nodebutton;
 
               })
@@ -614,6 +649,7 @@ import CodeService from "../services/CodeService";
             money: this.huankuan.money,
             huan_money:this.huankuan.huan_money,
             huan_money1:this.huankuan.huan_money1,
+            time:this.huankuan.time,
             huan_stream:this.imageUrl,
             nodeName:this.huankuan.nodeName
           }
@@ -774,6 +810,7 @@ import CodeService from "../services/CodeService";
             money: this.huankuan.money,
             huan_money:this.huankuan.huan_money,
             huan_money1:this.huankuan.huan_money1,
+            time:this.huankuan.time,
             huan_stream:this.imageUrl,
             nodeName:this.huankuan.nodeName
         }
@@ -924,6 +961,7 @@ import CodeService from "../services/CodeService";
         nextState:'',
         annui:'',
         isshow:false,
+        validated1:false,
         validated:false,
         liucheng:false,
         activities: [],
@@ -939,7 +977,7 @@ import CodeService from "../services/CodeService";
         oldUrl: '',
         tmpUrl: '',
         TravelType:1,
-        formLabelWidth: "130px",
+        formLabelWidth: "140px",
         rules:{
           item_name: [
             { required: true, message: '请输入还款项目名称', trigger: 'blur' },
@@ -953,6 +991,7 @@ import CodeService from "../services/CodeService";
         huankuan:{},
         filterCode:'',
         filterItem_name:'',
+        filtertime:'',
         filterTotal_quota:'',
         filterMoney:'',
         filterHuan_money:'',

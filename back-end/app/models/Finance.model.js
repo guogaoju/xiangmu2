@@ -1,6 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
     const Finance = sequelize.define("finance", {
-      qiye_name: {
+          code: {
+            type: Sequelize.STRING
+          },
+          qiye_name: {
             type: Sequelize.STRING
           },
           year: {

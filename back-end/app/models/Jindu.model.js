@@ -1,7 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
     const Jindu = sequelize.define("jindu", {
-        
-        item_name: {
+          code: {
+            type: Sequelize.STRING
+          },
+          item_name: {
             type: Sequelize.STRING
           },
           before_jindu: {

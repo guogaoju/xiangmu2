@@ -16,7 +16,7 @@
     <el-tab-pane label="全部数据" name="first">
       <el-table
         @row-click="handdle"
-          :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+          :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
             &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
             &(!filterGoods_name || data.goods_name.toLowerCase().includes(filterGoods_name.toString().toLowerCase()))
             &(!filterGoods_danwei || data.goods_danwei.toLowerCase().includes(filterGoods_danwei.toString().toLowerCase()))
@@ -24,17 +24,17 @@
             &(!filterBefore_stock || data.before_stock.toLowerCase().includes(filterBefore_stock.toString().toLowerCase()))
             &(!filterAfter_stock || data.after_stock.toLowerCase().includes(filterAfter_stock.toString().toLowerCase()))
             )" border style="width: 100%">
-          <el-table-column min-width='30' align="center">
+          <el-table-column min-width='90' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
-                          <el-input v-model="filterId"> </el-input>
+                          <el-input v-model="filterCode"> </el-input>
                           <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                       </el-popover>
                   </template>
                   <template slot-scope="scope">
                       <div>
-                          {{scope.row.id}}
+                          {{scope.row.code}}
                       </div>
                   </template>
           </el-table-column>
@@ -135,12 +135,14 @@
               <el-button type="danger" @click.stop="delClick(scope.$index,tableData)" plain round size="small">删除</el-button>
             </template>
           </el-table-column>
+          
+          
         </el-table>
     </el-tab-pane>
       <el-tab-pane label="待办事项" name="second">
       <el-table
         @row-click="handdle"
-          :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+          :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
             &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
             &(!filterGoods_name || data.goods_name.toLowerCase().includes(filterGoods_name.toString().toLowerCase()))
             &(!filterGoods_danwei || data.goods_danwei.toLowerCase().includes(filterGoods_danwei.toString().toLowerCase()))
@@ -148,17 +150,17 @@
             &(!filterBefore_stock || data.before_stock.toLowerCase().includes(filterBefore_stock.toString().toLowerCase()))
             &(!filterAfter_stock || data.after_stock.toLowerCase().includes(filterAfter_stock.toString().toLowerCase()))
             )" border style="width: 100%">
-          <el-table-column min-width='30' align="center">
+          <el-table-column min-width='90' align="center">
                   <!-- eslint-disable-next-line -->
                   <template slot="header" slot-scope="scope">
                       <el-popover placement="bottom" trigger="click">
-                          <el-input v-model="filterId"> </el-input>
+                          <el-input v-model="filterCode"> </el-input>
                           <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                       </el-popover>
                   </template>
                   <template slot-scope="scope">
                       <div>
-                          {{scope.row.id}}
+                          {{scope.row.code}}
                       </div>
                   </template>
           </el-table-column>
@@ -278,7 +280,9 @@
           <el-row>
          <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="chuku.item_name"></el-input>
+            <el-select :disabled="validated" filterable v-model="chuku.item_name" placeholder="请选择项目">
+                <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
          <el-col :span="12">
@@ -347,6 +351,14 @@
       </el-row>
     </el-form>
   </el-dialog>
+  <!-- <div>
+            <el-pagination
+  background
+  layout="prev, pager, next"
+  :total="page_total"
+  :page-size=1>
+</el-pagination>
+          </div> -->
 </div>
 
 </template>
@@ -358,6 +370,8 @@ import WuliaoService from "../services/WuliaoService";
 import ChukuService from "../services/ChukuService"
 import ChukuState from "../services/ChukuState"
 import ChukuStatelog from "../services/ChukuStatelog"
+import CodeService from "../services/CodeService";
+import JianzhuService from "../services/JianzhuService";
   export default {
     created () {
           this.tableonload();
@@ -374,6 +388,21 @@ import ChukuStatelog from "../services/ChukuStatelog"
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("出库记录").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
+    },
+    selectJianzhu(){
+      JianzhuService.getAll().then(response=>{
+        this.jianzhu=response.data
+      })
     },
       selectState(){
          ChukuState.getAll()
@@ -490,14 +519,17 @@ import ChukuStatelog from "../services/ChukuStatelog"
          ChukuService.getAll()
         .then(response => {
           this.tableData = response.data;
+          this.page_total=response.data.length
           this.selectdept();
-          console.log(response.data);
+          this.selectCode();
+          console.log(this.page_total);
         })
         .catch(e => {
           console.log(e);
         });
       },
        openFrom(){
+         this.selectJianzhu()
           this.chuku={},
           this.dialogFormVisible=true
            this.selectState();
@@ -509,6 +541,7 @@ import ChukuStatelog from "../services/ChukuStatelog"
        addservice(){
           this.dialogFormVisible=false;
           var data = {
+            code:this.code,
         item_name: this.chuku.item_name,
         goods_name: this.chuku.goods_name,
         goods_danwei:this.chuku.goods_danwei,
@@ -617,6 +650,7 @@ import ChukuStatelog from "../services/ChukuStatelog"
         })
        },
         updateClick(index,row){
+          this.selectJianzhu()
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -755,6 +789,10 @@ import ChukuStatelog from "../services/ChukuStatelog"
 
     data() {
       return {
+        // page:2,
+        page_total:0,
+        code:"",
+        jianzhu:[],
         tableData1: [],
         activeName: 'first',
         deletedept:[1,3,8],
@@ -798,7 +836,7 @@ import ChukuStatelog from "../services/ChukuStatelog"
         wuliao:[],
         result:[],
         chuku:{},
-        filterId:'',
+        filterCode:'',
         filterItem_name:'',
         filterGoods_name:'',
         filterGoods_danwei:'',

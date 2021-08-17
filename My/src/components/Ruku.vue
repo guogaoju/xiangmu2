@@ -16,7 +16,7 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
               @row-click="handdle"
-                :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+                :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                   &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                   &(!filterSupplier || data.supplier.toLowerCase().includes(filterSupplier.toString().toLowerCase()))
                   &(!filterGoods_name || data.goods_name.toLowerCase().includes(filterGoods_name.toString().toLowerCase()))
@@ -27,21 +27,21 @@
                   &(!filterBefore_supply || data.before_supply.toLowerCase().includes(filterBefore_supply.toString().toLowerCase()))
                   &(!filterAfter_supply || data.after_supply.toLowerCase().includes(filterAfter_supply.toString().toLowerCase()))
                   )" border style="width: 100%">
-                <el-table-column min-width='30' align="center">
+                <el-table-column min-width='160' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
-                                <el-input v-model="filterId"> </el-input>
+                                <el-input v-model="filterCode"> </el-input>
                                 <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                             </el-popover>
                         </template>
                         <template slot-scope="scope">
                             <div>
-                                {{scope.row.id}}
+                                {{scope.row.code}}
                             </div>
                         </template>
                 </el-table-column>
-                <el-table-column min-width='50' align="center">
+                <el-table-column min-width='120' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
@@ -55,7 +55,7 @@
                             </div>
                         </template>
                 </el-table-column>
-                <el-table-column min-width='50' align="center">
+                <el-table-column min-width='120' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
@@ -69,7 +69,7 @@
                             </div>
                         </template>
                 </el-table-column>
-                <el-table-column min-width='50' align="center">
+                <el-table-column min-width='80' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
@@ -83,7 +83,7 @@
                             </div>
                         </template>
                 </el-table-column>
-                <el-table-column min-width='50' align="center">
+                <el-table-column min-width='90' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
@@ -97,7 +97,7 @@
                             </div>
                         </template>
                 </el-table-column>
-                <el-table-column min-width='50' align="center">
+                <el-table-column min-width='90' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
@@ -111,7 +111,7 @@
                             </div>
                         </template>
                 </el-table-column>
-                <el-table-column min-width='50' align="center">
+                <el-table-column min-width='90' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
@@ -125,7 +125,7 @@
                             </div>
                         </template>
                 </el-table-column>
-                <el-table-column min-width='50' align="center">
+                <el-table-column min-width='100' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
@@ -139,7 +139,7 @@
                             </div>
                         </template>
                 </el-table-column>
-                <el-table-column min-width='50' align="center">
+                <el-table-column min-width='100' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
@@ -153,7 +153,7 @@
                             </div>
                         </template>
                 </el-table-column>
-                <el-table-column min-width='70' align="center">
+                <el-table-column min-width='120' align="center">
                         <!-- eslint-disable-next-line -->
                         <template slot="header" slot-scope="scope">
                             <el-popover placement="bottom" trigger="click">
@@ -167,7 +167,7 @@
                             </div>
                         </template>
                 </el-table-column>
-              <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
+              <el-table-column prop="nodeName" label="当前流程" width="100" align="center" :formatter="getfor">
                 </el-table-column>
                 <el-table-column
                   fixed="right"
@@ -185,7 +185,7 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
             @row-click="handdle"
-              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                 &(!filterSupplier || data.supplier.toLowerCase().includes(filterSupplier.toString().toLowerCase()))
                 &(!filterGoods_name || data.goods_name.toLowerCase().includes(filterGoods_name.toString().toLowerCase()))
@@ -196,17 +196,17 @@
                 &(!filterBefore_supply || data.before_supply.toLowerCase().includes(filterBefore_supply.toString().toLowerCase()))
                 &(!filterAfter_supply || data.after_supply.toLowerCase().includes(filterAfter_supply.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='30' align="center">
+              <el-table-column min-width='80' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -368,15 +368,16 @@
           <el-row>
          <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <!-- <el-select filterable v-model="addPingji.supplier_name" placeholder="请选择">
-              <el-option v-for="item in result" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
-            </el-select> -->
-            <el-input :disabled="validated" v-model="ruku.item_name"></el-input>
+            <el-select :disabled="validated" filterable v-model="ruku.item_name" placeholder="请选择项目">
+                <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="供应商" prop="supplier" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="ruku.supplier"></el-input>
+            <el-select :disabled="validated" filterable v-model="ruku.supplier" placeholder="请选择供应商">
+              <el-option v-for="item in gys" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -468,6 +469,9 @@ import WuliaoService from "../services/WuliaoService";
 import RukuService from "../services/RukuService"
 import RukuState from "../services/RukuState"
 import RukuStatelog from "../services/RukuStatelog"
+import CodeService from "../services/CodeService";
+import CailiaogysService from "../services/CailiaogysService";
+import JianzhuService from "../services/JianzhuService";
   export default {
     created () {
           this.tableonload();
@@ -484,6 +488,26 @@ import RukuStatelog from "../services/RukuStatelog"
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("入库记录").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
+    },
+    selectgys(){
+      CailiaogysService.getAll().then(response=>{
+        this.gys=response.data
+      })
+    },
+    selectJianzhu(){
+      JianzhuService.getAll().then(response=>{
+        this.jianzhu=response.data
+      })
     },
       selectState(){
          RukuState.getAll()
@@ -592,13 +616,16 @@ import RukuStatelog from "../services/RukuStatelog"
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
-          console.log(response.data);
+          this.selectCode();
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
       },
        openFrom(){
+          this.selectJianzhu()
+          this.selectgys()
           this.ruku={},
           this.dialogFormVisible=true
           this.selectState();
@@ -610,6 +637,7 @@ import RukuStatelog from "../services/RukuStatelog"
        addservice(){
               this.dialogFormVisible=false;
           var data = {
+            code:this.code,
         item_name: this.ruku.item_name,
         supplier: this.ruku.supplier,
         goods_name: this.ruku.goods_name,
@@ -717,6 +745,8 @@ import RukuStatelog from "../services/RukuStatelog"
         })
        },
         updateClick(index,row){
+          this.selectJianzhu()
+          this.selectgys()
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -848,6 +878,9 @@ import RukuStatelog from "../services/RukuStatelog"
 
     data() {
       return {
+        code:"",
+        gys:[],
+        jianzhu:[],
         tableData1: [],
         activeName: 'first',
         deletedept:[1,3,8],
@@ -895,7 +928,7 @@ import RukuStatelog from "../services/RukuStatelog"
         tableData:[],
         result:[],
         ruku:{},
-        filterId:'',
+        filterCode:'',
         filterItem_name:'',
         filterSupplier:'',
         filterGoods_name:'',

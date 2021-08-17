@@ -14,6 +14,7 @@ exports.create = (req, res) => {
   }
   //新建
   const ruku = {
+            code:req.body.code,
             item_name:req.body.item_name,
             supplier: req.body.supplier,
             goods_name: req.body.goods_name,

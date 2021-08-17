@@ -16,24 +16,24 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
             @row-click="handdle"
-              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                 &(!filterGoods_type || data.goods_type.toLowerCase().includes(filterGoods_type.toString().toLowerCase()))
                 &(!filterGoods_danwei || data.goods_danwei.toLowerCase().includes(filterGoods_danwei.toString().toLowerCase()))
                 &(!filterBefore_stock || data.before_stock.toLowerCase().includes(filterBefore_stock.toString().toLowerCase()))
                 &(!filterAfter_stock || data.after_stock.toLowerCase().includes(filterAfter_stock.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='30' align="center">
+              <el-table-column min-width='100' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -125,24 +125,24 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
             @row-click="handdle"
-              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                 &(!filterGoods_type || data.goods_type.toLowerCase().includes(filterGoods_type.toString().toLowerCase()))
                 &(!filterGoods_danwei || data.goods_danwei.toLowerCase().includes(filterGoods_danwei.toString().toLowerCase()))
                 &(!filterBefore_stock || data.before_stock.toLowerCase().includes(filterBefore_stock.toString().toLowerCase()))
                 &(!filterAfter_stock || data.after_stock.toLowerCase().includes(filterAfter_stock.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='30' align="center">
+              <el-table-column min-width='100' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -247,19 +247,25 @@
         <el-col :span="18"><el-row>
          <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="kucun.item_name"></el-input>
+            <el-select :disabled="validated" filterable v-model="kucun.item_name" placeholder="请选择项目">
+                <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
          <el-col :span="12">
           <el-form-item label="材料种类" prop="goods_type" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model="kucun.goods_type"></el-input>
+           <el-select :disabled="validated" filterable v-model="kucun.goods_type" placeholder="请选择材料种类">
+                <el-option v-for="item in type" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="单位" prop="goods_danwei" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="kucun.goods_danwei"></el-input>
+            <el-select :disabled="validated" filterable v-model="kucun.goods_danwei" placeholder="请选择单位">
+                <el-option v-for="item in danwei" :key="item.id" :label="item.name" :value="item.name"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -313,6 +319,10 @@ import authservice from "../services/auth.service"
 import KucunService from "../services/KucunService"
 import KucunState from "../services/KucunState"
 import KucunStatelog from "../services/KucunStatelog"
+import CodeService from "../services/CodeService";
+import JianzhuService from "../services/JianzhuService";
+import WuliaoTypeService from "../services/WuliaoTypeService";
+import DanweiService from "../services/DanweiService";
   export default {
     created () {
           this.tableonload();
@@ -327,6 +337,31 @@ import KucunStatelog from "../services/KucunStatelog"
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("库存信息").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
+    },
+    selectJianzhu(){
+      JianzhuService.getAll().then(response=>{
+        this.jianzhu=response.data
+      })
+    },
+    selectDanwei(){
+      DanweiService.getAll().then(response=>{
+        this.danwei=response.data
+      })
+    },
+    selectwuliaotype(){
+      WuliaoTypeService.getAll().then(response=>{
+        this.type=response.data
+      })
     },
       selectState(){
          KucunState.getAll()
@@ -421,13 +456,17 @@ import KucunStatelog from "../services/KucunStatelog"
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
-          console.log(response.data);
+          this.selectCode();
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
         });
       },
        openFrom(){
+         this.selectJianzhu();
+         this.selectDanwei();
+         this.selectwuliaotype()
           this.kucun={},
           this.dialogFormVisible=true
           this.selectState();
@@ -439,6 +478,7 @@ import KucunStatelog from "../services/KucunStatelog"
        addservice(){
               this.dialogFormVisible=false;
           var data = {
+             code:this.code,
         item_name: this.kucun.item_name,
         goods_type: this.kucun.goods_type,
         goods_danwei:this.kucun.goods_danwei,
@@ -542,6 +582,9 @@ import KucunStatelog from "../services/KucunStatelog"
         })
        },
         updateClick(index,row){
+          this.selectJianzhu();
+         this.selectDanwei();
+         this.selectwuliaotype()
           authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {
@@ -633,7 +676,7 @@ import KucunStatelog from "../services/KucunStatelog"
                         for (var i = 0; i < this.deptId.length; i++) {
                             let pre = this.deptId[i];
                                 if (pre === old) {
-                                    xunhuan==true
+                                    xunhuan=true
                                 }
                             }
                        }
@@ -670,6 +713,10 @@ import KucunStatelog from "../services/KucunStatelog"
 
     data() {
       return {
+        code:"",
+        danwei:[],
+        type:[],
+        jianzhu:[],
         tableData1: [],
         activeName: 'first',
         deletedept:[1,3,8],
@@ -715,7 +762,7 @@ import KucunStatelog from "../services/KucunStatelog"
         tableData:[],
         result:[],
         kucun:{},
-        filterId:'',
+        filterCode:'',
         filterItem_name:'',
         filterGoods_type:'',
         filterGoods_danwei:'',

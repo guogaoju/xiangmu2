@@ -18,6 +18,9 @@ module.exports = (sequelize, Sequelize) => {
           huan_money1: {
             type: Sequelize.STRING
           },
+          time: {
+            type: Sequelize.DATEONLY
+          },
           huan_stream: {
             type: Sequelize.STRING
           },

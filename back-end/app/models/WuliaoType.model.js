@@ -1,5 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
     const WuliaoType = sequelize.define("wuliaotype", {
+      code: {
+        type: Sequelize.STRING
+      },
       name: {
             type: Sequelize.STRING
           },

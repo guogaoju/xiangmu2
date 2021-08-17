@@ -17,22 +17,22 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
             @row-click="handdle"
-              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
                 &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
                 &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='70' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -210,22 +210,22 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
             @row-click="handdle"
-              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
                 &(!filterYear || data.year.toLowerCase().includes(filterYear.toString().toLowerCase()))
                 &(!filterQuarter || data.quarter.toLowerCase().includes(filterQuarter.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='70' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -600,6 +600,7 @@ import FinancialdataService from "../services/FinancialdataService"
 import QiyeService from "../services/QiyeService"
 import FinanceState from "../services/FinanceState"
 import FinanceStatelog from "../services/FinanceStatelog"
+import CodeService from "../services/CodeService";
   export default {
     created () {
           this.tableonload();
@@ -614,6 +615,16 @@ import FinanceStatelog from "../services/FinanceStatelog"
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("财务数据").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
     },
       selectState(){
          FinanceState.getAll()
@@ -708,6 +719,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
+          this.selectCode();
         })
         .catch(e => {
           console.log(e);
@@ -733,6 +745,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
       addservice(){
               this.dialogFormVisible=false;
           var data = {
+            code:this.code,
         qiye_name: this.finance.qiye_name,
         year: this.finance.year,
         quarter: this.finance.quarter,
@@ -998,6 +1011,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
 
     data() {
       return {
+        code:"",
         tableData1: [],
         activeName: 'first',
         deletedept:[1,3,8],
@@ -1024,7 +1038,7 @@ import FinanceStatelog from "../services/FinanceStatelog"
         examine: "财务数据信息",
       },
         dialogTitle:"",
-        filterId:'',
+        filterCode:'',
         filterQiye_name:'',
         filterYear:'',
         filterQuarter:'',

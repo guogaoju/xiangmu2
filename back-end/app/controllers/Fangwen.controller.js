@@ -12,6 +12,7 @@ exports.create = (req, res) => {
     return;
   }
   const fangwen = {
+    code:req.body.code,
     qiye_name: req.body.qiye_name,
     visit_type:req.body.visit_type,
     visit_time: req.body.visit_time,

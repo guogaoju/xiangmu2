@@ -401,7 +401,7 @@
       <el-row>
         <el-col :span="7">
             <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
-                    <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
+                    <el-upload :disabled="validated1" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -417,7 +417,7 @@
         </el-col>
         <el-col :span="7">
           <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
-                    <el-upload :disabled="validated" ref="upload1" class="avatar-uploader" 
+                    <el-upload :disabled="validated1" ref="upload1" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -433,7 +433,7 @@
         </el-col> 
         <el-col :span="7">
             <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
-                    <el-upload :disabled="validated" ref="upload2" class="avatar-uploader" 
+                    <el-upload :disabled="validated1" ref="upload2" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -830,6 +830,7 @@ import CodeService from "../services/CodeService";
                 this.imageUrlback[1]=response.data.delivery_note
                 this.imageUrlback[2]=response.data.bill
                 this.validated=true;
+                this.validated1=false;
                 this.buttonText = response.data.CaigouState.nodebutton;
                
               })
@@ -1380,6 +1381,7 @@ import CodeService from "../services/CodeService";
         annui:'',
         annui1:'',
         isshow:false,
+        validated1:false,
         validated:false,
         liucheng:false,
         activities: [],

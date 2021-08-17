@@ -1,7 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
     const Zhizao = sequelize.define("zhizao", {
-        
-        qiye_name: {
+          code: {
+            type: Sequelize.STRING
+          },
+          qiye_name: {
             type: Sequelize.STRING
           },
           item_name: {

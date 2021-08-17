@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const kucun = {
+        code:req.body.code,
         item_name:req.body.item_name,
         goods_type: req.body.goods_type,
         goods_danwei: req.body.goods_danwei ,

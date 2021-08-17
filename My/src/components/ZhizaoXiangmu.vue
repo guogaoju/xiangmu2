@@ -16,7 +16,7 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
             @row-click="handdle"
-              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
                 &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                 &(!filterTime || data.time.toLowerCase().includes(filterTime.toString().toLowerCase()))
@@ -29,17 +29,17 @@
                 &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
                 &(!filterfax || data.fax.toLowerCase().includes(filterfax.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='80' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -215,7 +215,7 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
             @row-click="handdle"
-              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterQiye_name || data.qiye_name.toLowerCase().includes(filterQiye_name.toString().toLowerCase()))
                 &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                 &(!filterTime || data.time.toLowerCase().includes(filterTime.toString().toLowerCase()))
@@ -228,17 +228,17 @@
                 &(!filterHuan_money || data.huan_money.toLowerCase().includes(filterHuan_money.toString().toLowerCase()))
                 &(!filterfax || data.fax.toLowerCase().includes(filterfax.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='80' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -633,6 +633,7 @@ import WuliaoService from "../services/WuliaoService";
 import ZhizaoService from "../services/ZhizaoService";
 import ZhizaoState from "../services/ZhizaoState";
 import ZhizaoStatelog from "../services/ZhizaoStatelog";
+import CodeService from "../services/CodeService";
   export default {
     created () {
           this.tableonload();
@@ -647,6 +648,16 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
     closeDialog(){
       this.buttonText="确定"
       this.isshow=false;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("制造项目").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
     },
     selectgys(){
       CailiaogysService.getAll().then(response=>{
@@ -850,7 +861,8 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
-          console.log(response.data);
+          this.selectCode()
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -904,6 +916,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
          addservice(){
                 this.dialogFormVisible=false;
           var data = {
+            code:this.code,
           qiye_name: this.xiangmu.qiye_name,
           item_name:this.xiangmu.item_name,
           time: this.xiangmu.time,
@@ -1198,6 +1211,7 @@ import ZhizaoStatelog from "../services/ZhizaoStatelog";
 
     data() {
       return {
+        code:"",
         gys:[],
         qiye:[],
         nextStateDept:[],
@@ -1259,7 +1273,7 @@ form: {
         tableData:[],
         tableData2:[],
       xiangmu:{},
-      filterId:'',
+      filterCode:'',
         filterQiye_name: '',
         filterItem_name:'',
         filterTime: '',

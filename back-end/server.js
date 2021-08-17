@@ -603,6 +603,56 @@ function initial() {
     code_name: "HKGL",
     sum:0
   });
+  Code.create({
+    name: "访问记录",
+    code_name: "FWJL",
+    sum:0
+  });
+  Code.create({
+    name: "财务数据",
+    code_name: "CWSJ",
+    sum:0
+  });
+  Code.create({
+    name: "制造项目",
+    code_name: "ZZXM",
+    sum:0
+  });
+  Code.create({
+    name: "进度更新",
+    code_name: "JDGX",
+    sum:0
+  });
+  Code.create({
+    name: "出库记录",
+    code_name: "CKJL",
+    sum:0
+  });
+  Code.create({
+    name: "入库记录",
+    code_name: "RKJL",
+    sum:0
+  });
+  Code.create({
+    name: "库存信息",
+    code_name: "KCXX",
+    sum:0
+  });
+  Code.create({
+    name: "物料资料",
+    code_name: "WLZL",
+    sum:0
+  });
+  Code.create({
+    name: "计量单位",
+    code_name: "JLDW",
+    sum:0
+  });
+  Code.create({
+    name: "物料类型",
+    code_name: "WLLX",
+    sum:0
+  });
 }
 //清空数据库 
 // db.sequelize.sync({ force: true }).then(() => {
@@ -717,6 +767,91 @@ let job = schedule.scheduleJob(rule, () => {
     sum: 0
   }, {
     where: { id: 1 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 2 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 3 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 4 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 5 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 6 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 7 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 8 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 9 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 10 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 11 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 12 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 13 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 14 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 15 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 16 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 17 }
+  })
+  Code.update({
+    sum: 0
+  }, {
+    where: { id: 18 }
   })
 });
 

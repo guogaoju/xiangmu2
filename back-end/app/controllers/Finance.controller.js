@@ -13,6 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const finance = {
+            code:req.body.code,
             qiye_name: req.body.qiye_name,
             year: req.body.year,
             quarter: req.body.quarter,

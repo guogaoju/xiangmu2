@@ -15,6 +15,7 @@ exports.create = (req, res) => {
 
 // 新增
   const chuku = {
+            code:req.body.code,
             item_name:req.body.item_name,
             goods_name: req.body.goods_name,
             goods_danwei:req.body.goods_danwei,
@@ -38,6 +39,7 @@ exports.create = (req, res) => {
 
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
+  let countPerPage = 2, currentPage = 1;
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
     Chuku.findAll({order: [['id', 'ASC']],include : [ChukuState]})

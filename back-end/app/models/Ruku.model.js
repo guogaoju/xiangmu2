@@ -1,6 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
     const Ruku = sequelize.define("ruku", {
-        
+      code: {
+        type: Sequelize.STRING
+      },
         item_name: {
             type: Sequelize.STRING
           },

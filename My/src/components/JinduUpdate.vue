@@ -16,22 +16,22 @@
         <el-tab-pane label="全部数据" name="first">
           <el-table
             @row-click="handdle"
-              :data="tableData.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                 &(!filterBefore_jindu || data.before_jindu.toLowerCase().includes(filterBefore_jindu.toString().toLowerCase()))
                 &(!filterAfter_jindu || data.after_jindu.toLowerCase().includes(filterAfter_jindu.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='50' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -101,22 +101,22 @@
         <el-tab-pane label="待办事项" name="second">
           <el-table
             @row-click="handdle"
-              :data="tableData1.filter(data => (!filterId || data.id.toString().toLowerCase().includes(filterId.toString().toLowerCase()))
+              :data="tableData1.filter(data => (!filterCode || data.code.toString().toLowerCase().includes(filterCode.toString().toLowerCase()))
                 &(!filterItem_name || data.item_name.toLowerCase().includes(filterItem_name.toString().toLowerCase()))
                 &(!filterBefore_jindu || data.before_jindu.toLowerCase().includes(filterBefore_jindu.toString().toLowerCase()))
                 &(!filterAfter_jindu || data.after_jindu.toLowerCase().includes(filterAfter_jindu.toString().toLowerCase()))
                 )" border style="width: 100%">
-              <el-table-column min-width='50' align="center">
+              <el-table-column min-width='170' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
-                              <el-input v-model="filterId"> </el-input>
+                              <el-input v-model="filterCode"> </el-input>
                               <div slot="reference"> <label> 编号 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.id}}
+                              {{scope.row.code}}
                           </div>
                       </template>
               </el-table-column>
@@ -214,7 +214,7 @@
       <el-row>
         <el-col :span="24">
              <el-form-item label="现场照片" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
-                    <!-- <el-upload :disabled="validated" ref="upload" class="avatar-uploader" 
+                    <el-upload :disabled="validated1" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Jindu/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -226,8 +226,8 @@
                     >
                         <img v-if="imageUrl" :src="imageUrl" class="photo">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload> -->
-                    <el-upload :disabled="validated" ref="upload" class="avatar-uploader"
+                    </el-upload>
+                    <!-- <el-upload :disabled="validated" ref="upload" class="avatar-uploader"
                         action="http://localhost:8080/api/Jindu/upload"
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
@@ -235,7 +235,7 @@
                         list-type="picture">
                         <el-button size="small" type="primary">点击上传</el-button>
                         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                      </el-upload>
+                      </el-upload> -->
                 </el-form-item>
         </el-col>
       </el-row>
@@ -365,6 +365,7 @@ import WuliaoService from "../services/WuliaoService";
 import JinduService from "../services/JinduService"
 import JinduState from "../services/JinduState"
 import JinduStatelog from "../services/JinduStatelog"
+import CodeService from "../services/CodeService";
   export default {
     created () {
           this.tableonload();
@@ -379,6 +380,16 @@ import JinduStatelog from "../services/JinduStatelog"
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+    },
+    selectCode(){
+        let date = new Date();
+        let year = date.getFullYear(); // 年
+        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
+        let day = date.getDate(); // 日
+        let time=`${year}${month}${day}`;
+        CodeService.findByLog("进度更新").then(response=>{
+            this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
+        })
     },
     selectJianzhu(){
       JianzhuService.getAll().then(response=>{
@@ -433,8 +444,8 @@ import JinduStatelog from "../services/JinduStatelog"
                 this.jindu.nodeName = response.data.JinduState.nodeName;
                 this.jindu.nodeName = response.data.JinduState.nodeName;
                 this.validated=true;
+                this.validated1=false;
                 this.buttonText = response.data.JinduState.nodebutton;
-               
               })
               .catch(e => {
                 console.log(e);
@@ -485,7 +496,8 @@ import JinduStatelog from "../services/JinduStatelog"
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
-          console.log(response.data);
+          this.selectCode();
+          // console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -531,6 +543,7 @@ import JinduStatelog from "../services/JinduStatelog"
         addservice(){
                this.dialogFormVisible=false;
           var data = {
+            code:this.code,
           item_name: this.jindu.item_name,
           before_jindu: this.jindu.before_jindu,
           after_jindu: this.jindu.after_jindu,
@@ -848,6 +861,7 @@ import JinduStatelog from "../services/JinduStatelog"
 
     data() {
       return {
+        code:"",
         jianzhu:[],
         tableData1: [],
         activeName: 'first',
@@ -867,6 +881,7 @@ import JinduStatelog from "../services/JinduStatelog"
         annui1:'',
         isshow:true,
         validated:false,
+        validated1:false,
         liucheng:false,
         activities: [],
         titleMap: {
@@ -906,7 +921,7 @@ form: {
         tableData:[],
         result:[],
         jindu:{},
-        filterId:'',
+        filterCode:'',
         filterItem_name:'',
         filterBefore_jindu:'',
         filterAfter_jindu:'',

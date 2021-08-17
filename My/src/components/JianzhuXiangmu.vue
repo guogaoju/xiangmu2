@@ -640,7 +640,7 @@
         <el-row>        
         <el-col :span="12">
           <el-form-item label="建筑商" prop="builder" :label-width="formLabelWidth">
-            <el-select :disabled="validated" filterable v-model="xiangmu.builder" placeholder="请选择核心企业">
+            <el-select :disabled="validated" filterable v-model="xiangmu.builder" placeholder="请选择建筑企业">
                 <el-option v-for="item in qiye" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
               </el-select>
           </el-form-item>

@@ -1,5 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
     const Danwei = sequelize.define("danwei", {
+      code: {
+        type: Sequelize.STRING
+      },
       name: {
         type: Sequelize.STRING
       },

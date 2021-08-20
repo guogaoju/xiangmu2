@@ -580,7 +580,7 @@
       <el-row>
         <el-col :span="12">
            <el-form-item label="注册资本" prop="register_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Qiye.register_money"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.register_money" @blur="inputMoney($event,'register_money')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -695,6 +695,7 @@ import HexinService from "../services/HexinService";
 import HexinState from "../services/HexinState";
 import HexinStatelog from "../services/HexinStatelog";
 import CodeService from "../services/CodeService";
+import {getInputValue} from "../util";
   export default {
     created () {
           this.tableonload();
@@ -705,6 +706,9 @@ import CodeService from "../services/CodeService";
     }
   },
     methods: {
+      inputMoney(el,name) {
+         this.Qiye[name] = getInputValue(el);
+     },
        //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"

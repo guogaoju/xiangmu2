@@ -227,15 +227,19 @@
                         <img v-if="imageUrl" :src="imageUrl" class="photo">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
-                    <!-- <el-upload :disabled="validated" ref="upload" class="avatar-uploader"
-                        action="http://localhost:8080/api/Jindu/upload"
-                        :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :file-list="fileList"
-                        list-type="picture">
-                        <el-button size="small" type="primary">点击上传</el-button>
-                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                      </el-upload> -->
+                    <!-- <el-upload
+                      class="upload-demo"
+                      action="http://localhost:8080/api/Jindu/upload"
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove"
+                      :before-remove="beforeRemove"
+                      multiple
+                      :limit="3"
+                      :on-exceed="handleExceed"
+                      :file-list="fileList">
+                      <el-button size="small" type="primary">点击上传</el-button>
+                      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload> -->
                 </el-form-item>
         </el-col>
       </el-row>
@@ -376,6 +380,18 @@ import CodeService from "../services/CodeService";
     }
   },
     methods: {
+      // handleRemove(file, fileList) {
+      //   console.log(file, fileList);
+      // },
+      // handlePreview(file) {
+      //   console.log(file);
+      // },
+      // handleExceed(files, fileList) {
+      //   this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      // },
+      // beforeRemove(file, fileList) {
+      //   return this.$confirm(`确定移除 ${ file.name }？`);
+      // },
       //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"

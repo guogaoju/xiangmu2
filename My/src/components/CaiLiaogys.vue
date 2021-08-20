@@ -631,7 +631,11 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="供应商类型" prop="supplier_type" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Ziliao.supplier_type"></el-input>
+            <el-select :disabled="validated" v-model="Ziliao.supplier_type" clearable placeholder="请选择" >
+              <el-option label="往来单位" value="往来单位"></el-option>
+              <el-option label="配件供应" value="配件供应"></el-option>
+              <el-option label="其他客户" value="其他客户"></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">

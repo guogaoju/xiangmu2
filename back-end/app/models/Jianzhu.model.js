@@ -12,6 +12,9 @@ module.exports = (sequelize, Sequelize) => {
           time: {
             type: Sequelize.DATEONLY
           },
+          time1: {
+            type: Sequelize.DATEONLY
+          },
           jindu: {
             type: Sequelize.STRING
           },

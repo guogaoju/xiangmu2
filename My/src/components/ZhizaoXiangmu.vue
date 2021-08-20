@@ -454,19 +454,19 @@
       <el-row>
         <el-col :span="12">
            <el-form-item label="项目总金额" prop="item_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.item_money"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.item_money" @blur="inputMoney($event,'item_money')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.total_quota"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.total_quota" @blur="inputMoney($event,'total_quota')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="已贷金额" prop="money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.money"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.money" @blur="inputMoney($event,'money')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -538,7 +538,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="本月待还款" prop="huan_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.huan_money"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.huan_money" @blur="inputMoney($event,'huan_money')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -634,6 +634,7 @@ import ZhizaoService from "../services/ZhizaoService";
 import ZhizaoState from "../services/ZhizaoState";
 import ZhizaoStatelog from "../services/ZhizaoStatelog";
 import CodeService from "../services/CodeService";
+import {getInputValue} from "../util";
   export default {
     created () {
           this.tableonload();
@@ -649,6 +650,9 @@ import CodeService from "../services/CodeService";
       this.buttonText="确定"
       this.isshow=false;
     },
+    inputMoney(el,name) {
+         this.xiangmu[name] = getInputValue(el);
+     },
     selectCode(){
         let date = new Date();
         let year = date.getFullYear(); // 年

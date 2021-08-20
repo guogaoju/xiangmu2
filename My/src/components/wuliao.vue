@@ -465,7 +465,25 @@ export default {
                     console.log(e);
                 });
         },
+        selectwuliaotype(){
+            WuliaoTypeService.getAll()
+                .then(response => {
+                    this.result1 = response.data;
+                }).catch(e => {
+                    console.log(e);
+                });
+        },
+        selectDanwei(){
+            DanweiService.getAll()
+                .then(response => {
+                    this.result = response.data;
+                }).catch(e => {
+                    console.log(e);
+                });
+        },
         openFrom() {
+            this.selectwuliaotype();
+            this.selectDanwei()
             this.wuliao={},
             this.selectState();
             this.validated=false;
@@ -475,18 +493,6 @@ export default {
             //新建时候清空url
             this.imageUrl=""
             this.dialogFormVisible = true
-            DanweiService.getAll()
-                .then(response => {
-                    this.result = response.data;
-                }).catch(e => {
-                    console.log(e);
-                });
-            WuliaoTypeService.getAll()
-                .then(response => {
-                    this.result1 = response.data;
-                }).catch(e => {
-                    console.log(e);
-                });
         },
         addservice(){
          this.dialogFormVisible = false;
@@ -601,6 +607,8 @@ export default {
         })
         },
         updateClick(index, row) {
+            this.selectwuliaotype();
+            this.selectDanwei()
             authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
           for (var i = 0; i < response.data.depts.length; i++) {

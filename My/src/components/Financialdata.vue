@@ -446,14 +446,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="总资产" prop="total_assets" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.total_assets"></el-input>
+            <el-input :disabled="validated" v-model="finance.total_assets" @blur="inputMoney($event,'total_assets')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="净资产" prop="net_assets" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.net_assets"></el-input>
+            <el-input :disabled="validated" v-model="finance.net_assets" @blur="inputMoney($event,'net_assets')"></el-input>
           </el-form-item>
         </el-col>
          <el-col :span="12">
@@ -501,7 +501,7 @@
       <el-row>
          <el-col :span="12">
           <el-form-item label="应收账款" prop="accounts_receivable" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model="finance.accounts_receivable"></el-input>
+           <el-input :disabled="validated" v-model="finance.accounts_receivable" @blur="inputMoney($event,'accounts_receivable')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -513,7 +513,7 @@
       <el-row>
         <el-col :span="12">
            <el-form-item label="应付账款" prop="accounts_payable" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.accounts_payable"></el-input>
+            <el-input :disabled="validated" v-model="finance.accounts_payable" @blur="inputMoney($event,'accounts_payable')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -525,36 +525,36 @@
       <el-row>
         <el-col :span="12">
            <el-form-item label="营业收入" prop="operating_income" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.operating_income"></el-input>
+            <el-input :disabled="validated" v-model="finance.operating_income" @blur="inputMoney($event,'operating_income')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="营业外收入" prop="nonbusiness_income" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.nonbusiness_income"></el-input>
+            <el-input :disabled="validated" v-model="finance.nonbusiness_income" @blur="inputMoney($event,'nonbusiness_income')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="净利润" prop="net_profits" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.net_profits"></el-input>
+            <el-input :disabled="validated" v-model="finance.net_profits" @blur="inputMoney($event,'net_profits')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="经营活动产生的现金流量净额" prop="total_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.total_money"></el-input>
+            <el-input :disabled="validated" v-model="finance.total_money" @blur="inputMoney($event,'total_money')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
            <el-form-item label="投资活动产生的现金流量净额" prop="total_money1" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.total_money1"></el-input>
+            <el-input :disabled="validated" v-model="finance.total_money1" @blur="inputMoney($event,'total_money1')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="筹资活动产生的现金流量净额" prop="total_money2" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="finance.total_money2"></el-input>
+            <el-input :disabled="validated" v-model="finance.total_money2" @blur="inputMoney($event,'total_money2')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -601,6 +601,7 @@ import QiyeService from "../services/QiyeService"
 import FinanceState from "../services/FinanceState"
 import FinanceStatelog from "../services/FinanceStatelog"
 import CodeService from "../services/CodeService";
+import {getInputValue} from "../util";
   export default {
     created () {
           this.tableonload();
@@ -616,6 +617,9 @@ import CodeService from "../services/CodeService";
       this.buttonText="确定"
       this.isshow=true;
     },
+    inputMoney(el,name) {
+         this.finance[name] = getInputValue(el);
+     },
     selectCode(){
         let date = new Date();
         let year = date.getFullYear(); // 年

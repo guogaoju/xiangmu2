@@ -299,26 +299,26 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input :disabled="true" v-model="huankuan.total_quota"></el-input>
+            <el-input :disabled="true" v-model="huankuan.total_quota" @blur="inputMoney($event,'total_quota')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="已用授信额度" prop="money" :label-width="formLabelWidth">
-           <el-input :disabled="validated" v-model="huankuan.money"></el-input>
+           <el-input :disabled="validated" v-model="huankuan.money" @blur="inputMoney($event,'money')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="还款后使用授信额度" prop="huan_money1" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="huankuan.huan_money1"></el-input>
+            <el-input :disabled="validated" v-model="huankuan.huan_money1" @blur="inputMoney($event,'huan_money1')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
          <el-col :span="12">
           <el-form-item label="还款金额" prop="huan_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="huankuan.huan_money"></el-input>
+            <el-input :disabled="validated" v-model="huankuan.huan_money" @blur="inputMoney($event,'huan_money')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -387,6 +387,7 @@ import HuanKuanService from "../services/HuanKuanService"
 import HuankuanState from "../services/HuankuanState"
 import HuankuanStatelog from "../services/HuankuanStatelog"
 import CodeService from "../services/CodeService";
+import {getInputValue} from "../util";
   export default {
     created () {
       // this.selectdept1();
@@ -403,6 +404,9 @@ import CodeService from "../services/CodeService";
       this.buttonText="确定"
       this.isshow=false;
     },
+    inputMoney(el,name) {
+         this.huankuan[name] = getInputValue(el);
+     },
     selectCode(){
         let date = new Date();
         let year = date.getFullYear(); // 年

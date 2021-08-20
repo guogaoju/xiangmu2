@@ -389,7 +389,7 @@
         <el-row>
         <el-col :span="12">
            <el-form-item label="已使用额度" prop="money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.money"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money" @blur="inputMoney($event,'money')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -528,24 +528,24 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="采购预算金额" prop="money1" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.money1"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money1" @blur="inputMoney($event,'money1')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="出售金额" prop="money2" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.money2"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money2" @blur="inputMoney($event,'money2')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="项目已使用融资额度" prop="money3" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.money3"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money3" @blur="inputMoney($event,'money3')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="更新后已使用融资额度" prop="money4" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.money4"></el-input>
+            <el-input :disabled="validated" v-model="caigou.money4" @blur="inputMoney($event,'money4')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -618,10 +618,10 @@
             <el-input  v-model="rongzi.price"></el-input>
           </el-form-item>
           <el-form-item label="预估总额" prop="yugutatol" :label-width="formLabelWidth">
-            <el-input  v-model="rongzi.yugutatol"></el-input>
+            <el-input  v-model="rongzi.yugutatol" @blur="inputMoney1($event,'yugutatol')"></el-input>
           </el-form-item>
           <el-form-item label="实际总额" prop="shijitatol" :label-width="formLabelWidth">
-            <el-input v-model="rongzi.shijitatol"></el-input>
+            <el-input v-model="rongzi.shijitatol" @blur="inputMoney1($event,'shijitatol')"></el-input>
           </el-form-item>
           <el-form-item label="税率" prop="rate" :label-width="formLabelWidth">
             <el-input  v-model="rongzi.rate"></el-input>
@@ -652,6 +652,7 @@ import CaigouStatelog from "../services/CaigouStatelog";
 import WuliaoService from "../services/WuliaoService";
 import RongziService from "../services/RongziService";
 import CodeService from "../services/CodeService";
+import {getInputValue} from "../util";
   export default {
     created () {
           this.tableonload(); 
@@ -668,6 +669,12 @@ import CodeService from "../services/CodeService";
       this.isshow=false;
       this.isshow2=false;
     },
+    inputMoney(el,name) {
+         this.caigou[name] = getInputValue(el);
+     },
+     inputMoney1(el,name) {
+         this.rongzi[name] = getInputValue(el);
+     },
     selectCode(){
         let date = new Date();
         let year = date.getFullYear(); // 年

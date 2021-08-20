@@ -84,7 +84,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterTime"> </el-input>
-                              <div slot="reference"> <label> 竣工时间 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 贷款起止时间 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -389,7 +389,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterTime"> </el-input>
-                              <div slot="reference"> <label> 竣工时间 </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 贷款起止时间 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -653,8 +653,8 @@
       </el-row>
         <el-row>
         <el-col :span="12">
-           <el-form-item label="竣工时间" prop="time" :label-width="formLabelWidth">
-            <el-date-picker :disabled="validated" v-model="xiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
+           <el-form-item label="项目总价" prop="item_money" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model.number="xiangmu.item_money" @blur="inputMoney($event,'item_money')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -665,49 +665,50 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-           <el-form-item label="项目总价" prop="item_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.item_money"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item label="授信总额度" prop="total_quota" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.total_quota"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.total_quota" @blur="inputMoney($event,'total_quota')"></el-input>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="12">
           <el-form-item label="已申请金额" prop="money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.money"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.money" @blur="inputMoney($event,'money')"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+          <el-col :span="12">
+           <el-form-item label="贷款开始时间" prop="time" :label-width="formLabelWidth">
+            <el-date-picker :disabled="validated" v-model="xiangmu.time" type="date" placeholder="选择日期"></el-date-picker>
+            <!-- <el-date-picker :disabled="validated" v-model="xiangmu.time" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker> -->
           </el-form-item>
         </el-col>
         <el-col :span="12">
-           <el-form-item label="已完工金额" prop="money1" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.money1"></el-input>
-        </el-form-item> 
+           <el-form-item label="贷款停止时间" prop="time1" :label-width="formLabelWidth">
+            <el-date-picker :disabled="validated" v-model="xiangmu.time1" type="date" placeholder="选择日期"></el-date-picker>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
+           <el-form-item label="已完工金额" prop="money1" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="xiangmu.money1" @blur="inputMoney($event,'money1')"></el-input>
+        </el-form-item> 
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="已付工程款" prop="money2" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.money2"></el-input>
+            <el-input :disabled="validated" v-model="xiangmu.money2" @blur="inputMoney($event,'money2')"></el-input>
           </el-form-item>
         </el-col>
+      </el-row>
+      <el-row>
         <el-col :span="12">
           <el-form-item label="A分数" prop="A" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="xiangmu.A"></el-input>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row>
         <el-col :span="12">
           <el-form-item label="α比率" prop="B" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="xiangmu.B"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="β比率" prop="C" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.C"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -717,12 +718,17 @@
             <el-input :disabled="validated" v-model="xiangmu.interest"></el-input>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="β比率" prop="C" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="xiangmu.C"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
         <!-- <el-col :span="12">
           <el-form-item label="利息收入" prop="interest1" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="xiangmu.interest1"></el-input>
           </el-form-item>
         </el-col> -->
-      </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="回款率%" prop="Return" :label-width="formLabelWidth">
@@ -892,6 +898,7 @@ import JianzhuState from "../services/JianzhuState";
 import JianzhuStatelog from "../services/JianzhuStatelog";
 import WuliaoService from "../services/WuliaoService";
 import CodeService from "../services/CodeService";
+import {getInputValue} from "../util";
   export default {
     created () {
           this.tableonload();
@@ -902,6 +909,9 @@ import CodeService from "../services/CodeService";
     }
   },
     methods: {
+      inputMoney(el,name) {
+         this.xiangmu[name] = getInputValue(el);
+     },
       //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"

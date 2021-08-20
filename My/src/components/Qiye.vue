@@ -647,7 +647,7 @@
         </el-col>
          <el-col :span="12">
            <el-form-item label="注册资本" prop="register_money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="Qiye.register_money"></el-input>
+            <el-input :disabled="validated" v-model="Qiye.register_money" @blur="inputMoney($event,'register_money')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -773,6 +773,7 @@ import QiyeService from "../services/QiyeService";
 import QiyeStateService from "../services/QiyeStateService";
 import StatelogService from "../services/StatelogService";
 import CodeService from "../services/CodeService";
+import {getInputValue} from "../util";
   export default {
     created () {
           this.tableonload();
@@ -788,6 +789,9 @@ import CodeService from "../services/CodeService";
       this.buttonText="确定"
       this.isshow=true;
     },
+    inputMoney(el,name) {
+         this.Qiye[name] = getInputValue(el);
+     },
     selectCode(){
         let date = new Date();
         let year = date.getFullYear(); // 年

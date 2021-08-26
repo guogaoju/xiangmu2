@@ -8,7 +8,7 @@ module.exports = app => {
   
     //查找所有
     router.get("/", Rongzi.findAll);
-  
+
     //根据id查询
     router.get("/:id", Rongzi.findOne);
   

@@ -4,13 +4,13 @@
   <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>业务管理</el-breadcrumb-item>
-      <el-breadcrumb-item>采购管理</el-breadcrumb-item>
+      <el-breadcrumb-item>付款管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-row style="margin : 8px;">
+    <!-- <el-row style="margin : 8px;">
       <el-col :span="1.5">
         <el-button type="warning" v-show="isshow1" @click="openFrom()">添加</el-button>
       </el-col>
-    </el-row>
+    </el-row> -->
     <el-row style="margin : 8px;">
       <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
         <el-tab-pane label="全部数据" name="first">
@@ -96,24 +96,24 @@
                           </div>
                       </template>
               </el-table-column>
-              <!-- <el-table-column min-width="120"  prop="statement" label="结算单" align="center">
+              <el-table-column min-width="120"  prop="statement" label="结算单" align="center">
                       <template slot-scope="scope">
                           <el-image style="width: 100px; height: 100px" :src="scope.row.statement" :preview-src-list="[scope.row.statement]">
                           </el-image>
                       </template>
-              </el-table-column> -->
-              <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
+              </el-table-column>
+              <!-- <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
                       <template slot-scope="scope">
                           <el-image style="width: 100px; height: 100px" :src="scope.row.delivery_note" :preview-src-list="[scope.row.delivery_note]">
                           </el-image>
                       </template>
-              </el-table-column>
-              <!-- <el-table-column min-width="120"  prop="bill" label="发票" align="center">
+              </el-table-column> -->
+              <el-table-column min-width="120"  prop="bill" label="发票" align="center">
                       <template slot-scope="scope">
                           <el-image style="width: 100px; height: 100px" :src="scope.row.bill" :preview-src-list="[scope.row.bill]">
                           </el-image>
                       </template>
-              </el-table-column> -->
+              </el-table-column>
               <el-table-column min-width='130' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
@@ -156,7 +156,8 @@
                           </div>
                       </template>
               </el-table-column>
-              <!-- <el-table-column min-width='180' align="center">
+              <el-table-column min-width='180' align="center">
+                      <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterMoney4"> </el-input>
@@ -168,7 +169,7 @@
                               {{scope.row.money4}}
                           </div>
                       </template>
-              </el-table-column> -->
+              </el-table-column>
               <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
               </el-table-column>
               <el-table-column
@@ -195,7 +196,7 @@
                 &(!filterMoney1 || data.money1.toLowerCase().includes(filterMoney1.toString().toLowerCase()))
                 &(!filterMoney2 || data.money2.toLowerCase().includes(filterMoney2.toString().toLowerCase()))
                 &(!filterMoney3 || data.money3.toLowerCase().includes(filterMoney3.toString().toLowerCase()))
-              
+                &(!filterMoney4 || data.money4.toLowerCase().includes(filterMoney4.toString().toLowerCase()))
                 )" border style="width: 100%">
               <el-table-column min-width='165' align="center">
                       <!-- eslint-disable-next-line -->
@@ -267,24 +268,24 @@
                           </div>
                       </template>
               </el-table-column>
-              <!-- <el-table-column min-width="120"  prop="statement" label="结算单" align="center">
+              <el-table-column min-width="120"  prop="statement" label="结算单" align="center">
                       <template slot-scope="scope">
                           <el-image style="width: 100px; height: 100px" :src="scope.row.statement" :preview-src-list="[scope.row.statement]">
                           </el-image>
                       </template>
-              </el-table-column> -->
-              <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
+              </el-table-column>
+              <!-- <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
                       <template slot-scope="scope">
                           <el-image style="width: 100px; height: 100px" :src="scope.row.delivery_note" :preview-src-list="[scope.row.delivery_note]">
                           </el-image>
                       </template>
-              </el-table-column>
-              <!-- <el-table-column min-width="120"  prop="bill" label="发票" align="center">
+              </el-table-column> -->
+              <el-table-column min-width="120"  prop="bill" label="发票" align="center">
                       <template slot-scope="scope">
                           <el-image style="width: 100px; height: 100px" :src="scope.row.bill" :preview-src-list="[scope.row.bill]">
                           </el-image>
                       </template>
-              </el-table-column> -->
+              </el-table-column>
               <el-table-column min-width='130' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
@@ -327,8 +328,8 @@
                           </div>
                       </template>
               </el-table-column>
-              <!-- <el-table-column min-width='180' align="center">
-                  
+              <el-table-column min-width='180' align="center">
+                      <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterMoney4"> </el-input>
@@ -340,7 +341,7 @@
                               {{scope.row.money4}}
                           </div>
                       </template>
-              </el-table-column> -->
+              </el-table-column>
               <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
               </el-table-column>
               <el-table-column
@@ -361,9 +362,9 @@
   <!-- 弹出层 -->
   <el-dialog :title="titleMap[dialogTitle]" width="60%" :visible.sync="dialogFormVisible" @close='closeDialog'>
       <el-form
-        :model="caigou"
+        :model="fukuan"
         status-icon :rules="rules"
-        ref="caigou"
+        ref="fukuan"
         label-width="100px"
         class="demo-ruleForm"
       >
@@ -372,14 +373,14 @@
         <el-row>
         <el-col :span="12">
           <el-form-item label="企业信息" prop="qiye_name" :label-width="formLabelWidth">
-            <el-select :disabled="validated" filterable v-model="caigou.qiye_name" placeholder="请选择企业">
+            <el-select :disabled="validated" filterable v-model="fukuan.qiye_name" placeholder="请选择企业">
                 <el-option v-for="item in qiye" :key="item.id" :label="item.register_name" :value="item.register_name"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-select :disabled="validated" filterable v-model="caigou.item_name" @change="selectOption" placeholder="请选择项目">
+            <el-select :disabled="validated" filterable v-model="fukuan.item_name" @change="selectOption" placeholder="请选择项目">
                 <el-option v-for="item in jianzhu" :key="item.id" :label="item.item_name" :value="item.item_name"></el-option>
             </el-select>
           </el-form-item>
@@ -388,23 +389,23 @@
         <el-row>
         <el-col :span="12">
            <el-form-item label="已使用额度" prop="money" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.money" @blur="inputMoney($event,'money')"></el-input>
+            <el-input :disabled="validated" v-model="fukuan.money" @blur="inputMoney($event,'money')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="总授信额度" prop="totalmoney" :label-width="formLabelWidth">
-            <el-input :disabled="true" v-model="caigou.totalmoney"></el-input>
+            <el-input :disabled="true" v-model="fukuan.totalmoney"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
-        <!-- <el-col :span="7">
+        <el-col :span="7">
             <el-form-item label="结算单" ref="uploadElement" prop="statement" :label-width="formLabelWidth">
                     <el-upload :disabled="validated1" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
-                    :data="caigou" 
+                    :data="fukuan" 
                     :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
                     :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
                     :before-upload="beforeAvatarUpload"
@@ -413,8 +414,8 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
             </el-form-item>
-        </el-col> -->
-        <el-col :span="7">
+        </el-col>
+        <!-- <el-col :span="7">
           <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
                     <el-upload :disabled="validated1" ref="upload1" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
@@ -429,14 +430,14 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
             </el-form-item>
-        </el-col> 
-        <!-- <el-col :span="7">
+        </el-col>  -->
+        <el-col :span="7">
             <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
                     <el-upload :disabled="validated1" ref="upload2" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
-                    :data="caigou" 
+                    :data="fukuan" 
                     :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,2)}"
                     :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,2)}" 
                     :before-upload="beforeAvatarUpload"
@@ -445,7 +446,7 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
             </el-form-item>
-          </el-col>  -->
+          </el-col> 
         </el-row>
          <el-row>
             <el-col :span="4">
@@ -527,24 +528,31 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="采购预算金额" prop="money1" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.money1" @blur="inputMoney($event,'money1')"></el-input>
+            <el-input :disabled="validated" v-model="fukuan.money1" @blur="inputMoney($event,'money1')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="出售金额" prop="money2" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.money2" @blur="inputMoney($event,'money2')"></el-input>
+            <el-input :disabled="validated" v-model="fukuan.money2" @blur="inputMoney($event,'money2')"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
           <el-form-item label="项目已使用融资额度" prop="money3" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="caigou.money3" @blur="inputMoney($event,'money3')"></el-input>
+            <el-input :disabled="validated" v-model="fukuan.money3" @blur="inputMoney($event,'money3')"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
+          <el-form-item label="更新后已使用融资额度" prop="money4" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="fukuan.money4" @blur="inputMoney($event,'money4')"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
           <el-form-item label="当前流程" prop="nodeName" :label-width="formLabelWidth">
-            <el-input :disabled="liucheng" v-model="caigou.nodeName"></el-input>
+            <el-input :disabled="liucheng" v-model="fukuan.nodeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -552,7 +560,7 @@
         <el-col :span="11"><el-form-item></el-form-item></el-col> 
         <el-col :span="5">
         <el-form-item>
-          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" @click="submit('caigou')">{{buttonText}}</el-button>
+          <el-button type="primary" :disabled="annui"  v-show="isshow" ref="buttonname" @click="submit('fukuan')">{{buttonText}}</el-button>
         </el-form-item>
          </el-col>
          <el-col :span="8">
@@ -638,15 +646,13 @@ import DaibanService from "../services/DaibanService"
 import authservice from "../services/auth.service"
 import DanweiService from "../services/DanweiService";
 import CaiGouwuliaoService from "../services/CaiGouwuliaoService";
-import CaiGouService from "../services/CaiGouService";
-import CaigouState from "../services/CaigouState";
-import CaigouStatelog from "../services/CaigouStatelog";
+import FukuanService from "../services/FukuanService";
+import FukuanState from "../services/FukuanState";
+import FukuanStatelog from "../services/FukuanStatelog";
 import WuliaoService from "../services/WuliaoService";
 import RongziService from "../services/RongziService";
 import CodeService from "../services/CodeService";
 import {getInputValue} from "../util";
-import FukuanService from "../services/FukuanService";
-import FukuanStatelog from "../services/FukuanStatelog";
 import FukuanwuliaoService from "../services/Fukuanwuliao";
   export default {
     created () {
@@ -665,7 +671,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
       this.isshow2=false;
     },
     inputMoney(el,name) {
-         this.caigou[name] = getInputValue(el);
+         this.fukuan[name] = getInputValue(el);
      },
      inputMoney1(el,name) {
          this.rongzi[name] = getInputValue(el);
@@ -680,35 +686,25 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
             this.code=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
         })
     },
-    selectCode1(){
-        let date = new Date();
-        let year = date.getFullYear(); // 年
-        let month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1) // 月
-        let day = date.getDate(); // 日
-        let time=`${year}${month}${day}`;
-        CodeService.findByLog("付款管理").then(response=>{
-            this.code1=response.data.code_name+"-"+time+"-"+response.data.sum.toString().padStart(5,'0')
-        })
-    },
     selectOption(){
-      const item = this.jianzhu.find(item1=> item1.item_name === this.caigou.item_name)
-      this.caigou.totalmoney = item.total_quota
+      const item = this.jianzhu.find(item1=> item1.item_name === this.fukuan.item_name)
+      this.fukuan.totalmoney = item.total_quota
     },
     no(){
       this.dialogFormVisible=false;
       var data = {
-           CaigouStateId:7
+           FukuanStateId:7
           }
-          CaiGouService.update(this.pa,data)
+          FukuanService.update(this.pa,data)
         .then(response => {
           var data = {
               userId:this.currentUser.id,
-              caigouId: this.pa,
+              fukuanId: this.pa,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
               operateId:5,
               }
-              CaigouStatelog.create(data).then(response => {
+              FukuanStatelog.create(data).then(response => {
               }).catch(e => {
                 console.log(e);
               });
@@ -734,7 +730,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
       })
     },
     selectState(){
-         CaigouState.getAll()
+         FukuanState.getAll()
         .then(response => {
           for(var i=0;i<response.data.length;i++){
                if(response.data[i].display===0){
@@ -750,19 +746,19 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
       selectdept1(){
         this.tableData1=[]
         authservice.get(this.currentUser.id).then(resUser =>{
-          CaiGouService.getAll().then(async resAllCaiGou =>  {          
-            for(var i=0;i<resAllCaiGou.data.length;i++){
-              await CaigouState.get(resAllCaiGou.data[i].CaigouStateId).then(resCaigouState =>{
+          FukuanService.getAll().then(async resAllFukuan =>  {          
+            for(var i=0;i<resAllFukuan.data.length;i++){
+              await FukuanState.get(resAllFukuan.data[i].FukuanStateId).then(resFukuanState =>{
                 var ifKeep=false;
                 for (let k = 0; k < resUser.data.depts.length; k++){
-                  for (var l = 0; l < resCaigouState.data.depts.length; l++){
-                    if (resUser.data.depts[k].id === resCaigouState.data.depts[l].id){
+                  for (var l = 0; l < resFukuanState.data.depts.length; l++){
+                    if (resUser.data.depts[k].id === resFukuanState.data.depts[l].id){
                       ifKeep=true;
                     }
                   }
                 }
                 if(ifKeep){
-                  this.tableData1.push(resAllCaiGou.data[i])
+                  this.tableData1.push(resAllFukuan.data[i])
                 }
               }).catch(e => {
                 console.log(e);
@@ -804,14 +800,14 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         this.dialogTitle = "examine";
           this.pa=row.id;
           this.selectdept();
-          RongziService.findByLog(this.pa).then(response =>{
+          FukuanwuliaoService.findByLog(this.pa).then(response =>{
             this.tableData2=response.data
           })
-           CaiGouService.get(this.pa)
+           FukuanService.get(this.pa)
          .then(response => {
-            this.lastone=response.data.CaigouState.lastone;
+            this.lastone=response.data.FukuanState.lastone;
             // console.log(response.data)
-          CaigouState.get(response.data.CaigouState.nextStateid).then(response =>{
+          FukuanState.get(response.data.FukuanState.nextStateid).then(response =>{
                    this.statedeptId = [];
                 for (var i = 0; i < response.data.depts.length; i++) {
                       this.statedeptId.push(response.data.depts[i].id); 
@@ -834,16 +830,17 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
                        }
                })
           this.qiyeid=this.pa
-          this.nextState=response.data.CaigouState.nextStateid
-          this.oldStateid=response.data.CaigouState.id
-                this.caigou=response.data;
-                this.caigou.nodeName = response.data.CaigouState.nodeName;
+          // console.log(this.qiyeid)
+          this.nextState=response.data.FukuanState.nextStateid
+          this.oldStateid=response.data.FukuanState.id
+                this.fukuan=response.data;
+                this.fukuan.nodeName = response.data.FukuanState.nodeName;
                 this.imageUrlback[0]=response.data.statement
                 this.imageUrlback[1]=response.data.delivery_note
                 this.imageUrlback[2]=response.data.bill
                 this.validated=true;
                 this.validated1=false;
-                this.buttonText = response.data.CaigouState.nodebutton;
+                this.buttonText = response.data.FukuanState.nodebutton;
                
               })
               .catch(e => {
@@ -851,56 +848,57 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
               });
                this.selectStateAndLogs();
        },
-       updateDaiban(){
-          CaigouState.get(this.nextState).then(response1=>{
-            this.currentStateDept=response1.data.depts
-            CaigouState.get(response1.data.nextStateid).then(response=>{
-              this.nextStateDept=response.data.depts;
-              //当前状态的部门减一
-              for (let i = 0; i < this.currentStateDept.length; i++) 
-                DaibanService.getJian(this.currentStateDept[i].id,"采购管理")
-              //如果下一个状态如果不是最后一个,则所有部门加一
-              if (response1.data.lastone!=1){
-                    //  console.log(response.data.lastone)
-                for (let i = 0; i < this.nextStateDept.length; i++){
-                    DaibanService.getJia(this.nextStateDept[i].id,"采购管理").then(response =>{
+      //  updateDaiban(){
+      //     FukuanState.get(this.nextState).then(response1=>{
+      //       this.currentStateDept=response1.data.depts
+      //       FukuanState.get(response1.data.nextStateid).then(response=>{
+      //         this.nextStateDept=response.data.depts;
+      //         //当前状态的部门减一
+      //         for (let i = 0; i < this.currentStateDept.length; i++) 
+      //           DaibanService.getJian(this.currentStateDept[i].id,"采购管理")
+      //         //如果下一个状态如果不是最后一个,则所有部门加一
+      //         if (response1.data.lastone!=1){
+      //               //  console.log(response.data.lastone)
+      //           for (let i = 0; i < this.nextStateDept.length; i++){
+      //               DaibanService.getJia(this.nextStateDept[i].id,"采购管理").then(response =>{
 
-                    })
-                }
-              }else{
-                  console.log("99999")
-              }  
-            })
-          })
-       },
-       addDaiban(){
-          //新增,所以查状态表第一条就行
-          CaigouState.get(1).then(response=>{
-            //如果状态表不是只有一个添加,则所有部门加一
-            if (!response.data.lastone){
-              CaigouState.get(response.data.nextStateid).then(response=>{
-                this.nextStateDept=response.data.depts;
-                // console.log(this.nextStateDept);
-                 for (let i = 0; i < this.nextStateDept.length; i++){
-                    DaibanService.getJia(this.nextStateDept[i].id,"采购管理").then(response =>{
+      //               })
+      //           }
+      //         }else{
+      //             console.log("99999")
+      //         }  
+      //       })
+      //     })
+      //  },
+      //  addDaiban(){
+      //     //新增,所以查状态表第一条就行
+      //     FukuanState.get(1).then(response=>{
+      //       //如果状态表不是只有一个添加,则所有部门加一
+      //       if (!response.data.lastone){
+      //         FukuanState.get(response.data.nextStateid).then(response=>{
+      //           this.nextStateDept=response.data.depts;
+      //           // console.log(this.nextStateDept);
+      //            for (let i = 0; i < this.nextStateDept.length; i++){
+      //               DaibanService.getJia(this.nextStateDept[i].id,"采购管理").then(response =>{
 
-                  })
-              } 
-            })
-            }
+      //             })
+      //         } 
+      //       })
+      //       }
               
                   
-          })
-       },
+      //     })
+      //  },
        addStatelog(){
          var data = {
               userId:this.currentUser.id,
-              caigouId: this.qiyeid,
+              fukuanId: this.qiyeid,
               oldstateid: this.oldStateid,
               newstateid:this.nextState,
               operateId:4
               }
-              CaigouStatelog.create(data).then(response => {
+              // console.log(this.qiyeid)
+              FukuanStatelog.create(data).then(response => {
         })
         .catch(e => {
           console.log(e);
@@ -908,9 +906,9 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
       },
       updateState(index,row){
         var data = {
-           CaigouStateId:this.nextState
+           FukuanStateId:this.nextState
           }
-          CaiGouService.update(this.pa,data)
+          FukuanService.update(this.pa,data)
         .then(response => {
           this.tableonload();
         })
@@ -919,7 +917,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         });
        },
        selectStateAndLogs(){
-        CaigouState.getAll()
+        FukuanState.getAll()
         .then(response => {
           for(var i=0;i<response.data.length;i++){
                if(response.data[i].display===0){
@@ -932,15 +930,14 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         });
       },
       getfor(row,column){
-            return row.CaigouState.nodeName;
+            return row.FukuanState.nodeName;
           },
       async tableonload(){
-        CaiGouService.getAll()
+        FukuanService.getAll()
         .then(response => {
           this.tableData = response.data;
           this.selectdept();
           this.selectCode();
-          this.selectCode1();
           // console.log(this.tableData);
         })
         .catch(e => {
@@ -956,7 +953,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
           this.imageUrlback[0]=""
           this.imageUrlback[1]=""
           this.imageUrlback[2]=""
-          this.caigou={},
+          this.fukuan={},
           this.tableData2=[],
           this.dialogFormVisible=true
           this.dialogTitle = "addData";
@@ -976,21 +973,9 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
               shijitatol:this.rongzi.shijitatol,
               rate:this.rongzi.rate,
               supplier_name:this.rongzi.supplier_name,
-              caigouId:0,
-          }
-          var data1 = {
-              wuliaotype: this.rongzi.wuliaotype,
-              danwei:this.rongzi.danwei,
-              shenqing: this.rongzi.shenqing,
-              price : this.rongzi.price ,
-              yugutatol:this.rongzi.yugutatol,
-              shijitatol:this.rongzi.shijitatol,
-              rate:this.rongzi.rate,
-              supplier_name:this.rongzi.supplier_name,
               fukuanId:0,
           }
           this.tableData2.push(data);
-          this.tableData3.push(data1);
        },
        addsubmit1(rongzi){
           this.$refs[rongzi].validate((valid) => {
@@ -1003,80 +988,40 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
               this.dialogFormVisible=false;
             var data = {
               code:this.code,
-              qiye_name: this.caigou.qiye_name,
-              item_name:this.caigou.item_name,
-              money: this.caigou.money,
-              totalmoney : this.caigou.totalmoney ,
-              total_quota:this.caigou.total_quota,
-              // statement:this.imageUrlback[0],
-              delivery_note:this.imageUrlback[1],
-              // bill:this.imageUrlback[2],
-              money1:this.caigou.money1,
-              money2:this.caigou.money2,
-              money3:this.caigou.money3,
-              money4:this.caigou.money4,
-              nodeName:this.caigou.nodeName,
-          }
-          var data1 = {
-              code:this.code1,
-              qiye_name: this.caigou.qiye_name,
-              item_name:this.caigou.item_name,
-              money: this.caigou.money,
-              totalmoney : this.caigou.totalmoney ,
-              total_quota:this.caigou.total_quota,
-              // statement:this.imageUrlback[0],
-              delivery_note:this.imageUrlback[1],
-              // bill:this.imageUrlback[2],
-              money1:this.caigou.money1,
-              money2:this.caigou.money2,
-              money3:this.caigou.money3,
-              money4:this.caigou.money4,
-              nodeName:this.caigou.nodeName,
-          }
-          FukuanService.create(data1).then(response=>{
-             var data = {
+              qiye_name: this.fukuan.qiye_name,
+              item_name:this.fukuan.item_name,
+              money: this.fukuan.money,
+              totalmoney : this.fukuan.totalmoney ,
+              total_quota:this.fukuan.total_quota,
+              statement:this.imageUrlback[0],
+              // delivery_note:this.imageUrlback[1],
+              bill:this.imageUrlback[2],
+              money1:this.fukuan.money1,
+              money2:this.fukuan.money2,
+              money3:this.fukuan.money3,
+              money4:this.fukuan.money4,
+              nodeName:this.fukuan.nodeName,
+          } 
+          FukuanService.create(data).then(response => {
+            console.log(response.data.id)
+          this.tableonload();
+          var data = {
               userId:this.currentUser.id,
               fukuanId: response.data.id,
               oldstateid: 1,
               newstateid:response.data.FukuanStateId,
               operateId:4,
               }
-              for(let i=0;i<this.tableData3.length;i++){
-                  this.tableData3[i].fukuanId=response.data.id
-                  FukuanwuliaoService.create(this.tableData3[i])
-            .then(response => {
-              this.tableonload();
-              // console.log(response.data);
-            })
-            .catch(e => {
-              console.log(e);
-            });  
-              }
-              FukuanStatelog.create(data).then(response=>{
-
-              }).catch(e => {
-                console.log(e);
-              });
-          }) 
-          CaiGouService.create(data).then(response => {
-          this.tableonload();
-          var data = {
-              userId:this.currentUser.id,
-              caigouId: response.data.id,
-              oldstateid: 1,
-              newstateid:response.data.CaigouStateId,
-              operateId:4,
-              }
-              CaigouStatelog.create(data).then(response => {
+              FukuanStatelog.create(data).then(response => {
               }).catch(e => {
                 console.log(e);
               });
               for(let i=0;i<this.tableData2.length;i++){
-              this.tableData2[i].caigouId=response.data.id
-              RongziService.create(this.tableData2[i])
+              this.tableData2[i].fukuanId=response.data.id
+              FukuanwuliaoService.create(this.tableData2[i])
             .then(response => {
               this.tableonload();
-              // console.log(response.data);
+              console.log(response.data);
             })
             .catch(e => {
               console.log(e);
@@ -1087,16 +1032,11 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
           console.log(e);
         });
        },
-       submit(caigou){
-          this.$refs[caigou].validate((valid) => {
+       submit(fukuan){
+          this.$refs[fukuan].validate((valid) => {
       if (this.dialogTitle ==  "addData"&&valid ) {
-        if(this.tableData2.length===0){
-                alert("物料不能为空")
-              }else{
-                  this.addservice();
-        this.addDaiban();
-              }
-        
+        this.addservice();
+        // this.addDaiban();
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
@@ -1105,7 +1045,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         this.dialogFormVisible=false;
         this.updateState();
         this.addStatelog();
-        this.updateDaiban()
+        // this.updateDaiban()
       }else{
         return false
       }
@@ -1134,8 +1074,8 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         });
         },
       selectlogs(){
-        let caigouId=this.pa
-          CaigouStatelog.findByLog(caigouId).then(response => {
+        let fukuanId=this.pa
+          FukuanStatelog.findByLog(fukuanId).then(response => {
               for (let j = 0; j < this.activities.length; j++) {
                     let old = this.activities[j].id;
                         for (var i = 0; i < response.data.length; i++) {
@@ -1161,6 +1101,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         });   
       },
       kanClick(index,row){
+        
         this.activities=[]
          authservice.get(this.currentUser.id).then(response =>{
              this.deptId = [];
@@ -1178,6 +1119,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
                             }
                        }
           if(xunhuan==true){
+            this.selectStateAndLogs();
                                     this.dialogFormVisible=true
                                     this.dialogTitle = "kanData";
                                     this.isshow2=false;
@@ -1185,14 +1127,14 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
                                     this.liucheng=true,
                                     this.validated=true;
                                     this.pa=this.tableData[index].id;
-                                    this.selectStateAndLogs();
-                                    RongziService.findByLog(this.pa).then(response =>{
+                                    
+                                    FukuanwuliaoService.findByLog(this.pa).then(response =>{
                                       this.tableData2=response.data
                                     })
-                                    CaiGouService.get(this.pa)
+                                    FukuanService.get(this.pa)
                                   .then(response => {
-                                          this.caigou=response.data;
-                                          this.caigou.nodeName = response.data.CaigouState.nodeName;
+                                          this.fukuan=response.data;
+                                          this.fukuan.nodeName = response.data.FukuanState.nodeName;
                                           this.imageUrlback[0]=response.data.statement
                                           this.imageUrlback[1]=response.data.delivery_note
                                           this.imageUrlback[2]=response.data.bill
@@ -1237,13 +1179,13 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
                                     this.liucheng=true, 
                                     this.pa=this.tableData[index].id;
                                     this.selectStateAndLogs();
-                                    RongziService.findByLog(this.pa).then(response =>{
+                                    FukuanwuliaoService.findByLog(this.pa).then(response =>{
                                     this.tableData2=response.data
                                     })
-                                    CaiGouService.get(this.pa)
+                                    FukuanService.get(this.pa)
                                   .then(response => {
-                                          this.caigou=response.data;
-                                          this.caigou.nodeName = response.data.CaigouState.nodeName;
+                                          this.fukuan=response.data;
+                                          this.fukuan.nodeName = response.data.FukuanState.nodeName;
                                           this.imageUrlback[0]=response.data.statement
                                           this.imageUrlback[1]=response.data.delivery_note
                                           this.imageUrlback[2]=response.data.bill
@@ -1269,32 +1211,32 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
               shijitatol:this.rongzi.shijitatol,
               rate:this.rongzi.rate,
               supplier_name:this.rongzi.supplier_name,
-              caigouId:this.pa,
+              fukuanId:this.pa,
         }
-        RongziService.create(data).then(response =>{
+        FukuanwuliaoService.create(data).then(response =>{
         })
        },
        updateservice(){
             this.updateaddwuliao();
             this.dialogFormVisible=false;
           var data = {
-            id:this.caigou.id,
-            qiye_name: this.caigou.qiye_name,
-            item_name:this.caigou.item_name,
-            money: this.caigou.money,
-            totalmoney : this.caigou.totalmoney ,
-            total_quota:this.caigou.total_quota,
+            id:this.fukuan.id,
+            qiye_name: this.fukuan.qiye_name,
+            item_name:this.fukuan.item_name,
+            money: this.fukuan.money,
+            totalmoney : this.fukuan.totalmoney ,
+            total_quota:this.fukuan.total_quota,
             statement:this.imageUrlback[0],
-            delivery_note:this.imageUrlback[1],
+            // delivery_note:this.imageUrlback[1],
             bill:this.imageUrlback[2],
-            money1:this.caigou.money1,
-            money2:this.caigou.money2,
-            money3:this.caigou.money3,
-            money4:this.caigou.money4,
-            nodeName:this.caigou.nodeName
+            money1:this.fukuan.money1,
+            money2:this.fukuan.money2,
+            money3:this.fukuan.money3,
+            money4:this.fukuan.money4,
+            nodeName:this.fukuan.nodeName
         }
 
-          CaiGouService.update(data.id,data)
+          FukuanService.update(data.id,data)
         .then(response => {
           this.tableonload();
            //删除旧图片
@@ -1307,16 +1249,16 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
        },
        delClickconfirm(index,row){
               let pa=this.tableData[index].id;
-              CaiGouService.delete(pa)
+              FukuanService.delete(pa)
               .then(response => {
                 var data = {
               userId:this.currentUser.id,
-              caigouId: pa,
+              fukuanId: pa,
               oldstateid: 1,
               newstateid:1,
               operateId:3,
               }
-              CaigouStatelog.create(data).then(response => {
+              FukuanStatelog.create(data).then(response => {
               }).catch(e => {
                 console.log(e);
               });
@@ -1426,7 +1368,6 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
     data() {
       return {
         code:"",
-        code1:"",
         isshow2:false,
         gys:[],
         qiye:[],
@@ -1444,7 +1385,6 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         deptId:[],
         statedeptId:[],
        tableData2: [],
-       tableData3: [],
         pa:'',
         buttonText: '确定',
         qiyeid:'',
@@ -1503,7 +1443,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         tableData:[],
         result:[],
         result1:[],
-        caigou:{},
+        fukuan:{},
         rongzi:{},
         filterCode:'',
         filterQiye_name:'',

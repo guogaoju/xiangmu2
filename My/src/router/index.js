@@ -107,6 +107,10 @@ export default new Router({
           component: () => import('@/components/CaiGou.vue')
         },
         {
+          path: '/FuKuan',
+          component: () => import('@/components/Fukuan.vue')
+        },
+        {
           path: '/HuanKuan',
           component: () => import('@/components/HuanKuan.vue')
         },

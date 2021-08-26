@@ -850,11 +850,11 @@
   ref="drawer"
   >
     <el-form :model="form">
-      <el-form-item label="供应商名称" :label-width="formLabelWidth">
+      <!-- <el-form-item label="供应商名称" :label-width="formLabelWidth">
          <el-select v-model="form.supplier_name" placeholder="请选择">
             <el-option v-for="item in gys" :key="item.id" :label="item.supplier_name" :value="item.supplier_name"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="项目名称" :label-width="formLabelWidth">
         <el-input v-model="form.item_name" autocomplete="off"></el-input>
       </el-form-item>
@@ -1244,7 +1244,7 @@ import {getInputValue} from "../util";
         addsubmit1(){
           this.dialog=false;
           var data = {
-        supplier_name:this.form.supplier_name,
+        // supplier_name:this.form.supplier_name,
         item_name:this.form.item_name,
         wuliaoname:this.form.wuliaoname,
         danwei: this.form.danwei ,
@@ -1552,6 +1552,9 @@ form: {
           item_name: [
             { required: true, message: '请输入项目名称', trigger: 'change' }
           ],
+        total_quota:[{
+            required: true, message: '请输入总授信额度', trigger: 'change'
+        }]
         },
         tableData2:[],
         tableData:[],

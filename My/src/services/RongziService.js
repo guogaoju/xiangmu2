@@ -6,6 +6,9 @@ class RongziService {
   findByLog(caigouId) {
     return http.get(`/Rongzi?caigouId=${caigouId}`);
   }
+  findByLog1(fukuanId) {
+    return http.get(`/Rongzi/fukuan?fukuanId=${fukuanId}`);
+  }
   get(id) {
     return http.get(`/Rongzi/${id}`);
   }

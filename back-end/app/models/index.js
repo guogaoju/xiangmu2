@@ -86,6 +86,10 @@ db.Rongzi = require("./Rongzi.model.js")(sequelize, Sequelize);
 db.Addjianzhuwuliao = require("./Addjianzhuwuliao.model.js")(sequelize, Sequelize);
 db.Daiban = require("./Daiban.model.js")(sequelize, Sequelize);
 db.Code = require("./code.model.js")(sequelize, Sequelize);
+db.FukuanState = require("./FukuanState.model.js")(sequelize, Sequelize);
+db.FukuanStatelog = require("./FukuanStatelog.model.js")(sequelize, Sequelize);
+db.Fukuan = require("./Fukuan.model.js")(sequelize, Sequelize);
+db.Fukuanwuliao = require("./Fukuanwuliao.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -775,7 +779,10 @@ db.operate.hasMany(db.WuliaoTypeStatelog, {
 db.caigou.hasMany(db.Rongzi, {
   foreignKey: "caigouId",
 });
-
+//采购表和采购融资表
+db.Fukuan.hasMany(db.Fukuanwuliao, {
+  foreignKey: "fukuanId",
+});
 //zhizao表和add采购表
 db.zhizao.hasMany(db.addwuliao, {
   foreignKey: "zhizaoId",
@@ -787,6 +794,42 @@ db.jindu.hasMany(db.addjinduwuliao, {
 //jianzhu表和add采购表
 db.jianzhu.hasMany(db.Addjianzhuwuliao, {
   foreignKey: "jianzhuId",
+});
+
+//fukuan表和FukuanState状态表
+db.FukuanState.hasMany(db.Fukuan);
+db.Fukuan.belongsTo(db.FukuanState);
+//FukuanState状态表和部门表
+db.FukuanState.belongsToMany(db.dept, {
+  through: "FukuanState_dept",
+  foreignKey: "FukuanStateId",
+  otherKey: "deptId"
+});
+db.dept.belongsToMany(db.FukuanState, {
+  through: "FukuanState_dept",
+  foreignKey: "deptId",
+  otherKey: "FukuanStateId"
+});
+//FukuanStatelog记录表和user表
+db.user.hasMany(db.FukuanStatelog, {
+  foreignKey: "userId",
+});
+db.FukuanStatelog.belongsTo(db.user);
+//FukuanStatelog记录表和Fukuan表
+db.Fukuan.hasMany(db.FukuanStatelog, {
+  foreignKey: "fukuanId",
+});
+db.FukuanStatelog.belongsTo(db.Fukuan);
+//记录表和FukuanState表
+db.FukuanState.hasMany(db.FukuanStatelog, {
+  foreignKey: "oldstateid"
+});
+db.FukuanState.hasMany(db.FukuanStatelog, {
+  foreignKey: "newstateid"
+});
+//记录表和操作类型表
+db.operate.hasMany(db.FukuanStatelog, {
+  foreignKey: "operateId",
 });
 
 

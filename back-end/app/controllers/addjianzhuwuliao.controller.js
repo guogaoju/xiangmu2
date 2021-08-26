@@ -13,7 +13,7 @@ exports.create = (req, res) => {
   }
 // 新增
   const addwuliao = {
-    supplier_name: req.body.supplier_name,
+    // supplier_name: req.body.supplier_name,
     item_name:req.body.item_name,
     wuliaoname:req.body.wuliaoname,
     danwei : req.body.danwei ,

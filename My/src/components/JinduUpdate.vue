@@ -214,7 +214,7 @@
       <el-row>
         <el-col :span="24">
              <el-form-item label="现场照片" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
-                    <el-upload :disabled="validated1" ref="upload" class="avatar-uploader" 
+                    <!-- <el-upload :disabled="validated1" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/Jindu/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -226,20 +226,25 @@
                     >
                         <img v-if="imageUrl" :src="imageUrl" class="photo">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-                    <!-- <el-upload
+                    </el-upload> -->
+                    <el-upload
+                    ref="upload"
                       class="upload-demo"
                       action="http://localhost:8080/api/Jindu/upload"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :before-remove="beforeRemove"
+                     
                       multiple
+                      :show-file-list="false" 
+                    :auto-upload="false" 
+                    :data="jindu" 
+                    :on-change="handleAvatarChange" 
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
                       :limit="3"
                       :on-exceed="handleExceed"
                       :file-list="fileList">
                       <el-button size="small" type="primary">点击上传</el-button>
                       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload> -->
+                    </el-upload>
                 </el-form-item>
         </el-col>
       </el-row>
@@ -370,6 +375,7 @@ import JinduService from "../services/JinduService"
 import JinduState from "../services/JinduState"
 import JinduStatelog from "../services/JinduStatelog"
 import CodeService from "../services/CodeService";
+import ImageService from "../services/ImageService"
   export default {
     created () {
           this.tableonload();
@@ -380,18 +386,18 @@ import CodeService from "../services/CodeService";
     }
   },
     methods: {
-      // handleRemove(file, fileList) {
-      //   console.log(file, fileList);
-      // },
-      // handlePreview(file) {
-      //   console.log(file);
-      // },
-      // handleExceed(files, fileList) {
-      //   this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      // },
-      // beforeRemove(file, fileList) {
-      //   return this.$confirm(`确定移除 ${ file.name }？`);
-      // },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove(file, fileList) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      },
       //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"
@@ -558,6 +564,7 @@ import CodeService from "../services/CodeService";
         },
         addservice(){
                this.dialogFormVisible=false;
+                var path=this.imageUrl
           var data = {
             code:this.code,
           item_name: this.jindu.item_name,
@@ -569,6 +576,15 @@ import CodeService from "../services/CodeService";
         JinduService.create(data)
         .then(response => {
           this.tableonload();
+          var data1 = {
+              name:"项目进度更新",
+              logid: response.data.id,
+              path:path,
+              }
+              ImageService.create(data1).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
           var data = {
               userId:this.currentUser.id,
               jinduId: response.data.id,
@@ -580,6 +596,7 @@ import CodeService from "../services/CodeService";
               }).catch(e => {
                 console.log(e);
               });
+              
             for(let i=0;i<this.tableData2.length;i++){
               console.log(this.tableData2[i]);
               this.tableData2[i].jinduId=response.data.id
@@ -716,7 +733,7 @@ import CodeService from "../services/CodeService";
                                           this.jindu.nodeName = response.data.JinduState.nodeName;
                                           this.imageUrl=response.data.photo;
                                               //旧图片url另存一份,将来imageUrl会被覆盖
-                                              this.oldUrl = this.imageUrl;
+                                              // this.oldUrl = this.imageUrl;
                                         })
                                         .catch(e => {
                                           console.log(e);
@@ -754,8 +771,8 @@ import CodeService from "../services/CodeService";
         .then(response => {
           this.tableonload();
           //删除旧图片
-              http.delete('/general/deletefile',{data:{filename:this.oldUrl}});
-              this.oldUrl=""
+              // http.delete('/general/deletefile',{data:{filename:this.oldUrl}});
+              // this.oldUrl=""
           console.log(response.data);
         })
         .catch(e => {
@@ -854,24 +871,24 @@ import CodeService from "../services/CodeService";
         },
         handleAvatarSuccess(res, file) {
             //如果上传过图片,先把旧的删除掉
-            if (this.tmpUrl){
-                http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
-            }
+            // if (this.tmpUrl){
+            //     http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
+            // }
             //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
             this.imageUrl = res.url;
             this.tmpUrl = this.imageUrl;
         },
       beforeAvatarUpload(file) {
-        const isJPG = file.type === 'image/jpeg';
-        const isLt2M = file.size / 1024 / 1024 < 2;
+        // const isJPG = file.type === 'image/jpeg';
+        // const isLt2M = file.size / 1024 / 1024 < 2;
 
-        if (!isJPG) {
-          this.$message.error('上传头像图片只能是 JPG 格式!');
-        }
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
-        }
-        return isJPG && isLt2M;
+        // if (!isJPG) {
+        //   this.$message.error('上传头像图片只能是 JPG 格式!');
+        // }
+        // if (!isLt2M) {
+        //   this.$message.error('上传头像图片大小不能超过 2MB!');
+        // }
+        // return isJPG && isLt2M;
       }
     },
 

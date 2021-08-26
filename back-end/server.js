@@ -43,6 +43,8 @@ const WuliaoTypeState = db.WuliaoTypeState;
 const DanweiState = db.DanweiState  ;
 const Daiban = db.Daiban  ;
 const Code = db.Code  ;
+const Fukuan = db.Fukuan  ;
+const FukuanState = db.FukuanState  ;
 function initial() {
   // User.create({
   //   id: 1,
@@ -342,45 +344,44 @@ function initial() {
     id:3,
     nodeName: "项目负责人确认",
     nodebutton: "确人",
-    nextStateid: 4,
     lastone:0,
     display:0
   }).then(data=>{
     data.setDepts([8]).then(()=>{
     })
   });;
-  CaigouState.create({
-    id:4,
-    nodeName: "付款申请",
-    nodebutton: "审核",
-    nextStateid: 5,
-    lastone:0,
-    display:0
-  }).then(data=>{
-    data.setDepts([3]).then(()=>{
-    })
-  });
-  CaigouState.create({
-    id:5,
-    nodeName: "风控付款审核",
-    nodebutton: "同意",
-    nextStateid: 6,
-    lastone:0,
-    display:0
-  }).then(data=>{
-    data.setDepts([1]).then(()=>{
-    })
-  });
-  CaigouState.create({
-    id:6,
-    nodeName: "项目负责人同意付款",
-    nodebutton: "完成",
-    lastone:1,
-    display:0
-  }).then(data=>{
-    data.setDepts([8]).then(()=>{
-    })
-  });;
+  // CaigouState.create({
+  //   id:4,
+  //   nodeName: "付款申请",
+  //   nodebutton: "审核",
+  //   nextStateid: 5,
+  //   lastone:0,
+  //   display:0
+  // }).then(data=>{
+  //   data.setDepts([3]).then(()=>{
+  //   })
+  // });
+  // CaigouState.create({
+  //   id:5,
+  //   nodeName: "风控付款审核",
+  //   nodebutton: "同意",
+  //   nextStateid: 6,
+  //   lastone:0,
+  //   display:0
+  // }).then(data=>{
+  //   data.setDepts([1]).then(()=>{
+  //   })
+  // });
+  // CaigouState.create({
+  //   id:6,
+  //   nodeName: "项目负责人同意付款",
+  //   nodebutton: "完成",
+  //   lastone:1,
+  //   display:0
+  // }).then(data=>{
+  //   data.setDepts([8]).then(()=>{
+  //   })
+  // });;
   CaigouState.create({
     id:7,
     nodeName: "已拒绝",
@@ -390,7 +391,47 @@ function initial() {
     data.setDepts([1]).then(()=>{
     })
   });;
-
+FukuanState.create({
+    id:1,
+    nodeName: "付款申请",
+    nodebutton: "审核",
+    nextStateid: 2,
+    lastone:0,
+    display:0
+  }).then(data=>{
+    data.setDepts([3]).then(()=>{
+    })
+  });
+  FukuanState.create({
+    id:2,
+    nodeName: "风控付款审核",
+    nodebutton: "同意",
+    nextStateid: 3,
+    lastone:0,
+    display:0
+  }).then(data=>{
+    data.setDepts([1]).then(()=>{
+    })
+  });
+  FukuanState.create({
+    id:3,
+    nodeName: "项目负责人同意付款",
+    nodebutton: "完成",
+    lastone:1,
+    display:0
+  }).then(data=>{
+    data.setDepts([8]).then(()=>{
+    })
+    FukuanState.create({
+      id:4,
+      nodeName: "已拒绝",
+      nodebutton: "驳回",
+      display:1
+    }).then(data=>{
+      data.setDepts([1]).then(()=>{
+      })
+    });;
+})
   HuankuanState.create({
     id:1,
     nodeName: "信融发起",
@@ -653,6 +694,11 @@ function initial() {
     code_name: "WLLX",
     sum:0
   });
+  Code.create({
+    name: "付款管理",
+    code_name: "FKGL",
+    sum:0
+  });
 }
 //清空数据库 
 // db.sequelize.sync({ force: true }).then(() => {
@@ -747,6 +793,11 @@ require("./app/routes/Rongzi.routes")(app);
 require("./app/routes/Addjianzhuwuliao.routes")(app);
 require("./app/routes/Daiban.routes")(app);
 require("./app/routes/Code.routes")(app);
+require("./app/routes/Image.routes")(app);
+require("./app/routes/FukuanState.routes")(app);
+require("./app/routes/FukuanStatelog.routes")(app);
+require("./app/routes/Fukuan.routes")(app);
+require("./app/routes/Fukuanwuliao.routes")(app);
 // set port, listen for requests
 //local
 const PORT = process.env.PORT || 8080;

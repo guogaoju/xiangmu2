@@ -52,10 +52,11 @@
                             <span>业务管理</span>
                             </template>
                             <el-menu-item index="3-1">采购管理</el-menu-item>
-                            <el-menu-item index="3-2">还款管理</el-menu-item>
-                            <el-menu-item index="3-3">建筑项目进度更新</el-menu-item>
-                            <el-menu-item index="3-4">采购融资信息</el-menu-item>
-                            <el-menu-item index="3-5">数据分析</el-menu-item>
+                            <el-menu-item index="3-2">付款管理</el-menu-item>
+                            <el-menu-item index="3-3">还款管理</el-menu-item>
+                            <el-menu-item index="3-4">建筑项目进度更新</el-menu-item>
+                            <el-menu-item index="3-5">采购融资信息</el-menu-item>
+                            <el-menu-item index="3-6">数据分析</el-menu-item>
                         </el-submenu>
                         <el-submenu index="4">
                             <template slot="title">
@@ -216,14 +217,18 @@ computed: {
                         this.breadcrumbItems  = ['采购管理']
                         break;
                     case '3-2':
+                        this.$router.push('/Fukuan');
+                        this.breadcrumbItems  = ['付款管理']
+                        break;
+                    case '3-3':
                         this.$router.push('/HuanKuan');
                         this.breadcrumbItems  = ['还款管理']
                         break;
-                    case '3-3':
+                    case '3-4':
                         this.$router.push('/JinduUpdate');
                         this.breadcrumbItems  = ['建筑项目进度更新']
                         break;
-                        case '3-5':
+                    case '3-6':
                         this.$router.push('/Test');
                         this.breadcrumbItems  = ['数据分析']
                         break;

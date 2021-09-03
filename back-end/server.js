@@ -417,7 +417,7 @@ FukuanState.create({
     id:3,
     nodeName: "项目负责人同意付款",
     nodebutton: "完成",
-    lastone:1,
+    // lastone:1,
     display:0
   }).then(data=>{
     data.setDepts([8]).then(()=>{
@@ -429,6 +429,16 @@ FukuanState.create({
       display:1
     }).then(data=>{
       data.setDepts([1]).then(()=>{
+      })
+    });;
+    FukuanState.create({
+      id:5,
+      nodeName: "多余",
+      nodebutton: "多余",
+      display:1,
+      lastone:1,
+    }).then(data=>{
+      data.setDepts([8]).then(()=>{
       })
     });;
 })

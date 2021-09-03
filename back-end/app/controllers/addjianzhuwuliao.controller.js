@@ -5,7 +5,7 @@ const Op = db.Sequelize.Op;
 // 新建物料controller层
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.supplier_name) {
+  if (!req.body.item_name) {
     res.status(400).send({
       message: "Content can not be empty!"
     });

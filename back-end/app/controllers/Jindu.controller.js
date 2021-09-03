@@ -1,6 +1,7 @@
 const db = require("../models");
 const Jindu = db.jindu;
 const JinduState = db.JinduState;
+const image = db.images;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
@@ -39,7 +40,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Jindu.findAll({order: [['id', 'ASC']],include : [JinduState]})
+    Jindu.findAll({order: [['id', 'ASC']],include : [JinduState,image]})
       .then(data => {
         res.send(data);
       })
@@ -54,7 +55,7 @@ exports.findAll = (req, res) => {
 //根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Jindu.findOne({ where: { id: req.params.id },include : [JinduState] })
+    Jindu.findOne({ where: { id: req.params.id },include : [JinduState,image] })
       .then(data => {
         res.send(data);
       })

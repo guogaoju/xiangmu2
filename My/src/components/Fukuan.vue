@@ -1042,9 +1042,11 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
       }else if(this.dialogTitle ==  "examine"&&valid){
+       
         this.dialogFormVisible=false;
         this.updateState();
         this.addStatelog();
+        
         // this.updateDaiban()
       }else{
         return false
@@ -1325,6 +1327,9 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
             return row.current_process === value;
         },
     handleAvatarChange(file,fileList,index) {
+      //  if (file.name === ''){
+      //         alert("图片不能为空")
+      //       }
           if (file.status !== 'ready'){
               return;
             }
@@ -1346,7 +1351,9 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';
             const isLt2M = file.size / 1024 / 1024 < 2;
-
+            //  if (file==="") {
+            //     this.$message.error('不能为空!');
+            // }
             if (!isJPG) {
                 this.$message.error('上传头像图片只能是 JPG 格式!');
             }

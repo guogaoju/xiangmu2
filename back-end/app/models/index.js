@@ -185,7 +185,11 @@ db.QiyepingjiState.hasMany(db.QiyepingjiStatelog, {
 db.operate.hasMany(db.QiyepingjiStatelog, {
   foreignKey: "operateId",
 });
-
+//图片表和进度表
+db.jindu.hasMany(db.images, {
+  foreignKey: "jinduId",
+});
+db.images.belongsTo(db.jindu);
 
 //finance表和finance状态表
 db.FinanceState.hasMany(db.finance);

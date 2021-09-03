@@ -13,8 +13,9 @@ exports.create = (req, res) => {
   }
   const image = {
         name:req.body.name,
-        logid: req.body.logid ,
+        jinduId: req.body.jinduId ,
         path:req.body.path,
+        pdf:req.body.pdf,
         // current_process:req.body.current_process
   };
 

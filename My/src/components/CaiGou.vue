@@ -1149,8 +1149,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
                                       this.activities[j].color='#0bbd87'
                                       this.activities[j].createdAt=response.data[j].createdAt  
                                   }else{
-                                  }
-                                    
+                                  } 
                                 }
                             }
                        }

@@ -79,7 +79,7 @@
                           </div>
                       </template>
               </el-table-column>
-              <el-table-column min-width='120' align="center">
+              <el-table-column min-width='130' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
@@ -177,22 +177,22 @@
                           </div>
                       </template>
               </el-table-column>
-              <el-table-column min-width='100' align="center">
+              <el-table-column min-width='150' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterInterest"> </el-input>
-                              <div slot="reference"> <label> 利息% </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 创建时间 </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
                           <div>
-                              {{scope.row.interest}}
+                              {{scope.row.createdAt}}
                           </div>
                       </template>
               </el-table-column>
-              <!-- <el-table-column min-width='120' align="center">
-                      eslint-disable-next-line
+              <el-table-column min-width='120' align="center">
+                      <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterInterest1"> </el-input>
@@ -204,7 +204,7 @@
                               {{scope.row.interest1}}
                           </div>
                       </template>
-              </el-table-column> -->
+              </el-table-column>
               <el-table-column min-width='100' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
@@ -384,7 +384,7 @@
                           </div>
                       </template>
               </el-table-column>
-              <el-table-column min-width='120' align="center">
+              <el-table-column min-width='130' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
@@ -487,7 +487,7 @@
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
                               <el-input v-model="filterInterest"> </el-input>
-                              <div slot="reference"> <label> 利息% </label> <i class='el-icon-arrow-down'> </i> </div>
+                              <div slot="reference"> <label> 利率% </label> <i class='el-icon-arrow-down'> </i> </div>
                           </el-popover>
                       </template>
                       <template slot-scope="scope">
@@ -714,7 +714,7 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="利息%" prop="interest" :label-width="formLabelWidth">
+          <el-form-item label="利率%" prop="interest" :label-width="formLabelWidth">
             <el-input :disabled="validated" v-model="xiangmu.interest"></el-input>
           </el-form-item>
         </el-col>
@@ -758,11 +758,11 @@
             :data="tableData2"
             border
             style="width: 100%">
-            <el-table-column
+            <!-- <el-table-column
               prop="supplier_name"
               label="供应商"
               width="120">
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               prop="item_name"
               label="项目名称"

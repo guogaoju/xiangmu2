@@ -3,9 +3,9 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
       },
-      logid:{
-        type: DataTypes.INTEGER,
-      },
+      // logid:{
+      //   type: DataTypes.INTEGER,
+      // },
       path:{
         type: DataTypes.STRING,
       }, 

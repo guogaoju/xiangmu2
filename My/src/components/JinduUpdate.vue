@@ -79,7 +79,7 @@
               </el-table-column>
               <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
                       <template slot-scope="scope">
-                          <el-image style="width: 100px; height: 100px" :src="scope.row.photo" :preview-src-list="[scope.row.photo]">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.images[0].path" :preview-src-list="[scope.row.images[0].path]">
                           </el-image>
                       </template>
               </el-table-column>
@@ -227,7 +227,7 @@
                         <img v-if="imageUrl" :src="imageUrl" class="photo">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload> -->
-                    <el-upload
+                    <!-- <el-upload
                     ref="upload"
                       class="upload-demo"
                       action="http://localhost:8080/api/Jindu/upload"
@@ -243,7 +243,44 @@
                       :on-exceed="handleExceed"
                       :file-list="fileList">
                       <el-button size="small" type="primary">点击上传</el-button>
+                      <div slot="tip" class="el-upload__tip"></div>
+                    </el-upload> -->
+                    <el-upload
+                      ref="upload"
+                      class="upload-demo"
+                      action="http://localhost:8080/api/Jindu/upload"
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove"
+                      :auto-upload="false"
+                      :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
+                      :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
+                      :file-list="fileList"
+                      list-type="picture">
+                      <el-button size="small" type="primary">点击上传</el-button>
                       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24">
+             <el-form-item label="风控报告" ref="uploadElement" prop="photo" :label-width="formLabelWidth">
+                    <el-upload
+                    ref="upload1"
+                      class="upload-demo"
+                      action="http://localhost:8080/api/Jindu/upload"
+                      multiple
+                      :show-file-list="false" 
+                      :auto-upload="false" 
+                      :data="jindu" 
+                      :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,1)}"
+                      :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,1)}" 
+                      :before-upload="beforeAvatarUpload"
+                      :limit="3"
+                      :on-exceed="handleExceed"
+                      :file-list="fileList">
+                      <el-button size="small" type="primary">点击上传</el-button>
+                      <div slot="tip" class="el-upload__tip"></div>
                     </el-upload>
                 </el-form-item>
         </el-col>
@@ -386,22 +423,23 @@ import ImageService from "../services/ImageService"
     }
   },
     methods: {
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
       handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
       //关闭弹框的事件
     closeDialog(){
       this.buttonText="确定"
       this.isshow=true;
+      this.fileList=[]
     },
     selectCode(){
         let date = new Date();
@@ -528,6 +566,7 @@ import ImageService from "../services/ImageService"
        openFrom(){
          this.selectJianzhu(),
           this.jindu={},
+          this.fileList=[],
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
@@ -564,7 +603,7 @@ import ImageService from "../services/ImageService"
         },
         addservice(){
                this.dialogFormVisible=false;
-                var path=this.imageUrl
+                var path=this.imageUrl1
           var data = {
             code:this.code,
           item_name: this.jindu.item_name,
@@ -576,15 +615,18 @@ import ImageService from "../services/ImageService"
         JinduService.create(data)
         .then(response => {
           this.tableonload();
-          var data1 = {
+          for(var i = 0; i < path.length; i++){
+              var data1 = {
               name:"项目进度更新",
-              logid: response.data.id,
-              path:path,
+              jinduId: response.data.id,
+              path:path[i],
               }
               ImageService.create(data1).then(response => {
               }).catch(e => {
                 console.log(e);
               });
+          }
+          
           var data = {
               userId:this.currentUser.id,
               jinduId: response.data.id,
@@ -687,7 +729,10 @@ import ImageService from "../services/ImageService"
                                   .then(response => {
                                           this.jindu=response.data;
                                           this.jindu.nodeName = response.data.JinduState.nodeName;
-                                          this.imageUrl=response.data.photo
+                                          this.fileList=response.data.images;
+                                          for(var i=0;i<2;i++){
+                                            this.fileList[i].url=response.data.images[i].path;
+                                          }
                                         })
                                         .catch(e => {
                                           console.log(e);
@@ -860,22 +905,26 @@ import ImageService from "../services/ImageService"
       clearTimeout(this.timer);
     },
 
-       handleAvatarChange(file,filelist) {
+       handleAvatarChange(file,filelist,index) {
             //选中文件,上传成功,上传失败都会调用这个函数
             //只有选择新文件的时候(file.status非ready),才执行后面的上传代码
             //否则直接返回
             if (file.status !== 'ready'){
                 return;
             }
-            this.$refs.upload.submit();
+             if (index===0)
+              this.$refs.upload.submit();
+           if (index===1)
+              this.$refs.upload1.submit();
         },
-        handleAvatarSuccess(res, file) {
+        handleAvatarSuccess(res, file,index) {
             //如果上传过图片,先把旧的删除掉
             // if (this.tmpUrl){
             //     http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
             // }
             //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
-            this.imageUrl = res.url;
+            this.imageUrl1.push(res.url)
+            console.log(this.imageUrl1)
             this.tmpUrl = this.imageUrl;
         },
       beforeAvatarUpload(file) {
@@ -936,7 +985,8 @@ form: {
         resource: '',
         desc: ''
       },
-        fileList:[{imageUrl:""}],
+        fileList:[],
+        imageUrl1: [],
         imageUrl: '',
         oldUrl: '',
         tmpUrl: '',

@@ -77,12 +77,12 @@
                           </div>
                       </template>
               </el-table-column>
-              <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
+              <!-- <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
                       <template slot-scope="scope">
                           <el-image style="width: 100px; height: 100px" :src="scope.row.images[0].path" :preview-src-list="[scope.row.images[0].path]">
                           </el-image>
                       </template>
-              </el-table-column>
+              </el-table-column> -->
               <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
               </el-table-column>
               <el-table-column
@@ -164,7 +164,7 @@
               </el-table-column>
               <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
                       <template slot-scope="scope">
-                          <el-image style="width: 100px; height: 100px" :src="scope.row.photo" :preview-src-list="[scope.row.photo]">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.images[0].path" :preview-src-list="[scope.row.images[0].path]">
                           </el-image>
                       </template>
               </el-table-column>
@@ -272,13 +272,16 @@
                       multiple
                       :show-file-list="false" 
                       :auto-upload="false" 
-                      :data="jindu" 
-                      :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,1)}"
-                      :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,1)}" 
+                      :data="jindu"
+                      :on-preview="handlePreview1"
+                      :on-remove="handleRemove1"
+                      :before-remove="beforeRemove1" 
+                      :on-change="(file1,fileList1) =>{return handleAvatarChange1(file1,fileList1,1)}"
+                      :on-success="(response1,file1,fileList1) =>{return handleAvatarSuccess1(response1,file1,fileList1,1)}" 
                       :before-upload="beforeAvatarUpload"
                       :limit="3"
-                      :on-exceed="handleExceed"
-                      :file-list="fileList">
+                      :on-exceed="handleExceed1"
+                      :file-list="fileList1">
                       <el-button size="small" type="primary">点击上传</el-button>
                       <div slot="tip" class="el-upload__tip"></div>
                     </el-upload>
@@ -423,17 +426,17 @@ import ImageService from "../services/ImageService"
     }
   },
     methods: {
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      handleExceed1(files1, fileList1) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files1.length} 个文件，共选择了 ${files1.length + fileList1.length} 个文件`);
       },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
+      beforeRemove1(file1, fileList1) {
+        return this.$confirm(`确定移除 ${ file1.name }？`);
       },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
+      handleRemove1(file1, fileList1) {
+        console.log(file1, fileList1);
       },
-      handlePreview(file) {
-        console.log(file);
+      handlePreview1(file1) {
+        console.log(file1);
       },
       //关闭弹框的事件
     closeDialog(){
@@ -506,11 +509,40 @@ import ImageService from "../services/ImageService"
                 this.validated=true;
                 this.validated1=false;
                 this.buttonText = response.data.JinduState.nodebutton;
+                this.fileList=response.data.images;
+                                          for(var i=0;i<this.fileList.length;i++){
+                                            this.fileList[i].url=response.data.images[i].path;
+                                          }
               })
               .catch(e => {
                 console.log(e);
               });
               this.selectStateAndLogs();
+       },
+       selectImage(){
+         ImageService.findByLog(this.pa)
+         .then(response => {
+          //  console.log(response.data)
+           var path1=[]
+           var paths=[]
+           for(var i=0;i<response.data.length;i++){
+             if(response.data[i].zujianid===1){
+             
+             paths.push(response.data[i])
+           }else{
+              
+             path1.push(response.data[i])
+           }
+           }
+              this.fileList=paths;
+              this.fileList1=path1;
+                for(var i=0;i<this.fileList.length;i++){
+                     this.fileList[i].url=paths[i].path;
+                      }
+                for(var i=0;i<this.fileList1.length;i++){
+                this.fileList1[i].url=path1[i].path;
+                      }                          
+         })
        },
        addStatelog(){
          var data = {
@@ -614,18 +646,44 @@ import ImageService from "../services/ImageService"
         }
         JinduService.create(data)
         .then(response => {
-          this.tableonload();
-          for(var i = 0; i < path.length; i++){
+           var paths=this.imageUrl1;
+        var path1=this.imageUrl2
+       for(var i = 0; i < paths.length; i++){
+                 console.log("6666666")
               var data1 = {
-              name:"项目进度更新",
               jinduId: response.data.id,
-              path:path[i],
+              path:paths[i],
+              zujianid:1,
               }
               ImageService.create(data1).then(response => {
               }).catch(e => {
                 console.log(e);
-              });
-          }
+              });}
+              var path1=this.imageUrl2
+              for(var i = 0; i < path1.length; i++){
+                 console.log("888888")
+              var data2 = {
+              jinduId: response.data.id,
+              path:path1[i],
+              zujianid:2,
+              }
+              ImageService.create(data2).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });}
+          this.tableonload();
+          // this.selectImage()
+          // for(var i = 0; i < path.length; i++){
+          //     var data1 = {
+          //     name:"项目进度更新",
+          //     jinduId: response.data.id,
+          //     path:path[i],
+          //     }
+          //     ImageService.create(data1).then(response => {
+          //     }).catch(e => {
+          //       console.log(e);
+          //     });
+          // }
           
           var data = {
               userId:this.currentUser.id,
@@ -730,7 +788,7 @@ import ImageService from "../services/ImageService"
                                           this.jindu=response.data;
                                           this.jindu.nodeName = response.data.JinduState.nodeName;
                                           this.fileList=response.data.images;
-                                          for(var i=0;i<2;i++){
+                                          for(var i=0;i<this.fileList.length;i++){
                                             this.fileList[i].url=response.data.images[i].path;
                                           }
                                         })
@@ -776,7 +834,11 @@ import ImageService from "../services/ImageService"
                                   .then(response => {
                                           this.jindu=response.data;
                                           this.jindu.nodeName = response.data.JinduState.nodeName;
-                                          this.imageUrl=response.data.photo;
+                                          // this.imageUrl=response.data.photo;
+                                          this.fileList=response.data.images;
+                                          for(var i=0;i<this.fileList.length;i++){
+                                            this.fileList[i].url=response.data.images[i].path;
+                                          }
                                               //旧图片url另存一份,将来imageUrl会被覆盖
                                               // this.oldUrl = this.imageUrl;
                                         })
@@ -917,15 +979,43 @@ import ImageService from "../services/ImageService"
            if (index===1)
               this.$refs.upload1.submit();
         },
-        handleAvatarSuccess(res, file,index) {
+        handleAvatarSuccess(response, file,index) {
             //如果上传过图片,先把旧的删除掉
             // if (this.tmpUrl){
             //     http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
             // }
             //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
-            this.imageUrl1.push(res.url)
+            this.imageUrl1.push(response.url)
+            // this.imageUrl2.push(response.url)
             console.log(this.imageUrl1)
             this.tmpUrl = this.imageUrl;
+            this.$forceUpdate();
+        },
+         handleAvatarChange1(file1,fileList1,index) {
+      //  if (file.name === ''){
+      //         alert("图片不能为空")
+      //       }
+          if (file1.status !== 'ready'){
+              return;
+            }
+           if (index===0)
+              this.$refs.upload.submit();
+           if (index===1)
+              this.$refs.upload1.submit();
+           if (index===2)
+              this.$refs.upload2.submit();
+        },
+       handleAvatarSuccess1(response1,file1,fileList1,index) {
+        //  if (this.tmpUrl){
+        //         http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
+        //     }
+            //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
+            // this.imageUrlback[index] = response.url;
+            // this.$forceUpdate();
+            this.imageUrl2.push(response1.url)
+            console.log(this.imageUrl2)
+            // this.tmpUrl = this.imageUrl;
+            this.$forceUpdate();
         },
       beforeAvatarUpload(file) {
         // const isJPG = file.type === 'image/jpeg';
@@ -986,7 +1076,9 @@ form: {
         desc: ''
       },
         fileList:[],
-        imageUrl1: [],
+        fileList1:[],
+        imageUrl1:[],
+        imageUrl2:[],
         imageUrl: '',
         oldUrl: '',
         tmpUrl: '',

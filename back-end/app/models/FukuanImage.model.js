@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Image = sequelize.define("image", {
+    const FukuanImage = sequelize.define("fukuanimage", {
       // name: {
       //   type: DataTypes.STRING,
       // },
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       zujianid:{
         type: DataTypes.INTEGER,
-      },   
+      },  
     });
-    return Image;
+    return FukuanImage;
   };

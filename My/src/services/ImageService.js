@@ -6,6 +6,9 @@ class ImageService {
   get(id) {
     return http.get(`/Image/${id}`);
   }
+  findByLog(jinduId) {
+    return http.get(`/Image?jinduId=${jinduId}`);
+  }
   getJian(deptId,name) {
     return http.get(`/Image/img/${logid}${name}`);
   }

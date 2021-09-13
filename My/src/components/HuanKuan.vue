@@ -125,7 +125,7 @@
           </el-table-column>
           <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
                   <template slot-scope="scope">
-                      <el-image style="width: 100px; height: 100px" :src="scope.row.huan_stream" :preview-src-list="[scope.row.huan_stream]">
+                      <el-image style="width: 100px; height: 100px" :src="scope.row.huankuanimages[0].path" :preview-src-list="[scope.row.huankuanimages[0].path]">
                       </el-image>
                   </template>
           </el-table-column>
@@ -254,12 +254,12 @@
                       </div>
                   </template>
           </el-table-column>
-          <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
+          <!-- <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
                   <template slot-scope="scope">
-                      <el-image style="width: 100px; height: 100px" :src="scope.row.huan_stream" :preview-src-list="[scope.row.huan_stream]">
+                      <el-image style="width: 100px; height: 100px" :src="scope.row.huankuanimages[0].path" :preview-src-list="[scope.row.huankuanimages[0].path]">
                       </el-image>
                   </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
           </el-table-column>
           <el-table-column
@@ -328,7 +328,21 @@
         </el-col>
         <el-col>
                 <el-form-item label="还款流水" ref="uploadElement" prop="huan_stream" :label-width="formLabelWidth">
-                    <el-upload :disabled="validated1" ref="upload" class="avatar-uploader" 
+                  <el-upload
+                      ref="upload"
+                      class="upload-demo"
+                      action="http://localhost:8080/api/HuanKuan/upload" 
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove"
+                      :auto-upload="false"
+                      :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
+                      :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
+                      :file-list="fileList"
+                      list-type="picture">
+                      <el-button size="small" type="primary">点击上传</el-button>
+                      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                    <!-- <el-upload :disabled="validated1" ref="upload" class="avatar-uploader" 
                     action="http://localhost:8080/api/HuanKuan/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -339,7 +353,7 @@
                     :file-list="fileList">
                         <img v-if="imageUrl" :src="imageUrl" class="huan_stream">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
+                    </el-upload> -->
                 </el-form-item>
         </el-col>
       </el-row>
@@ -388,6 +402,7 @@ import HuankuanState from "../services/HuankuanState"
 import HuankuanStatelog from "../services/HuankuanStatelog"
 import CodeService from "../services/CodeService";
 import {getInputValue} from "../util";
+import HuankuanImageService from "../services/HuankuanImage";
   export default {
     created () {
       // this.selectdept1();
@@ -401,6 +416,7 @@ import {getInputValue} from "../util";
     methods: {
       //关闭弹框的事件
     closeDialog(){
+      this.fileList=[]
       this.buttonText="确定"
       this.isshow=false;
     },
@@ -531,7 +547,10 @@ import {getInputValue} from "../util";
                 this.validated=true;
                 this.validated1=false;
                 this.buttonText = response.data.HuankuanState.nodebutton;
-
+                this.fileList=response.data.huankuanimages;
+                                          for(var i=0;i<this.fileList.length;i++){
+                                            this.fileList[i].url=response.data.huankuanimages[i].path;
+                                          }
               })
               .catch(e => {
                 console.log(e);
@@ -646,6 +665,7 @@ import {getInputValue} from "../util";
        },
        addservice(){
               this.dialogFormVisible=false;
+              var path=this.imageUrl1
           var data = {
             code:this.code,
             item_name: this.huankuan.item_name,
@@ -660,6 +680,17 @@ import {getInputValue} from "../util";
         HuanKuanService.create(data)
         .then(response => {
           this.tableonload();
+          for(var i = 0; i < path.length; i++){
+              var data1 = {
+              name:"还款管理",
+              huankuanId: response.data.id,
+              path:path[i],
+              }
+              HuankuanImageService.create(data1).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
+          }
           var data = {
               userId:this.currentUser.id,
               huankuanId: response.data.id,
@@ -746,7 +777,11 @@ import {getInputValue} from "../util";
                                     .then(response => {
                                           this.huankuan=response.data;
                                           this.huankuan.nodeName = response.data.HuankuanState.nodeName; 
-                                          this.imageUrl=response.data.huan_stream
+                                          // this.imageUrl=response.data.huan_stream
+                                          this.fileList=response.data.huankuanimages;
+                                          for(var i=0;i<this.fileList.length;i++){
+                                            this.fileList[i].url=response.data.huankuanimages[i].path;
+                                          }
                                         })
                                         .catch(e => {
                                           console.log(e);
@@ -791,10 +826,14 @@ import {getInputValue} from "../util";
                                     HuanKuanService.get(this.pa)
                                     .then(response => {
                                         this.huankuan=response.data;
-                                        this.huankuan.nodeName = response.data.HuankuanState.nodeName; 
-                                        this.imageUrl=response.data.huan_stream;
-                                            //旧图片url另存一份,将来imageUrl会被覆盖
-                                            this.oldUrl = this.imageUrl;
+                                        this.huankuan.nodeName = response.data.HuankuanState.nodeName;
+                                        this.fileList=response.data.huankuanimages;
+                                          for(var i=0;i<this.fileList.length;i++){
+                                            this.fileList[i].url=response.data.huankuanimages[i].path;
+                                          } 
+                                        // this.imageUrl=response.data.huan_stream;
+                                        //     //旧图片url另存一份,将来imageUrl会被覆盖
+                                        //     this.oldUrl = this.imageUrl;
                                       })
                                       .catch(e => {
                                         console.log(e);
@@ -908,6 +947,12 @@ import {getInputValue} from "../util";
       filterCurrent(value, row){
             return row.current_process === value;
         },
+        handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
         handleAvatarChange(file,filelist) {
             //选中文件,上传成功,上传失败都会调用这个函数
             //只有选择新文件的时候(file.status非ready),才执行后面的上传代码
@@ -919,12 +964,16 @@ import {getInputValue} from "../util";
         },
         handleAvatarSuccess(res, file) {
             //如果上传过图片,先把旧的删除掉
-            if (this.tmpUrl){
-                http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
-            }
-            //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
-            this.imageUrl = res.url;
+            // if (this.tmpUrl){
+            //     http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
+            // }
+            this.imageUrl1.push(res.url)
+            console.log(this.imageUrl1)
             this.tmpUrl = this.imageUrl;
+            this.$forceUpdate();
+            //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
+            // this.imageUrl = res.url;
+            // this.tmpUrl = this.imageUrl;
         },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
@@ -976,7 +1025,8 @@ import {getInputValue} from "../util";
         examine: "还款信息",
       },
         dialogTitle:"",
-        fileList:[{imageUrl:""}],
+        fileList:[],
+        imageUrl1: [],
         imageUrl: '',
         oldUrl: '',
         tmpUrl: '',

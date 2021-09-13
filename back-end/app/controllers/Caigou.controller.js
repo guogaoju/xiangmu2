@@ -1,6 +1,7 @@
 const db = require("../models");
 const Caigou = db.caigou;
 const CaigouState = db.CaigouState;
+const CaigouImage = db.CaigouImage;
 const Op = db.Sequelize.Op;
 
 // 新建采购controller层
@@ -44,7 +45,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Caigou.findAll({order: [['id', 'ASC']],include : [CaigouState]})
+    Caigou.findAll({order: [['id', 'ASC']],include : [CaigouState,CaigouImage]})
       .then(data => {
         res.send(data);
       })
@@ -59,7 +60,7 @@ exports.findAll = (req, res) => {
 //根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Caigou.findOne({ where: { id: req.params.id },include : [CaigouState] })
+    Caigou.findOne({ where: { id: req.params.id },include : [CaigouState,CaigouImage] })
       .then(data => {
         res.send(data);
       })

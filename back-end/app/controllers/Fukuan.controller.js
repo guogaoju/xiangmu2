@@ -1,6 +1,7 @@
 const db = require("../models");
 const Fukuan = db.Fukuan;
 const FukuanState = db.FukuanState;
+const FukuanImage = db.FukuanImage;
 const Op = db.Sequelize.Op;
 
 // 新建采购controller层
@@ -29,7 +30,7 @@ exports.create = (req, res) => {
   };
   Fukuan.create(Fukuans)
     .then(fukuan => {
-      fukuan.setFukuanState([1])
+      fukuan.setFukuanState([0])
       res.send(fukuan);
     })
     .catch(err => {
@@ -43,7 +44,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     // const title = req.query.title;
     // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    Fukuan.findAll({order: [['id', 'ASC']],include : [FukuanState]})
+    Fukuan.findAll({order: [['id', 'ASC']],include : [FukuanState,FukuanImage]})
       .then(data => {
         res.send(data);
       })
@@ -58,7 +59,7 @@ exports.findAll = (req, res) => {
 //根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Fukuan.findOne({ where: { id: req.params.id },include : [FukuanState] })
+    Fukuan.findOne({ where: { id: req.params.id },include : [FukuanState,FukuanImage] })
       .then(data => {
         res.send(data);
       })

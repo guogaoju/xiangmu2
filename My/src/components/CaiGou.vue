@@ -104,7 +104,7 @@
               </el-table-column> -->
               <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
                       <template slot-scope="scope">
-                          <el-image style="width: 100px; height: 100px" :src="scope.row.delivery_note" :preview-src-list="[scope.row.delivery_note]">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.caigouimages[0].path" :preview-src-list="[scope.row.caigouimages[0].path]">
                           </el-image>
                       </template>
               </el-table-column>
@@ -275,7 +275,7 @@
               </el-table-column> -->
               <el-table-column min-width="120"  prop="delivery_note" label="送货单" align="center">
                       <template slot-scope="scope">
-                          <el-image style="width: 100px; height: 100px" :src="scope.row.delivery_note" :preview-src-list="[scope.row.delivery_note]">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.caigouimages[0].path" :preview-src-list="[scope.row.caigouimages[0].path]">
                           </el-image>
                       </template>
               </el-table-column>
@@ -414,9 +414,23 @@
                     </el-upload>
             </el-form-item>
         </el-col> -->
-        <el-col :span="7">
+       
           <el-form-item label="送货单" ref="uploadElement" prop="delivery_note" :label-width="formLabelWidth">
-                    <el-upload :disabled="validated1" ref="upload1" class="avatar-uploader" 
+            <el-upload
+                      ref="upload"
+                      class="upload-demo"
+                      action="http://localhost:8080/api/Caigou/upload" 
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove"
+                      :auto-upload="false"
+                      :on-change="(file,fileList) =>{return handleAvatarChange(file,fileList,0)}"
+                      :on-success="(response,file,fileList) =>{return handleAvatarSuccess(response,file,fileList,0)}" 
+                      :file-list="fileList"
+                      list-type="picture">
+                      <el-button size="small" type="primary">点击上传</el-button>
+                      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                    </el-upload>
+                    <!-- <el-upload :disabled="validated1" ref="upload1" class="avatar-uploader" 
                     action="http://localhost:8080/api/Caigou/upload" 
                     :show-file-list="false" 
                     :auto-upload="false" 
@@ -427,9 +441,9 @@
                     :file-list="fileList">
                         <img v-if="imageUrlback[1]" :src="imageUrlback[1]" class="delivery_note">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
+                    </el-upload> -->
             </el-form-item>
-        </el-col> 
+   
         <!-- <el-col :span="7">
             <el-form-item label="发票" ref="uploadElement" prop="bill" :label-width="formLabelWidth">
                     <el-upload :disabled="validated1" ref="upload2" class="avatar-uploader" 
@@ -648,6 +662,8 @@ import {getInputValue} from "../util";
 import FukuanService from "../services/FukuanService";
 import FukuanStatelog from "../services/FukuanStatelog";
 import FukuanwuliaoService from "../services/Fukuanwuliao";
+import CaigouImageService from "../services/CaigouImage";
+import FukuanImageService from "../services/FukuanImage";
   export default {
     created () {
           this.tableonload(); 
@@ -660,6 +676,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
     methods: {
       //关闭弹框的事件
     closeDialog(){
+      this.fileList=[]
       this.buttonText="确定"
       this.isshow=false;
       this.isshow2=false;
@@ -844,7 +861,10 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
                 this.validated=true;
                 this.validated1=false;
                 this.buttonText = response.data.CaigouState.nodebutton;
-               
+                this.fileList=response.data.caigouimages;
+                                          for(var i=0;i<this.fileList.length;i++){
+                                            this.fileList[i].url=response.data.caigouimages[i].path;
+                                          }
               })
               .catch(e => {
                 console.log(e);
@@ -1001,6 +1021,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
        },
        addservice(){
               this.dialogFormVisible=false;
+              var path=this.imageUrl1
             var data = {
               code:this.code,
               qiye_name: this.caigou.qiye_name,
@@ -1031,19 +1052,37 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
               money2:this.caigou.money2,
               money3:this.caigou.money3,
               money4:this.caigou.money4,
-              nodeName:this.caigou.nodeName,
+              nodeName:0,
           }
           FukuanService.create(data1).then(response=>{
+            var data1 = {
+              fukuanId: response.data.id,
+              path:"",
+              zujianid:1,
+              }
+              FukuanImageService.create(data1).then(response => {
+              }).catch(e => {
+                console.log(e);
+              })
+              var data2 = {
+              fukuanId: response.data.id,
+              path:"",
+              zujianid:2,
+              }
+              FukuanImageService.create(data2).then(response => {
+              }).catch(e => {
+                console.log(e);
+              })
              var data = {
               userId:this.currentUser.id,
               fukuanId: response.data.id,
               oldstateid: 1,
-              newstateid:response.data.FukuanStateId,
+              newstateid:0,
               operateId:4,
               }
               for(let i=0;i<this.tableData3.length;i++){
                   this.tableData3[i].fukuanId=response.data.id
-                  FukuanwuliaoService.create(this.tableData3[i])
+            FukuanwuliaoService.create(this.tableData3[i])
             .then(response => {
               this.tableonload();
               // console.log(response.data);
@@ -1060,6 +1099,17 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
           }) 
           CaiGouService.create(data).then(response => {
           this.tableonload();
+          for(var i = 0; i < path.length; i++){
+              var data1 = {
+              name:"采购管理",
+              caigouId: response.data.id,
+              path:path[i],
+              }
+              CaigouImageService.create(data1).then(response => {
+              }).catch(e => {
+                console.log(e);
+              });
+          }
           var data = {
               userId:this.currentUser.id,
               caigouId: response.data.id,
@@ -1192,9 +1242,13 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
                                   .then(response => {
                                           this.caigou=response.data;
                                           this.caigou.nodeName = response.data.CaigouState.nodeName;
-                                          this.imageUrlback[0]=response.data.statement
-                                          this.imageUrlback[1]=response.data.delivery_note
-                                          this.imageUrlback[2]=response.data.bill
+                                          this.fileList=response.data.caigouimages;
+                                          for(var i=0;i<this.fileList.length;i++){
+                                            this.fileList[i].url=response.data.caigouimages[i].path;
+                                          }
+                                          // this.imageUrlback[0]=response.data.statement
+                                          // this.imageUrlback[1]=response.data.delivery_note
+                                          // this.imageUrlback[2]=response.data.bill
                                         })
                                         .catch(e => {
                                           console.log(e);
@@ -1243,11 +1297,15 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
                                   .then(response => {
                                           this.caigou=response.data;
                                           this.caigou.nodeName = response.data.CaigouState.nodeName;
-                                          this.imageUrlback[0]=response.data.statement
-                                          this.imageUrlback[1]=response.data.delivery_note
-                                          this.imageUrlback[2]=response.data.bill
+                                          this.fileList=response.data.caigouimages;
+                                          for(var i=0;i<this.fileList.length;i++){
+                                            this.fileList[i].url=response.data.caigouimages[i].path;
+                                          }
+                                          // this.imageUrlback[0]=response.data.statement
+                                          // this.imageUrlback[1]=response.data.delivery_note
+                                          // this.imageUrlback[2]=response.data.bill
                                           //旧图片url另存一份,将来imageUrl会被覆盖
-                                              this.oldUrl = this.imageUrlback[index];
+                                              // this.oldUrl = this.imageUrlback[index];
                                         })
                                         .catch(e => {
                                           console.log(e);
@@ -1381,6 +1439,12 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
       filterCurrent(value, row){
             return row.current_process === value;
         },
+        handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
     handleAvatarChange(file,fileList,index) {
           if (file.status !== 'ready'){
               return;
@@ -1393,11 +1457,14 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
               this.$refs.upload2.submit();
         },
        handleAvatarSuccess(response,file,fileList,index) {
-         if (this.tmpUrl){
-                http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
-            }
+        //  if (this.tmpUrl){
+        //         http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
+        //     }
             //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
-            this.imageUrlback[index] = response.url;
+            // this.imageUrlback[index] = response.url;
+            this.imageUrl1.push(response.url)
+            console.log(this.imageUrl1)
+            this.tmpUrl = this.imageUrl;
             this.$forceUpdate();
         },
         beforeAvatarUpload(file) {
@@ -1468,6 +1535,7 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
         tmpUrl: '',
         fileList:[],
         imageUrl:'',
+        imageUrl1:[],
         imageUrlfront:[],
         imageUrlback:[],
         dialog: false,

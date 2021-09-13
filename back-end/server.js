@@ -808,6 +808,9 @@ require("./app/routes/FukuanState.routes")(app);
 require("./app/routes/FukuanStatelog.routes")(app);
 require("./app/routes/Fukuan.routes")(app);
 require("./app/routes/Fukuanwuliao.routes")(app);
+require("./app/routes/CaigouImage.routes")(app);
+require("./app/routes/FukuanImage.routes")(app);
+require("./app/routes/HuankuanImage.routes")(app);
 // set port, listen for requests
 //local
 const PORT = process.env.PORT || 8080;

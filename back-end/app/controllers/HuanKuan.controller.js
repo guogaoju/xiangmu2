@@ -1,6 +1,7 @@
 const db = require("../models");
 const HuanKuan = db.huankuan;
 const HuanKuanState = db.HuankuanState;
+const HuankuanImage = db.HuankuanImage;
 const Op = db.Sequelize.Op;
 const Dept = db.dept;
 // 新建controller层
@@ -44,7 +45,7 @@ exports.findAll = (req, res) => {
   
   const HuankuanStateId = req.query.HuankuanStateId;
   var condition = HuankuanStateId ? { HuankuanStateId: HuankuanStateId}  : null;
-    HuanKuan.findAll({order: [['id', 'ASC']],where: condition ,include : [HuanKuanState]})
+    HuanKuan.findAll({order: [['id', 'ASC']],where: condition ,include : [HuanKuanState,HuankuanImage]})
       .then(data => {
         res.send(data);
       })
@@ -82,7 +83,7 @@ exports.findAll = (req, res) => {
 //根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    HuanKuan.findOne({ where: { id: req.params.id },include : [HuanKuanState] })
+    HuanKuan.findOne({ where: { id: req.params.id },include : [HuanKuanState,HuankuanImage] })
       .then(data => {
         res.send(data);
       })

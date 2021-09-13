@@ -1,26 +1,24 @@
 const db = require("../models");
-const Image = db.images;
+const HuankuanImage = db.HuankuanImage;
 const Op = db.Sequelize.Op;
 
 // 新建controller层
 exports.create = (req, res) => {
   // Validate request
-  if (!req.body.zujianid) {
+  if (!req.body.name) {
     res.status(400).send({
       message: "Content can not be empty!"
     });
     return;
   }
-  const image = {
-        // name:req.body.name,
-        jinduId: req.body.jinduId ,
+  const HuankuanImages = {
+        name:req.body.name,
+        huankuanId: req.body.huankuanId ,
         path:req.body.path,
-        zujianid:req.body.zujianid,
-        // current_process:req.body.current_process
   };
 
 // 新增
-Image.create(image)
+HuankuanImage.create(HuankuanImages)
     .then(data => {
       res.send(data);
     })
@@ -31,22 +29,11 @@ Image.create(image)
       });
     });
 };
-exports.findimg = (req, res) => {
-    Image.findOne({ where: { logid: req.params.logid, name:req.params.name} })
-      .then(data => {
-      res.send(data);
-      })
-      .catch(err => {
-        res.status(500).send({
-          message: "Error retrieving Image with id=" 
-        });
-      });
-};
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
-  const fukuanId = req.query.fukuanId;
-  var condition = fukuanId ? { fukuanId: fukuanId}  : null;
-    Image.findAll({where:condition,order: [['id', 'ASC']]})
+    // const title = req.query.title;
+    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+    HuankuanImage.findAll({order: [['id', 'ASC']]})
       .then(data => {
         res.send(data);
       })
@@ -61,7 +48,7 @@ exports.findAll = (req, res) => {
 //根据id查找
 exports.findOne = (req, res) => {
     const id = req.params.id;
-    Jindu.findOne({ where: { id: req.params.id }})
+    HuankuanImage.findOne({ where: { id: req.params.id }})
       .then(data => {
         res.send(data);
       })
@@ -75,7 +62,7 @@ exports.findOne = (req, res) => {
 //修改
 exports.update = (req, res) => {
     const id = req.params.id;
-    Image.update(req.body, {
+    HuankuanImage.update(req.body, {
       where: { id: id }
     })
       .then(num => {
@@ -98,7 +85,7 @@ exports.update = (req, res) => {
 //删除
 exports.delete = (req, res) => {
     const id = req.params.id;
-    Image.destroy({
+    HuankuanImage.destroy({
       where: { id: id }
     })
       .then(num => {

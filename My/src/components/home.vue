@@ -145,7 +145,7 @@ export default {
                 },
                 
                 legend: {
-                    position: 'left'
+                    position: 'left',
                 },
                 bgColor: '#fbfbfb',
                 labels: ['桃心大道', '文化中心', '塔田安置房', '唐村安置房一期', '邓埠安置房',],
@@ -212,12 +212,13 @@ export default {
                 title: {
                     text: '建筑企业信用评分'
                 },
+                
                 xRorate: 50,
                 labels: ['2020/8', '2020/9', '2020/10', '2020/11', '2020/12','2021/1', '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7'],
                 datasets: [
                     {
                         label: '北京城建',
-                        data: [86, 86, 89, 90, 90,92,92,91,92,92,91,90]
+                        data: [86, 86, 89, 90, 90,92,92,91,92,92,91,90],
                     },
                     {
                         label: '江西诺金',
@@ -227,7 +228,19 @@ export default {
                         label: '江西圳发',
                         data: [85,88,85,85,86,85,86,85,88,89,86,85]
                     },
-                ]
+                ],
+               
+							// normal: {
+							// 	label: {
+							// 		show: false, //开启显示
+							// 		position: 'top', //在上方显示
+							// 		textStyle: { //数值样式
+							// 			color: 'black',
+							// 			fontSize: 16
+							// 		}
+								
+                            //     }
+                            // }
             },
             options4: {
                 type: 'line',
@@ -273,7 +286,7 @@ export default {
                     },
                 ]
             }
-        };
+        }
     },
     components: {
         Schart

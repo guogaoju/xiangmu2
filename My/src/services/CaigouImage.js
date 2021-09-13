@@ -1,0 +1,19 @@
+import http from "../http-common";
+class CaigouImageService {
+  getAll() {
+    return http.get("/CaigouImage");
+  }
+  get(id) {
+    return http.get(`/CaigouImage/${id}`);
+  }
+  create(data) {
+    return http.post("/CaigouImage", data);
+  }
+  update(id, data) {
+    return http.put(`/CaigouImage/${id}`, data);
+  }
+  delete(id) {
+    return http.delete(`/CaigouImage/${id}`);
+  }
+}
+export default new CaigouImageService();

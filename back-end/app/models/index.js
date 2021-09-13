@@ -90,6 +90,9 @@ db.FukuanState = require("./FukuanState.model.js")(sequelize, Sequelize);
 db.FukuanStatelog = require("./FukuanStatelog.model.js")(sequelize, Sequelize);
 db.Fukuan = require("./Fukuan.model.js")(sequelize, Sequelize);
 db.Fukuanwuliao = require("./Fukuanwuliao.model.js")(sequelize, Sequelize);
+db.CaigouImage = require("./CaigouImage.model.js")(sequelize, Sequelize);
+db.FukuanImage = require("./FukuanImage.model.js")(sequelize, Sequelize);
+db.HuankuanImage = require("./HuankuanImage.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -835,6 +838,22 @@ db.FukuanState.hasMany(db.FukuanStatelog, {
 db.operate.hasMany(db.FukuanStatelog, {
   foreignKey: "operateId",
 });
+//图片表和采购表
+db.caigou.hasMany(db.CaigouImage, {
+  foreignKey: "caigouId",
+});
+db.CaigouImage.belongsTo(db.caigou);
+//图片表和付款表
+db.Fukuan.hasMany(db.FukuanImage, {
+  foreignKey: "fukuanId",
+});
+db.FukuanImage.belongsTo(db.Fukuan);
+//图片表和付款表
+db.huankuan.hasMany(db.HuankuanImage, {
+  foreignKey: "huankuanId",
+});
+db.HuankuanImage.belongsTo(db.huankuan);
+
 
 
 //这是为了在中间件里面验证user的role是否存在，这样写是不对的，应该根据数据库里的内容验证，而不是根据这个提前定义好的静态数组

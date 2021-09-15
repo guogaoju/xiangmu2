@@ -321,11 +321,16 @@ export default {
         //                         });
         // },
         selectDaiban(){
-            authservice.get(this.currentUser.id).then(resUser =>{
+            authservice.get(this.currentUser.id).then( resUser =>{
+                var arr=[0,0,0,0]
                 for (var i = 0; i < resUser.data.depts.length; i++) {
-                        DaibanService.findByLog(resUser.data.depts[i].id).then(response=>{
-                        // console.log(response.data)
-                        this.tableData=response.data
+                         DaibanService.findByLog(resUser.data.depts[i].id).then(response=>{
+                             for(var j = 0; j < response.data.length; j++){
+                                arr[j]=arr[j] +response.data[j].sum
+                                // console.log(arr)
+                             }
+                             this.tableData=arr
+                             console.log(this.tableData);
                     })
                 }
              })    

@@ -77,11 +77,16 @@
                           </div>
                       </template>
               </el-table-column>
-              <!-- <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
+              <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
                       <template slot-scope="scope">
-                          <el-image style="width: 100px; height: 100px" :src="scope.row.images[0].path" :preview-src-list="[scope.row.images[0].path]">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.images[1].path" :preview-src-list="[scope.row.images[1].path]">
                           </el-image>
                       </template>
+              </el-table-column>
+              <!-- <el-table-column
+              prop="name"
+              label="风控报告"
+              width="180">
               </el-table-column> -->
               <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
               </el-table-column>
@@ -270,9 +275,9 @@
                       class="upload-demo"
                       action="http://localhost:8080/api/Jindu/upload"
                       multiple
-                      :show-file-list="false" 
+                      
                       :auto-upload="false" 
-                      :data="jindu"
+                      
                       :on-preview="handlePreview1"
                       :on-remove="handleRemove1"
                       :before-remove="beforeRemove1" 
@@ -510,9 +515,7 @@ import ImageService from "../services/ImageService"
                 this.validated1=false;
                 this.buttonText = response.data.JinduState.nodebutton;
                 this.fileList=response.data.images;
-                                          for(var i=0;i<this.fileList.length;i++){
-                                            this.fileList[i].url=response.data.images[i].path;
-                                          }
+                        this.selectImage();            
               })
               .catch(e => {
                 console.log(e);
@@ -529,9 +532,11 @@ import ImageService from "../services/ImageService"
              if(response.data[i].zujianid===1){
              
              paths.push(response.data[i])
+              //  console.log(paths)
            }else{
               
              path1.push(response.data[i])
+              //  console.log(path1)
            }
            }
               this.fileList=paths;
@@ -541,6 +546,7 @@ import ImageService from "../services/ImageService"
                       }
                 for(var i=0;i<this.fileList1.length;i++){
                 this.fileList1[i].url=path1[i].path;
+                this.fileList1[i].name=path1[i].name;
                       }                          
          })
        },
@@ -599,6 +605,7 @@ import ImageService from "../services/ImageService"
          this.selectJianzhu(),
           this.jindu={},
           this.fileList=[],
+          this.fileList1=[],
           this.dialogFormVisible=true
           this.selectState();
           this.validated=false;
@@ -1020,7 +1027,6 @@ import ImageService from "../services/ImageService"
       beforeAvatarUpload(file) {
         // const isJPG = file.type === 'image/jpeg';
         // const isLt2M = file.size / 1024 / 1024 < 2;
-
         // if (!isJPG) {
         //   this.$message.error('上传头像图片只能是 JPG 格式!');
         // }

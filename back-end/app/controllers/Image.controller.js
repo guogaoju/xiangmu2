@@ -1,6 +1,7 @@
 const db = require("../models");
 const Image = db.images;
 const Op = db.Sequelize.Op;
+const upload = require("../middleware/upload");
 
 // 新建controller层
 exports.create = (req, res) => {
@@ -12,7 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const image = {
-        // name:req.body.name,
+        name:"风控报告",
         jinduId: req.body.jinduId ,
         path:req.body.path,
         zujianid:req.body.zujianid,
@@ -44,8 +45,8 @@ exports.findimg = (req, res) => {
 };
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
-  const fukuanId = req.query.fukuanId;
-  var condition = fukuanId ? { fukuanId: fukuanId}  : null;
+  const jinduId = req.query.jinduId;
+  var condition = jinduId ? { jinduId: jinduId}  : null;
     Image.findAll({where:condition,order: [['id', 'ASC']]})
       .then(data => {
         res.send(data);

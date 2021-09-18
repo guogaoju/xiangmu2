@@ -31,9 +31,9 @@ CaigouImage.create(CaigouImages)
 };
 //从数据库查找所有,模糊查询
 exports.findAll = (req, res) => {
-    // const title = req.query.title;
-    // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-    CaigouImage.findAll({order: [['id', 'ASC']]})
+  const caigouId = req.query.caigouId;
+  var condition = caigouId ? { caigouId: caigouId}  : null;
+    CaigouImage.findAll({where:condition,order: [['id', 'ASC']]})
       .then(data => {
         res.send(data);
       })

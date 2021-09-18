@@ -13,6 +13,7 @@ module.exports = app => {
        //服务器
       //const url = "http://106.15.5.29:8082/" +req.file.filename
       res.json({url})
+      // res.json(req.file.filename)
     });
     //查找所有
     router.get("/", jindu.findAll);

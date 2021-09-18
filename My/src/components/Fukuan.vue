@@ -889,47 +889,68 @@ import FukuanImageService from "../services/FukuanImage";
                       }                          
          })
        },
-      //  updateDaiban(){
-      //     FukuanState.get(this.nextState).then(response1=>{
-      //       this.currentStateDept=response1.data.depts
-      //       FukuanState.get(response1.data.nextStateid).then(response=>{
-      //         this.nextStateDept=response.data.depts;
-      //         //当前状态的部门减一
-      //         for (let i = 0; i < this.currentStateDept.length; i++) 
-      //           DaibanService.getJian(this.currentStateDept[i].id,"采购管理")
-      //         //如果下一个状态如果不是最后一个,则所有部门加一
-      //         if (response1.data.lastone!=1){
-      //               //  console.log(response.data.lastone)
-      //           for (let i = 0; i < this.nextStateDept.length; i++){
-      //               DaibanService.getJia(this.nextStateDept[i].id,"采购管理").then(response =>{
+       updateDaiban(){
+          FukuanState.get(this.nextState).then(response1=>{
+            this.currentStateDept=response1.data.depts
+            FukuanState.get(response1.data.nextStateid).then(response=>{
+              this.nextStateDept=response.data.depts;
+              //当前状态的部门减一
+              for (let i = 0; i < this.currentStateDept.length; i++){
+                DaibanService.getJian(this.currentStateDept[i].id,"付款管理")
+              //如果下一个状态如果不是最后一个,则所有部门加一
+              }
+              if (response1.data.lastone!=1){
+                for (let i = 0; i < this.nextStateDept.length; i++){
+                    DaibanService.getJia(this.nextStateDept[i].id,"付款管理").then(response =>{
 
-      //               })
-      //           }
-      //         }else{
-      //             console.log("99999")
-      //         }  
-      //       })
-      //     })
-      //  },
-      //  addDaiban(){
-      //     //新增,所以查状态表第一条就行
-      //     FukuanState.get(1).then(response=>{
-      //       //如果状态表不是只有一个添加,则所有部门加一
-      //       if (!response.data.lastone){
-      //         FukuanState.get(response.data.nextStateid).then(response=>{
-      //           this.nextStateDept=response.data.depts;
-      //           // console.log(this.nextStateDept);
-      //            for (let i = 0; i < this.nextStateDept.length; i++){
-      //               DaibanService.getJia(this.nextStateDept[i].id,"采购管理").then(response =>{
+                    })
+                }
+              }
+            })
+          })
+       },
+       updateDaiban1(){
+          FukuanState.get(this.nextState-1).then(response1=>{
+            this.currentStateDept=response1.data.depts
+            FukuanState.get(response1.data.nextStateid).then(response=>{
+              this.nextStateDept=response.data.depts;
+              //当前状态的部门减一
+              for (let i = 0; i < this.currentStateDept.length; i++){
+                DaibanService.getJian(this.currentStateDept[i].id,"付款管理")
+              //如果下一个状态如果不是最后一个,则所有部门加一
+              }
+              FukuanState.get(this.nextState).then(response2=>{
+                this.currentStateDept1=response2.data.depts
+                FukuanState.get(response2.data.nextStateid).then(response3=>{
+                  this.nextStateDept1=response3.data.depts;
+                   if (response2.data.lastone!=1){
+                for (let i = 0; i < this.nextStateDept1.length; i++){
+                    DaibanService.getJia(this.nextStateDept1[i].id,"付款管理").then(response =>{
 
-      //             })
-      //         } 
-      //       })
-      //       }
-              
-                  
-      //     })
-      //  },
+                    })
+                }
+              }
+                })
+              })
+            })
+          })
+       },
+       addDaiban(){
+          //新增,所以查状态表第一条就行
+          FukuanState.get(0).then(response=>{
+            //如果状态表不是只有一个添加,则所有部门加一
+            if (!response.data.lastone){
+              FukuanState.get(response.data.nextStateid).then(response=>{
+                this.nextStateDept=response.data.depts;
+                // console.log(this.nextStateDept);
+                 for (let i = 0; i < this.nextStateDept.length; i++){
+                    DaibanService.getJia(this.nextStateDept[i].id,"付款管理").then(response =>{
+                  })
+              } 
+            })
+            }      
+          })
+       },
        addStatelog(){
          var data = {
               userId:this.currentUser.id,
@@ -1097,10 +1118,11 @@ import FukuanImageService from "../services/FukuanImage";
         this.kanClick();
       }else if(this.dialogTitle ==  "examine"&&valid){
         if(this.oldStateid===0){
+          this.addDaiban();
           var paths=this.imageUrl1;
         var path1=this.imageUrl2
        for(var i = 0; i < paths.length; i++){
-                 console.log("6666666")
+                //  console.log("6666666")
               var data1 = {
               fukuanId: this.pa,
               path:paths[i],
@@ -1112,7 +1134,7 @@ import FukuanImageService from "../services/FukuanImage";
               });}
               var path1=this.imageUrl2
               for(var i = 0; i < path1.length; i++){
-                 console.log("888888")
+                //  console.log("888888")
               var data2 = {
               fukuanId: this.pa,
               path:path1[i],
@@ -1123,13 +1145,16 @@ import FukuanImageService from "../services/FukuanImage";
                 console.log(e);
               });}
               this.tableonload();
+        }else if(this.oldStateid===1){
+          this.updateDaiban1()
+        }
+        else{
+            this.updateDaiban()
         }
         this.dialogFormVisible=false;
         this.deleteImage();
         this.updateState();
         this.addStatelog();
-        
-        // this.updateDaiban()
       }else{
         return false
       }
@@ -1508,7 +1533,9 @@ import FukuanImageService from "../services/FukuanImage";
         qiye:[],
         jianzhu:[],
         nextStateDept:[],
+        nextStateDept:[],
         currentStateDept:[],
+        currentStateDept1:[],
         tableData1: [],
         activeName: 'first',
         deletedept:[1,3,8],

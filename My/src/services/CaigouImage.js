@@ -3,6 +3,9 @@ class CaigouImageService {
   getAll() {
     return http.get("/CaigouImage");
   }
+  findByLog(caigouId) {
+    return http.get(`/CaigouImage?caigouId=${caigouId}`);
+  }
   get(id) {
     return http.get(`/CaigouImage/${id}`);
   }

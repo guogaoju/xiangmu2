@@ -13,7 +13,7 @@ exports.create = (req, res) => {
     return;
   }
   const image = {
-        name:"风控报告",
+        name:req.body.name,
         jinduId: req.body.jinduId ,
         path:req.body.path,
         zujianid:req.body.zujianid,

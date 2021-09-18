@@ -647,7 +647,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="item_name" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="xiangmu.item_name"></el-input>
+            <el-input :disabled="validated" @blur="blur" v-model="xiangmu.item_name"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -1148,6 +1148,11 @@ import {getInputValue} from "../util";
         this.annui=false;
         this.dialogTitle = "addData";
        },
+       blur(){
+          this.name=this.xiangmu.item_name
+         console.log(this.name)
+         
+       },
        addservice(){
               this.dialogFormVisible=false;
           var data = {
@@ -1226,6 +1231,7 @@ import {getInputValue} from "../util";
         addform(){
           this.selectgys()
           this.form={},
+          this.form.item_name=this.name
             this.dialog=true;
             DanweiService.getAll()
                 .then(response => {
@@ -1497,6 +1503,7 @@ import {getInputValue} from "../util";
 
     data() {
       return {
+        name:"",
         code:"",
         gys:[],
         qiye:[],

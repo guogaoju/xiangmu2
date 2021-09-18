@@ -664,6 +664,7 @@ import FukuanStatelog from "../services/FukuanStatelog";
 import FukuanwuliaoService from "../services/Fukuanwuliao";
 import CaigouImageService from "../services/CaigouImage";
 import FukuanImageService from "../services/FukuanImage";
+import FukuanState from "../services/FukuanState";
   export default {
     created () {
           this.tableonload(); 
@@ -813,7 +814,8 @@ import FukuanImageService from "../services/FukuanImage";
         })
       },
       handdle(row, event, column) {
-        this.activities=[] 
+        this.activities=[]
+        this.fileList=[],
         this.dialogFormVisible=true
         this.annui=false
         this.annui1=true;
@@ -968,6 +970,7 @@ import FukuanImageService from "../services/FukuanImage";
         });
       },
        openFrom(){
+         this.fileList=[],
          this.activities=[]
          this.selectJianzhu()
          this.selectQiye()
@@ -1018,6 +1021,17 @@ import FukuanImageService from "../services/FukuanImage";
           this.dialog=false;
           })
           
+       },
+       deleteImage(){
+            CaigouImageService.findByLog(this.pa).then(response=>{
+              for(var i=0;i<response.data.length;i++){
+                  if(response.data[i].path===""){
+                    CaigouImageService.delete(response.data[i].id).then(response=>{
+
+                    })
+                  }
+              }
+            })
        },
        addservice(){
               this.dialogFormVisible=false;
@@ -1098,14 +1112,15 @@ import FukuanImageService from "../services/FukuanImage";
               });
           }) 
           CaiGouService.create(data).then(response => {
-          this.tableonload();
-          for(var i = 0; i < path.length; i++){
+          // this.tableonload();
+          for(var i = 0; i < 1; i++){
               var data1 = {
               name:"采购管理",
               caigouId: response.data.id,
-              path:path[i],
+              path:"",
               }
               CaigouImageService.create(data1).then(response => {
+                console.log(666666)
               }).catch(e => {
                 console.log(e);
               });
@@ -1144,15 +1159,30 @@ import FukuanImageService from "../services/FukuanImage";
                 alert("物料不能为空")
               }else{
                   this.addservice();
-        this.addDaiban();
+                  this.addDaiban();
               }
-        
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
       }else if(this.dialogTitle ==  "kanData"){
         this.kanClick();
       }else if(this.dialogTitle ==  "examine"&&valid){
+        if(this.oldStateid===1){
+          var path=this.imageUrl1
+        for(var i = 0; i < path.length; i++){
+              var data1 = {
+              name:"采购管理",
+              caigouId: this.pa,
+              path:path[i],
+              }
+              CaigouImageService.create(data1).then(response => {
+                // console.log(666666)
+              }).catch(e => {
+                console.log(e);
+              });
+          }
+        }
         this.dialogFormVisible=false;
+        this.deleteImage();
         this.updateState();
         this.addStatelog();
         this.updateDaiban()

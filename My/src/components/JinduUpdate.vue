@@ -275,9 +275,7 @@
                       class="upload-demo"
                       action="http://localhost:8080/api/Jindu/upload"
                       multiple
-                      
                       :auto-upload="false" 
-                      
                       :on-preview="handlePreview1"
                       :on-remove="handleRemove1"
                       :before-remove="beforeRemove1" 
@@ -653,11 +651,14 @@ import ImageService from "../services/ImageService"
         }
         JinduService.create(data)
         .then(response => {
-           var paths=this.imageUrl1;
-        var path1=this.imageUrl2
+        var paths=this.imageUrl1;
+        var path1=this.imageUrl2;
+        var imagename=this.imageName
+        var imagename1=this.imageName1
        for(var i = 0; i < paths.length; i++){
                  console.log("6666666")
               var data1 = {
+              name:imagename[i],
               jinduId: response.data.id,
               path:paths[i],
               zujianid:1,
@@ -670,6 +671,7 @@ import ImageService from "../services/ImageService"
               for(var i = 0; i < path1.length; i++){
                  console.log("888888")
               var data2 = {
+              name:imagename1[i],
               jinduId: response.data.id,
               path:path1[i],
               zujianid:2,
@@ -679,19 +681,6 @@ import ImageService from "../services/ImageService"
                 console.log(e);
               });}
           this.tableonload();
-          // this.selectImage()
-          // for(var i = 0; i < path.length; i++){
-          //     var data1 = {
-          //     name:"项目进度更新",
-          //     jinduId: response.data.id,
-          //     path:path[i],
-          //     }
-          //     ImageService.create(data1).then(response => {
-          //     }).catch(e => {
-          //       console.log(e);
-          //     });
-          // }
-          
           var data = {
               userId:this.currentUser.id,
               jinduId: response.data.id,
@@ -993,9 +982,12 @@ import ImageService from "../services/ImageService"
             // }
             //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
             this.imageUrl1.push(response.url)
+            this.imageName.push(file.name)
             // this.imageUrl2.push(response.url)
-            console.log(this.imageUrl1)
-            this.tmpUrl = this.imageUrl;
+            // console.log(this.imageUrl1)
+            // this.name="报告"
+            // console.log(file.filename)
+            // this.tmpUrl = this.imageUrl;
             this.$forceUpdate();
         },
          handleAvatarChange1(file1,fileList1,index) {
@@ -1020,8 +1012,10 @@ import ImageService from "../services/ImageService"
             // this.imageUrlback[index] = response.url;
             // this.$forceUpdate();
             this.imageUrl2.push(response1.url)
-            console.log(this.imageUrl2)
-            // this.tmpUrl = this.imageUrl;
+            this.imageName1.push(file1.name)
+            // console.log(this.imageUrl2)
+            // console.log(file1.filename)
+            // console.log(file1.name)
             this.$forceUpdate();
         },
       beforeAvatarUpload(file) {
@@ -1039,6 +1033,8 @@ import ImageService from "../services/ImageService"
 
     data() {
       return {
+        imageName1:[],
+        imageName:[],
         code:"",
         jianzhu:[],
         tableData1: [],

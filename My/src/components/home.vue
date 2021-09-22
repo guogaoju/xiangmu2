@@ -323,16 +323,41 @@ export default {
         selectDaiban(){
             authservice.get(this.currentUser.id).then( resUser =>{
                 var arr=[0,0,0,0]
+                //arr里面四个元素分别对应四个页面的代办
+                //0-还款 1-采购 2-企业评级 3-供应商评级
                 for (var i = 0; i < resUser.data.depts.length; i++) {
-                         DaibanService.findByLog(resUser.data.depts[i].id).then(response=>{
-                             for(var j = 0; j < response.data.length; j++){
-                                arr[j]=arr[j] +response.data[j].sum
-                                // console.log(arr)
-                             }
-                             this.tableData=arr
-                             console.log(this.tableData);
+                    //从后台得到部门i的所有页面的代办
+                    DaibanService.findByLog(resUser.data.depts[i].id).then(response=>{
+                        //对所有的页面的代办循环,找到匹配的部门,把数量加进arr里
+                        for(var j = 0; j < response.data.length; j++){
+                            switch (response.data[j].name){
+                                //case后面的内容必须跟数据库里的页面名字一致，不然匹配不上
+                                case "还款管理":
+                                    arr[0]++;
+                                    break;
+                                case "采购管理":
+                                    arr[1]++;
+                                    break;
+                                case "企业评级":
+                                     arr[2]++;
+                                    break;
+                                case "供应商评级":
+                                    arr[3]++;
+                                    break;
+                            }
+                            console.log(arr)
+                        }
+                             //this.tableData=arr
+                             //console.log(this.tableData);
                     })
                 }
+                //把tableData填好
+                this.tableData = [];
+                this.tableData.push({name:还款管理,sum:arr[0]});
+                this.tableData.push({name:采购管理,sum:arr[1]});
+                this.tableData.push({name:企业评级,sum:arr[2]});
+                this.tableData.push({name:供应商评级,sum:arr[3]});
+
              })    
         },
         changeDate() {

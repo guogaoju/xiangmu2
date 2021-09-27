@@ -254,12 +254,12 @@
                       </div>
                   </template>
           </el-table-column>
-          <!-- <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
+          <el-table-column min-width="100"  prop="huan_stream" label="还款流水" align="center">
                   <template slot-scope="scope">
                       <el-image style="width: 100px; height: 100px" :src="scope.row.huankuanimages[0].path" :preview-src-list="[scope.row.huankuanimages[0].path]">
                       </el-image>
                   </template>
-          </el-table-column> -->
+          </el-table-column>
           <el-table-column prop="nodeName" label="当前流程" width="120" align="center" :formatter="getfor">
           </el-table-column>
           <el-table-column
@@ -405,13 +405,16 @@ import {getInputValue} from "../util";
 import HuankuanImageService from "../services/HuankuanImage";
   export default {
     created () {
-      // this.selectdept1();
+      this.selectdept1();
           this.tableonload();
       },
       computed: {
     currentUser() {
       return this.$store.state.auth.user;
     }
+  },
+   mounted: function () {
+      this.updateType()
   },
     methods: {
       //关闭弹框的事件
@@ -935,14 +938,27 @@ import HuankuanImageService from "../services/HuankuanImage";
                                     }                        
         })
        },
+      
+  updateType () {
+      let type = this.$route.query.type
+      // 判断type的值，更改activeName的值
+      if (type === 'second') {
+        this.activeName = 'second'
+      } else if (type === 'b') {
+        this.activeName = 'b'
+      // eslint-disable-next-line keyword-spacing
+      }else if (type === 'c') {
+        this.activeName = 'c'
+      }
+    },
       handleClick(tab, event) {
-        // 触发‘用户管理’事件
-        if(tab.name == 'second'){
-        	this.selectdept1();
-        }else{
-        	// 触发‘用户管理’事件
-        // console.log("else")
-        }
+        // // 触发‘用户管理’事件
+        // if(tab.name == 'second'){
+        // 	this.selectdept1();
+        // }else{
+        // 	// 触发‘用户管理’事件
+        // // console.log("else")
+        // }
       },
       filterCurrent(value, row){
             return row.current_process === value;

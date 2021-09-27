@@ -303,14 +303,50 @@ export default {
           this.selectDaiban();
       },
     methods: {
-        handdle(row, event, column) { 
-       DaibanService.get(row.id)
-                    .then(response => {
-                            this.$router.push(response.data.link);
-                        }).catch(e => {
-                            console.log(e);
-                                });
-              
+        handdle(row, event, column) {
+            if(row.name==="还款管理"){}
+            switch(row.name){
+                                   case "还款管理":
+                                        this.$router.push({
+                                        path:"/HuanKuan",
+                                        query:{
+                                            type:'second'
+                                        }
+                                    });      
+                                       break;
+                                    case "采购管理":
+                                       this.$router.push({
+                                        path:"/CaiGou",
+                                        query:{
+                                            type:'second'
+                                        }
+                                    });      
+                                       break;
+                                    case "企业评级":
+                                      this.$router.push({
+                                        path:"/Qiye_pingji",
+                                        query:{
+                                            type:'second'
+                                        }
+                                    });      
+                                       break;
+                                    case "供应商评级":
+                                       this.$router.push({
+                                        path:"/Pingji",
+                                        query:{
+                                            type:'second'
+                                        }
+                                    });      
+                                       break;
+                                    case "付款管理":
+                                       this.$router.push({
+                                        path:"/FuKuan",
+                                        query:{
+                                            type:'second'
+                                        }
+                                    });      
+                                       break;      
+                               }
        },
         // kanClick(index,row){     
         //             DaibanService.get(this.tableData[index].id)
@@ -320,19 +356,40 @@ export default {
         //                     console.log(e);
         //                         });
         // },
-        selectDaiban(){
-            authservice.get(this.currentUser.id).then( resUser =>{
-                var arr=[0,0,0,0]
+         selectDaiban(){
+            authservice.get(this.currentUser.id).then( async resUser =>{
+                var arr=[0,0,0,0,0]
                 for (var i = 0; i < resUser.data.depts.length; i++) {
-                         DaibanService.findByLog(resUser.data.depts[i].id).then(response=>{
+                        await DaibanService.findByLog(resUser.data.depts[i].id).then(response=>{
                              for(var j = 0; j < response.data.length; j++){
-                                arr[j]=arr[j] +response.data[j].sum
-                                // console.log(arr)
-                             }
-                             this.tableData=arr
-                             console.log(this.tableData);
+                               switch(response.data[j].name){
+                                   case "还款管理":
+                                       arr[0]=arr[0]+response.data[j].sum;
+                                       break;
+                                    case "采购管理":
+                                       arr[1]=arr[1]+response.data[j].sum;
+                                       break;
+                                    case "企业评级":
+                                       arr[2]=arr[2]+response.data[j].sum;
+                                       break;
+                                    case "供应商评级":
+                                       arr[3]=arr[3]+response.data[j].sum;
+                                       break;
+                                    case "付款管理":
+                                       arr[4]=arr[4]+response.data[j].sum;
+                                       break;      
+                               }
+                                // console.log(arr);
+                             }    
                     })
-                }
+                }               
+                                this.tableData=[];
+                                this.tableData.push({name:"还款管理",sum:arr[0]})
+                                this.tableData.push({name:"采购管理",sum:arr[1]})
+                                this.tableData.push({name:"企业评级",sum:arr[2]})
+                                this.tableData.push({name:"供应商评级",sum:arr[3]})
+                                this.tableData.push({name:"付款管理",sum:arr[4]})
+                                // console.log(this.tableData)
              })    
         },
         changeDate() {

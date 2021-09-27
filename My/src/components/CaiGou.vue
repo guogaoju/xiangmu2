@@ -667,14 +667,30 @@ import FukuanImageService from "../services/FukuanImage";
 import FukuanState from "../services/FukuanState";
   export default {
     created () {
+      this.selectdept1()
           this.tableonload(); 
       },
+      mounted: function () {
+    this.updateType()
+  },
       computed: {
     currentUser() {
       return this.$store.state.auth.user;
     }
   },
     methods: {
+      updateType () {
+      let type = this.$route.query.type
+      // 判断type的值，更改activeName的值
+      if (type === 'second') {
+        this.activeName = 'second'
+      } else if (type === 'b') {
+        this.activeName = 'b'
+      // eslint-disable-next-line keyword-spacing
+      }else if (type === 'c') {
+        this.activeName = 'c'
+      }
+    },
       //关闭弹框的事件
     closeDialog(){
       this.fileList=[]
@@ -1459,12 +1475,14 @@ import FukuanState from "../services/FukuanState";
         })
        },
       handleClick(tab, event) {
-        // 触发‘待办事项’事件
-        if(tab.name == 'second'){
-        	this.selectdept1();
-        }else{
-        	// 触发‘其他’事件
-        }
+        // let type = this.$route.query.type
+        // // 触发‘待办事项’事件
+        // if(type === 'second'){
+        //   // this.selectdept1();
+        //   this.activeName = 'second'
+        // }else{
+        // 	// 触发‘其他’事件
+        // }
       },
       filterCurrent(value, row){
             return row.current_process === value;

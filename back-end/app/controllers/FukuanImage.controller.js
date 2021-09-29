@@ -12,6 +12,7 @@ exports.create = (req, res) => {
     return;
   }
   const FukuanImages = {
+        name:req.body.name ,
         fukuanId: req.body.fukuanId ,
         path:req.body.path,
         zujianid:req.body.zujianid,

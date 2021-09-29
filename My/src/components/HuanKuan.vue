@@ -668,7 +668,7 @@ import HuankuanImageService from "../services/HuankuanImage";
        },
        addservice(){
               this.dialogFormVisible=false;
-              var path=this.imageUrl1
+             
           var data = {
             code:this.code,
             item_name: this.huankuan.item_name,
@@ -682,10 +682,11 @@ import HuankuanImageService from "../services/HuankuanImage";
           }
         HuanKuanService.create(data)
         .then(response => {
-          this.tableonload();
+           var path=this.imageUrl1
+           var imagename=this.imageName
           for(var i = 0; i < path.length; i++){
               var data1 = {
-              name:"还款管理",
+              name:imagename[i],
               huankuanId: response.data.id,
               path:path[i],
               }
@@ -694,6 +695,7 @@ import HuankuanImageService from "../services/HuankuanImage";
                 console.log(e);
               });
           }
+          this.tableonload();
           var data = {
               userId:this.currentUser.id,
               huankuanId: response.data.id,
@@ -715,6 +717,8 @@ import HuankuanImageService from "../services/HuankuanImage";
           this.$refs[huankuan].validate((valid) => {
           if (this.dialogTitle ==  "addData"&&valid ) {
         this.addservice();
+        this.tableonload();
+        this.$forceUpdate();
         this.addDaiban();
       } else if(this.dialogTitle ==  "updataData") {
         this.updateservice();
@@ -984,7 +988,7 @@ import HuankuanImageService from "../services/HuankuanImage";
             //     http.delete('/general/deletefile',{data:{filename:this.tmpUrl}});
             // }
             this.imageUrl1.push(res.url)
-            console.log(this.imageUrl1)
+            this.imageName.push(file.name)
             this.tmpUrl = this.imageUrl;
             this.$forceUpdate();
             //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
@@ -1007,6 +1011,7 @@ import HuankuanImageService from "../services/HuankuanImage";
 
     data() {
       return {
+        imageName:[],
         code:"",
         jianzhu:[],
         nextStateDept:[],

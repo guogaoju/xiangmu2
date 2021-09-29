@@ -1137,9 +1137,12 @@ import FukuanImageService from "../services/FukuanImage";
           this.addDaiban();
           var paths=this.imageUrl1;
         var path1=this.imageUrl2
+        var imagename=this.imageName
+        var imagename1=this.imageName1
        for(var i = 0; i < paths.length; i++){
-                //  console.log("6666666")
+                 console.log(imagename[i])
               var data1 = {
+              name:imagename[i],
               fukuanId: this.pa,
               path:paths[i],
               zujianid:1,
@@ -1149,9 +1152,11 @@ import FukuanImageService from "../services/FukuanImage";
                 console.log(e);
               });}
               var path1=this.imageUrl2
+              var imagename1=this.imageName1
               for(var i = 0; i < path1.length; i++){
-                //  console.log("888888")
+                console.log(imagename1[i])
               var data2 = {
+              name:imagename1[i],
               fukuanId: this.pa,
               path:path1[i],
               zujianid:2,
@@ -1480,8 +1485,9 @@ import FukuanImageService from "../services/FukuanImage";
             // this.imageUrlback[index] = response.url;
             // this.$forceUpdate();
             this.imageUrl1.push(response.url)
+            this.imageName.push(file.name)
             // this.imageUrl2.push(response.url)
-            console.log(this.imageUrl1)
+             console.log(this.imageName)
             this.tmpUrl = this.imageUrl;
             this.$forceUpdate();
         },
@@ -1513,7 +1519,8 @@ import FukuanImageService from "../services/FukuanImage";
             // this.imageUrlback[index] = response.url;
             // this.$forceUpdate();
             this.imageUrl2.push(response1.url)
-            console.log(this.imageUrl2)
+            this.imageName1.push(file1.name)
+            console.log(this.imageName1)
             // this.tmpUrl = this.imageUrl;
             this.$forceUpdate();
         },
@@ -1543,6 +1550,8 @@ import FukuanImageService from "../services/FukuanImage";
     },
     data() {
       return {
+        imageName1:[],
+        imageName:[],
         code:"",
         isshow2:false,
         gys:[],

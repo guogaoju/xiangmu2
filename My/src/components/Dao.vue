@@ -229,7 +229,7 @@ computed: {
                         this.breadcrumbItems  = ['建筑项目进度更新']
                         break;
                     case '3-6':
-                        this.$router.push('/Test');
+                        this.$router.push('/Daping');
                         this.breadcrumbItems  = ['数据分析']
                         break;
                     case '4-1':

@@ -55,6 +55,10 @@ export default new Router({
           component: () => import('@/components/Hexin.vue')
         },
         {
+          path: '/Daping',
+          component: () => import('@/components/Daping.vue')
+        },
+        {
           path: '/Test',
           component: () => import('@/components/Test.vue')
         },

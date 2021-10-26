@@ -139,6 +139,7 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
+import AuthService from "../services/auth.service";
     export default {
         data(){
             return {
@@ -229,8 +230,18 @@ computed: {
                         this.breadcrumbItems  = ['建筑项目进度更新']
                         break;
                     case '3-6':
+                         AuthService.get(this.currentUser.id).then((response)=>{
+                            for(var i=0;i<response.data.roles.length;i++){
+                            if(response.data.roles[i].name==="datav_admin"||response.data.roles[i].name==="admin"){
                         this.$router.push('/Daping');
                         this.breadcrumbItems  = ['数据分析']
+                             }else{
+                                 alert("您没有权限访问")
+                             }
+                             }
+        
+                            })
+                       
                         break;
                     case '4-1':
                         this.$router.push('/Ruku');

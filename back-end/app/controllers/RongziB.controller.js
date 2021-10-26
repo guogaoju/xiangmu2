@@ -28,9 +28,25 @@ RongziB.create(rongzib)
 exports.findAll = (req, res) => {
     // const name = req.query.name;
     // var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
-    RongziB.findAll({order: [['s', 'DESC']]})
-      .then(data => {
-        res.send(data);
+    // RongziB.findAll({ limit:12,order: [['createdAt', 'ASC']]})
+    RongziB.findAll({attributes:['s'], group :'s',})
+      .then(async data => {
+        var arr=[];
+        for(var i=0;i<data.length;i++){
+          await RongziB.findAll({where:{s:data[i].s}, limit:12,order: [['createdAt', 'DESC']]},).then(data1 =>{
+            data1=data1.reverse()
+            for(var j=0;j<data1.length;j++){
+              arr.push(data1[j])
+            }
+          }).catch(err => {
+            res.status(500).send({
+              message:
+                err.message || "Some error occurred while retrieving RongziB."
+            });
+          });
+        }
+        res.send(arr);
+       
       })
       .catch(err => {
         res.status(500).send({

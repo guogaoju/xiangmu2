@@ -194,9 +194,12 @@ export default {
     },
     selectUser(){
       AuthService.get(this.currentUser.id).then((response)=>{
-        if(response.data.roles[0].name==="admin"){
+        for(var i=0;i<response.data.roles.length;i++){
+          if(response.data.roles[i].name==="admin"){
             this.annui=false
           }
+        }
+       
       })
     },
     rowClicked(row, event, column) {

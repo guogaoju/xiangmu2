@@ -209,8 +209,8 @@
         class="demo-ruleForm">
         <el-row>
             <el-col :span="12">
-                <el-form-item label="日期" :label-width="formLabelWidth">
-                    <el-input v-model="rongziB.x" autocomplete="off"></el-input>
+                <el-form-item label="日期" :label-width="formLabelWidth" >
+                    <el-input v-model="rongziB.x" autocomplete="off" placeholder="格式如：2020年11月1号：11/1/2020"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -221,9 +221,14 @@
                 </el-form-item>  
              </el-col>
              <el-col :span="12">
-                 <el-form-item label="项目名称" :label-width="formLabelWidth">
-                    <el-input v-model="rongziB.s" autocomplete="off"></el-input>
-                </el-form-item>  
+                <el-form-item label="项目名称" prop="rongziB.s" :label-width="formLabelWidth">
+                    <el-select filterable v-model="rongziB.s" placeholder="请选择项目">
+                        <el-option label="桃新大道" value="桃新大道"></el-option>
+                        <el-option label="塔田安置房" value="塔田安置房"></el-option>
+                        <el-option label="南昌县文化中心" value="南昌县文化中心"></el-option>
+                        <el-option label="街上村安置房" value="街上村安置房"></el-option>
+                    </el-select>
+                </el-form-item>
              </el-col>
         </el-row>
         </el-form>
@@ -241,7 +246,7 @@
         <el-row>
             <el-col :span="12">
                 <el-form-item label="日期" :label-width="formLabelWidth">
-                    <el-input v-model="xinyongA.x" autocomplete="off"></el-input>
+                    <el-input v-model="xinyongA.x" autocomplete="off" placeholder="格式如：2020年11月1号：11/1/2020"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -253,7 +258,11 @@
              </el-col>
              <el-col :span="12">
                  <el-form-item label="企业" :label-width="formLabelWidth">
-                    <el-input v-model="xinyongA.s" autocomplete="off"></el-input>
+                    <el-select filterable v-model="xinyongA.s" placeholder="请选择企业">
+                        <el-option label="北京城建" value="北京城建"></el-option>
+                        <el-option label="江西诺金" value="江西诺金"></el-option>
+                        <el-option label="江西圳发" value="江西圳发"></el-option>
+                    </el-select> 
                 </el-form-item>  
              </el-col>
         </el-row>
@@ -272,7 +281,7 @@
         <el-row>
             <el-col :span="12">
                 <el-form-item label="日期" :label-width="formLabelWidth">
-                    <el-input v-model="alpha.x" autocomplete="off"></el-input>
+                    <el-input v-model="alpha.x" autocomplete="off" placeholder="格式如：2020年11月1号：11/1/2020"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -283,9 +292,14 @@
                 </el-form-item>  
              </el-col>
              <el-col :span="12">
-                 <el-form-item label="项目名称" :label-width="formLabelWidth">
-                    <el-input v-model="alpha.s" autocomplete="off"></el-input>
-                </el-form-item>  
+                 <el-form-item label="项目名称" prop="alpha.s" :label-width="formLabelWidth">
+                    <el-select filterable v-model="alpha.s" placeholder="请选择项目">
+                        <el-option label="桃新大道" value="桃新大道"></el-option>
+                        <el-option label="塔田安置房" value="塔田安置房"></el-option>
+                        <el-option label="南昌县文化中心" value="南昌县文化中心"></el-option>
+                        <el-option label="街上村安置房" value="街上村安置房"></el-option>
+                    </el-select>
+                </el-form-item> 
              </el-col>
         </el-row>
         </el-form>
@@ -303,7 +317,7 @@
         <el-row>
             <el-col :span="12">
                 <el-form-item label="日期" :label-width="formLabelWidth">
-                    <el-input v-model="beta.x" autocomplete="off"></el-input>
+                    <el-input v-model="beta.x" autocomplete="off" placeholder="格式如：2020年11月1号：11/1/2020"></el-input>
                 </el-form-item>
             </el-col>
         </el-row>
@@ -315,7 +329,11 @@
              </el-col>
              <el-col :span="12">
                  <el-form-item label="企业" :label-width="formLabelWidth">
-                    <el-input v-model="beta.s" autocomplete="off"></el-input>
+                    <el-select filterable v-model="beta.s" placeholder="请选择企业">
+                        <el-option label="北京城建" value="北京城建"></el-option>
+                        <el-option label="江西诺金" value="江西诺金"></el-option>
+                        <el-option label="江西圳发" value="江西圳发"></el-option>
+                    </el-select> 
                 </el-form-item>  
              </el-col>
         </el-row>
@@ -415,8 +433,9 @@ export default {
         });
       },
       updateClick(index,row){
+          this.dange={}
           this.dialogFormVisible=true
-          var pa=this.tableData[index].id;
+            var pa=this.tableData[index].id;
           dangeService.get(pa).then(response => {
                                           this.dange=response.data;
                                         //   this.chuku.nodeName = response.data.ChukuState.nodeName;
@@ -506,6 +525,7 @@ export default {
            this.dialogFormVisible1=true
            this.dialogTitle = "updateData"; 
           var pa=this.tableData1[index].id;
+          console.log(pa)
           RongziBService.get(pa).then(response => {
                                           this.rongziB=response.data;
                                         //   this.chuku.nodeName = response.data.ChukuState.nodeName;

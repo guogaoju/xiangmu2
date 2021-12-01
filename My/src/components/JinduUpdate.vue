@@ -3,8 +3,8 @@
   <!-- 业务管理/建筑项目进度更新 -->
   <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>业务管理</el-breadcrumb-item>
-      <el-breadcrumb-item>建筑项目进度更新</el-breadcrumb-item>
+      <el-breadcrumb-item>项目管理</el-breadcrumb-item>
+      <el-breadcrumb-item>建筑项目信息</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin : 8px;">
       <el-col :span="1.5">
@@ -83,6 +83,9 @@
                           </el-image>
                       </template>
               </el-table-column>
+              <el-table-column min-width="55"  prop="photo1" label="项目地址" align="center">
+<el-link type="primary"  href="https://huidaomodels.cn">三维模型展示</el-link>
+                </el-table-column>
               <!-- <el-table-column
               prop="name"
               label="风控报告"

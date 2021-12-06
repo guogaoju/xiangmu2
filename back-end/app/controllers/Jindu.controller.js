@@ -16,8 +16,14 @@ exports.create = (req, res) => {
   const jindu = {
         code:req.body.code,
         item_name:req.body.item_name,
+        address:req.body.address,
+        introduction:req.body.introduction,
+        scale:req.body.scale,
         before_jindu: req.body.before_jindu,
         after_jindu: req.body.after_jindu ,
+        total_money:req.body.total_money,
+        surplus_money: req.body.surplus_money ,
+        use_money:req.body.use_money,
         photo:req.body.photo,
         // current_process:req.body.current_process
   };

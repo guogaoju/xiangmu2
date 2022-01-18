@@ -40,7 +40,7 @@
                     <div slot="header" class="clearfix">
                         <span>加权平均α比例</span>
                     </div>加权平均α比例
-                    <el-progress :percentage="59.7" color="#42b983"></el-progress>
+                    <el-progress :percentage="66.3" color="#42b983"></el-progress>
                 </el-card>
                 <el-card class="mgb20" shadow="hover">
                     <div class="schart-box">
@@ -56,7 +56,7 @@
                             <div class="grid-content grid-con-1">
                                 <i class="el-icon-lx-people grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">290,638,300</div>
+                                    <div class="grid-num">627,965,700</div>
                                     <div style="font-size:18px">营业收入</div>
                                 </div>
                             </div>
@@ -67,7 +67,7 @@
                             <div class="grid-content grid-con-2">
                                 <i class="el-icon-lx-notice grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">231,122,700</div>
+                                    <div class="grid-num">477,590,550</div>
                                     <div style="font-size:18px">贷款余额</div>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                             <div class="grid-content grid-con-3">
                                 <i class="el-icon-lx-goods grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">59,515,600</div>
+                                    <div class="grid-num">150,375,150</div>
                                     <div style="font-size:18px">累计回款</div>
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                             <div class="grid-content grid-con-3">
                                 <i class="el-icon-lx-goods grid-con-icon"></i>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">18,635,300</div>
+                                    <div class="grid-num">43,957,200</div>
                                     <div style="font-size:18px">营业利润</div>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@ export default {
                     position: 'left',
                 },
                 bgColor: '#fbfbfb',
-                labels: ['桃心大道', '文化中心', '塔田安置房', '唐村安置房一期', '邓埠安置房',],
+                labels: ['桃新大道', '文化中心', '塔田安置房', '唐村安置房一期', '邓埠安置房',],
                 datasets: [
                     {
                         data: [40, 15, 20, 15, 10,]
@@ -191,14 +191,14 @@ export default {
                     text: '建筑项目融资余额(万)'
                 },
                 xRorate: 50,
-                labels: ['2020/8', '2020/9', '2020/10', '2020/11', '2020/12','2021/1', '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7'],
+                labels: [ '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7','2021/8', '2021/9', '2021/10', '2021/11','2021/12','2022/1',],
                 datasets: [
                     {
                         label: '塔田安置房',
                         data: [3385, 3385, 3385, 3385,3385, 3385, 3385, 3385,3385, 3385, 3385, 3385,]
                     },
                     {
-                        label: '桃心大道',
+                        label: '桃新大道',
                         data: [6536, 6536, 6536, 6536, 10778,8060,8372,9997,12876,18362,17362,19342,]
                     },
                     {
@@ -214,7 +214,7 @@ export default {
                 },
                 
                 xRorate: 50,
-                labels: ['2020/8', '2020/9', '2020/10', '2020/11', '2020/12','2021/1', '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7'],
+                labels: [ '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7','2021/8', '2021/9', '2021/10', '2021/11','2021/12','2022/1',],
                 datasets: [
                     {
                         label: '北京城建',
@@ -248,10 +248,10 @@ export default {
                     text: '建筑项目α风险值%'
                 },
                 xRorate: 50,
-                labels: ['2020/8', '2020/9', '2020/10', '2020/11', '2020/12','2021/1', '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7'],
+                labels: [ '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7','2021/8', '2021/9', '2021/10', '2021/11','2021/12','2022/1',],
                 datasets: [
                     {
-                        label: '桃心大道',
+                        label: '桃新大道',
                         data: [46, 46, 39, 39, 62,60,60,56,58,56,57,57]
                     },
                     {
@@ -270,7 +270,7 @@ export default {
                     text: '建筑企业β风险值%'
                 },
                 xRorate: 50,
-                labels: ['2020/8', '2020/9', '2020/10', '2020/11', '2020/12','2021/1', '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7'],
+                labels: [ '2021/2', '2021/3', '2021/4', '2021/5','2021/6', '2021/7','2021/8', '2021/9', '2021/10', '2021/11','2021/12','2022/1',],
                 datasets: [
                     {
                         label: '北京城建',

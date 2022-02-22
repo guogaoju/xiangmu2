@@ -270,7 +270,7 @@
               </el-table-column>
               <el-table-column min-width="120"  prop="statement" label="结算单" align="center">
                       <template slot-scope="scope">
-                          <el-image style="width: 100px; height: 100px" :src="scope.row.statement" :preview-src-list="[scope.row.statement]">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.fukuanimages[0].path" :preview-src-list="[scope.row.fukuanimages[0].path]">
                           </el-image>
                       </template>
               </el-table-column>
@@ -282,7 +282,7 @@
               </el-table-column> -->
               <el-table-column min-width="120"  prop="bill" label="发票" align="center">
                       <template slot-scope="scope">
-                          <el-image style="width: 100px; height: 100px" :src="scope.row.bill" :preview-src-list="[scope.row.bill]">
+                          <el-image style="width: 100px; height: 100px" :src="scope.row.fukuanimages[0].path" :preview-src-list="[scope.row.fukuanimages[0].path]">
                           </el-image>
                       </template>
               </el-table-column>
@@ -669,14 +669,30 @@ import FukuanwuliaoService from "../services/Fukuanwuliao";
 import FukuanImageService from "../services/FukuanImage";
   export default {
     created () {
+          this.selectdept1();
           this.tableonload(); 
       },
+       mounted: function () {
+      this.updateType()
+  },
       computed: {
     currentUser() {
       return this.$store.state.auth.user;
     }
   },
     methods: {
+       updateType () {
+      let type = this.$route.query.type
+      // 判断type的值，更改activeName的值
+      if (type === 'second') {
+        this.activeName = 'second'
+      } else if (type === 'b') {
+        this.activeName = 'b'
+      // eslint-disable-next-line keyword-spacing
+      }else if (type === 'c') {
+        this.activeName = 'c'
+      }
+    },
       //关闭弹框的事件
     closeDialog(){
       this.fileList1=[]
@@ -1121,9 +1137,12 @@ import FukuanImageService from "../services/FukuanImage";
           this.addDaiban();
           var paths=this.imageUrl1;
         var path1=this.imageUrl2
+        var imagename=this.imageName
+        var imagename1=this.imageName1
        for(var i = 0; i < paths.length; i++){
-                //  console.log("6666666")
+                 console.log(imagename[i])
               var data1 = {
+              name:imagename[i],
               fukuanId: this.pa,
               path:paths[i],
               zujianid:1,
@@ -1133,9 +1152,11 @@ import FukuanImageService from "../services/FukuanImage";
                 console.log(e);
               });}
               var path1=this.imageUrl2
+              var imagename1=this.imageName1
               for(var i = 0; i < path1.length; i++){
-                //  console.log("888888")
+                console.log(imagename1[i])
               var data2 = {
+              name:imagename1[i],
               fukuanId: this.pa,
               path:path1[i],
               zujianid:2,
@@ -1426,12 +1447,12 @@ import FukuanImageService from "../services/FukuanImage";
         })
        },
       handleClick(tab, event) {
-        // 触发‘待办事项’事件
-        if(tab.name == 'second'){
-        	this.selectdept1();
-        }else{
-        	// 触发‘其他’事件
-        }
+        // // 触发‘待办事项’事件
+        // if(tab.name == 'second'){
+        // 	this.selectdept1();
+        // }else{
+        // 	// 触发‘其他’事件
+        // }
       },
       filterCurrent(value, row){
             return row.current_process === value;
@@ -1464,8 +1485,9 @@ import FukuanImageService from "../services/FukuanImage";
             // this.imageUrlback[index] = response.url;
             // this.$forceUpdate();
             this.imageUrl1.push(response.url)
+            this.imageName.push(file.name)
             // this.imageUrl2.push(response.url)
-            console.log(this.imageUrl1)
+             console.log(this.imageName)
             this.tmpUrl = this.imageUrl;
             this.$forceUpdate();
         },
@@ -1497,7 +1519,8 @@ import FukuanImageService from "../services/FukuanImage";
             // this.imageUrlback[index] = response.url;
             // this.$forceUpdate();
             this.imageUrl2.push(response1.url)
-            console.log(this.imageUrl2)
+            this.imageName1.push(file1.name)
+            console.log(this.imageName1)
             // this.tmpUrl = this.imageUrl;
             this.$forceUpdate();
         },
@@ -1527,6 +1550,8 @@ import FukuanImageService from "../services/FukuanImage";
     },
     data() {
       return {
+        imageName1:[],
+        imageName:[],
         code:"",
         isshow2:false,
         gys:[],

@@ -3,8 +3,8 @@
   <!-- 业务管理/建筑项目进度更新 -->
   <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>业务管理</el-breadcrumb-item>
-      <el-breadcrumb-item>建筑项目进度更新</el-breadcrumb-item>
+      <el-breadcrumb-item>项目管理</el-breadcrumb-item>
+      <el-breadcrumb-item>建筑项目信息</el-breadcrumb-item>
     </el-breadcrumb>
     <el-row style="margin : 8px;">
       <el-col :span="1.5">
@@ -49,6 +49,24 @@
                           </div>
                       </template>
               </el-table-column>
+              <el-table-column
+              prop="address"
+              label="项目地址"
+              min-width="180"
+              align="center">
+              </el-table-column>
+              <el-table-column
+              prop="introduction"
+              label="项目简介"
+              min-width="180"
+              align="center">
+              </el-table-column>
+              <el-table-column
+              prop="scale"
+              label="α比例(%)"
+              min-width="100"
+              align="center">
+              </el-table-column>
               <el-table-column min-width='100' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
@@ -63,7 +81,7 @@
                           </div>
                       </template>
               </el-table-column>
-              <el-table-column min-width='100' align="center">
+              <el-table-column min-width='120' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
@@ -77,12 +95,33 @@
                           </div>
                       </template>
               </el-table-column>
-              <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
+              <el-table-column
+              prop="total_money"
+              label="授信总额"
+              min-width="120"
+              align="center">
+              </el-table-column>
+              <el-table-column
+              prop="surplus_money"
+              label="贷款余额"
+              min-width="120"
+              align="center">
+              </el-table-column>
+              <el-table-column
+              prop="use_money"
+              label="已用额度"
+              min-width="120"
+              align="center">
+              </el-table-column>
+              <el-table-column min-width="120"  prop="photo" label="现场照片" align="center">
                       <template slot-scope="scope">
                           <el-image style="width: 100px; height: 100px" :src="scope.row.images[1].path" :preview-src-list="[scope.row.images[1].path]">
                           </el-image>
                       </template>
               </el-table-column>
+              <el-table-column min-width="100"  prop="photo1" label="三维模型" align="center">
+<el-link type="primary"  href="https://huidaomodels.cn">三维模型展示</el-link>
+                </el-table-column>
               <!-- <el-table-column
               prop="name"
               label="风控报告"
@@ -93,7 +132,7 @@
               <el-table-column
                 fixed="right"
                 label="操作"
-                width="300"
+                width="240"
                 align="center">
                 <template slot-scope="scope">
                   <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
@@ -139,6 +178,24 @@
                           </div>
                       </template>
               </el-table-column>
+              <el-table-column
+              prop="address"
+              label="项目地址"
+              min-width="180"
+              align="center">
+              </el-table-column>
+              <el-table-column
+              prop="introduction"
+              label="项目简介"
+              min-width="180"
+              align="center">
+              </el-table-column>
+              <el-table-column
+              prop="scale"
+              label="α比例(%)"
+              min-width="80"
+              align="center">
+              </el-table-column>
               <el-table-column min-width='100' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
@@ -153,7 +210,7 @@
                           </div>
                       </template>
               </el-table-column>
-              <el-table-column min-width='100' align="center">
+              <el-table-column min-width='120' align="center">
                       <!-- eslint-disable-next-line -->
                       <template slot="header" slot-scope="scope">
                           <el-popover placement="bottom" trigger="click">
@@ -167,6 +224,24 @@
                           </div>
                       </template>
               </el-table-column>
+              <el-table-column
+              prop="total_money"
+              label="授信总额"
+              min-width="120"
+              align="center">
+              </el-table-column>
+              <el-table-column
+              prop="surplus_money"
+              label="贷款余额"
+              min-width="120"
+              align="center">
+              </el-table-column>
+              <el-table-column
+              prop="use_money"
+              label="已用额度"
+              min-width="120"
+              align="center">
+              </el-table-column>
               <el-table-column min-width="55"  prop="photo" label="现场照片" align="center">
                       <template slot-scope="scope">
                           <el-image style="width: 100px; height: 100px" :src="scope.row.images[0].path" :preview-src-list="[scope.row.images[0].path]">
@@ -178,7 +253,7 @@
               <el-table-column
                 fixed="right"
                 label="操作"
-                width="300"
+                width="240"
                 align="center">
                 <template slot-scope="scope">
                   <el-button @click.stop="kanClick(scope.$index,tableData)" type="success" plain round size="small">查看</el-button>
@@ -211,8 +286,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="当前进度" prop="before_jindu" :label-width="formLabelWidth">
-            <el-input :disabled="validated" v-model="jindu.before_jindu"></el-input>
+          <el-form-item label="项目地址" prop="address" :label-width="formLabelWidth">
+           <el-input :disabled="validated" v-model="jindu.address"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -289,6 +364,42 @@
                       <div slot="tip" class="el-upload__tip"></div>
                     </el-upload>
                 </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="项目简介" prop="introduction" :label-width="formLabelWidth">
+           <el-input :disabled="validated" v-model="jindu.introduction"></el-input>
+          </el-form-item>
+        </el-col>
+         <el-col :span="12">
+          <el-form-item label="α比例(%)" prop="scale" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="jindu.scale"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="授信总额" prop="total_money" :label-width="formLabelWidth">
+           <el-input :disabled="validated" v-model="jindu.total_money"></el-input>
+          </el-form-item>
+        </el-col>
+         <el-col :span="12">
+          <el-form-item label="贷款余额" prop="surplus_money" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="jindu.surplus_money"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="已用额度" prop="use_money" :label-width="formLabelWidth">
+           <el-input :disabled="validated" v-model="jindu.use_money"></el-input>
+          </el-form-item>
+        </el-col>
+         <el-col :span="12">
+          <el-form-item label="当前进度" prop="before_jindu" :label-width="formLabelWidth">
+            <el-input :disabled="validated" v-model="jindu.before_jindu"></el-input>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-row>
@@ -644,8 +755,14 @@ import ImageService from "../services/ImageService"
           var data = {
             code:this.code,
           item_name: this.jindu.item_name,
+          address:this.jindu.address,
+          introduction:this.jindu.introduction,
+          scale:this.jindu.scale,
           before_jindu: this.jindu.before_jindu,
           after_jindu: this.jindu.after_jindu,
+          total_money:this.jindu.total_money,
+          surplus_money: this.jindu.surplus_money ,
+          use_money:this.jindu.use_money,
           photo:this.imageUrl,
           nodeName:this.jindu.nodeName
         }
@@ -864,11 +981,17 @@ import ImageService from "../services/ImageService"
              this.dialogFormVisible=false;
             var data = {
             id:this.jindu.id,
-            item_name: this.jindu.item_name,
-            before_jindu: this.jindu.before_jindu,
-            after_jindu: this.jindu.after_jindu,
-            photo:this.imageUrl,
-            nodeName:this.jindu.nodeName
+          item_name: this.jindu.item_name,
+          address:this.jindu.address,
+          introduction:this.jindu.introduction,
+          scale:this.jindu.scale,
+          before_jindu: this.jindu.before_jindu,
+          after_jindu: this.jindu.after_jindu,
+          total_money:this.jindu.total_money,
+          surplus_money: this.jindu.surplus_money ,
+          use_money:this.jindu.use_money,
+          photo:this.imageUrl,
+          nodeName:this.jindu.nodeName
         }
           JinduService.update(data.id,data)
         .then(response => {

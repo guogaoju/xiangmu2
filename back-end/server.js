@@ -60,7 +60,7 @@ function initial() {
  
   Role.create({
     id: 2,
-    name: "moderator"
+    name: "datav_admin"
   });
  
   Role.create({
@@ -833,6 +833,12 @@ require("./app/routes/Fukuanwuliao.routes")(app);
 require("./app/routes/CaigouImage.routes")(app);
 require("./app/routes/FukuanImage.routes")(app);
 require("./app/routes/HuankuanImage.routes")(app);
+require("./app/routes/Daikuan.routes")(app);
+require("./app/routes/Dange.routes")(app);
+require("./app/routes/RongziB.routes")(app);
+require("./app/routes/XinyongA.routes")(app);
+require("./app/routes/Alpha.routes")(app);
+require("./app/routes/Beta.routes")(app);
 // set port, listen for requests
 //local
 const PORT = process.env.PORT || 8080;

@@ -9,12 +9,19 @@
                     <div>
                         <el-menu
                         style="height:1000px;"
-                        default-active="1"
+                        default-active="0"
                         class="el-menu-vertical-demo"
                         background-color="#0f1126"
                         text-color="#fff"
                         active-text-color="#ffd04b"
                         @select="handleSelect">
+                        <el-submenu index="0">
+                            <template slot="title">
+                            <i class="el-icon-user-solid"></i>
+                            <span>核心企业管理</span>
+                            </template>
+                            <el-menu-item index="0-1">核心企业信息</el-menu-item>
+                        </el-submenu>
                         <el-submenu index="1">
                             <template slot="title">
                             <i class="el-icon-user-solid"></i>
@@ -23,18 +30,14 @@
                             <el-submenu index="1-1">
                             <template slot="title">企业信息管理</template>
                             <el-menu-item index="1-1-1">企业信息</el-menu-item>
-                            <el-menu-item index="1-1-2">建筑企业评级</el-menu-item>
+                            <el-menu-item index="1-1-2">企业评级</el-menu-item>
                             <el-menu-item index="1-1-3">企业财务数据</el-menu-item>
                             <el-menu-item index="1-1-4">企业访问记录</el-menu-item>
                             </el-submenu>
                             <el-submenu index="1-2">
-                            <template slot="title">材料供应商信息管理</template>
-                            <el-menu-item index="1-2-1">材料供应商资料</el-menu-item>
+                            <template slot="title">供应商信息管理</template>
+                            <el-menu-item index="1-2-1">供应商资料</el-menu-item>
                             <el-menu-item index="1-2-2">供应商评级管理</el-menu-item>
-                            </el-submenu>
-                            <el-submenu index="1-3">
-                            <template slot="title">核心企业管理</template>
-                            <el-menu-item index="1-3-1">核心企业信息</el-menu-item>
                             </el-submenu>
                         </el-submenu>
                         <el-submenu index="2">
@@ -42,9 +45,9 @@
                             <i class="el-icon-menu"></i>
                             <span>项目管理</span>
                             </template>
+                            <el-menu-item index="2-3">建筑项目信息</el-menu-item>
                             <el-menu-item index="2-1">建筑项目管理</el-menu-item>
                             <el-menu-item index="2-2">制造业项目管理</el-menu-item>
-                            <el-menu-item index="2-3">建筑项目信息</el-menu-item>
                         </el-submenu>
                         <el-submenu index="3">
                             <template slot="title">
@@ -54,7 +57,7 @@
                             <el-menu-item index="3-1">采购管理</el-menu-item>
                             <el-menu-item index="3-2">付款管理</el-menu-item>
                             <el-menu-item index="3-3">还款管理</el-menu-item>
-                            <el-menu-item index="3-4">建筑项目进度更新</el-menu-item>
+                            <!-- <el-menu-item index="3-4">建筑项目进度更新</el-menu-item> -->
                             <el-menu-item index="3-5">采购融资信息</el-menu-item>
                             <el-menu-item index="3-6">数据分析</el-menu-item>
                         </el-submenu>
@@ -139,6 +142,7 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
+import AuthService from "../services/auth.service";
     export default {
         data(){
             return {
@@ -192,7 +196,7 @@ computed: {
                         this.$router.push('/Fangwen');
                         this.breadcrumbItems  = ['企业访问记录']
                         break;
-                    case '1-3-1':
+                    case '0-1':
                         this.$router.push('/Hexin');
                         this.breadcrumbItems  = ['核心企业信息']
                         break;
@@ -212,6 +216,10 @@ computed: {
                         this.$router.push('/ZhizaoXiangmu');
                         this.breadcrumbItems  = ['制造业项目管理']
                         break;
+                    case '2-3':
+                        this.$router.push('/JinduUpdate');
+                        this.breadcrumbItems  = ['建筑项目进度更新']
+                        break;
                     case '3-1':
                         this.$router.push('/CaiGou');
                         this.breadcrumbItems  = ['采购管理']
@@ -224,13 +232,19 @@ computed: {
                         this.$router.push('/HuanKuan');
                         this.breadcrumbItems  = ['还款管理']
                         break;
-                    case '3-4':
-                        this.$router.push('/JinduUpdate');
-                        this.breadcrumbItems  = ['建筑项目进度更新']
-                        break;
                     case '3-6':
-                        this.$router.push('/Test');
+                         AuthService.get(this.currentUser.id).then((response)=>{
+                            for(var i=0;i<response.data.roles.length;i++){
+                            if(response.data.roles[i].name==="datav_admin"||response.data.roles[i].name==="admin"){
+                        this.$router.push('/Daping');
                         this.breadcrumbItems  = ['数据分析']
+                             }else{
+                                 alert("您没有权限访问")
+                             }
+                             }
+        
+                            })
+                       
                         break;
                     case '4-1':
                         this.$router.push('/Ruku');

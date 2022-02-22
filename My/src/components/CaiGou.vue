@@ -667,14 +667,30 @@ import FukuanImageService from "../services/FukuanImage";
 import FukuanState from "../services/FukuanState";
   export default {
     created () {
+      this.selectdept1()
           this.tableonload(); 
       },
+      mounted: function () {
+    this.updateType()
+  },
       computed: {
     currentUser() {
       return this.$store.state.auth.user;
     }
   },
     methods: {
+      updateType () {
+      let type = this.$route.query.type
+      // 判断type的值，更改activeName的值
+      if (type === 'second') {
+        this.activeName = 'second'
+      } else if (type === 'b') {
+        this.activeName = 'b'
+      // eslint-disable-next-line keyword-spacing
+      }else if (type === 'c') {
+        this.activeName = 'c'
+      }
+    },
       //关闭弹框的事件
     closeDialog(){
       this.fileList=[]
@@ -1112,6 +1128,7 @@ import FukuanState from "../services/FukuanState";
               });
           }) 
           CaiGouService.create(data).then(response => {
+            
           // this.tableonload();
           for(var i = 0; i < 1; i++){
               var data1 = {
@@ -1459,12 +1476,14 @@ import FukuanState from "../services/FukuanState";
         })
        },
       handleClick(tab, event) {
-        // 触发‘待办事项’事件
-        if(tab.name == 'second'){
-        	this.selectdept1();
-        }else{
-        	// 触发‘其他’事件
-        }
+        // let type = this.$route.query.type
+        // // 触发‘待办事项’事件
+        // if(type === 'second'){
+        //   // this.selectdept1();
+        //   this.activeName = 'second'
+        // }else{
+        // 	// 触发‘其他’事件
+        // }
       },
       filterCurrent(value, row){
             return row.current_process === value;
@@ -1493,7 +1512,7 @@ import FukuanState from "../services/FukuanState";
             //上传成功后，会返回后端的图片地址，存到imageUrl里面，将来调用create的api
             // this.imageUrlback[index] = response.url;
             this.imageUrl1.push(response.url)
-            console.log(this.imageUrl1)
+            this.imageName.push(file.name)
             this.tmpUrl = this.imageUrl;
             this.$forceUpdate();
         },
@@ -1521,6 +1540,7 @@ import FukuanState from "../services/FukuanState";
     },
     data() {
       return {
+        imageName:[],
         code:"",
         code1:"",
         isshow2:false,

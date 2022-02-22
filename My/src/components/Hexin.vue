@@ -1,9 +1,8 @@
 <template>
 <div>
-  <!-- 客户管理/核心企业管理/核心企业页面 -->
+  <!-- 核心企业管理/核心企业页面 -->
   <el-breadcrumb style="padding-top: 10px;" separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/Dao' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>客户管理</el-breadcrumb-item>
       <el-breadcrumb-item>核心企业管理</el-breadcrumb-item>
       <el-breadcrumb-item>核心企业信息</el-breadcrumb-item>
     </el-breadcrumb>

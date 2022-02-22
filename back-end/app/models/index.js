@@ -93,6 +93,11 @@ db.Fukuanwuliao = require("./Fukuanwuliao.model.js")(sequelize, Sequelize);
 db.CaigouImage = require("./CaigouImage.model.js")(sequelize, Sequelize);
 db.FukuanImage = require("./FukuanImage.model.js")(sequelize, Sequelize);
 db.HuankuanImage = require("./HuankuanImage.model.js")(sequelize, Sequelize);
+db.Dange = require("./Dange.model.js")(sequelize, Sequelize);
+db.RongziB = require("./RongziB.model.js")(sequelize, Sequelize);
+db.XinyongA = require("./XinyongA.model.js")(sequelize, Sequelize);
+db.Alpha = require("./Alpha.model.js")(sequelize, Sequelize);
+db.Beta = require("./Beta.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
